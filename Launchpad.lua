@@ -52,6 +52,24 @@ function Launchpad:send(channel, number, value)
     self.midi_out:send(message)
 end
 
-function Launchpad:set_matrix( number , color )
-    self:send(0x90 , number , color)
+function Launchpad:set_matrix( x, y , color )
+    if ( x < 8 and x > -1 and y < 8 and y > -1) then
+        self:send(0x90 , x * 16 + y , color)
+    end
+end
+
+function Launchpad:example_matrix()
+    for x=0,7,1 do 
+        for y=0,7,1 do 
+            pad:set_matrix(x,y,x+(y*8)) 
+        end 
+    end 
+end
+
+function Launchpad:example_clear()
+    for x=0,7,1 do 
+        for y=0,7,1 do 
+            pad:set_matrix(x,y,0)
+        end 
+    end 
 end
