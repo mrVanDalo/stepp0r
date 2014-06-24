@@ -12,7 +12,20 @@ function list_midi_devices ()
     end
 end
 
-
+colors = {
+    full = {
+        yellow = 62,
+        amber  = 63,
+        green  = 60,
+        red    = 15,
+        orange = 47
+    },
+    dim = {
+        red    = 13,
+        green  = 28
+    },
+    off = 0
+}
 
 -- Launchpad class.
 --
@@ -20,9 +33,6 @@ class "Launchpad"
 
 function Launchpad:__init()
     self:_watch()
-    
-    -- colors
-    self.yellow = 0x7F
 end
 
 function Launchpad:_watch()
