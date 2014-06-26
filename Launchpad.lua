@@ -231,6 +231,8 @@ function example_matrix(pad)
 end
 
 function example_colors(pad)
+    -- send
+    -- configuration
     pad:set_flash(true)
 
     pad:set_matrix(0,0,color.red)
@@ -269,6 +271,8 @@ function example_colors(pad)
     pad:set_right(6,color.flash.green)
     pad:set_right(7,color.flash.orange)
 
+    -- callbacks
+    pad:_unregister_all() 
     -- pad:_register(is_true, echo)
     pad:_register(is_matrix, echo_matrix)
     pad:_register(is_top,    echo_top)
