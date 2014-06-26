@@ -25,14 +25,22 @@ color = {
     off = 12
 }
 
--- Launchpad class.
---
+-- ============================================================
+--                                                    Launchpad
+
 class "Launchpad"
 
 function Launchpad:__init()
+    self.handler = {}
     self:_watch()
 end
 
+-- ------------------------------------------------------------
+--                                          connection handling
+
+-- watches for launchpad connections
+-- (should handle all the reconnection stuff and all)
+-- will be removed by another component soon
 function Launchpad:_watch()
     for k,v in pairs(renoise.Midi.available_input_devices()) do
         if string.find(v, "Launchpad") then
@@ -43,20 +51,112 @@ end
 
 function Launchpad:_connect(midi_device_name)
     print("connect : " ..  midi_device_name)
+    self.midi_out    = renoise.Midi.create_output_device(midi_device_name)
     -- self.midi_input  = renoise.Midi.create_input_device(device_name [,callback] [, sysex_callback])
-    self.midi_out = renoise.Midi.create_output_device(midi_device_name)
+    --
+    -- magic callback function
+    local function main_callback(msg)
+        for i, callback in ipairs(self.handler) do
+            local result = callback[1](msg)
+            if result[1] then
+                table.remove(result,1)
+                callback[2](self, result)
+            end
+        end
+    end
+    self.midi_input  = renoise.Midi.create_input_device(midi_device_name, main_callback)
 end
+
+-- register a callback handler
+-- ---------------------------
+--
+-- test function must return a table where the first parameter is 
+-- true  : call handle
+-- false : don't call handle
+--
+-- the rest of the table will be the second argument of handle.
+-- the first argument given to the handle will be the Launchpad object itself. 
+--
+function Launchpad:_register(test,handle)
+    table.insert(self.handler,{ test, handle })
+end
+
+function Launchpad:_unregister_all()
+    self.handler = {}
+end
+
+-- ------------------------------------------------------------
+--                                          receiving (midi in)
+
+-- callback convention always return an array first slot is true 
+no = { false }
+
+function is_top(msg)
+    if msg[1] == 0xB0 then
+        local x = msg[2] - 0x68 
+        if (x > -1 and x < 8) then
+            return { true,  x, msg[3] }
+        end
+    end
+    return no
+end
+
+function is_right(msg)
+    if msg[1] == 0x90 then
+        local note = msg[2]
+        if (bit.band(0x08,note) == 0x08) then
+            local x = bit.rshift(note,4)
+            if (x > -1 and x < 8) then 
+                return { true,  x, msg[3] }
+            end
+        end
+    end
+    return no 
+end
+
+function is_matrix(msg)
+    if msg[1] == 0x90 then
+        local note = msg[2]
+        if (bit.band(0x08,note) == 0) then
+            local y = bit.rshift(note,4)
+            local x = bit.band(0x07,note)
+            if ( x > -1 and x < 8 and y > -1  and y < 8 ) then 
+                return { true , x , y , msg[3] }
+            end
+        end
+    end
+    return no
+end
+
+function is_true(msg)
+    return { true, msg }
+end
+
+function echo_top(pad,msg)
+    print(("top    : (%X) = %X"):format(msg[1],msg[2]))
+end
+function echo_right(pad,msg)
+    print(("right  : (%X) = %X"):format(msg[1],msg[2]))
+end
+function echo_matrix(pad,msg)
+    print(("matrix : (%X,%X) = %X"):format(msg[1],msg[2],msg[3]))
+end
+
+function echo(pad, msg)
+    local message = msg[1]
+    print(("echo : got MIDI %X %X %X"):format(message[1], message[2], message[3]))
+end
+
+-- ------------------------------------------------------------
+--                                           sending (midi out)
 
 function Launchpad:send(channel, number, value)
     --if (not self.midi_out or not self.midi_out.is_open) then
     --    print("midi is not open")
     --    return
     --end
-
     local message = {channel, number, value}
-
     print(("Launchpad : send MIDI %X %X %X"):format(message[1], message[2], message[3]))
-    
     self.midi_out:send(message)
 end
 
@@ -112,8 +212,15 @@ function Launchpad:set_flash(value)
     end
 end
 
+
+
+
+
+
+
+
 -- ------------------------------------------------------------
--- example functions
+--                                            example functions
 
 function example_matrix(pad)
     for y=0,7,1 do 
@@ -124,6 +231,8 @@ function example_matrix(pad)
 end
 
 function example_colors(pad)
+    -- send
+    -- configuration
     pad:set_flash(true)
 
     pad:set_matrix(0,0,color.red)
@@ -161,6 +270,17 @@ function example_colors(pad)
     pad:set_right(5,color.flash.yellow)
     pad:set_right(6,color.flash.green)
     pad:set_right(7,color.flash.orange)
+
+    -- callbacks
+    pad:_unregister_all() 
+    -- pad:_register(is_true, echo)
+    pad:_register(is_matrix, echo_matrix)
+    pad:_register(is_top,    echo_top)
+    pad:_register(is_right,  echo_right)
+end
+
+function example(pad)
+    example_colors(pad)
 end
 
 
