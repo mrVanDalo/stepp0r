@@ -275,4 +275,8 @@ function example_colors(pad)
     pad:_register(is_right,  echo_right)
 end
 
+function example(pad)
+    example_colors(pad)
+end
+
 
