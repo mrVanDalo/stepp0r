@@ -111,21 +111,15 @@ function is_right(msg)
     return no 
 end
 
-function is_sub_matrix(p1,p2)
-    return function(msg)
-        if msg[1] == 0x90 then
-            local y = bit.rshift(msg[2],4)
-            local x = bit.band(0x07,msg[2])
-            if (x >= p1[1] and x <= p2[1] and y >= p1[2] and y <= p2[2]) then 
-                return { true , x , y , msg[3] }
-            end
+function is_matrix(msg)
+    if msg[1] == 0x90 then
+        local y = bit.rshift(msg[2],4)
+        local x = bit.band(0x07,msg[2])
+        if ( x > -1 and x < 8 and y > -1  and y < 8 ) then 
+            return { true , x , y , msg[3] }
         end
-        return no
     end
-end
-
-function is_matrix()
-    return is_sub_matrix( { 0, 7 }, { 0, 7 } )
+    return no
 end
 
 function is_true(msg)
@@ -133,7 +127,7 @@ function is_true(msg)
 end
 
 function echo_matrix(pad,msg)
-    print("matrix : (%X,%X) = %X"):format(msg[1],msg[2],msg[3])
+    print(("matrix : (%X,%X) = %X"):format(msg[1],msg[2],msg[3]))
 end
 
 function echo(pad, msg)
