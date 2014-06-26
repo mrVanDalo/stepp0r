@@ -113,10 +113,13 @@ end
 
 function is_matrix(msg)
     if msg[1] == 0x90 then
-        local y = bit.rshift(msg[2],4)
-        local x = bit.band(0x07,msg[2])
-        if ( x > -1 and x < 8 and y > -1  and y < 8 ) then 
-            return { true , x , y , msg[3] }
+        local note = msg[2]
+        if (bit.band(0x08,note) == 0) then
+            local y = bit.rshift(note,4)
+            local x = bit.band(0x07,note)
+            if ( x > -1 and x < 8 and y > -1  and y < 8 ) then 
+                return { true , x , y , msg[3] }
+            end
         end
     end
     return no
