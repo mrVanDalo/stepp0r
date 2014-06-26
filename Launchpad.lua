@@ -1,19 +1,6 @@
--- Launchpad functions and tests
---
-
-function list_midi_devices () 
-    print("output devices")
-    for k,v in pairs(renoise.Midi.available_output_devices()) do 
-        print(k,v) 
-    end
-    print("input devices")
-    for k,v in pairs(renoise.Midi.available_input_devices()) do 
-        print(k,v) 
-    end
-end
-
 color = {
     red    = 0x07,
+    orange = 0x27,
     yellow = 0x3F,
     green  = 0x3C,
 
@@ -71,18 +58,32 @@ function Launchpad:set_matrix( x, y , color )
     end
 end
 
-function Launchpad:example_matrix()
-    for y=0,7,1 do 
-        for x=0,7,1 do 
-            pad:set_matrix(x,y,x+(y*8))
-        end 
-    end 
+function Launchpad:set_control(x,color)
+    if ( x > -1 and x < 8 ) then
+        self:send( 0xB0, x + 0x68, color)
+    end
+end
+
+function Launchpad:clear()
+    self:clear_matrix()
 end
 
 function Launchpad:clear_matrix()
     for x=0,7,1 do 
         for y=0,7,1 do 
-            pad:set_matrix(x,y,0)
+            self:set_matrix(x,y,0)
+        end 
+    end 
+end
+
+
+-- ------------------------------------------------------------
+-- example functions
+
+function example_matrix(pad)
+    for y=0,7,1 do 
+        for x=0,7,1 do 
+            pad:set_matrix(x,y,x+(y*8))
         end 
     end 
 end
@@ -91,6 +92,7 @@ function example_colors(pad)
     pad:set_matrix(0,0,color.red)
     pad:set_matrix(1,0,color.yellow)
     pad:set_matrix(2,0,color.green)
+    pad:set_matrix(3,0,color.orange)
    
     pad:set_matrix(0,2,color.full.red)
     pad:set_matrix(1,2,color.full.yellow)
