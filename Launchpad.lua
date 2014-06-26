@@ -1,9 +1,17 @@
 color = {
+
     red    = 0x07,
     orange = 0x27,
     yellow = 0x3F,
     green  = 0x3C,
 
+    flash = {
+        red    = 0x03,
+        orange = 0x33,
+        yellow = 0x73,
+        green  = 0x70,
+        off    = 0x00,
+    },
     full = {
         red    = 0x07,
         yellow = 0x3F,
@@ -14,7 +22,7 @@ color = {
         yellow = 0x2E,
         green  = 0x2C,
     },
-    off = 0
+    off = 12
 }
 
 -- Launchpad class.
@@ -77,11 +85,18 @@ end
 function Launchpad:clear_matrix()
     for x=0,7,1 do 
         for y=0,7,1 do 
-            self:set_matrix(x,y,0)
+            self:set_matrix(x,y,color.off)
         end 
     end 
 end
 
+function Launchpad:set_flash(value)
+    if (value) then
+        self:send(0xB0,0x00,0x28)
+    else
+        self:send(0xB0,0x00,0x32)
+    end
+end
 
 -- ------------------------------------------------------------
 -- example functions
