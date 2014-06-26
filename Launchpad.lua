@@ -12,17 +12,20 @@ function list_midi_devices ()
     end
 end
 
-colors = {
+color = {
+    red    = 0x07,
+    yellow = 0x3F,
+    green  = 0x3C,
+
     full = {
-        yellow = 62,
-        amber  = 63,
-        green  = 60,
-        red    = 15,
-        orange = 47
+        red    = 0x07,
+        yellow = 0x3F,
+        green  = 0x3C,
     },
     dim = {
-        red    = 13,
-        green  = 28
+        red    = 0x0E,
+        yellow = 0x2E,
+        green  = 0x2C,
     },
     off = 0
 }
@@ -64,22 +67,36 @@ end
 
 function Launchpad:set_matrix( x, y , color )
     if ( x < 8 and x > -1 and y < 8 and y > -1) then
-        self:send(0x90 , x * 16 + y , color)
+        self:send(0x90 , y * 16 + x , color)
     end
 end
 
 function Launchpad:example_matrix()
-    for x=0,7,1 do 
-        for y=0,7,1 do 
-            pad:set_matrix(x,y,x+(y*8)) 
+    for y=0,7,1 do 
+        for x=0,7,1 do 
+            pad:set_matrix(x,y,x+(y*8))
         end 
     end 
 end
 
-function Launchpad:example_clear()
+function Launchpad:clear_matrix()
     for x=0,7,1 do 
         for y=0,7,1 do 
             pad:set_matrix(x,y,0)
         end 
     end 
+end
+
+function example_colors(pad)
+    pad:set_matrix(0,0,color.red)
+    pad:set_matrix(1,0,color.yellow)
+    pad:set_matrix(2,0,color.green)
+   
+    pad:set_matrix(0,2,color.full.red)
+    pad:set_matrix(1,2,color.full.yellow)
+    pad:set_matrix(2,2,color.full.green)
+
+    pad:set_matrix(0,3,color.dim.red)
+    pad:set_matrix(1,3,color.dim.yellow)
+    pad:set_matrix(2,3,color.dim.green)
 end
