@@ -58,9 +58,15 @@ function Launchpad:set_matrix( x, y , color )
     end
 end
 
-function Launchpad:set_control(x,color)
+function Launchpad:set_top(x,color)
     if ( x > -1 and x < 8 ) then
         self:send( 0xB0, x + 0x68, color)
+    end
+end
+
+function Launchpad:set_right(x,color)
+    if ( x > -1 and x < 8 ) then
+        self:send( 0x90, 0x10 * x + 0x08, color)
     end
 end
 
