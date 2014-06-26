@@ -103,9 +103,12 @@ end
 
 function is_right(msg)
     if msg[1] == 0x90 then
-        local x = (msg[2] / 0x10 ) - 0x08
-        if (x > -1 and x < 8) then
-            return { true,  x, msg[3] }
+        local note = msg[2]
+        if (bit.band(0x08,note) == 0x08) then
+            local x = bit.rshift(note,4)
+            if (x > -1 and x < 8) then 
+                return { true,  x, msg[3] }
+            end
         end
     end
     return no 
@@ -129,6 +132,12 @@ function is_true(msg)
     return { true, msg }
 end
 
+function echo_top(pad,msg)
+    print(("top    : (%X) = %X"):format(msg[1],msg[2]))
+end
+function echo_right(pad,msg)
+    print(("right  : (%X) = %X"):format(msg[1],msg[2]))
+end
 function echo_matrix(pad,msg)
     print(("matrix : (%X,%X) = %X"):format(msg[1],msg[2],msg[3]))
 end
@@ -260,8 +269,10 @@ function example_colors(pad)
     pad:set_right(6,color.flash.green)
     pad:set_right(7,color.flash.orange)
 
-    pad:_register(is_true, echo)
+    -- pad:_register(is_true, echo)
     pad:_register(is_matrix, echo_matrix)
+    pad:_register(is_top,    echo_top)
+    pad:_register(is_right,  echo_right)
 end
 
 
