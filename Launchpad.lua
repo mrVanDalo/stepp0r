@@ -7,7 +7,7 @@ color = {
 
     flash = {
         red    = 0x03,
-        orange = 0x33,
+        orange = 0x23,
         yellow = 0x73,
         green  = 0x70,
         off    = 0x00,
@@ -80,6 +80,8 @@ end
 
 function Launchpad:clear()
     self:clear_matrix()
+    self:clear_top()
+    self:clear_right()
 end
 
 function Launchpad:clear_matrix()
@@ -87,6 +89,18 @@ function Launchpad:clear_matrix()
         for y=0,7,1 do 
             self:set_matrix(x,y,color.off)
         end 
+    end 
+end
+
+function Launchpad:clear_right()
+    for x=0,7,1 do 
+        self:set_top(x,color.off)
+    end 
+end
+
+function Launchpad:clear_top()
+    for x=0,7,1 do 
+        self:set_right(x,color.off)
     end 
 end
 
@@ -110,10 +124,17 @@ function example_matrix(pad)
 end
 
 function example_colors(pad)
+    pad:set_flash(true)
+
     pad:set_matrix(0,0,color.red)
     pad:set_matrix(1,0,color.yellow)
     pad:set_matrix(2,0,color.green)
     pad:set_matrix(3,0,color.orange)
+
+    pad:set_matrix(0,1,color.flash.red)
+    pad:set_matrix(1,1,color.flash.yellow)
+    pad:set_matrix(2,1,color.flash.green)
+    pad:set_matrix(3,1,color.flash.orange)
    
     pad:set_matrix(0,2,color.full.red)
     pad:set_matrix(1,2,color.full.yellow)
@@ -122,4 +143,24 @@ function example_colors(pad)
     pad:set_matrix(0,3,color.dim.red)
     pad:set_matrix(1,3,color.dim.yellow)
     pad:set_matrix(2,3,color.dim.green)
+
+    pad:set_top(0,color.red)
+    pad:set_top(1,color.yellow)
+    pad:set_top(2,color.green)
+    pad:set_top(3,color.orange)
+    pad:set_top(4,color.flash.red)
+    pad:set_top(5,color.flash.yellow)
+    pad:set_top(6,color.flash.green)
+    pad:set_top(7,color.flash.orange)
+
+    pad:set_right(0,color.red)
+    pad:set_right(1,color.yellow)
+    pad:set_right(2,color.green)
+    pad:set_right(3,color.orange)
+    pad:set_right(4,color.flash.red)
+    pad:set_right(5,color.flash.yellow)
+    pad:set_right(6,color.flash.green)
+    pad:set_right(7,color.flash.orange)
 end
+
+
