@@ -88,7 +88,7 @@ end
 -- --
 -- register a callback handler
 --
-local function Launchpad:_register(list,handle)
+function Launchpad:_register(list,handle)
     table.insert(list,handle)
 end
 
