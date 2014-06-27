@@ -91,6 +91,7 @@ end
 -- callback convention always return an array first slot is true 
 no = { false }
 
+
 function is_top(msg)
     if msg[1] == 0xB0 then
         local x = msg[2] - 0x68 
@@ -128,9 +129,20 @@ function is_matrix(msg)
     return no
 end
 
-function is_true(msg)
-    return { true, msg }
+function Launchpad:top_listener(handler)
+    self:_register(is_top,handler)
 end
+
+function Launchpad:right_listener(handler)
+    self:_register(is_right,handler)
+end
+
+function Launchpad:matrix_listener(handler)
+    self:_register(is_matrix,handler)
+end
+
+
+-- echo functions
 
 function echo_top(pad,msg)
     local x   = msg[1]
@@ -280,10 +292,10 @@ function example_colors(pad)
 
     -- callbacks
     pad:_unregister_all() 
-    -- pad:_register(is_true, echo)
-    pad:_register(is_matrix, echo_matrix)
-    pad:_register(is_top,    echo_top)
-    pad:_register(is_right,  echo_right)
+
+    pad:matrix_listener(echo_matrix)
+    pad:top_listener(echo_top)
+    pad:right_listener(echo_right)
 end
 
 function example(pad)
