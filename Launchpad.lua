@@ -133,13 +133,20 @@ function is_true(msg)
 end
 
 function echo_top(pad,msg)
-    print(("top    : (%X) = %X"):format(msg[1],msg[2]))
+    local x   = msg[1]
+    local vel = msg[2]
+    print(("top    : (%X) = %X"):format(x,vel))
 end
 function echo_right(pad,msg)
-    print(("right  : (%X) = %X"):format(msg[1],msg[2]))
+    local x   = msg[1]
+    local vel = msg[2]
+    print(("right  : (%X) = %X"):format(x,vel))
 end
 function echo_matrix(pad,msg)
-    print(("matrix : (%X,%X) = %X"):format(msg[1],msg[2],msg[3]))
+    local x   = msg[1]
+    local y   = msg[2]
+    local vel = msg[3]
+    print(("matrix : (%X,%X) = %X"):format(x,y,vel))
 end
 
 function echo(pad, msg)
