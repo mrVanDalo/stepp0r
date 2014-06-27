@@ -31,7 +31,7 @@ color = {
 class "Launchpad"
 
 function Launchpad:__init()
-    self.handler = {}
+    self:_unregister_all()
     self:_watch()
 end
 
@@ -56,12 +56,28 @@ function Launchpad:_connect(midi_device_name)
     --
     -- magic callback function
     local function main_callback(msg)
-        for i, callback in ipairs(self.handler) do
-            local result = callback[1](msg)
-            if result[1] then
-                table.remove(result,1)
-                callback[2](self, result)
+        local result = _is_matrix(msg)
+        if (result.flag) then
+            for i, callback in ipairs(self._matrix_listener) do
+                callback(self, result)
             end
+            return
+        end
+
+        result = _is_top(msg)
+        if (result.flag) then
+            for i, callback in ipairs(self._top_listener) do
+                callback(self, result)
+            end
+            return
+        end
+
+        result = _is_right(msg)
+        if (result.flag) then
+            for i, callback in ipairs(self._right_listener) do
+                callback(self, result)
+            end
+            return
         end
     end
     self.midi_input  = renoise.Midi.create_input_device(midi_device_name, main_callback)
@@ -77,93 +93,98 @@ end
 -- the rest of the table will be the second argument of handle.
 -- the first argument given to the handle will be the Launchpad object itself. 
 --
-function Launchpad:_register(test,handle)
-    table.insert(self.handler,{ test, handle })
+function Launchpad:_register(list,handle)
+    table.insert(list,handle)
 end
 
 function Launchpad:_unregister_all()
-    self.handler = {}
+    self._matrix_listener = {}
+    self._top_listener    = {}
+    self._right_listener  = {}
 end
 
 -- ------------------------------------------------------------
 --                                          receiving (midi in)
 
 -- callback convention always return an array first slot is true 
-no = { false }
+no = { flag = false }
 
 
-function is_top(msg)
+-- --
+-- Test functions for the handler
+--
+function _is_top(msg)
     if msg[1] == 0xB0 then
         local x = msg[2] - 0x68 
         if (x > -1 and x < 8) then
-            return { true,  x, msg[3] }
+            return { flag = true,  x = x, vel = msg[3] }
         end
     end
     return no
 end
 
-function is_right(msg)
+function _is_right(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
         if (bit.band(0x08,note) == 0x08) then
             local x = bit.rshift(note,4)
             if (x > -1 and x < 8) then 
-                return { true,  x, msg[3] }
+                return { flag = true,  x = x, vel = msg[3] }
             end
         end
     end
     return no 
 end
 
-function is_matrix(msg)
+function _is_matrix(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
         if (bit.band(0x08,note) == 0) then
             local y = bit.rshift(note,4)
             local x = bit.band(0x07,note)
             if ( x > -1 and x < 8 and y > -1  and y < 8 ) then 
-                return { true , x , y , msg[3] }
+                return { flag = true , x = x , y = y , vel = msg[3] }
             end
         end
     end
     return no
 end
 
+-- --
+-- register handler functions
+--
 function Launchpad:top_listener(handler)
-    self:_register(is_top,handler)
+    self:_register(self._top_listener,   handler)
 end
-
 function Launchpad:right_listener(handler)
-    self:_register(is_right,handler)
+    self:_register(self._right_listener, handler)
 end
-
 function Launchpad:matrix_listener(handler)
-    self:_register(is_matrix,handler)
+    self:_register(self._matrix_listener,handler)
 end
 
 
--- echo functions
-
+-- --
+-- example handler
+--
 function echo_top(pad,msg)
-    local x   = msg[1]
-    local vel = msg[2]
+    local x   = msg.x
+    local vel = msg.vel
+    --print(top)
     print(("top    : (%X) = %X"):format(x,vel))
 end
 function echo_right(pad,msg)
-    local x   = msg[1]
-    local vel = msg[2]
+    local x   = msg.x
+    local vel = msg.vel
+    --print(right)
     print(("right  : (%X) = %X"):format(x,vel))
 end
 function echo_matrix(pad,msg)
-    local x   = msg[1]
-    local y   = msg[2]
-    local vel = msg[3]
+    local x   = msg.x
+    local y   = msg.y
+    local vel = msg.vel
+    --print(matrix)
     print(("matrix : (%X,%X) = %X"):format(x,y,vel))
-end
-
-function echo(pad, msg)
-    local message = msg[1]
-    print(("echo : got MIDI %X %X %X"):format(message[1], message[2], message[3]))
 end
 
 -- ------------------------------------------------------------
