@@ -3,8 +3,7 @@
 class "LaunchpadMode"
 
 
-function LaunchpadMode:__init(pad)
-    self.pad       = pad
+function LaunchpadMode:__init()
     self.is_active = false
 end
 
@@ -16,4 +15,8 @@ end
 function LaunchpadMode:deactivate()
     self.is_active = false
     self:_deactivate()
+end
+
+function LaunchpadMode:__tostring()
+  return ("LaunchpadModule : %s"):format(self.is_active)
 end
