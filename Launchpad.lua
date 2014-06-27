@@ -327,7 +327,53 @@ function example_colors(pad)
 end
 
 function example(pad)
-    example_colors(pad)
+    -- configuration
+    pad:set_flash(true)
+
+    pad:set_matrix(2,6,color.red)
+    pad:set_matrix(3,6,color.yellow)
+    pad:set_matrix(4,6,color.green)
+    pad:set_matrix(5,6,color.orange)
+    pad:set_matrix(1,4,color.red)
+    pad:set_matrix(1,5,color.yellow)
+    pad:set_matrix(6,4,color.green)
+    pad:set_matrix(6,5,color.orange)
+
+    pad:set_matrix(1,1,color.flash.red)
+    pad:set_matrix(1,2,color.flash.yellow)
+    pad:set_matrix(2,1,color.flash.green)
+    pad:set_matrix(2,2,color.flash.orange)
+   
+    pad:set_matrix(5,1,color.flash.red)
+    pad:set_matrix(5,2,color.flash.yellow)
+    pad:set_matrix(6,1,color.flash.green)
+    pad:set_matrix(6,2,color.flash.orange)
+
+    pad:set_top(0,color.red)
+    pad:set_top(1,color.yellow)
+    pad:set_top(2,color.green)
+    pad:set_top(3,color.orange)
+    pad:set_top(4,color.flash.red)
+    pad:set_top(5,color.flash.yellow)
+    pad:set_top(6,color.flash.green)
+    pad:set_top(7,color.flash.orange)
+
+    pad:set_right(0,color.red)
+    pad:set_right(1,color.yellow)
+    pad:set_right(2,color.green)
+    pad:set_right(3,color.orange)
+    pad:set_right(4,color.flash.red)
+    pad:set_right(5,color.flash.yellow)
+    pad:set_right(6,color.flash.green)
+    pad:set_right(7,color.flash.orange)
+
+    -- callbacks
+    pad:unregister_all()
+
+    pad:register_matrix_listener(echo_matrix)
+    pad:register_top_listener(echo_top)
+    pad:register_right_listener(echo_right)
+    
 end
 
 
