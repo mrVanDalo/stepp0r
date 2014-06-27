@@ -31,7 +31,7 @@ color = {
 class "Launchpad"
 
 function Launchpad:__init()
-    self:_unregister_all()
+    self:unregister_all
     self:_watch()
 end
 
@@ -97,11 +97,6 @@ function Launchpad:_register(list,handle)
     table.insert(list,handle)
 end
 
-function Launchpad:_unregister_all()
-    self._matrix_listener = {}
-    self._top_listener    = {}
-    self._right_listener  = {}
-end
 
 -- ------------------------------------------------------------
 --                                          receiving (midi in)
@@ -153,16 +148,34 @@ end
 -- --
 -- register handler functions
 --
-function Launchpad:top_listener(handler)
+function Launchpad:register_top_listener(handler)
     self:_register(self._top_listener,   handler)
 end
-function Launchpad:right_listener(handler)
+function Launchpad:register_right_listener(handler)
     self:_register(self._right_listener, handler)
 end
-function Launchpad:matrix_listener(handler)
+function Launchpad:register_matrix_listener(handler)
     self:_register(self._matrix_listener,handler)
 end
 
+-- -- 
+-- unregister
+--
+function Launchpad:unregister_top_listener()
+    self._top_listener = {}
+end
+function Launchpad:unregister_right_listener()
+    self._right_listener = {}
+end
+function Launchpad:unregister_matrix_listener()
+    self._matrix_listener = {}
+end
+
+function Launchpad:unregister_all
+    self:unregister_top_listener()
+    self:unregister_right_listener()
+    self:unregister_matrix_listener()
+end
 
 -- --
 -- example handler
@@ -312,11 +325,11 @@ function example_colors(pad)
     pad:set_right(7,color.flash.orange)
 
     -- callbacks
-    pad:_unregister_all() 
+    pad:unregister_all
 
-    pad:matrix_listener(echo_matrix)
-    pad:top_listener(echo_top)
-    pad:right_listener(echo_right)
+    pad:register_matrix_listener(echo_matrix)
+    pad:register_top_listener(echo_top)
+    pad:register_right_listener(echo_right)
 end
 
 function example(pad)
