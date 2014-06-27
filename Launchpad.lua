@@ -31,7 +31,7 @@ color = {
 class "Launchpad"
 
 function Launchpad:__init()
-    self:unregister_all
+    self:unregister_all()
     self:_watch()
 end
 
@@ -44,15 +44,17 @@ end
 function Launchpad:_watch()
     for k,v in pairs(renoise.Midi.available_input_devices()) do
         if string.find(v, "Launchpad") then
-            self:_connect(v)
+            self:connect(v)
         end
     end
 end
 
-function Launchpad:_connect(midi_device_name)
+-- --
+-- connect launchpad to a midi device
+--
+function Launchpad:connect(midi_device_name)
     print("connect : " ..  midi_device_name)
     self.midi_out    = renoise.Midi.create_output_device(midi_device_name)
-    -- self.midi_input  = renoise.Midi.create_input_device(device_name [,callback] [, sysex_callback])
     --
     -- magic callback function
     local function main_callback(msg)
@@ -63,7 +65,7 @@ function Launchpad:_connect(midi_device_name)
             end
             return
         end
-
+        --
         result = _is_top(msg)
         if (result.flag) then
             for i, callback in ipairs(self._top_listener) do
@@ -71,7 +73,7 @@ function Launchpad:_connect(midi_device_name)
             end
             return
         end
-
+        --
         result = _is_right(msg)
         if (result.flag) then
             for i, callback in ipairs(self._right_listener) do
@@ -83,17 +85,10 @@ function Launchpad:_connect(midi_device_name)
     self.midi_input  = renoise.Midi.create_input_device(midi_device_name, main_callback)
 end
 
+-- --
 -- register a callback handler
--- ---------------------------
 --
--- test function must return a table where the first parameter is 
--- true  : call handle
--- false : don't call handle
---
--- the rest of the table will be the second argument of handle.
--- the first argument given to the handle will be the Launchpad object itself. 
---
-function Launchpad:_register(list,handle)
+local function Launchpad:_register(list,handle)
     table.insert(list,handle)
 end
 
@@ -103,7 +98,6 @@ end
 
 -- callback convention always return an array first slot is true 
 no = { flag = false }
-
 
 -- --
 -- Test functions for the handler
@@ -171,7 +165,7 @@ function Launchpad:unregister_matrix_listener()
     self._matrix_listener = {}
 end
 
-function Launchpad:unregister_all
+function Launchpad:unregister_all()
     self:unregister_top_listener()
     self:unregister_right_listener()
     self:unregister_matrix_listener()
@@ -325,7 +319,7 @@ function example_colors(pad)
     pad:set_right(7,color.flash.orange)
 
     -- callbacks
-    pad:unregister_all
+    pad:unregister_all()
 
     pad:register_matrix_listener(echo_matrix)
     pad:register_top_listener(echo_top)
