@@ -31,7 +31,7 @@ color = {
 class "Launchpad"
 
 function Launchpad:__init()
-    self.handler = {}
+    self:unregister_all()
     self:_watch()
 end
 
@@ -44,107 +44,154 @@ end
 function Launchpad:_watch()
     for k,v in pairs(renoise.Midi.available_input_devices()) do
         if string.find(v, "Launchpad") then
-            self:_connect(v)
+            self:connect(v)
         end
     end
 end
 
-function Launchpad:_connect(midi_device_name)
+-- --
+-- connect launchpad to a midi device
+--
+function Launchpad:connect(midi_device_name)
     print("connect : " ..  midi_device_name)
     self.midi_out    = renoise.Midi.create_output_device(midi_device_name)
-    -- self.midi_input  = renoise.Midi.create_input_device(device_name [,callback] [, sysex_callback])
     --
     -- magic callback function
     local function main_callback(msg)
-        for i, callback in ipairs(self.handler) do
-            local result = callback[1](msg)
-            if result[1] then
-                table.remove(result,1)
-                callback[2](self, result)
+        local result = _is_matrix(msg)
+        if (result.flag) then
+            for i, callback in ipairs(self._matrix_listener) do
+                callback(self, result)
             end
+            return
+        end
+        --
+        result = _is_top(msg)
+        if (result.flag) then
+            for i, callback in ipairs(self._top_listener) do
+                callback(self, result)
+            end
+            return
+        end
+        --
+        result = _is_right(msg)
+        if (result.flag) then
+            for i, callback in ipairs(self._right_listener) do
+                callback(self, result)
+            end
+            return
         end
     end
     self.midi_input  = renoise.Midi.create_input_device(midi_device_name, main_callback)
 end
 
+-- --
 -- register a callback handler
--- ---------------------------
 --
--- test function must return a table where the first parameter is 
--- true  : call handle
--- false : don't call handle
---
--- the rest of the table will be the second argument of handle.
--- the first argument given to the handle will be the Launchpad object itself. 
---
-function Launchpad:_register(test,handle)
-    table.insert(self.handler,{ test, handle })
+local function Launchpad:_register(list,handle)
+    table.insert(list,handle)
 end
 
-function Launchpad:_unregister_all()
-    self.handler = {}
-end
 
 -- ------------------------------------------------------------
 --                                          receiving (midi in)
 
 -- callback convention always return an array first slot is true 
-no = { false }
+no = { flag = false }
 
-function is_top(msg)
+-- --
+-- Test functions for the handler
+--
+function _is_top(msg)
     if msg[1] == 0xB0 then
         local x = msg[2] - 0x68 
         if (x > -1 and x < 8) then
-            return { true,  x, msg[3] }
+            return { flag = true,  x = x, vel = msg[3] }
         end
     end
     return no
 end
 
-function is_right(msg)
+function _is_right(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
         if (bit.band(0x08,note) == 0x08) then
             local x = bit.rshift(note,4)
             if (x > -1 and x < 8) then 
-                return { true,  x, msg[3] }
+                return { flag = true,  x = x, vel = msg[3] }
             end
         end
     end
     return no 
 end
 
-function is_matrix(msg)
+function _is_matrix(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
         if (bit.band(0x08,note) == 0) then
             local y = bit.rshift(note,4)
             local x = bit.band(0x07,note)
             if ( x > -1 and x < 8 and y > -1  and y < 8 ) then 
-                return { true , x , y , msg[3] }
+                return { flag = true , x = x , y = y , vel = msg[3] }
             end
         end
     end
     return no
 end
 
-function is_true(msg)
-    return { true, msg }
+-- --
+-- register handler functions
+--
+function Launchpad:register_top_listener(handler)
+    self:_register(self._top_listener,   handler)
+end
+function Launchpad:register_right_listener(handler)
+    self:_register(self._right_listener, handler)
+end
+function Launchpad:register_matrix_listener(handler)
+    self:_register(self._matrix_listener,handler)
 end
 
+-- -- 
+-- unregister
+--
+function Launchpad:unregister_top_listener()
+    self._top_listener = {}
+end
+function Launchpad:unregister_right_listener()
+    self._right_listener = {}
+end
+function Launchpad:unregister_matrix_listener()
+    self._matrix_listener = {}
+end
+
+function Launchpad:unregister_all()
+    self:unregister_top_listener()
+    self:unregister_right_listener()
+    self:unregister_matrix_listener()
+end
+
+-- --
+-- example handler
+--
 function echo_top(pad,msg)
-    print(("top    : (%X) = %X"):format(msg[1],msg[2]))
+    local x   = msg.x
+    local vel = msg.vel
+    --print(top)
+    print(("top    : (%X) = %X"):format(x,vel))
 end
 function echo_right(pad,msg)
-    print(("right  : (%X) = %X"):format(msg[1],msg[2]))
+    local x   = msg.x
+    local vel = msg.vel
+    --print(right)
+    print(("right  : (%X) = %X"):format(x,vel))
 end
 function echo_matrix(pad,msg)
-    print(("matrix : (%X,%X) = %X"):format(msg[1],msg[2],msg[3]))
-end
-
-function echo(pad, msg)
-    local message = msg[1]
-    print(("echo : got MIDI %X %X %X"):format(message[1], message[2], message[3]))
+    local x   = msg.x
+    local y   = msg.y
+    local vel = msg.vel
+    --print(matrix)
+    print(("matrix : (%X,%X) = %X"):format(x,y,vel))
 end
 
 -- ------------------------------------------------------------
@@ -272,11 +319,11 @@ function example_colors(pad)
     pad:set_right(7,color.flash.orange)
 
     -- callbacks
-    pad:_unregister_all() 
-    -- pad:_register(is_true, echo)
-    pad:_register(is_matrix, echo_matrix)
-    pad:_register(is_top,    echo_top)
-    pad:_register(is_right,  echo_right)
+    pad:unregister_all()
+
+    pad:register_matrix_listener(echo_matrix)
+    pad:register_top_listener(echo_top)
+    pad:register_right_listener(echo_right)
 end
 
 function example(pad)
