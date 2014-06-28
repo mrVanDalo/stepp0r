@@ -119,6 +119,10 @@ function Keyboard:update_notes()
             slot[2] + self.offset,
             self.color.note)
     end
+    self.pad:set_matrix(
+      self.off_note[1],
+      self.off_note[2] + self.offset,
+      self.color.off)
 end
 
 function Keyboard:update_active_note()
