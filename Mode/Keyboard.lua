@@ -36,13 +36,23 @@ function Keyboard:__init(pad)
 end
 
 function Keyboard:_activate()
-    self.pad:clear()
+    self:clear()
     self.pad:set_flash(true)
     self:_setup_keys()
     self:_setup_callbacks()
 end
 
+function Keyboard:clear()
+    local y0 = self.offset
+    local y1 = self.offset + 1
+    for x=0,7,1 do
+        self.pad:set_matrix(x,y0,self.pad.color.off)
+        self.pad:set_matrix(x,y1,self.pad.color.off)
+    end
+end
+
 function Keyboard:_deactivate()
+    self:clear()
     self.pad:unregister_matrix_listener()
 end
 
