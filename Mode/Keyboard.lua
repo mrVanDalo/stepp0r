@@ -6,6 +6,8 @@ require 'LaunchpadMode'
 --
 class "Keyboard" (LaunchpadMode)
 
+-- ich brauch einen kontainer über den die 
+-- Module miteinander reden können
 function Keyboard:__init(pad)
     LaunchpadMode:__init(self)
     self.pad    = pad
@@ -27,7 +29,7 @@ function Keyboard:__init(pad)
         active_note = self.pad.color.flash.orange,
         octave      = self.pad.color.yellow,
         off         = self.pad.color.red,
-        manover     = self.pad.color.red,
+        manover     = self.pad.color.orange,
     }
     self.oct  = 4
     self.note = self.notes.c
@@ -81,6 +83,7 @@ function Keyboard:set_note(x,y)
     -- print(("set (%s,%s)"):format(x,y))
     self.note = { x , y - self.offset }
 end
+
 function Keyboard:update_keys()
     self:update_notes()
     self:update_octave()
@@ -133,7 +136,7 @@ function Keyboard:update_active_note()
     -- self.pad:set_matrix(x,y,off)
     print(("active note : (%s,%s)"):format(x,y))
     if (self.note == self.off_note) then
-      color = self.color.off
+        color = self.color.off
     end
     self.pad:set_matrix( x, y, self.color.active_note )
 end
