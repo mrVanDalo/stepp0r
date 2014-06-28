@@ -20,7 +20,15 @@ function Keyboard:__init(pad)
         h = {6,1},
         C = {7,1},
     }
+    self.off_note = {3, 0}
     -- default
+    self.color = {
+        note        = self.pad.color.green ,
+        active_note = self.pad.color.flash.orange,
+        octave      = self.pad.color.yellow,
+        off         = self.pad.color.red,
+        manover     = self.pad.color.red,
+    }
     self.oct  = 4
     self.note = self.notes.c
 end
@@ -70,12 +78,13 @@ function Keyboard:octave_up()
     end
 end
 function Keyboard:set_note(x,y)
-    print(("set (%s,%s)"):format(x,y))
+    -- print(("set (%s,%s)"):format(x,y))
+    self.note = { x , y - self.offset }
 end
 function Keyboard:update_keys()
     self:update_notes()
-    self:update_active_note()
     self:update_octave()
+    self:update_active_note()
 end
 
 function Keyboard:_setup_keys()
@@ -84,23 +93,23 @@ function Keyboard:_setup_keys()
     self.pad:set_matrix(
         0,
         self.offset,
-        self.pad.color.orange)
+        self.color.manover)
     self.pad:set_matrix(
         7,
         self.offset,
-        self.pad.color.orange)
+        self.color.manover)
     -- off button
     self.pad:set_matrix(
         3,
         self.offset,
-        self.pad.color.red)
+        self.color.off)
 end
 
 function Keyboard:update_octave()
     self.pad:set_matrix(
         self.oct - 1, 
         1 + self.offset,
-        self.pad.color.yellow)
+        self.color.octave)
 end
 
 function Keyboard:update_notes()
@@ -108,18 +117,20 @@ function Keyboard:update_notes()
         self.pad:set_matrix(
             slot[1],
             slot[2] + self.offset,
-            self.pad.color.dim.green)
+            self.color.note)
     end
 end
 
 function Keyboard:update_active_note()
     local x     = self.note[1]
     local y     = self.note[2] + self.offset
-    local color = self.pad.color.orange
     local off   = self.pad.color.off
+    local color = self.color.active_note
     -- self.pad:set_matrix(x,y,off)
     print(("active note : (%s,%s)"):format(x,y))
-    self.pad:set_matrix( x, y, color )
-        
+    if (self.note == self.off_note) then
+      color = self.color.off
+    end
+    self.pad:set_matrix( x, y, self.color.active_note )
 end
 
