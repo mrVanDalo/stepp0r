@@ -61,7 +61,7 @@ function Keyboard:_setup_callbacks()
         local press   = 0x7F
         local release = 0x00
         if (msg.y >= self.offset and msg.y < (self.offset + 2) and msg.vel ~= release) then
-            if (msg.y == 7) then
+            if (msg.y == 1 + self.offset ) then
                 -- notes only
                 self:set_note(msg.x, msg.y)
             else
