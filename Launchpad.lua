@@ -201,7 +201,7 @@ function Launchpad:send(channel, number, value)
     --    return
     --end
     local message = {channel, number, value}
-    print(("Launchpad : send MIDI %X %X %X"):format(message[1], message[2], message[3]))
+    -- print(("Launchpad : send MIDI %X %X %X"):format(message[1], message[2], message[3]))
     self.midi_out:send(message)
 end
 
