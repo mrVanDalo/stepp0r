@@ -1,29 +1,3 @@
-color = {
-
-    red    = 0x07,
-    orange = 0x27,
-    yellow = 0x3F,
-    green  = 0x3C,
-
-    flash = {
-        red    = 0x03,
-        orange = 0x23,
-        yellow = 0x73,
-        green  = 0x70,
-        off    = 0x00,
-    },
-    full = {
-        red    = 0x07,
-        yellow = 0x3F,
-        green  = 0x3C,
-    },
-    dim = {
-        red    = 0x0E,
-        yellow = 0x2E,
-        green  = 0x2C,
-    },
-    off = 12
-}
 
 -- ============================================================
 --                                                    Launchpad
@@ -33,6 +7,30 @@ class "Launchpad"
 function Launchpad:__init()
     self:unregister_all()
     self:_watch()
+    self.color = {
+        red    = 0x07,
+        orange = 0x27,
+        yellow = 0x3F,
+        green  = 0x3C,
+        flash = {
+            red    = 0x03,
+            orange = 0x23,
+            yellow = 0x73,
+            green  = 0x70,
+            off    = 0x00,
+        },
+        full = {
+            red    = 0x07,
+            yellow = 0x3F,
+            green  = 0x3C,
+        },
+        dim = {
+            red    = 0x0E,
+            yellow = 0x2E,
+            green  = 0x2C,
+        },
+        off = 12
+    }
 end
 
 -- ------------------------------------------------------------
@@ -203,7 +201,7 @@ function Launchpad:send(channel, number, value)
     --    return
     --end
     local message = {channel, number, value}
-    print(("Launchpad : send MIDI %X %X %X"):format(message[1], message[2], message[3]))
+    -- print(("Launchpad : send MIDI %X %X %X"):format(message[1], message[2], message[3]))
     self.midi_out:send(message)
 end
 
@@ -234,20 +232,20 @@ end
 function Launchpad:clear_matrix()
     for x=0,7,1 do 
         for y=0,7,1 do 
-            self:set_matrix(x,y,color.off)
+            self:set_matrix(x,y,self.color.off)
         end 
     end 
 end
 
 function Launchpad:clear_right()
     for x=0,7,1 do 
-        self:set_top(x,color.off)
+        self:set_top(x,self.color.off)
     end 
 end
 
 function Launchpad:clear_top()
     for x=0,7,1 do 
-        self:set_right(x,color.off)
+        self:set_right(x,self.color.off)
     end 
 end
 
@@ -282,41 +280,41 @@ function example_colors(pad)
     -- configuration
     pad:set_flash(true)
 
-    pad:set_matrix(0,0,color.red)
-    pad:set_matrix(1,0,color.yellow)
-    pad:set_matrix(2,0,color.green)
-    pad:set_matrix(3,0,color.orange)
+    pad:set_matrix(0,0,pad.color.red)
+    pad:set_matrix(1,0,pad.color.yellow)
+    pad:set_matrix(2,0,pad.color.green)
+    pad:set_matrix(3,0,pad.color.orange)
 
-    pad:set_matrix(0,1,color.flash.red)
-    pad:set_matrix(1,1,color.flash.yellow)
-    pad:set_matrix(2,1,color.flash.green)
-    pad:set_matrix(3,1,color.flash.orange)
+    pad:set_matrix(0,1,pad.color.flash.red)
+    pad:set_matrix(1,1,pad.color.flash.yellow)
+    pad:set_matrix(2,1,pad.color.flash.green)
+    pad:set_matrix(3,1,pad.color.flash.orange)
    
-    pad:set_matrix(0,2,color.full.red)
-    pad:set_matrix(1,2,color.full.yellow)
-    pad:set_matrix(2,2,color.full.green)
+    pad:set_matrix(0,2,pad.color.full.red)
+    pad:set_matrix(1,2,pad.color.full.yellow)
+    pad:set_matrix(2,2,pad.color.full.green)
 
-    pad:set_matrix(0,3,color.dim.red)
-    pad:set_matrix(1,3,color.dim.yellow)
-    pad:set_matrix(2,3,color.dim.green)
+    pad:set_matrix(0,3,pad.color.dim.red)
+    pad:set_matrix(1,3,pad.color.dim.yellow)
+    pad:set_matrix(2,3,pad.color.dim.green)
 
-    pad:set_top(0,color.red)
-    pad:set_top(1,color.yellow)
-    pad:set_top(2,color.green)
-    pad:set_top(3,color.orange)
-    pad:set_top(4,color.flash.red)
-    pad:set_top(5,color.flash.yellow)
-    pad:set_top(6,color.flash.green)
-    pad:set_top(7,color.flash.orange)
+    pad:set_top(0,pad.color.red)
+    pad:set_top(1,pad.color.yellow)
+    pad:set_top(2,pad.color.green)
+    pad:set_top(3,pad.color.orange)
+    pad:set_top(4,pad.color.flash.red)
+    pad:set_top(5,pad.color.flash.yellow)
+    pad:set_top(6,pad.color.flash.green)
+    pad:set_top(7,pad.color.flash.orange)
 
-    pad:set_right(0,color.red)
-    pad:set_right(1,color.yellow)
-    pad:set_right(2,color.green)
-    pad:set_right(3,color.orange)
-    pad:set_right(4,color.flash.red)
-    pad:set_right(5,color.flash.yellow)
-    pad:set_right(6,color.flash.green)
-    pad:set_right(7,color.flash.orange)
+    pad:set_right(0,pad.color.red)
+    pad:set_right(1,pad.color.yellow)
+    pad:set_right(2,pad.color.green)
+    pad:set_right(3,pad.color.orange)
+    pad:set_right(4,pad.color.flash.red)
+    pad:set_right(5,pad.color.flash.yellow)
+    pad:set_right(6,pad.color.flash.green)
+    pad:set_right(7,pad.color.flash.orange)
 
     -- callbacks
     pad:unregister_all()
@@ -327,7 +325,53 @@ function example_colors(pad)
 end
 
 function example(pad)
-    example_colors(pad)
+    -- configuration
+    pad:set_flash(true)
+
+    pad:set_matrix(2,6,pad.color.red)
+    pad:set_matrix(3,6,pad.color.yellow)
+    pad:set_matrix(4,6,pad.color.green)
+    pad:set_matrix(5,6,pad.color.orange)
+    pad:set_matrix(1,4,pad.color.red)
+    pad:set_matrix(1,5,pad.color.yellow)
+    pad:set_matrix(6,4,pad.color.green)
+    pad:set_matrix(6,5,pad.color.orange)
+
+    pad:set_matrix(1,1,pad.color.flash.red)
+    pad:set_matrix(1,2,pad.color.flash.yellow)
+    pad:set_matrix(2,1,pad.color.flash.green)
+    pad:set_matrix(2,2,pad.color.flash.orange)
+   
+    pad:set_matrix(5,1,pad.color.flash.red)
+    pad:set_matrix(5,2,pad.color.flash.yellow)
+    pad:set_matrix(6,1,pad.color.flash.green)
+    pad:set_matrix(6,2,pad.color.flash.orange)
+
+    pad:set_top(0,pad.color.red)
+    pad:set_top(1,pad.color.yellow)
+    pad:set_top(2,pad.color.green)
+    pad:set_top(3,pad.color.orange)
+    pad:set_top(4,pad.color.flash.red)
+    pad:set_top(5,pad.color.flash.yellow)
+    pad:set_top(6,pad.color.flash.green)
+    pad:set_top(7,pad.color.flash.orange)
+
+    pad:set_right(0,pad.color.red)
+    pad:set_right(1,pad.color.yellow)
+    pad:set_right(2,pad.color.green)
+    pad:set_right(3,pad.color.orange)
+    pad:set_right(4,pad.color.flash.red)
+    pad:set_right(5,pad.color.flash.yellow)
+    pad:set_right(6,pad.color.flash.green)
+    pad:set_right(7,pad.color.flash.orange)
+
+    -- callbacks
+    pad:unregister_all()
+
+    pad:register_matrix_listener(echo_matrix)
+    pad:register_top_listener(echo_top)
+    pad:register_right_listener(echo_right)
+    
 end
 
 
