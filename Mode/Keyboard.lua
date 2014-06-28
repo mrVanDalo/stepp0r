@@ -138,6 +138,25 @@ function Keyboard:update_notes()
       self.color.off)
 end
 
+
+function Keyboard:_setup_client()
+    self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
+end
+
+function Keyboard:trigger_note()
+    local OscMessage = renoise.Osc.Message
+    local instrument = 1
+    local track      = instrument
+    local note       = 45
+    local velocity   = 127
+    -- self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
+    self.client:send(OscMessage("/renoise/trigger/note_on",{
+        {tag="i",value=instrument},
+        {tag="i",value=track},
+        {tag="i",value=note},
+        {tag="i",value=velocity}}))
+end
+
 function Keyboard:update_active_note()
     local x     = self.note[1]
     local y     = self.note[2] + self.offset
