@@ -50,7 +50,7 @@ function Keyboard:_setup_callbacks()
     local function matrix_callback(pad,msg)
         local press   = 0x7F
         local release = 0x00
-        if (msg.y >= self.offset and msg.vel ~= release) then
+        if (msg.y >= self.offset and msg.y < (self.offset + 2) and msg.vel ~= release) then
             if (msg.y == 7) then
                 -- notes only
                 self:set_note(msg.x, msg.y)
