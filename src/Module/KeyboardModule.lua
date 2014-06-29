@@ -1,5 +1,5 @@
 
-require 'LaunchpadModule'
+require 'Module/LaunchpadModule'
 
 -- --
 -- Keyboard Module 
