@@ -1,22 +1,22 @@
 -- --
 -- mode super class
-class "LaunchpadMode"
+class "LaunchpadModule"
 
 
-function LaunchpadMode:__init()
+function LaunchpadModule:__init()
     self.is_active = false
 end
 
-function LaunchpadMode:activate()
+function LaunchpadModule:activate()
     self.is_active = true
     self:_activate()
 end
 
-function LaunchpadMode:deactivate()
+function LaunchpadModule:deactivate()
     self.is_active = false
     self:_deactivate()
 end
 
-function LaunchpadMode:__tostring()
+function LaunchpadModule:__tostring()
   return ("LaunchpadModule : %s"):format(self.is_active)
 end
