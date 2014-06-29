@@ -27,10 +27,12 @@ task :build => :lua_modules
 task :build => :manifest
 task :build => :icon
 
+desc "package project to zip file"
 task :package => :build do
-    sh "cd #{BUILD_DIR} ; zip -r ../pkg/#{export_folder}.zip #{export_folder}"
+    export="#{BUILD_DIR}/#{export_folder}"
+    mkdir_p "pkg", :verbose => false
+    sh "cd #{export}; zip -r ../../pkg/#{export_folder}.xrnx *"
 end
-
 
 desc 'clean up project'
 task :clean do
