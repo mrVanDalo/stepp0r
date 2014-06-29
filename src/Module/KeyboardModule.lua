@@ -1,5 +1,6 @@
 
 require 'Module/LaunchpadModule'
+require 'Data/Instrument'
 
 -- --
 -- Keyboard Module 
@@ -8,9 +9,10 @@ class "KeyboardModule" (LaunchpadModule)
 
 -- ich brauch einen kontainer über den die 
 -- Module miteinander reden können
-function KeyboardModule:__init(pad)
+function KeyboardModule:__init(pad,instruments)
     LaunchpadModule:__init(self)
     self.pad    = pad
+    self.ins    = instruments
     self.offset = 6
     self.notes  = { 
         c = {0,1}, cis = {1,0},
@@ -92,16 +94,6 @@ function KeyboardModule:_setup_callbacks()
     self.pad:register_matrix_listener(matrix_callback)
 end
 
-function KeyboardModule:octave_down()
-    if (self.oct > 1) then
-        self.oct = self.oct - 1
-    end
-end
-function KeyboardModule:octave_up()
-    if (self.oct < 8) then
-        self.oct = self.oct + 1
-    end
-end
 function KeyboardModule:set_note(x,y)
     -- print(("set (%s,%s)"):format(x,y))
     self.note = { x , y - self.offset }
