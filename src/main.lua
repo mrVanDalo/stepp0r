@@ -1,5 +1,5 @@
 --[[============================================================================
-com.renoise.ExampleTool.xrnx/main.lua
+com.renoise.StepSequencer.xrnx/main.lua
 ============================================================================]]--
 
 -- XRNX Bundle Layout:
@@ -26,7 +26,7 @@ com.renoise.ExampleTool.xrnx/main.lua
 -- tools can have preferences, just like Renoise. To use them we first need 
 -- to create a renoise.Document object which holds the options that we want to 
 -- store/restore
-local options = renoise.Document.create("ExampleToolPreferences") {
+local options = renoise.Document.create("StepSequencerPreferences") {
   show_debug_prints = false
 }
 
@@ -41,9 +41,9 @@ renoise.tool().preferences = options
 -- for more complex documents, or if you prefere doing things the OO way, you can
 -- also inherit from renoise.Document.DocumentNode and register properties there:
 --
-class "ExampleToolPreferences"(renoise.Document.DocumentNode)
+class "StepSequencerPreferences"(renoise.Document.DocumentNode)
 
-function ExampleToolPreferences:__init()
+function StepSequencerPreferences:__init()
   renoise.Document.DocumentNode.__init(self)
   
   -- register an observable property "show_debug_prints" which also will be 
@@ -51,7 +51,7 @@ function ExampleToolPreferences:__init()
   self:add_property("show_debug_prints", false)
 end
 
-local options = ExampleToolPreferences()
+local options = StepSequencerPreferences()
 renoise.tool().preferences = options
 
 -- which also allows you to create more complex documents.
@@ -73,7 +73,7 @@ renoise.tool().preferences = options
 -- They are defined below, later in this file...
 
 renoise.tool():add_menu_entry {
-  name = "Main Menu:Tools:Example Tool:Enable Example Debug Prints",
+  name = "Main Menu:Tools:StepSequencer:Enable Example Debug Prints",
   selected = function() return options.show_debug_prints.value end,
   invoke = function() 
     options.show_debug_prints.value = not options.show_debug_prints.value 
@@ -81,21 +81,21 @@ renoise.tool():add_menu_entry {
 }
 
 renoise.tool():add_menu_entry {
-  name = "--- Main Menu:Tools:Example Tool:Show Dialog...",
+  name = "--- Main Menu:Tools:StepSequencer:Show Dialog...",
   invoke = function() 
     show_dialog() 
   end
 }
 
 renoise.tool():add_menu_entry {
-  name = "Main Menu:Tools:Example Tool:Show Status Message",
+  name = "Main Menu:Tools:StepSequencer:Show Status Message",
   invoke = function() 
     show_status_message() 
   end
 }
 
 renoise.tool():add_menu_entry {
-  name = "--- Main Menu:Tools:Example Tool:Add New Entry",
+  name = "--- Main Menu:Tools:StepSequencer:Add New Entry",
   invoke = function() 
     insert_another_menu_entry() 
   end 
@@ -103,7 +103,7 @@ renoise.tool():add_menu_entry {
 
 
 renoise.tool():add_menu_entry {
-  name = "Main Menu:Tools:Example Tool:Remove Entry",
+  name = "Main Menu:Tools:StepSequencer:Remove Entry",
   active = function() 
     return can_remove_menu_entry() 
   end,
@@ -154,10 +154,10 @@ renoise.tool():add_keybinding {
 -- and more descriptions of the passed message parameter.
 
 renoise.tool():add_midi_mapping{
-  name = "com.renoise.ExampleTool:Example MIDI Mapping",
+  name = "com.renoise.StepSequencer:Example MIDI Mapping",
   invoke = function(message)
     if (options.show_debug_prints.value) then
-      print("com.renoise.ExampleTool: >> got midi_mapping message :")
+      print("com.renoise.StepSequencer: >> got midi_mapping message :")
       
       print(("  message:is_trigger(): %s)"):format(
         message:is_trigger() and "yes" or "no"))
@@ -272,7 +272,7 @@ end
 -- the notifications.app_new_document functions or in your action callbacks...
 
 if (options.show_debug_prints.value) then
-  print("com.renoise.ExampleTool: script was loaded...")
+  print("com.renoise.StepSequencer: script was loaded...")
 end
 
 
@@ -301,7 +301,7 @@ function show_status_message()
   status_message_count = status_message_count + 1
 
   renoise.app():show_status(
-    ("com.renoise.ExampleTool: Showing status message no. %d..."):format(
+    ("com.renoise.StepSequencer: Showing status message no. %d..."):format(
      status_message_count)
   )
 end
@@ -319,7 +319,7 @@ local num_added_entries = 0
 function insert_another_menu_entry() 
   num_added_entries = num_added_entries + 1
     
-  local entry_name = ("Main Menu:Tools:Example Tool:New Entry %d"):format(
+  local entry_name = ("Main Menu:Tools:StepSequencer:New Entry %d"):format(
     num_added_entries)
   
   renoise.tool():add_menu_entry {
@@ -349,7 +349,7 @@ function remove_menu_entry()
   assert(can_remove_menu_entry(), "entry should not be invoked")
   
   renoise.tool():remove_menu_entry(
-    ("Main Menu:Tools:Example Tool:New Entry %d"):format(
+    ("Main Menu:Tools:StepSequencer:New Entry %d"):format(
      num_added_entries)) 
   
   num_added_entries = num_added_entries - 1
@@ -364,7 +364,7 @@ end
 
 function handle_app_became_active_notification()
   if (options.show_debug_prints.value) then
-    print("com.renoise.ExampleTool: >> app_became_active notification")
+    print("com.renoise.StepSequencer: >> app_became_active notification")
   end
 end
 
@@ -373,7 +373,7 @@ end
 
 function handle_app_resigned_active_notification()
   if (options.show_debug_prints.value) then
-    print("com.renoise.ExampleTool: << app_resigned_active notification")
+    print("com.renoise.StepSequencer: << app_resigned_active notification")
   end
 end
 
@@ -386,7 +386,7 @@ function handle_app_idle_notification()
   if os.clock() - last_idle_time >= 10 then
     last_idle_time = os.clock()
       if (options.show_debug_prints.value) then
-        print("com.renoise.ExampleTool: 10 second idle notification")
+        print("com.renoise.StepSequencer: 10 second idle notification")
       end
    end
 end
@@ -396,7 +396,7 @@ end
 
 function handle_app_release_document_notification()
   if (options.show_debug_prints.value) then
-    print("com.renoise.ExampleTool: !! app_release_document notification")
+    print("com.renoise.StepSequencer: !! app_release_document notification")
   end
 end
 
@@ -405,7 +405,7 @@ end
 
 function handle_app_new_document_notification()
   if (options.show_debug_prints.value) then
-    print("com.renoise.ExampleTool: !! app_new_document notification")
+    print("com.renoise.StepSequencer: !! app_new_document notification")
   end
 end
 
@@ -414,7 +414,7 @@ end
 
 function handle_app_saved_document_notification()
   if (options.show_debug_prints.value) then
-    print(("com.renoise.ExampleTool: !! handle_app_saved_document "..
+    print(("com.renoise.StepSequencer: !! handle_app_saved_document "..
       "notification (filename: '%s')"):format(renoise.song().file_name))
   end
 end
@@ -424,6 +424,6 @@ end
 
 function handle_auto_reload_debug_notification()
   if (options.show_debug_prints.value) then
-    print("com.renoise.ExampleTool: ** auto_reload_debug notification")
+    print("com.renoise.StepSequencer: ** auto_reload_debug notification")
   end
 end
