@@ -12,7 +12,7 @@ class "KeyboardModule" (LaunchpadModule)
 function KeyboardModule:__init(pad,instruments)
     LaunchpadModule:__init(self)
     self.pad    = pad
-    self.ins    = instruments
+    self.inst   = instruments
     self.offset = 6
     self.notes  = { 
         c = {0,1}, cis = {1,0},
@@ -39,7 +39,6 @@ function KeyboardModule:__init(pad,instruments)
         off         = self.pad.color.red,
         manover     = self.pad.color.orange,
     }
-    self.oct  = 4
     self.note = self.notes.c
 end
 
@@ -79,9 +78,9 @@ function KeyboardModule:_setup_callbacks()
                     self:trigger_note()
                 else
                     if (msg.x == 0) then
-                        self:octave_down()
+                        self.inst:octave_down()
                     elseif (msg.x == 7) then
-                        self:octave_up()
+                        self.inst:octave_up()
                     else
                         self:set_note(msg.x, msg.y)
                         self:trigger_note()
@@ -125,7 +124,7 @@ end
 
 function KeyboardModule:update_octave()
     self.pad:set_matrix(
-        self.oct - 1, 
+        self.inst:get_octave() - 1, 
         1 + self.offset,
         self.color.octave)
 end
@@ -164,7 +163,7 @@ function KeyboardModule:trigger_note()
         self.client:send(OscMessage("/renoise/trigger/note_on",{
             {tag="i",value=instrument},
             {tag="i",value=track},
-            {tag="i",value=(note + (self.oct * 13))},
+            {tag="i",value=(note + (self.inst:get_oct() * 13))},
             {tag="i",value=velocity}}))
     end
 end
