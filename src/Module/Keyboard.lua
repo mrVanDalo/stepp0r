@@ -22,6 +22,12 @@ function Keyboard:__init(pad)
         h = {6,1},
         C = {7,1},
     }
+    -- this is a strange y -> x map for notes
+    -- to make the keyboard send notes
+    self._notes = {
+        {-1, 1, 3,-1, 6, 8,10,-1},
+        {0 , 2, 4, 5, 7, 9,11,13},
+    }
     self.off_note = {3, 0}
     -- default
     self.color = {
@@ -40,6 +46,7 @@ function Keyboard:_activate()
     self.pad:set_flash(true)
     self:_setup_keys()
     self:_setup_callbacks()
+    self:_setup_client()
 end
 
 function Keyboard:clear()
@@ -60,20 +67,26 @@ function Keyboard:_setup_callbacks()
     local function matrix_callback(pad,msg)
         local press   = 0x7F
         local release = 0x00
-        if (msg.y >= self.offset and msg.y < (self.offset + 2) and msg.vel ~= release) then
-            if (msg.y == 7) then
-                -- notes only
-                self:set_note(msg.x, msg.y)
+        if (msg.y >= self.offset and msg.y < (self.offset + 2) ) then
+            if (msg.vel == release) then 
+                self:untrigger_note()
             else
-                if (msg.x == 0) then
-                    self:octave_down()
-                elseif (msg.x == 7) then
-                    self:octave_up()
-                else
+                if (msg.y == 1 + self.offset ) then
+                    -- notes only
                     self:set_note(msg.x, msg.y)
+                    self:trigger_note()
+                else
+                    if (msg.x == 0) then
+                        self:octave_down()
+                    elseif (msg.x == 7) then
+                        self:octave_up()
+                    else
+                        self:set_note(msg.x, msg.y)
+                        self:trigger_note()
+                    end
                 end
+                self:update_keys()
             end
-            self:update_keys()
         end
     end
     self.pad:register_matrix_listener(matrix_callback)
@@ -136,6 +149,37 @@ function Keyboard:update_notes()
       self.off_note[1],
       self.off_note[2] + self.offset,
       self.color.off)
+end
+
+
+function Keyboard:_setup_client()
+    --self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
+    self.client = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
+end
+
+function Keyboard:trigger_note()
+    local OscMessage = renoise.Osc.Message
+    local instrument = 1
+    local track      = instrument
+    -- local note       = 45
+    local note       = self._notes[self.note[2]+1][self.note[1]+1]
+    local velocity   = 127
+    print(("note : %s"):format(note))
+    if note == -1 then
+        print("nope")
+    else
+        -- self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
+        self.client:send(OscMessage("/renoise/trigger/note_on",{
+            {tag="i",value=instrument},
+            {tag="i",value=track},
+            {tag="i",value=(note + (self.oct * 13))},
+            {tag="i",value=velocity}}))
+    end
+end
+
+function Keyboard:untrigger_note()
+    --self.client:send(OscMessage("/renoise/trigger/note_on",{
+    print("not yet")
 end
 
 function Keyboard:update_active_note()
