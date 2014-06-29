@@ -2,6 +2,27 @@
 require 'Module/LaunchpadModule'
 require 'Data/Instrument'
 
+ACCESS { 
+    X=3,
+    Y=4,
+}
+
+NOTES= { 
+    c   = { 0 , "C-", 0, 1 },
+    cis = { 1 , "C#", 1, 0 },
+    d   = { 3 , "D-", 0, 1 },
+    dis = { 4 , "D#", 0, 1 },
+    e   = { 5 , "E-", 0, 1 },
+    f   = { 6 , "F-", 0, 1 },
+    fis = { 7 , "F#", 0, 1 },
+    g   = { 8 , "G-", 0, 1 },
+    gis = { 9 , "G#", 0, 1 },
+    a   = {10 , "A-", 0, 1 },
+    ais = {11 , "A#", 0, 1 },
+    b   = {12 , "B-", 0, 1 },
+    C   = {13 , "C-", 0, 1 },
+}
+
 -- --
 -- Keyboard Module 
 --
