@@ -16,17 +16,10 @@ def copyTask srcGlob, targetDirSuffix, taskSymbol
     end
 end
 
-require 'rake/packagetask'
-
-Rake::PackageTask.new(project_title, version) do |p|
-    p.need_zip = true
-    p.package_files.include("#{BUILD_DIR}/#{export_folder}/*")
-end
-
-copyTask 'src/*.lua'         ,export_folder            ,:lua_main
-copyTask 'src/Module/*.lua'  ,"#export_folder}/Module" ,:lua_modules
-copyTask 'conf/manifest.xml' ,export_folder            ,:manifest
-copyTask 'conf/icon.png'     ,export_folder            ,:icon
+copyTask 'src/*.lua'         ,export_folder             ,:lua_main
+copyTask 'src/Module/*.lua'  ,"#{export_folder}/Module" ,:lua_modules
+copyTask 'conf/manifest.xml' ,export_folder             ,:manifest
+copyTask 'conf/icon.png'     ,export_folder             ,:icon
 
 desc 'build the project'
 task :build => :lua_main
@@ -34,4 +27,13 @@ task :build => :lua_modules
 task :build => :manifest
 task :build => :icon
 
-task :package => :build
+task :package => :build do
+    sh "cd #{BUILD_DIR} ; zip -r ../pkg/#{export_folder}.zip #{export_folder}"
+end
+
+
+desc 'clean up project'
+task :clean do
+    sh 'rm -rf build'
+    sh 'rm -rf pkg'
+end
