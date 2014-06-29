@@ -163,7 +163,7 @@ function KeyboardModule:trigger_note()
         self.client:send(OscMessage("/renoise/trigger/note_on",{
             {tag="i",value=instrument},
             {tag="i",value=track},
-            {tag="i",value=(note + (self.inst:get_oct() * 13))},
+            {tag="i",value=(note + (self.inst:get_octave() * 13))},
             {tag="i",value=velocity}}))
     end
 end
