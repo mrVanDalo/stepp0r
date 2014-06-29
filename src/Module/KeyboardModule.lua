@@ -7,20 +7,35 @@ ACCESS {
     Y=4,
 }
 
-NOTES= { 
-    c   = { 0 , "C-", 0, 1 },
-    cis = { 1 , "C#", 1, 0 },
-    d   = { 3 , "D-", 0, 1 },
-    dis = { 4 , "D#", 0, 1 },
-    e   = { 5 , "E-", 0, 1 },
-    f   = { 6 , "F-", 0, 1 },
-    fis = { 7 , "F#", 0, 1 },
-    g   = { 8 , "G-", 0, 1 },
-    gis = { 9 , "G#", 0, 1 },
-    a   = {10 , "A-", 0, 1 },
-    ais = {11 , "A#", 0, 1 },
-    b   = {12 , "B-", 0, 1 },
-    C   = {13 , "C-", 0, 1 },
+-- Aufteile in anderen Mappings ? 
+-- tone.cis
+-- label.cis
+-- X.cis
+-- Y.cis
+
+-- equals ? 
+
+note = { 
+    c   = {  0 , "C-"  , 0, 1 },
+    cis = {  1 , "C#"  , 1, 0 },
+    d   = {  3 , "D-"  , 1, 1 },
+    dis = {  4 , "D#"  , 2, 0 },
+    e   = {  5 , "E-"  , 2, 1 },
+    f   = {  6 , "F-"  , 3, 1 },
+    fis = {  7 , "F#"  , 4, 0 },
+    g   = {  8 , "G-"  , 4, 1 },
+    gis = {  9 , "G#"  , 5, 0 },
+    a   = { 10 , "A-"  , 5, 1 },
+    ais = { 11 , "A#"  , 6, 0 },
+    b   = { 12 , "B-"  , 6, 1 }, -- h
+    C   = { 13 , "C-"  , 7, 1 },
+    OFF = { -1 , "OFF" , 3, 0 }, 
+}
+
+-- this is a strange y -> x map for notes
+REVERSE_MAPPING = {
+    { note.OFF, note.cis, note.dis, note.OFF, note.fis, note.gis, note.ais, note.OFF},
+    { note.c  , note.d  , note.e  , note.f  , note.g  , note.a  , note.b  , note.C  },
 }
 
 -- --
