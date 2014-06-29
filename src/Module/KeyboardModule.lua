@@ -1,16 +1,18 @@
 
-require 'LaunchpadMode'
+require 'Module/LaunchpadModule'
+require 'Data/Instrument'
 
 -- --
--- Keyboard Mode 
+-- Keyboard Module 
 --
-class "Keyboard" (LaunchpadMode)
+class "KeyboardModule" (LaunchpadModule)
 
 -- ich brauch einen kontainer über den die 
 -- Module miteinander reden können
-function Keyboard:__init(pad)
-    LaunchpadMode:__init(self)
+function KeyboardModule:__init(pad,instruments)
+    LaunchpadModule:__init(self)
     self.pad    = pad
+    self.inst   = instruments
     self.offset = 6
     self.notes  = { 
         c = {0,1}, cis = {1,0},
@@ -37,11 +39,10 @@ function Keyboard:__init(pad)
         off         = self.pad.color.red,
         manover     = self.pad.color.orange,
     }
-    self.oct  = 4
     self.note = self.notes.c
 end
 
-function Keyboard:_activate()
+function KeyboardModule:_activate()
     self:clear()
     self.pad:set_flash(true)
     self:_setup_keys()
@@ -49,7 +50,7 @@ function Keyboard:_activate()
     self:_setup_client()
 end
 
-function Keyboard:clear()
+function KeyboardModule:clear()
     local y0 = self.offset
     local y1 = self.offset + 1
     for x=0,7,1 do
@@ -58,12 +59,12 @@ function Keyboard:clear()
     end
 end
 
-function Keyboard:_deactivate()
+function KeyboardModule:_deactivate()
     self:clear()
     self.pad:unregister_matrix_listener()
 end
 
-function Keyboard:_setup_callbacks()
+function KeyboardModule:_setup_callbacks()
     local function matrix_callback(pad,msg)
         local press   = 0x7F
         local release = 0x00
@@ -77,9 +78,9 @@ function Keyboard:_setup_callbacks()
                     self:trigger_note()
                 else
                     if (msg.x == 0) then
-                        self:octave_down()
+                        self.inst:octave_down()
                     elseif (msg.x == 7) then
-                        self:octave_up()
+                        self.inst:octave_up()
                     else
                         self:set_note(msg.x, msg.y)
                         self:trigger_note()
@@ -92,28 +93,18 @@ function Keyboard:_setup_callbacks()
     self.pad:register_matrix_listener(matrix_callback)
 end
 
-function Keyboard:octave_down()
-    if (self.oct > 1) then
-        self.oct = self.oct - 1
-    end
-end
-function Keyboard:octave_up()
-    if (self.oct < 8) then
-        self.oct = self.oct + 1
-    end
-end
-function Keyboard:set_note(x,y)
+function KeyboardModule:set_note(x,y)
     -- print(("set (%s,%s)"):format(x,y))
     self.note = { x , y - self.offset }
 end
 
-function Keyboard:update_keys()
+function KeyboardModule:update_keys()
     self:update_notes()
     self:update_octave()
     self:update_active_note()
 end
 
-function Keyboard:_setup_keys()
+function KeyboardModule:_setup_keys()
     self:update_keys()
     -- manover buttons
     self.pad:set_matrix(
@@ -131,14 +122,14 @@ function Keyboard:_setup_keys()
         self.color.off)
 end
 
-function Keyboard:update_octave()
+function KeyboardModule:update_octave()
     self.pad:set_matrix(
-        self.oct - 1, 
+        self.inst:get_octave() - 1, 
         1 + self.offset,
         self.color.octave)
 end
 
-function Keyboard:update_notes()
+function KeyboardModule:update_notes()
     for note,slot in pairs(self.notes) do
         self.pad:set_matrix(
             slot[1],
@@ -152,12 +143,12 @@ function Keyboard:update_notes()
 end
 
 
-function Keyboard:_setup_client()
+function KeyboardModule:_setup_client()
     --self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
     self.client = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
 end
 
-function Keyboard:trigger_note()
+function KeyboardModule:trigger_note()
     local OscMessage = renoise.Osc.Message
     local instrument = 1
     local track      = instrument
@@ -172,17 +163,17 @@ function Keyboard:trigger_note()
         self.client:send(OscMessage("/renoise/trigger/note_on",{
             {tag="i",value=instrument},
             {tag="i",value=track},
-            {tag="i",value=(note + (self.oct * 13))},
+            {tag="i",value=(note + (self.inst:get_octave() * 13))},
             {tag="i",value=velocity}}))
     end
 end
 
-function Keyboard:untrigger_note()
+function KeyboardModule:untrigger_note()
     --self.client:send(OscMessage("/renoise/trigger/note_on",{
     print("not yet")
 end
 
-function Keyboard:update_active_note()
+function KeyboardModule:update_active_note()
     local x     = self.note[1]
     local y     = self.note[2] + self.offset
     local off   = self.pad.color.off
