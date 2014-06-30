@@ -135,17 +135,12 @@ function KeyboardModule:_setup_keys()
         8,
         1 + self.offset,
         self.color.manover)
-    -- off button
-    -- self.pad:set_matrix(
-        -- 3,
-        -- self.offset,
-        -- self.color.off)
 end
 
 function KeyboardModule:update_octave()
     self.pad:set_matrix(
-        self.inst:get_octave() - 1, 
-        1 + self.offset,
+        self.inst:get_octave(),
+        2 + self.offset,
         self.color.octave)
 end
 
