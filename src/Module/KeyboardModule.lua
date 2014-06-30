@@ -2,10 +2,9 @@
 require 'Module/LaunchpadModule'
 require 'Data/Instrument'
 
-ACCESS { 
-    X=3,
-    Y=4,
-}
+access_x     = 3
+access_y     = 4
+access_pitch = 1
 
 -- Aufteile in anderen Mappings ? 
 -- tone.cis
@@ -29,12 +28,12 @@ note = {
     ais = { 11 , "A#"  , 6, 0 },
     b   = { 12 , "B-"  , 6, 1 }, -- h
     C   = { 13 , "C-"  , 7, 1 },
-    OFF = { -1 , "OFF" , 3, 0 }, 
+    off = { -1 , "OFF" , 3, 0 }, 
 }
 
 -- this is a strange y -> x map for notes
-REVERSE_MAPPING = {
-    { note.OFF, note.cis, note.dis, note.OFF, note.fis, note.gis, note.ais, note.OFF},
+reverse_mapping = {
+    { note.off, note.cis, note.dis, note.off, note.fis, note.gis, note.ais, note.off},
     { note.c  , note.d  , note.e  , note.f  , note.g  , note.a  , note.b  , note.C  },
 }
 
@@ -50,23 +49,6 @@ function KeyboardModule:__init(pad,instruments)
     self.pad    = pad
     self.inst   = instruments
     self.offset = 6
-    self.notes  = { 
-        c = {0,1}, cis = {1,0},
-        d = {1,1}, es  = {2,0},
-        e = {2,1}, 
-        f = {3,1}, fis = {4,0},
-        g = {4,1}, as  = {5,0},
-        a = {5,1}, b   = {6,0},
-        h = {6,1},
-        C = {7,1},
-    }
-    -- this is a strange y -> x map for notes
-    -- to make the keyboard send notes
-    self._notes = {
-        {-1, 1, 3,-1, 6, 8,10,-1},
-        {0 , 2, 4, 5, 7, 9,11,13},
-    }
-    self.off_note = {3, 0}
     -- default
     self.color = {
         note        = self.pad.color.green ,
@@ -75,7 +57,7 @@ function KeyboardModule:__init(pad,instruments)
         off         = self.pad.color.red,
         manover     = self.pad.color.orange,
     }
-    self.note = self.notes.c
+    self.note = note.c
 end
 
 function KeyboardModule:_activate()
@@ -131,7 +113,9 @@ end
 
 function KeyboardModule:set_note(x,y)
     -- print(("set (%s,%s)"):format(x,y))
-    self.note = { x , y - self.offset }
+    -- self.note = { x , y - self.offset }
+    self.note = reverse_mapping[y - self.offset][x]
+    -- todo set note on instrument too 
 end
 
 function KeyboardModule:update_keys()
@@ -165,17 +149,23 @@ function KeyboardModule:update_octave()
         self.color.octave)
 end
 
+function is_not_off(tone) return tone[access_pitch] ~= -1 end
+function is_off(tone)     return tone[access_pitch] == -1 end
+
 function KeyboardModule:update_notes()
-    for note,slot in pairs(self.notes) do
-        self.pad:set_matrix(
-            slot[1],
-            slot[2] + self.offset,
+    for note,tone in pairs(note) do
+        if (is_not_off(tone)) then
+            self.pad:set_matrix(
+            tone[access_x],
+            tone[access_y] + self.offset,
             self.color.note)
+        else
+            self.pad:set_matrix(
+            tone[access_x],
+            tone[access_y] + self.offset,
+            self.color.off)
+        end
     end
-    self.pad:set_matrix(
-      self.off_note[1],
-      self.off_note[2] + self.offset,
-      self.color.off)
 end
 
 
@@ -188,18 +178,17 @@ function KeyboardModule:trigger_note()
     local OscMessage = renoise.Osc.Message
     local instrument = 1
     local track      = instrument
-    -- local note       = 45
-    local note       = self._notes[self.note[2]+1][self.note[1]+1]
+    local pitch      = self.note[access_pitch]
     local velocity   = 127
-    print(("note : %s"):format(note))
-    if note == -1 then
+    print(("pitch : %s"):format(pitch))
+    if pitch == -1 then
         print("nope")
     else
         -- self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
         self.client:send(OscMessage("/renoise/trigger/note_on",{
             {tag="i",value=instrument},
             {tag="i",value=track},
-            {tag="i",value=(note + (self.inst:get_octave() * 13))},
+            {tag="i",value=(pitch + (self.inst:get_octave() * 13))},
             {tag="i",value=velocity}}))
     end
 end
@@ -210,13 +199,13 @@ function KeyboardModule:untrigger_note()
 end
 
 function KeyboardModule:update_active_note()
-    local x     = self.note[1]
-    local y     = self.note[2] + self.offset
+    local x     = self.note[access_x]
+    local y     = self.note[access_y] + self.offset
     local off   = self.pad.color.off
     local color = self.color.active_note
     -- self.pad:set_matrix(x,y,off)
     print(("active note : (%s,%s)"):format(x,y))
-    if (self.note == self.off_note) then
+    if (is_off(self.note)) then
         color = self.color.off
     end
     self.pad:set_matrix( x, y, self.color.active_note )
