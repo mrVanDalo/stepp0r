@@ -15,20 +15,20 @@ access_pitch = 1
 -- equals ? 
 
 note = { 
-    c   = {  0 , "C-"  , 0, 1 },
-    cis = {  1 , "C#"  , 1, 0 },
-    d   = {  3 , "D-"  , 1, 1 },
-    dis = {  4 , "D#"  , 2, 0 },
-    e   = {  5 , "E-"  , 2, 1 },
-    f   = {  6 , "F-"  , 3, 1 },
-    fis = {  7 , "F#"  , 4, 0 },
-    g   = {  8 , "G-"  , 4, 1 },
-    gis = {  9 , "G#"  , 5, 0 },
-    a   = { 10 , "A-"  , 5, 1 },
-    ais = { 11 , "A#"  , 6, 0 },
-    b   = { 12 , "B-"  , 6, 1 }, -- h
-    C   = { 13 , "C-"  , 7, 1 },
-    off = { -1 , "OFF" , 3, 0 }, 
+    c   = {  0 , "C-"  , 1, 2 },
+    cis = {  1 , "C#"  , 2, 1 },
+    d   = {  3 , "D-"  , 2, 2 },
+    dis = {  4 , "D#"  , 3, 1 },
+    e   = {  5 , "E-"  , 3, 2 },
+    f   = {  6 , "F-"  , 4, 2 },
+    fis = {  7 , "F#"  , 5, 1 },
+    g   = {  8 , "G-"  , 5, 2 },
+    gis = {  9 , "G#"  , 6, 1 },
+    a   = { 10 , "A-"  , 6, 2 },
+    ais = { 11 , "A#"  , 7, 1 },
+    b   = { 12 , "B-"  , 7, 2 }, -- h
+    C   = { 13 , "C-"  , 8, 2 },
+    off = { -1 , "OFF" , 4, 1 }, 
 }
 
 -- this is a strange y -> x map for notes
@@ -71,7 +71,7 @@ end
 function KeyboardModule:clear()
     local y0 = self.offset
     local y1 = self.offset + 1
-    for x=0,7,1 do
+    for x=1,8,1 do
         self.pad:set_matrix(x,y0,self.pad.color.off)
         self.pad:set_matrix(x,y1,self.pad.color.off)
     end
@@ -86,18 +86,18 @@ function KeyboardModule:_setup_callbacks()
     local function matrix_callback(pad,msg)
         local press   = 0x7F
         local release = 0x00
-        if (msg.y >= self.offset and msg.y < (self.offset + 2) ) then
+        if (msg.y > self.offset and msg.y < (self.offset + 3) ) then
             if (msg.vel == release) then 
                 self:untrigger_note()
             else
-                if (msg.y == 1 + self.offset ) then
+                if (msg.y == 2 + self.offset ) then
                     -- notes only
                     self:set_note(msg.x, msg.y)
                     self:trigger_note()
                 else
-                    if (msg.x == 0) then
+                    if (msg.x == 1) then
                         self.inst:octave_down()
-                    elseif (msg.x == 7) then
+                    elseif (msg.x == 8) then
                         self.inst:octave_up()
                     else
                         self:set_note(msg.x, msg.y)
