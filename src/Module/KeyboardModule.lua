@@ -2,18 +2,16 @@
 require 'Module/LaunchpadModule'
 require 'Data/Instrument'
 
-access_x     = 3
-access_y     = 4
-access_pitch = 1
+access_x      = 3
+access_y      = 4
+access_pitch  = 1
+access_string = 2
 
 -- Aufteile in anderen Mappings ? 
 -- tone.cis
 -- label.cis
 -- X.cis
 -- Y.cis
-
--- equals ? 
-
 note = { 
     c   = {  0 , "C-"  , 1, 2 },
     cis = {  1 , "C#"  , 2, 1 },
@@ -111,10 +109,13 @@ function KeyboardModule:_setup_callbacks()
     self.pad:register_matrix_listener(matrix_callback)
 end
 
+function KeyboardModule:print_note()
+    print(("note : %s%s"):format(self.note[access_string],self.inst:get_octave()))
+end
+
 function KeyboardModule:set_note(x,y)
-    -- print(("set (%s,%s)"):format(x,y))
-    -- self.note = { x , y - self.offset }
     self.note = reverse_mapping[y - self.offset][x]
+    self:print_note()
     -- todo set note on instrument too 
 end
 
