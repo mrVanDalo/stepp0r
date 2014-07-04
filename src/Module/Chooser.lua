@@ -32,7 +32,7 @@ end
 
 function Chooser:clear_row()
     for x = 1, 8, 1 do
-        pad:set_matrix(x,self.row,pad.colors.off)
+        self.pad:set_matrix(x,self.row,self.pad.color.off)
     end
 end
 
