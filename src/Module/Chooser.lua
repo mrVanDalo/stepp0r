@@ -14,7 +14,11 @@ function Chooser:__init(pad)
 end
 
 function Chooser:_activate()
-    -- show active instruments
+    self:update_row()
+end
+
+function Chooser:update_row()
+    self:clear_row()
     for nr, instrument in ipairs(renoise.song().instruments) do
         if nr - self.inst_offset > 8 then
             break
@@ -26,11 +30,14 @@ function Chooser:_activate()
     end
 end
 
-function Chooser:_deactivate()
-    -- clear my row
+function Chooser:clear_row()
     for x = 1, 8, 1 do
         pad:set_matrix(x,self.row,pad.colors.off)
     end
+end
+
+function Chooser:_deactivate()
+    self:clear_row()
 end
 
 
