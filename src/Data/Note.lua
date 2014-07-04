@@ -8,7 +8,7 @@ access = {
     x      = 3,
     y      = 4,
     pitch  = 1,
-    string = 2,
+    label  = 2,
 }
 
 access_x      = 3

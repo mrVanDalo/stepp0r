@@ -86,7 +86,7 @@ function KeyboardModule:_setup_callbacks()
 end
 
 function KeyboardModule:print_note()
-    print(("note : %s%s"):format(self.note[access.string],self.inst:get_octave()))
+    print(("note : %s%s"):format(self.note[access.label],self.inst:get_octave()))
 end
 
 function KeyboardModule:set_note(x,y)
