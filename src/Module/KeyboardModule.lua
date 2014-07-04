@@ -1,6 +1,5 @@
 
 require 'Module/LaunchpadModule'
-require 'Data/Instrument'
 require 'Data/Note'
 
 -- this is a strange y -> x map for notes
@@ -18,10 +17,9 @@ class "KeyboardModule" (LaunchpadModule)
 
 -- ich brauch einen kontainer über den die 
 -- Module miteinander reden können
-function KeyboardModule:__init(pad,instruments)
+function KeyboardModule:__init(pad,_)
     LaunchpadModule:__init(self)
     self.pad    = pad
-    self.inst   = instruments
     self.offset = 6
     -- default
     self.color = {
@@ -31,7 +29,7 @@ function KeyboardModule:__init(pad,instruments)
         off         = self.pad.color.red,
         manover     = self.pad.color.orange,
     }
-    self.note = note.c
+    self.note   = note.c
     self.octave = 4
 end
 

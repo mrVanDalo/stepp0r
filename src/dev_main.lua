@@ -7,11 +7,7 @@ print('load dev main')
 
 pad         = Launchpad()
 
-instruments = Instruments()
-instruments:create_instrument()
-instruments:set_active_instrument(1)
-
-key         = KeyboardModule(pad,instruments)
+key         = KeyboardModule(pad,1)
 key:activate()
 
 function off()
