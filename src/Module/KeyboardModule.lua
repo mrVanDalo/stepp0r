@@ -60,7 +60,7 @@ end
 
 function KeyboardModule:_activate()
     self:clear()
-    self.pad:set_flash(true)
+    self.pad:set_flash()
     self:_setup_keys()
     self:_setup_callbacks()
     self:_setup_client()
@@ -81,8 +81,8 @@ function KeyboardModule:_deactivate()
 end
 
 function KeyboardModule:_setup_callbacks()
-    local function matrix_callback(pad,msg)
-        local press   = 0x7F
+    local function matrix_callback(_,msg)
+        -- local press   = 0x7F
         local release = 0x00
         if (msg.y > self.offset and msg.y < (self.offset + 3) ) then
             if (msg.vel == release) then 
@@ -197,13 +197,13 @@ end
 function KeyboardModule:update_active_note()
     local x     = self.note[access_x]
     local y     = self.note[access_y] + self.offset
-    local off   = self.pad.color.off
-    local color = self.color.active_note
+    -- local off   = self.pad.color.off
+    -- local color = self.color.active_note
     -- self.pad:set_matrix(x,y,off)
     print(("active note : (%s,%s)"):format(x,y))
-    if (is_off(self.note)) then
-        color = self.color.off
-    end
+    -- if (is_off(self.note)) then
+        -- color = self.color.off
+    -- end
     self.pad:set_matrix( x, y, self.color.active_note )
 end
 

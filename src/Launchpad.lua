@@ -40,7 +40,7 @@ end
 -- (should handle all the reconnection stuff and all)
 -- will be removed by another component soon
 function Launchpad:_watch()
-    for k,v in pairs(renoise.Midi.available_input_devices()) do
+    for _,v in pairs(renoise.Midi.available_input_devices()) do
         if string.find(v, "Launchpad") then
             self:connect(v)
         end
@@ -58,7 +58,7 @@ function Launchpad:connect(midi_device_name)
     local function main_callback(msg)
         local result = _is_matrix(msg)
         if (result.flag) then
-            for i, callback in ipairs(self._matrix_listener) do
+            for _, callback in ipairs(self._matrix_listener) do
                 callback(self, result)
             end
             return
@@ -66,7 +66,7 @@ function Launchpad:connect(midi_device_name)
         --
         result = _is_top(msg)
         if (result.flag) then
-            for i, callback in ipairs(self._top_listener) do
+            for _, callback in ipairs(self._top_listener) do
                 callback(self, result)
             end
             return
@@ -74,7 +74,7 @@ function Launchpad:connect(midi_device_name)
         --
         result = _is_right(msg)
         if (result.flag) then
-            for i, callback in ipairs(self._right_listener) do
+            for _, callback in ipairs(self._right_listener) do
                 callback(self, result)
             end
             return
@@ -172,19 +172,19 @@ end
 -- --
 -- example handler
 --
-function echo_top(pad,msg)
+function echo_top(_,msg)
     local x   = msg.x
     local vel = msg.vel
     --print(top)
     print(("top    : (%X) = %X"):format(x,vel))
 end
-function echo_right(pad,msg)
+function echo_right(_,msg)
     local x   = msg.x
     local vel = msg.vel
     --print(right)
     print(("right  : (%X) = %X"):format(x,vel))
 end
-function echo_matrix(pad,msg)
+function echo_matrix(_,msg)
     local x   = msg.x
     local y   = msg.y
     local vel = msg.vel
@@ -253,14 +253,13 @@ function Launchpad:clear_top()
     end 
 end
 
-function Launchpad:set_flash(value)
-    if (value) then
-        self:send(0xB0,0x00,0x28)
-    else
-        self:send(0xB0,0x00,0x32)
-    end
+function Launchpad:set_flash()
+    self:send(0xB0,0x00,0x28)
 end
 
+function Launchpad:unset_flash()
+    self:send(0xB0,0x00,0x32)
+end
 
 
 
@@ -282,9 +281,9 @@ end
 function example_colors(pad)
     -- send
     -- configuration
-    pad:set_flash(true)
+    pad:set_flash()
 
-    pad:set_matrix(4,1,pad.color.red)
+    pad:set_matrix(i,1,pad.color.red)
     pad:set_matrix(1,1,pad.color.yellow)
     pad:set_matrix(2,1,pad.color.green)
     pad:set_matrix(3,1,pad.color.orange)
@@ -330,7 +329,7 @@ end
 
 function example(pad)
     -- configuration
-    example_colors(pad) 
+    example_colors(pad)
 end
 
 
