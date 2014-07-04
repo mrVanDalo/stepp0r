@@ -2,7 +2,8 @@
 -- User: palo
 -- Date: 7/4/14
 --
--- should be a standard note translation system
+-- should be a standard note translation system, if you need moar information put them at the end of every note,
+-- or create a new mapping
 --
 access = {
     x      = 3,
@@ -11,12 +12,6 @@ access = {
     label  = 2,
 }
 
-access_x      = 3
-access_y      = 4
-access_pitch  = 1
-access_string = 2
-
--- Aufteile in anderen Mappings ?
 note = {
     c   = {  0 , "C-"  , 1, 2 },
     cis = {  1 , "C#"  , 2, 1 },
