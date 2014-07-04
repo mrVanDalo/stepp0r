@@ -1,38 +1,14 @@
 
 require 'Module/LaunchpadModule'
 require 'Data/Instrument'
-
-access_x      = 3
-access_y      = 4
-access_pitch  = 1
-access_string = 2
-
--- Aufteile in anderen Mappings ? 
--- tone.cis
--- label.cis
--- X.cis
--- Y.cis
-note = { 
-    c   = {  0 , "C-"  , 1, 2 },
-    cis = {  1 , "C#"  , 2, 1 },
-    d   = {  3 , "D-"  , 2, 2 },
-    dis = {  4 , "D#"  , 3, 1 },
-    e   = {  5 , "E-"  , 3, 2 },
-    f   = {  6 , "F-"  , 4, 2 },
-    fis = {  7 , "F#"  , 5, 1 },
-    g   = {  8 , "G-"  , 5, 2 },
-    gis = {  9 , "G#"  , 6, 1 },
-    a   = { 10 , "A-"  , 6, 2 },
-    ais = { 11 , "A#"  , 7, 1 },
-    b   = { 12 , "B-"  , 7, 2 }, -- h
-    C   = { 13 , "C-"  , 8, 2 },
-    off = { -1 , "OFF" , 4, 1 }, 
-}
+require 'Data/Note'
 
 -- this is a strange y -> x map for notes
-reverse_mapping = {
-    { note.off, note.cis, note.dis, note.off, note.fis, note.gis, note.ais, note.off},
-    { note.c  , note.d  , note.e  , note.f  , note.g  , note.a  , note.b  , note.C  },
+keyboard = {
+    reverse_mapping = {
+        { note.off, note.cis, note.dis, note.off, note.fis, note.gis, note.ais, note.off},
+        { note.c  , note.d  , note.e  , note.f  , note.g  , note.a  , note.b  , note.C  },
+    }
 }
 
 -- --
@@ -110,11 +86,11 @@ function KeyboardModule:_setup_callbacks()
 end
 
 function KeyboardModule:print_note()
-    print(("note : %s%s"):format(self.note[access_string],self.inst:get_octave()))
+    print(("note : %s%s"):format(self.note[access.string],self.inst:get_octave()))
 end
 
 function KeyboardModule:set_note(x,y)
-    self.note = reverse_mapping[y - self.offset][x]
+    self.note = keyboard.reverse_mapping[y - self.offset][x]
     self:print_note()
     -- todo set note on instrument too 
 end
@@ -145,20 +121,20 @@ function KeyboardModule:update_octave()
         self.color.octave)
 end
 
-function is_not_off(tone) return tone[access_pitch] ~= -1 end
-function is_off(tone)     return tone[access_pitch] == -1 end
+function is_not_off(tone) return tone[access.pitch] ~= -1 end
+function is_off(tone)     return tone[access.pitch] == -1 end
 
 function KeyboardModule:update_notes()
     for note,tone in pairs(note) do
         if (is_not_off(tone)) then
             self.pad:set_matrix(
-            tone[access_x],
-            tone[access_y] + self.offset,
+            tone[access.x],
+            tone[access.y] + self.offset,
             self.color.note)
         else
             self.pad:set_matrix(
-            tone[access_x],
-            tone[access_y] + self.offset,
+            tone[access.x],
+            tone[access.y] + self.offset,
             self.color.off)
         end
     end
@@ -174,7 +150,7 @@ function KeyboardModule:trigger_note()
     local OscMessage = renoise.Osc.Message
     local instrument = 1
     local track      = instrument
-    local pitch      = self.note[access_pitch]
+    local pitch      = self.note[access.pitch]
     local velocity   = 127
     print(("pitch : %s"):format(pitch))
     if pitch == -1 then
@@ -195,8 +171,8 @@ function KeyboardModule:untrigger_note()
 end
 
 function KeyboardModule:update_active_note()
-    local x     = self.note[access_x]
-    local y     = self.note[access_y] + self.offset
+    local x     = self.note[access.x]
+    local y     = self.note[access.y] + self.offset
     -- local off   = self.pad.color.off
     -- local color = self.color.active_note
     -- self.pad:set_matrix(x,y,off)
