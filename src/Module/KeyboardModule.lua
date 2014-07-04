@@ -32,7 +32,24 @@ function KeyboardModule:__init(pad,instruments)
         manover     = self.pad.color.orange,
     }
     self.note = note.c
-    self.oct  = 4
+    self.octave = 4
+end
+
+-- returns the state of this module to reset it later
+function KeyboardModule:return_state()
+    return {
+        pad    = self.pad,
+        offset = self.offset,
+        note   = self.note,
+        octave = self.octave,
+    }
+end
+
+function KeyboardModule:load_state(state)
+    self.pad    = state.pad
+    self.offset = state.offset
+    self.note   = state.note
+    self.octave = state.octave
 end
 
 function KeyboardModule:_activate()
@@ -87,18 +104,18 @@ function KeyboardModule:_setup_callbacks()
 end
 
 function KeyboardModule:octave_down()
-    if (self.oct > 1) then
-        self.oct = self.oct - 1
+    if (self.octave > 1) then
+        self.octave = self.octave - 1
     end
 end
 function KeyboardModule:octave_up()
-    if (self.oct < 8) then
-        self.oct = self.oct + 1
+    if (self.octave < 8) then
+        self.octave = self.octave + 1
     end
 end
 
 function KeyboardModule:print_note()
-    print(("note : %s%s"):format(self.note[access.label],self.oct))
+    print(("note : %s%s"):format(self.note[access.label],self.octave))
 end
 
 function KeyboardModule:set_note(x,y)
@@ -128,7 +145,7 @@ end
 
 function KeyboardModule:update_octave()
     self.pad:set_matrix(
-        self.oct,
+        self.octave,
         2 + self.offset,
         self.color.octave)
 end
@@ -172,7 +189,7 @@ function KeyboardModule:trigger_note()
         self.client:send(OscMessage("/renoise/trigger/note_on",{
             {tag="i",value=instrument},
             {tag="i",value=track},
-            {tag="i",value=(pitch + (self.oct * 12))},
+            {tag="i",value=(pitch + (self.octave * 12))},
             {tag="i",value=velocity}}))
     end
 end
