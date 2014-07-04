@@ -1,7 +1,13 @@
 -- --
 -- mode super class
-class "LaunchpadModule"
+--
+-- this class should some-how define how every module should behave
+-- which should make creating modes easier
+--
+-- A mode is a mix of modules
+--
 
+class "LaunchpadModule"
 
 function LaunchpadModule:__init()
     self.is_active = false
