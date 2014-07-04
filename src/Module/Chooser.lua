@@ -25,10 +25,9 @@ function Chooser:_activate()
 end
 
 function Chooser:matrix_callback()
-    local function matrix_listener(pad,msg)
-        if (msg.y ~= self.row) then
-            return
-        end
+    local function matrix_listener(_,msg)
+        if msg.vel == 0x00 then return end
+        if (msg.y ~= self.row) then return end
         local found = renoise.song().instruments[ self.inst_offset + msg.x ]
         if found and found.name ~= "" then
             print("found ", found.name)
