@@ -11,11 +11,33 @@ function Chooser:__init(pad)
     self.pad         = pad
     self.row         = 6
     self.inst_offset = 0  -- which is the first instrument
+    self.active      = {
+        index      = -1 ,
+        pad_index  = -1 ,
+        instrument = nil,
+    }
 end
 
 function Chooser:_activate()
     self:update_row()
+    self:matrix_callback()
+    self:top_callback()
 end
+
+function Chooser:matrix_callback()
+    local function matrix_listener(pad,msg)
+        if (msg.y ~= self.row) then
+            return
+        end
+        local found = renoise.song().instruments[ self.inst_offset + msg.x ]
+        if found and found.name ~= "" then
+            print("found ", found.name)
+        end
+    end
+    self.pad:register_matrix_listener(matrix_listener)
+end
+
+function Chooser:top_callback() end
 
 function Chooser:update_row()
     self:clear_row()
@@ -39,6 +61,3 @@ end
 function Chooser:_deactivate()
     self:clear_row()
 end
-
-
-
