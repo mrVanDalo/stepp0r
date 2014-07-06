@@ -100,8 +100,8 @@ function KeyboardModule:_refresh()
 end
 
 function KeyboardModule:clear()
-    local y0 = self.offset
-    local y1 = self.offset + 1
+    local y0 = self.offset + 1
+    local y1 = self.offset + 2
     for x=1,8,1 do
         self.pad:set_matrix(x,y0,self.pad.color.off)
         self.pad:set_matrix(x,y1,self.pad.color.off)
