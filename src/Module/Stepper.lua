@@ -29,7 +29,7 @@ end
 -- change notes in selection
 -- (all "C-4"s to "E-4" in the selection in the current pattern)
 function example_function ()
-    local pattern_iter = renoise.song().pattern_iterator
+    local pattern_iter  = renoise.song().pattern_iterator
     local pattern_index =  renoise.song().selected_pattern_index
 
     for _,line in pattern_iter:lines_in_pattern(pattern_index) do
