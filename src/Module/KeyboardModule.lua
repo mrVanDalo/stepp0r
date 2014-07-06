@@ -34,30 +34,36 @@ end
 -- returns the state of this module to reset it later
 function KeyboardModule:state()
     return {
-        offset = self.offset,
         note   = self.note,
         octave = self.octave,
     }
 end
 
 function KeyboardModule:load_state(state)
-    self.offset = state.offset
     self.note   = state.note
     self.octave = state.octave
 end
 
--- callback function
+-- ------------------------------------------------------------
+-- callback functions
+--
 function KeyboardModule:callback_set_instrument()
     local function set_instrument(index)
-        -- todo backup old state
+        -- backup
+        self.instrument_backup[self.instrument] = self:state()
+        -- switch
         self.instrument = index
-        -- todo recover old state of that index
+        -- load backup
+        local newState = self.instrument_backup[self.instrument]
+        if(newState) then
+            self:load_state(newState)
+        end
+        -- refresh
+        self:_refresh()
     end
     return set_instrument
 end
 
--- ich brauch einen kontainer über den die
--- Module miteinander reden können
 function KeyboardModule:__init()
     LaunchpadModule:__init(self)
     self.offset = 6
@@ -72,6 +78,7 @@ function KeyboardModule:__init()
     self.note       = note.c
     self.octave     = 4
     self.instrument = 1
+    self.instrument_backup = {}
     -- callback
     self.callback_set_note = {}
 end
@@ -83,6 +90,13 @@ function KeyboardModule:_activate()
     self:_setup_keys()
     self:_setup_callbacks()
     self:_setup_client()
+    -- todo use refresh
+end
+
+function KeyboardModule:_refresh()
+    self:clear()
+    self.pad:set_flash()
+    self:_setup_keys()
 end
 
 function KeyboardModule:clear()
@@ -211,6 +225,7 @@ function KeyboardModule:trigger_note()
     local velocity   = 127
     print(("pitch : %s"):format(pitch))
     if pitch == -1 then
+        -- todo make this turn of the notes
         self.client:send(OscMessage("/renoise/trigger/note_off",{
             {tag="i",value=self.instrument},
             {tag="i",value=track},
