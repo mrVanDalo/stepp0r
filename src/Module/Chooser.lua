@@ -6,6 +6,11 @@
 -- A class to choose the Instruments
 class "Chooser" (LaunchpadModule)
 
+-- register callback that gets a `index of instrument`
+function Chooser:register_select_instrument(callback)
+    table.insert(self.callback_select_instrument, callback)
+end
+
 function Chooser:__init(pad)
     LaunchpadModule:__init(self)
     self.pad         = pad
@@ -26,12 +31,6 @@ function Chooser:_activate()
     self:top_callback()
 end
 
-
--- register callback that gets a `index of instrument`
-function Chooser:register_select_instrument(callback)
-    table.insert(self.callback_select_instrument, callback)
-end
-
 function Chooser:select_instrument(x)
     local index = self.inst_offset + x
     local found = renoise.song().instruments[index]
@@ -46,7 +45,7 @@ end
 
 function Chooser:matrix_callback()
     local function matrix_listener(_,msg)
-        if msg.vel == 0x00 then return end
+        if msg.vel == 0x00     then return end
         if (msg.y ~= self.row) then return end
         self:select_instrument(msg.x)
     end
