@@ -45,8 +45,15 @@ function KeyboardModule:unregister_set_note(_)
     print("can't unregister right now")
 end
 
+-- callback function
+function KeyboardModule:callback_set_instrument()
+    local function set_instrument(index)
+        self.instrument = index
+    end
+    return set_instrument
+end
 
--- ich brauch einen kontainer über den die 
+-- ich brauch einen kontainer über den die
 -- Module miteinander reden können
 function KeyboardModule:__init()
     LaunchpadModule:__init(self)
@@ -59,8 +66,9 @@ function KeyboardModule:__init()
         off         = color.red,
         manover     = color.orange,
     }
-    self.note   = note.c
-    self.octave = 4
+    self.note       = note.c
+    self.octave     = 4
+    self.instrument = 1
     -- callback
     self.callback_set_note = {}
 end
@@ -195,8 +203,7 @@ end
 
 function KeyboardModule:trigger_note()
     local OscMessage = renoise.Osc.Message
-    local instrument = 1
-    local track      = instrument
+    local track      = self.instrument
     local pitch      = self.note[access.pitch]
     local velocity   = 127
     print(("pitch : %s"):format(pitch))
@@ -205,7 +212,7 @@ function KeyboardModule:trigger_note()
     else
         -- self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
         self.client:send(OscMessage("/renoise/trigger/note_on",{
-            {tag="i",value=instrument},
+            {tag="i",value=self.instrument},
             {tag="i",value=track},
             {tag="i",value=(pitch + (self.octave * 12))},
             {tag="i",value=velocity}}))
