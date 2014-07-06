@@ -16,6 +16,17 @@ keyboard = {
     }
 }
 
+-- register a callback (which gets a note)
+-- on notechanges
+function KeyboardModule:register_set_note(callback)
+    table.insert(self.callback_set_note, callback)
+end
+
+function KeyboardModule:unregister_set_note(_)
+    print("can't unregister right now")
+end
+
+
 function KeyboardModule:wire_launchpad(pad)
     self.pad = pad
 end
@@ -35,20 +46,12 @@ function KeyboardModule:load_state(state)
     self.octave = state.octave
 end
 
--- register a callback (which gets a note)
--- on notechanges
-function KeyboardModule:register_set_note(callback)
-    table.insert(self.callback_set_note, callback)
-end
-
-function KeyboardModule:unregister_set_note(_)
-    print("can't unregister right now")
-end
-
 -- callback function
 function KeyboardModule:callback_set_instrument()
     local function set_instrument(index)
+        -- todo backup old state
         self.instrument = index
+        -- todo recover old state of that index
     end
     return set_instrument
 end
@@ -208,7 +211,11 @@ function KeyboardModule:trigger_note()
     local velocity   = 127
     print(("pitch : %s"):format(pitch))
     if pitch == -1 then
-        print("nope")
+        self.client:send(OscMessage("/renoise/trigger/note_off",{
+            {tag="i",value=self.instrument},
+            {tag="i",value=track},
+            {tag="i",value=-1},
+            }))
     else
         -- self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
         self.client:send(OscMessage("/renoise/trigger/note_on",{
