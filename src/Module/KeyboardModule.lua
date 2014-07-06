@@ -1,6 +1,12 @@
 
 require 'Module/LaunchpadModule'
 require 'Data/Note'
+require 'Data/Color'
+
+-- --
+-- Keyboard Module
+--
+class "KeyboardModule" (LaunchpadModule)
 
 -- this is a strange y -> x map for notes
 keyboard = {
@@ -39,10 +45,6 @@ function KeyboardModule:unregister_set_note(_)
     print("can't unregister right now")
 end
 
--- --
--- Keyboard Module 
---
-class "KeyboardModule" (LaunchpadModule)
 
 -- ich brauch einen kontainer über den die 
 -- Module miteinander reden können
@@ -51,11 +53,11 @@ function KeyboardModule:__init()
     self.offset = 6
     -- default
     self.color = {
-        note        = self.pad.color.green ,
-        active_note = self.pad.color.flash.orange,
-        octave      = self.pad.color.yellow,
-        off         = self.pad.color.red,
-        manover     = self.pad.color.orange,
+        note        = color.green ,
+        active_note = color.flash.orange,
+        octave      = color.yellow,
+        off         = color.red,
+        manover     = color.orange,
     }
     self.note   = note.c
     self.octave = 4
