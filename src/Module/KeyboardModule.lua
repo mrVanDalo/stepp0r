@@ -1,6 +1,12 @@
 
 require 'Module/LaunchpadModule'
 require 'Data/Note'
+require 'Data/Color'
+
+-- --
+-- Keyboard Module
+--
+class "KeyboardModule" (LaunchpadModule)
 
 -- this is a strange y -> x map for notes
 keyboard = {
@@ -10,45 +16,73 @@ keyboard = {
     }
 }
 
--- --
--- Keyboard Module 
---
-class "KeyboardModule" (LaunchpadModule)
+-- register a callback (which gets a note)
+-- on notechanges
+function KeyboardModule:register_set_note(callback)
+    table.insert(self.callback_set_note, callback)
+end
 
--- ich brauch einen kontainer über den die 
--- Module miteinander reden können
-function KeyboardModule:__init(pad,_)
-    LaunchpadModule:__init(self)
-    self.pad    = pad
-    self.offset = 6
-    -- default
-    self.color = {
-        note        = self.pad.color.green ,
-        active_note = self.pad.color.flash.orange,
-        octave      = self.pad.color.yellow,
-        off         = self.pad.color.red,
-        manover     = self.pad.color.orange,
-    }
-    self.note   = note.c
-    self.octave = 4
+function KeyboardModule:unregister_set_note(_)
+    print("can't unregister right now")
+end
+
+
+function KeyboardModule:wire_launchpad(pad)
+    self.pad = pad
 end
 
 -- returns the state of this module to reset it later
-function KeyboardModule:return_state()
+function KeyboardModule:state()
     return {
-        pad    = self.pad,
-        offset = self.offset,
         note   = self.note,
         octave = self.octave,
     }
 end
 
 function KeyboardModule:load_state(state)
-    self.pad    = state.pad
-    self.offset = state.offset
     self.note   = state.note
     self.octave = state.octave
 end
+
+-- ------------------------------------------------------------
+-- callback functions
+--
+function KeyboardModule:callback_set_instrument()
+    local function set_instrument(index)
+        -- backup
+        self.instrument_backup[self.instrument] = self:state()
+        -- switch
+        self.instrument = index
+        -- load backup
+        local newState = self.instrument_backup[self.instrument]
+        if(newState) then
+            self:load_state(newState)
+        end
+        -- refresh
+        self:_refresh()
+    end
+    return set_instrument
+end
+
+function KeyboardModule:__init()
+    LaunchpadModule:__init(self)
+    self.offset = 6
+    -- default
+    self.color = {
+        note        = color.green ,
+        active_note = color.flash.orange,
+        octave      = color.yellow,
+        off         = color.red,
+        manover     = color.orange,
+    }
+    self.note       = note.c
+    self.octave     = 4
+    self.instrument = 1
+    self.instrument_backup = {}
+    -- callback
+    self.callback_set_note = {}
+end
+
 
 function KeyboardModule:_activate()
     self:clear()
@@ -56,11 +90,18 @@ function KeyboardModule:_activate()
     self:_setup_keys()
     self:_setup_callbacks()
     self:_setup_client()
+    -- todo use refresh
+end
+
+function KeyboardModule:_refresh()
+    self:clear()
+    self.pad:set_flash()
+    self:_setup_keys()
 end
 
 function KeyboardModule:clear()
-    local y0 = self.offset
-    local y1 = self.offset + 1
+    local y0 = self.offset + 1
+    local y1 = self.offset + 2
     for x=1,8,1 do
         self.pad:set_matrix(x,y0,self.pad.color.off)
         self.pad:set_matrix(x,y1,self.pad.color.off)
@@ -106,6 +147,7 @@ function KeyboardModule:octave_down()
         self.octave = self.octave - 1
     end
 end
+
 function KeyboardModule:octave_up()
     if (self.octave < 8) then
         self.octave = self.octave + 1
@@ -119,7 +161,10 @@ end
 function KeyboardModule:set_note(x,y)
     self.note = keyboard.reverse_mapping[y - self.offset][x]
     self:print_note()
-    -- todo set note on instrument too 
+    -- fullfill callbacks
+    for _, callback in ipairs(self.callback_set_note) do
+        callback(self, self.note)
+    end
 end
 
 function KeyboardModule:update_keys()
@@ -175,17 +220,21 @@ end
 
 function KeyboardModule:trigger_note()
     local OscMessage = renoise.Osc.Message
-    local instrument = 1
-    local track      = instrument
+    local track      = self.instrument
     local pitch      = self.note[access.pitch]
     local velocity   = 127
     print(("pitch : %s"):format(pitch))
     if pitch == -1 then
-        print("nope")
+        -- todo make this turn of the notes
+        self.client:send(OscMessage("/renoise/trigger/note_off",{
+            {tag="i",value=self.instrument},
+            {tag="i",value=track},
+            {tag="i",value=-1},
+            }))
     else
         -- self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
         self.client:send(OscMessage("/renoise/trigger/note_on",{
-            {tag="i",value=instrument},
+            {tag="i",value=self.instrument},
             {tag="i",value=track},
             {tag="i",value=(pitch + (self.octave * 12))},
             {tag="i",value=velocity}}))
@@ -200,13 +249,7 @@ end
 function KeyboardModule:update_active_note()
     local x     = self.note[access.x]
     local y     = self.note[access.y] + self.offset
-    -- local off   = self.pad.color.off
-    -- local color = self.color.active_note
-    -- self.pad:set_matrix(x,y,off)
     print(("active note : (%s,%s)"):format(x,y))
-    -- if (is_off(self.note)) then
-        -- color = self.color.off
-    -- end
     self.pad:set_matrix( x, y, self.color.active_note )
 end
 

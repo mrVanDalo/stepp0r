@@ -87,6 +87,7 @@ end
 -- register a callback handler
 --
 function Launchpad:_register(list,handle)
+    -- print("register")
     table.insert(list,handle)
 end
 
@@ -150,7 +151,7 @@ function Launchpad:register_matrix_listener(handler)
     self:_register(self._matrix_listener,handler)
 end
 
--- -- 
+-- --
 -- unregister
 --
 function Launchpad:unregister_top_listener()
