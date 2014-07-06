@@ -3,6 +3,8 @@
 -- Date: 7/4/14
 --
 
+require 'Data/Color'
+
 -- A class to choose the Instruments
 class "Chooser" (LaunchpadModule)
 
@@ -17,12 +19,12 @@ end
 
 function Chooser:__init()
     LaunchpadModule:__init(self)
+    self.active      = 1  -- active instrument index
     self.row         = 6
     self.inst_offset = 0  -- which is the first instrument
-    self.active      = {
-        index      = -1 ,
-        pad_index  = -1 ,
-        instrument = nil,
+    self.color = {
+        active  = color.flash.green,
+        passive = color.green,
     }
     -- callbacks
     self.callback_select_instrument = {}
@@ -35,14 +37,14 @@ function Chooser:_activate()
 end
 
 function Chooser:select_instrument(x)
-    local index = self.inst_offset + x
-    local found = renoise.song().instruments[index]
+    self.active = self.inst_offset + x
+    local found = renoise.song().instruments[self.active]
     if not found        then return  end
     if found.name == "" then return  end
     print("found ", found.name)
     -- callback
     for _, callback in ipairs(self.callback_select_instrument) do
-        callback(index)
+        callback(self.active)
     end
 end
 
@@ -51,6 +53,7 @@ function Chooser:matrix_callback()
         if msg.vel == 0x00     then return end
         if (msg.y ~= self.row) then return end
         self:select_instrument(msg.x)
+        self:update_row()
     end
     self.pad:register_matrix_listener(matrix_listener)
 end
@@ -64,8 +67,12 @@ function Chooser:update_row()
             break
         end
         if instrument.name ~= "" then
-            self.pad:set_matrix(nr - self.inst_offset, self.row, self.pad.color.green)
             print(nr, instrument.name)
+            if nr == self.active then
+                self.pad:set_matrix(nr - self.inst_offset, self.row, self.color.active)
+            else
+                self.pad:set_matrix(nr - self.inst_offset, self.row, self.color.passive)
+            end
         end
     end
 end
