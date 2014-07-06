@@ -11,9 +11,12 @@ function Chooser:register_select_instrument(callback)
     table.insert(self.callback_select_instrument, callback)
 end
 
-function Chooser:__init(pad)
+function Chooser:wire_launchpad(pad)
+    self.pad = pad
+end
+
+function Chooser:__init()
     LaunchpadModule:__init(self)
-    self.pad         = pad
     self.row         = 6
     self.inst_offset = 0  -- which is the first instrument
     self.active      = {

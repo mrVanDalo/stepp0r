@@ -10,6 +10,35 @@ keyboard = {
     }
 }
 
+function KeyboardModule:wire_launchpad(pad)
+    self.pad = pad
+end
+
+-- returns the state of this module to reset it later
+function KeyboardModule:state()
+    return {
+        offset = self.offset,
+        note   = self.note,
+        octave = self.octave,
+    }
+end
+
+function KeyboardModule:load_state(state)
+    self.offset = state.offset
+    self.note   = state.note
+    self.octave = state.octave
+end
+
+-- register a callback (which gets a note)
+-- on notechanges
+function KeyboardModule:register_set_note(callback)
+    table.insert(self.callback_set_note, callback)
+end
+
+function KeyboardModule:unregister_set_note(_)
+    print("can't unregister right now")
+end
+
 -- --
 -- Keyboard Module 
 --
@@ -17,9 +46,8 @@ class "KeyboardModule" (LaunchpadModule)
 
 -- ich brauch einen kontainer über den die 
 -- Module miteinander reden können
-function KeyboardModule:__init(pad,_)
+function KeyboardModule:__init()
     LaunchpadModule:__init(self)
-    self.pad    = pad
     self.offset = 6
     -- default
     self.color = {
@@ -35,28 +63,6 @@ function KeyboardModule:__init(pad,_)
     self.callback_set_note = {}
 end
 
--- returns the state of this module to reset it later
-function KeyboardModule:return_state()
-    return {
-        pad    = self.pad,
-        offset = self.offset,
-        note   = self.note,
-        octave = self.octave,
-    }
-end
-
-function KeyboardModule:load_state(state)
-    self.pad    = state.pad
-    self.offset = state.offset
-    self.note   = state.note
-    self.octave = state.octave
-end
-
--- register a callback (which gets a note)
--- on notechanges
-function KeyboardModule:register_set_note(callback)
-    table.insert(self.callback_set_note, callback)
-end
 
 function KeyboardModule:_activate()
     self:clear()
@@ -114,6 +120,7 @@ function KeyboardModule:octave_down()
         self.octave = self.octave - 1
     end
 end
+
 function KeyboardModule:octave_up()
     if (self.octave < 8) then
         self.octave = self.octave + 1
@@ -211,13 +218,7 @@ end
 function KeyboardModule:update_active_note()
     local x     = self.note[access.x]
     local y     = self.note[access.y] + self.offset
-    -- local off   = self.pad.color.off
-    -- local color = self.color.active_note
-    -- self.pad:set_matrix(x,y,off)
     print(("active note : (%s,%s)"):format(x,y))
-    -- if (is_off(self.note)) then
-        -- color = self.color.off
-    -- end
     self.pad:set_matrix( x, y, self.color.active_note )
 end
 
