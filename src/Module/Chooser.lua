@@ -16,6 +16,8 @@ function Chooser:__init(pad)
         pad_index  = -1 ,
         instrument = nil,
     }
+    -- callbacks
+    self.callback_select_instrument = {}
 end
 
 function Chooser:_activate()
@@ -24,14 +26,29 @@ function Chooser:_activate()
     self:top_callback()
 end
 
+
+-- register callback that gets a `index of instrument`
+function Chooser:register_select_instrument(callback)
+    table.insert(self.callback_select_instrument, callback)
+end
+
+function Chooser:select_instrument(x)
+    local index = self.inst_offset + x
+    local found = renoise.song().instruments[index]
+    if not found        then return  end
+    if found.name == "" then return  end
+    print("found ", found.name)
+    -- callback
+    for _, callback in ipairs(self.callback_select_instrument) do
+        callback(index)
+    end
+end
+
 function Chooser:matrix_callback()
     local function matrix_listener(_,msg)
         if msg.vel == 0x00 then return end
         if (msg.y ~= self.row) then return end
-        local found = renoise.song().instruments[ self.inst_offset + msg.x ]
-        if found and found.name ~= "" then
-            print("found ", found.name)
-        end
+        self:select_instrument(msg.x)
     end
     self.pad:register_matrix_listener(matrix_listener)
 end

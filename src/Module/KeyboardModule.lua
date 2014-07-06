@@ -31,6 +31,8 @@ function KeyboardModule:__init(pad,_)
     }
     self.note   = note.c
     self.octave = 4
+    -- callback
+    self.callback_set_note = {}
 end
 
 -- returns the state of this module to reset it later
@@ -48,6 +50,12 @@ function KeyboardModule:load_state(state)
     self.offset = state.offset
     self.note   = state.note
     self.octave = state.octave
+end
+
+-- register a callback (which gets a note)
+-- on notechanges
+function KeyboardModule:register_set_note(callback)
+    table.insert(self.callback_set_note, callback)
 end
 
 function KeyboardModule:_activate()
@@ -119,7 +127,10 @@ end
 function KeyboardModule:set_note(x,y)
     self.note = keyboard.reverse_mapping[y - self.offset][x]
     self:print_note()
-    -- todo set note on instrument too 
+    -- fullfill callbacks
+    for _, callback in ipairs(self.callback_set_note) do
+        callback(self, self.note)
+    end
 end
 
 function KeyboardModule:update_keys()
