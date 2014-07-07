@@ -18,12 +18,16 @@ end
 
 copyTask 'src/*.lua'         ,export_folder             ,:lua_main
 copyTask 'src/Module/*.lua'  ,"#{export_folder}/Module" ,:lua_modules
+copyTask 'src/Data/*.lua'    ,"#{export_folder}/Data" ,:lua_data
+copyTask 'src/Experimental/*.lua'  ,"#{export_folder}/Experimental" ,:lua_experimental
 copyTask 'conf/manifest.xml' ,export_folder             ,:manifest
 copyTask 'conf/icon.png'     ,export_folder             ,:icon
 
 desc 'build the project'
 task :build => :lua_main
 task :build => :lua_modules
+task :build => :lua_data
+task :build => :lua_experimental
 task :build => :manifest
 task :build => :icon
 

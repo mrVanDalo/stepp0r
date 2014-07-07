@@ -45,25 +45,28 @@ end
 
 function Stepper:_activate()
     self.observer:add_notifier(function(value)
-        self:clear_line(value)
         self:set_matrix(value)
     end,
     "renoise.song().transport.playback_pos.line")
 end
 
-function Stepper:clear_line(line)
-    local l_line = line / 8
-    if l_line < 4 then
-        for i = 1, 8, 1 do
-            self.pad:set_matrix(l_line,i,color.off)
-        end
-    end
-end
-
+-- ------------------------------------------------------------
+-- set the stepper to the line
+--
 function Stepper:set_matrix(line)
-    local x = line % 8
-    local y = (line / 8) + 1
-    self.pad:set_matrix(x,y,color.green)
+    local x = ((line - 1) % 8) + 1
+    local y = math.floor((line - 1) / 8) + 1
+--    print(("x = %s , y = %s"):format(x,y))
+    if (x < 9 and y < 5) then
+        if (x == 1 and y == 1) then
+            self.pad:set_matrix(8,4,color.off)
+        elseif (x == 1) then
+            self.pad:set_matrix(8, y - 1, color.off)
+        else
+            self.pad:set_matrix(x - 1 , y , color.off)
+        end
+        self.pad:set_matrix(x,y,color.green)
+    end
 end
 
 function Stepper:_deactivate() end
