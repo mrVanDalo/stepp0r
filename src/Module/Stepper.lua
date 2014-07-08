@@ -27,21 +27,38 @@ function Stepper:__init()
     self.playback_position_observer = PlaybackPositionObserver()
 end
 
--- change notes in selection
--- (all "C-4"s to "E-4" in the selection in the current pattern)
---function example_function ()
---    local pattern_iter  = renoise.song().pattern_iterator
---    local pattern_index =  renoise.song().selected_pattern_index
---
---    for _,line in pattern_iter:lines_in_pattern(pattern_index) do
---        for _,note_column in pairs(line.note_columns) do
---            if (note_column.is_selected and
---                    note_column.note_string == "C-4") then
---                note_column.note_string = "E-4"
---            end
---        end
---    end
---end
+function Stepper:callback_set_instrument()
+    return function (index)
+        self.track      = index
+        self.instrument = index
+        self:clear_matrix()
+        self:update_matrix()
+    end
+end
+
+function Stepper:clear_matrix()
+    for y = 1, 4 do
+        for x = 1,8 do
+            self.pad:set_matrix(x,y,color.off)
+        end
+    end
+end
+
+function Stepper:update_matrix()
+    for pos,line in pattern_iter:lines_in_pattern_track(pattern_index, track_index) do
+        if not table.is_empty(line.note_columns) then
+
+            local note_column = line:note_column(1)
+            note_column:clear()
+
+            local arp_index = math.mod(pos.line - 1, #arp_sequence) + 1
+            note_column.note_string = arp_sequence[arp_index].note
+            note_column.instrument_value = arp_sequence[arp_index].instrument
+            note_column.volume_value = arp_sequence[arp_index].volume
+        end
+    end
+end
+
 
 function Stepper:_activate()
     self.f = function (line) self:callback_playback_position(line) end
