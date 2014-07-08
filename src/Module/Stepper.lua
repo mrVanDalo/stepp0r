@@ -23,6 +23,10 @@ function Stepper:__init()
     self.instrument = 1
     self.note       = note.c
     self.octave     = 4
+    self.color      = {
+        off  = color.red,
+        note = color.yellow
+    }
 
     self.playback_position_observer = PlaybackPositionObserver()
 end
@@ -44,6 +48,12 @@ function Stepper:clear_matrix()
     end
 end
 
+function line_to_point(line)
+    local x = ((line - 1) % 8) + 1
+    local y = math.floor((line - 1) / 8) + 1
+    return {x,y}
+end
+
 function Stepper:update_matrix()
     local pattern_iter = renoise.song().pattern_iterator
     local pattern_index = renoise.song().selected_pattern_index
@@ -56,7 +66,19 @@ function Stepper:update_matrix()
             -- note_column.note_string = arp_sequence[arp_index].note
             -- note_column.instrument_value = arp_sequence[arp_index].instrument
             -- note_column.volume_value = arp_sequence[arp_index].volume
-            print(pos, note_column.note_string)
+            print(pos.line, note_column.note_string)
+            if(note_column.note_string ~= "---") then
+                local xy = line_to_point(pos.line)
+                local x = xy[1]
+                local y = xy[2]
+                if (y < 5) then
+                    if (note_column.note_string == "OFF") then
+                        self.pad:set_matrix(x,y,self.color.off)
+                    else
+                        self.pad:set_matrix(x,y,self.color.note)
+                    end
+                end
+            end
         end
     end
 end
@@ -67,12 +89,15 @@ function Stepper:_activate()
     self.playback_position_observer:register(self.f)
 end
 
+
+
 -- ------------------------------------------------------------
 -- set the stepper to the line
 --
 function Stepper:callback_playback_position(line)
-    local x = ((line - 1) % 8) + 1
-    local y = math.floor((line - 1) / 8) + 1
+    local xy = line_to_point(line)
+    local x = xy[1]
+    local y = xy[2]
     if (x < 9 and y < 5) then
         if (x == 1 and y == 1) then
             self.pad:set_matrix(8,4,color.off)
