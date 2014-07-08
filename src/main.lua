@@ -124,9 +124,6 @@ chooser:wire_launchpad(pad)
 chooser:register_select_instrument(key:callback_set_instrument())
 chooser:register_select_instrument(stepper:callback_set_instrument())
 
-
-
-
 key:activate()
 chooser:activate()
 stepper:activate()

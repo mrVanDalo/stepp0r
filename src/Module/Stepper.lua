@@ -45,16 +45,18 @@ function Stepper:clear_matrix()
 end
 
 function Stepper:update_matrix()
-    for pos,line in pattern_iter:lines_in_pattern_track(pattern_index, track_index) do
+    local pattern_iter = renoise.song().pattern_iterator
+    local pattern_index = renoise.song().selected_pattern_index
+    for pos,line in pattern_iter:lines_in_pattern_track(pattern_index, self.track) do
         if not table.is_empty(line.note_columns) then
 
             local note_column = line:note_column(1)
-            note_column:clear()
-
-            local arp_index = math.mod(pos.line - 1, #arp_sequence) + 1
-            note_column.note_string = arp_sequence[arp_index].note
-            note_column.instrument_value = arp_sequence[arp_index].instrument
-            note_column.volume_value = arp_sequence[arp_index].volume
+            -- note_column:clear()
+            -- local arp_index = math.mod(pos.line - 1, #arp_sequence) + 1
+            -- note_column.note_string = arp_sequence[arp_index].note
+            -- note_column.instrument_value = arp_sequence[arp_index].instrument
+            -- note_column.volume_value = arp_sequence[arp_index].volume
+            print(pos, note_column.note_string)
         end
     end
 end
