@@ -51,6 +51,13 @@ function Stepper:clear_pad_matrix()
     end
 end
 
+function Stepper:callback_set_note()
+    return function (note,octave)
+        self.note   = note
+        self.octave = octave
+    end
+end
+
 function line_to_point(line)
     local x = ((line - 1) % 8) + 1
     local y = math.floor((line - 1) / 8) + 1
@@ -112,8 +119,19 @@ function Stepper:_activate()
     self:update_matrix()
     self:clear_pad_matrix()
     self:update_pad_matrix()
+
     self.f = function (line) self:callback_playback_position(line) end
     self.playback_position_observer:register(self.f)
+
+    self.pad:register_matrix_listener(function (_,msg)
+        if (msg.y > 4 ) then return end
+        local line = msg.x + (8 * (msg.y - 1))
+        local column = renoise.song().patterns[1].tracks[self.track].lines[line].note_columns[1]
+        column.note_value = self.note[access.pitch] + (self.octave * 13)
+        column.instrument_value = (self.instrument - 1)
+        self.matrix[msg.x][msg.y] = self.color.note
+        self.pad:set_matrix(msg.x,msg.y,self.color.note)
+    end)
 end
 
 function Stepper:set_old_pad(x,y)
@@ -149,5 +167,4 @@ end
 function Stepper:_deactivate()
     self.playback_position_observer:unregister(f)
 end
-
 

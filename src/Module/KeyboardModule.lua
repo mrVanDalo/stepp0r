@@ -163,7 +163,7 @@ function KeyboardModule:set_note(x,y)
     self:print_note()
     -- fullfill callbacks
     for _, callback in ipairs(self.callback_set_note) do
-        callback(self, self.note)
+        callback(self.note, self.octave)
     end
 end
 

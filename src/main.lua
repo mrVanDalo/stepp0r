@@ -113,11 +113,12 @@ print('load dev main')
 
 pad = Launchpad()
 
-key = KeyboardModule()
-key:wire_launchpad(pad)
-
 stepper = Stepper()
 stepper:wire_launchpad(pad)
+
+key = KeyboardModule()
+key:wire_launchpad(pad)
+key:register_set_note(stepper:callback_set_note())
 
 chooser = Chooser()
 chooser:wire_launchpad(pad)
