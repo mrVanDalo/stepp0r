@@ -6,7 +6,7 @@
 require 'Data/Note'
 require 'Data/Color'
 require 'Module/LaunchpadModule'
-require 'Experimental/Observable'
+require 'Experimental/PlaybackPositionObserver'
 
 -- ------------------------------------------------------------
 -- Stepper Module
@@ -24,7 +24,7 @@ function Stepper:__init()
     self.note       = note.c
     self.octave     = 4
 
-    self.observer   = Observer()
+    self.playback_position_observer = PlaybackPositionObserver()
 end
 
 -- change notes in selection
@@ -44,19 +44,16 @@ end
 --end
 
 function Stepper:_activate()
-    self.observer:add_notifier(function(value)
-        self:set_matrix(value)
-    end,
-    "renoise.song().transport.playback_pos.line")
+    self.f = function (line) self:callback_playback_position(line) end
+    self.playback_position_observer:register(self.f)
 end
 
 -- ------------------------------------------------------------
 -- set the stepper to the line
 --
-function Stepper:set_matrix(line)
+function Stepper:callback_playback_position(line)
     local x = ((line - 1) % 8) + 1
     local y = math.floor((line - 1) / 8) + 1
---    print(("x = %s , y = %s"):format(x,y))
     if (x < 9 and y < 5) then
         if (x == 1 and y == 1) then
             self.pad:set_matrix(8,4,color.off)
@@ -69,6 +66,8 @@ function Stepper:set_matrix(line)
     end
 end
 
-function Stepper:_deactivate() end
+function Stepper:_deactivate()
+    self.playback_position_observer:unregister(f)
+end
 
 
