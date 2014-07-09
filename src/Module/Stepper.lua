@@ -19,13 +19,20 @@ function Stepper:wire_launchpad(pad)
 end
 
 function Stepper:__init()
-    self.track      = 1
-    self.instrument = 1
-    self.note       = note.c
-    self.octave     = 4
-    self.sub_column = 1 -- the column in the track
-    self.matrix     = {}
-    self.color      = {
+    self.track       = 1
+    self.instrument  = 1
+    self.note        = note.c
+    self.octave      = 4
+    -- navigation
+    self.sub_column  = 1 -- the column in the track
+    self.zoom_factor = 1 -- influences grid size
+    self.pattern     = 1 -- actual pattern
+    self.page        = 1 -- page of actual pattern
+    self.page_start  = 1  -- line of first pixel
+    self.page_end    = 32 -- line of last pixel
+    -- rendering
+    self.matrix      = {}
+    self.color       = {
         off  = color.red,
         note = color.yellow,
         empty = color.off
@@ -97,7 +104,6 @@ function Stepper:_activate()
             column.instrument_value   = empty_instrument
             self.matrix[msg.x][msg.y] = self.color.empty
             self.pad:set_matrix(msg.x,msg.y,self.color.empty)
-            -- print (column.note_value)
         end
     end)
 end
@@ -127,12 +133,6 @@ function Stepper:update_matrix()
     for pos,line in pattern_iter:lines_in_pattern_track(pattern_index, self.track) do
         if not table.is_empty(line.note_columns) then
             local note_column = line:note_column(self.sub_column)
-            -- note_column:clear()
-            -- local arp_index = math.mod(pos.line - 1, #arp_sequence) + 1
-            -- note_column.note_string = arp_sequence[arp_index].note
-            -- note_column.instrument_value = arp_sequence[arp_index].instrument
-            -- note_column.volume_value = arp_sequence[arp_index].volume
-            -- print(pos.line, note_column.note_string)
             if(note_column.note_string ~= "---") then
                 local xy = line_to_point(pos.line)
                 local x = xy[1]
@@ -180,13 +180,10 @@ function Stepper:callback_playback_position(line)
     if (x < 9 and y < 5) then
         if (x == 1 and y == 1) then
             self:update_pad_with_matrix(8,4)
-            --self.pad:set_matrix(8,4,color.off)
         elseif (x == 1) then
             self:update_pad_with_matrix(8,y-1)
-            --self.pad:set_matrix(8, y - 1, color.off)
         else
             self:update_pad_with_matrix(x-1,y)
-            --self.pad:set_matrix(x - 1 , y , color.off)
         end
         self.pad:set_matrix(x,y,color.green)
     end
