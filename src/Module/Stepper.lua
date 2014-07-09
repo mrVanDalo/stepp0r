@@ -23,6 +23,7 @@ function Stepper:__init()
     self.instrument = 1
     self.note       = note.c
     self.octave     = 4
+    self.sub_column = 1 -- the column in the track
     self.matrix     = {}
     self.color      = {
         off  = color.red,
@@ -86,12 +87,11 @@ end
 -- ---
 -- todo : should update an inner matrix (table) which should update the pad
 function Stepper:update_matrix()
-    local pattern_iter = renoise.song().pattern_iterator
+    local pattern_iter  = renoise.song().pattern_iterator
     local pattern_index = renoise.song().selected_pattern_index
     for pos,line in pattern_iter:lines_in_pattern_track(pattern_index, self.track) do
         if not table.is_empty(line.note_columns) then
-
-            local note_column = line:note_column(1)
+            local note_column = line:note_column(self.sub_column)
             -- note_column:clear()
             -- local arp_index = math.mod(pos.line - 1, #arp_sequence) + 1
             -- note_column.note_string = arp_sequence[arp_index].note
@@ -121,26 +121,33 @@ function Stepper:_activate()
     self:clear_pad_matrix()
     self:update_pad_matrix()
 
+    -- register pattern_index callback
+    self.pattern_callback = function (_)
+        self:clear_matrix()
+        self:update_matrix()
+        self:clear_pad_matrix()
+        self:update_pad_matrix()
+    end
+    renoise.song().selected_pattern_index_observable:add_notifier(self.pattern_callback)
+
+    -- register play_position callback
     self.f = function (line) self:callback_playback_position(line) end
     self.playback_position_observer:register(self.f)
 
+    -- register pad matrix listener
     self.pad:register_matrix_listener(function (_,msg)
         if (msg.vel == 0) then return end
         if (msg.y > 4 )   then return end
-        local line = msg.x + (8 * (msg.y - 1))
-        local column = renoise.song().patterns[1].tracks[self.track].lines[line].note_columns[1]
+        local column           = self:calculate_column(msg.x,msg.y)
         local empty_note       = 121
         local off_note         = 120
         local empty_instrument = 255
         if column.note_value == empty_note then
-            print("set note")
-            -- column.note_value         = self.note[access.pitch] + (self.octave * 13)
             column.note_value         = pitch(self.note,self.octave)
             column.instrument_value   = (self.instrument - 1)
             self.matrix[msg.x][msg.y] = self.color.note
             self.pad:set_matrix(msg.x,msg.y,self.color.note)
         else
-            print("delete note")
             column.note_value         = empty_note
             column.instrument_value   = empty_instrument
             self.matrix[msg.x][msg.y] = self.color.empty
@@ -148,6 +155,22 @@ function Stepper:_activate()
             -- print (column.note_value)
         end
     end)
+end
+
+function Stepper:ensure_sub_column_exist()
+   -- todo write me
+end
+
+function Stepper:calculate_column(x,y)
+    local line = x + (8 * (y - 1))
+    self:ensure_sub_column_exist()
+    local pattern_index = renoise.song().selected_pattern_index
+    return renoise.song().patterns[pattern_index].tracks[self.track].lines[line].note_columns[self.sub_column]
+end
+-- ---
+-- calculates actual pressed line
+-- also takes care of zoom and paging
+function Stepper:calculate_line(x,y)
 end
 
 function Stepper:set_old_pad(x,y)
