@@ -179,6 +179,7 @@ end
 -- set the stepper to the line
 --
 function Stepper:callback_playback_position(pos)
+    if self.pattern ~= pos.sequence then return end
     local line = pos.line
     local xy = self:line_to_point(line)
     if not xy then return end
