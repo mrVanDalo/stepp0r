@@ -28,8 +28,8 @@ function Stepper:__init()
     self.zoom_factor = 1 -- influences grid size
     self.pattern     = 1 -- actual pattern
     self.page        = 1 -- page of actual pattern
-    self.page_start  = 1  -- line of first pixel
-    self.page_end    = 32 -- line of last pixel
+    self.page_start  = 0  -- line left before first pixel
+    self.page_end    = 33 -- line right after last pixel
     -- rendering
     self.matrix      = {}
     self.color       = {
@@ -61,8 +61,17 @@ end
 -- calculate point (for matrix) of line
 -- nil for is not on the matrix
 function Stepper:line_to_point(line)
-    local x = ((line - 1) % 8) + 1
-    local y = math.floor((line - 1) / 8) + 1
+    -- page
+    local l = line - self.page_start
+    if l < 1 then return end
+    -- zoom
+    local li = l
+    if (self.zoom_factor > 1) then
+        if (l % self.zoom_factor) ~= 0 then return end
+        li = l / self.zoom_factor
+    end
+    local x = ((li - 1) % 8) + 1
+    local y = math.floor((li - 1) / 8) + 1
     return {x,y}
 end
 
