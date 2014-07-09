@@ -26,7 +26,8 @@ function Stepper:__init()
     self.matrix     = {}
     self.color      = {
         off  = color.red,
-        note = color.yellow
+        note = color.yellow,
+        empty = color.off
     }
 
     self.playback_position_observer = PlaybackPositionObserver()
@@ -124,13 +125,27 @@ function Stepper:_activate()
     self.playback_position_observer:register(self.f)
 
     self.pad:register_matrix_listener(function (_,msg)
-        if (msg.y > 4 ) then return end
+        if (msg.vel == 0) then return end
+        if (msg.y > 4 )   then return end
         local line = msg.x + (8 * (msg.y - 1))
         local column = renoise.song().patterns[1].tracks[self.track].lines[line].note_columns[1]
-        column.note_value = self.note[access.pitch] + (self.octave * 13)
-        column.instrument_value = (self.instrument - 1)
-        self.matrix[msg.x][msg.y] = self.color.note
-        self.pad:set_matrix(msg.x,msg.y,self.color.note)
+        local empty_note       = 121
+        local off_note         = 120
+        local empty_instrument = 255
+        if column.note_value == empty_note then
+            print("set note")
+            column.note_value         = self.note[access.pitch] + (self.octave * 13)
+            column.instrument_value   = (self.instrument - 1)
+            self.matrix[msg.x][msg.y] = self.color.note
+            self.pad:set_matrix(msg.x,msg.y,self.color.note)
+        else
+            print("delete note")
+            column.note_value         = empty_note
+            column.instrument_value   = empty_instrument
+            self.matrix[msg.x][msg.y] = self.color.empty
+            self.pad:set_matrix(msg.x,msg.y,self.color.empty)
+            -- print (column.note_value)
+        end
     end)
 end
 
