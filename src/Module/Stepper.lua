@@ -57,7 +57,10 @@ function Stepper:callback_set_note()
     end
 end
 
-function line_to_point(line)
+-- ---
+-- calculate point (for matrix) of line
+-- nil for is not on the matrix
+function Stepper:line_to_point(line)
     local x = ((line - 1) % 8) + 1
     local y = math.floor((line - 1) / 8) + 1
     return {x,y}
@@ -134,14 +137,16 @@ function Stepper:update_matrix()
         if not table.is_empty(line.note_columns) then
             local note_column = line:note_column(self.sub_column)
             if(note_column.note_string ~= "---") then
-                local xy = line_to_point(pos.line)
-                local x = xy[1]
-                local y = xy[2]
-                if (y < 5) then
-                    if (note_column.note_string == "OFF") then
-                        self.matrix[x][y] = self.color.off
-                    else
-                        self.matrix[x][y] = self.color.note
+                local xy = self:line_to_point(pos.line)
+                if xy then
+                    local x = xy[1]
+                    local y = xy[2]
+                    if (y < 5 and y > 0) then
+                        if (note_column.note_string == "OFF") then
+                            self.matrix[x][y] = self.color.off
+                        else
+                            self.matrix[x][y] = self.color.note
+                        end
                     end
                 end
             end
@@ -173,8 +178,10 @@ end
 -- ------------------------------------------------------------
 -- set the stepper to the line
 --
-function Stepper:callback_playback_position(line)
-    local xy = line_to_point(line)
+function Stepper:callback_playback_position(pos)
+    local line = pos.line
+    local xy = self:line_to_point(line)
+    if not xy then return end
     local x = xy[1]
     local y = xy[2]
     if (x < 9 and y < 5) then
