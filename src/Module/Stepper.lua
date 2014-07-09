@@ -134,7 +134,8 @@ function Stepper:_activate()
         local empty_instrument = 255
         if column.note_value == empty_note then
             print("set note")
-            column.note_value         = self.note[access.pitch] + (self.octave * 13)
+            -- column.note_value         = self.note[access.pitch] + (self.octave * 13)
+            column.note_value         = pitch(self.note,self.octave)
             column.instrument_value   = (self.instrument - 1)
             self.matrix[msg.x][msg.y] = self.color.note
             self.pad:set_matrix(msg.x,msg.y,self.color.note)
