@@ -29,6 +29,9 @@ note = {
     off = { -1 , "OFF" , 4, 1 },
 }
 
+-- ---
+-- calculate pitch
+--
 function pitch(note,octave)
     return note[access.pitch] + (octave * 12)
 end
