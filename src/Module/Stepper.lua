@@ -38,20 +38,10 @@ function Stepper:callback_set_instrument()
     return function (index)
         self.track      = index
         self.instrument = index
-        self:clear_pad_matrix()
-        self:clear_matrix()
-        self:update_matrix()
-        self:update_pad_matrix()
+        self:refresh_matrix()
     end
 end
 
-function Stepper:clear_pad_matrix()
-    for y = 1, 4 do
-        for x = 1,8 do
-            self.pad:set_matrix(x,y,color.off)
-        end
-    end
-end
 
 function Stepper:callback_set_note()
     return function (note,octave)
@@ -67,66 +57,21 @@ function line_to_point(line)
 end
 
 
-function Stepper:clear_matrix()
-    self.matrix = {}
-    for x = 1, 8 do
-        self.matrix[x] = {}
-    end
-end
-
-function Stepper:update_pad_matrix()
-    for x = 1, 8 do
-        for y = 1, 4 do
-            if (self.matrix[x][y]) then
-                self.pad:set_matrix(x,y,self.matrix[x][y])
-            end
-        end
-    end
-end
-
--- ---
--- todo : should update an inner matrix (table) which should update the pad
-function Stepper:update_matrix()
-    local pattern_iter  = renoise.song().pattern_iterator
-    local pattern_index = renoise.song().selected_pattern_index
-    for pos,line in pattern_iter:lines_in_pattern_track(pattern_index, self.track) do
-        if not table.is_empty(line.note_columns) then
-            local note_column = line:note_column(self.sub_column)
-            -- note_column:clear()
-            -- local arp_index = math.mod(pos.line - 1, #arp_sequence) + 1
-            -- note_column.note_string = arp_sequence[arp_index].note
-            -- note_column.instrument_value = arp_sequence[arp_index].instrument
-            -- note_column.volume_value = arp_sequence[arp_index].volume
-            -- print(pos.line, note_column.note_string)
-            if(note_column.note_string ~= "---") then
-                local xy = line_to_point(pos.line)
-                local x = xy[1]
-                local y = xy[2]
-                if (y < 5) then
-                    if (note_column.note_string == "OFF") then
-                        self.matrix[x][y] = self.color.off
-                    else
-                        self.matrix[x][y] = self.color.note
-                    end
-                end
-            end
-        end
-    end
-end
 
 
-function Stepper:_activate()
+function Stepper:refresh_matrix()
     self:clear_matrix()
     self:update_matrix()
-    self:clear_pad_matrix()
+    -- self:clear_pad_matrix()
     self:update_pad_matrix()
+end
+
+function Stepper:_activate()
+    self:refresh_matrix()
 
     -- register pattern_index callback
     self.pattern_callback = function (_)
-        self:clear_matrix()
-        self:update_matrix()
-        self:clear_pad_matrix()
-        self:update_pad_matrix()
+        self:refresh_matrix()
     end
     renoise.song().selected_pattern_index_observable:add_notifier(self.pattern_callback)
 
@@ -167,17 +112,61 @@ function Stepper:calculate_column(x,y)
     local pattern_index = renoise.song().selected_pattern_index
     return renoise.song().patterns[pattern_index].tracks[self.track].lines[line].note_columns[self.sub_column]
 end
--- ---
--- calculates actual pressed line
--- also takes care of zoom and paging
-function Stepper:calculate_line(x,y)
-end
 
-function Stepper:set_old_pad(x,y)
+function Stepper:update_pad_with_matrix(x,y)
     if(self.matrix[x][y]) then
         self.pad:set_matrix(x,y,self.matrix[x][y])
     else
         self.pad:set_matrix(x,y,color.off)
+    end
+end
+
+function Stepper:update_matrix()
+    local pattern_iter  = renoise.song().pattern_iterator
+    local pattern_index = renoise.song().selected_pattern_index
+    for pos,line in pattern_iter:lines_in_pattern_track(pattern_index, self.track) do
+        if not table.is_empty(line.note_columns) then
+            local note_column = line:note_column(self.sub_column)
+            -- note_column:clear()
+            -- local arp_index = math.mod(pos.line - 1, #arp_sequence) + 1
+            -- note_column.note_string = arp_sequence[arp_index].note
+            -- note_column.instrument_value = arp_sequence[arp_index].instrument
+            -- note_column.volume_value = arp_sequence[arp_index].volume
+            -- print(pos.line, note_column.note_string)
+            if(note_column.note_string ~= "---") then
+                local xy = line_to_point(pos.line)
+                local x = xy[1]
+                local y = xy[2]
+                if (y < 5) then
+                    if (note_column.note_string == "OFF") then
+                        self.matrix[x][y] = self.color.off
+                    else
+                        self.matrix[x][y] = self.color.note
+                    end
+                end
+            end
+        end
+    end
+end
+
+function Stepper:clear_pad_matrix()
+    for y = 1, 4 do
+        for x = 1,8 do
+            self.pad:set_matrix(x,y,color.off)
+        end
+    end
+end
+
+function Stepper:clear_matrix()
+    self.matrix = {}
+    for x = 1, 8 do self.matrix[x] = {} end
+end
+
+function Stepper:update_pad_matrix()
+    for x = 1, 8 do
+        for y = 1, 4 do
+            self:update_pad_with_matrix(x,y)
+        end
     end
 end
 
@@ -190,13 +179,13 @@ function Stepper:callback_playback_position(line)
     local y = xy[2]
     if (x < 9 and y < 5) then
         if (x == 1 and y == 1) then
-            self:set_old_pad(8,4)
+            self:update_pad_with_matrix(8,4)
             --self.pad:set_matrix(8,4,color.off)
         elseif (x == 1) then
-            self:set_old_pad(8,y-1)
+            self:update_pad_with_matrix(8,y-1)
             --self.pad:set_matrix(8, y - 1, color.off)
         else
-            self:set_old_pad(x-1,y)
+            self:update_pad_with_matrix(x-1,y)
             --self.pad:set_matrix(x - 1 , y , color.off)
         end
         self.pad:set_matrix(x,y,color.green)
