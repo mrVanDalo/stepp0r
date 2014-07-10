@@ -100,24 +100,28 @@ function Stepper:_activate()
 
     -- register pad matrix listener
     self.pad:register_matrix_listener(function (_,msg)
-        if (msg.vel == 0) then return end
-        if (msg.y > 4 )   then return end
-        local column           = self:calculate_column(msg.x,msg.y)
-        local empty_note       = 121
-        local off_note         = 120
-        local empty_instrument = 255
-        if column.note_value == empty_note then
-            column.note_value         = pitch(self.note,self.octave)
-            column.instrument_value   = (self.instrument - 1)
-            self.matrix[msg.x][msg.y] = self.color.note
-            self.pad:set_matrix(msg.x,msg.y,self.color.note)
-        else
-            column.note_value         = empty_note
-            column.instrument_value   = empty_instrument
-            self.matrix[msg.x][msg.y] = self.color.empty
-            self.pad:set_matrix(msg.x,msg.y,self.color.empty)
-        end
+        self:matrix_listener(msg)
     end)
+end
+
+function Stepper:matrix_listener(msg)
+    if (msg.vel == 0) then return end
+    if (msg.y > 4 )   then return end
+    local column           = self:calculate_column(msg.x,msg.y)
+    local empty_note       = 121
+    local off_note         = 120
+    local empty_instrument = 255
+    if column.note_value == empty_note then
+        column.note_value         = pitch(self.note,self.octave)
+        column.instrument_value   = (self.instrument - 1)
+        self.matrix[msg.x][msg.y] = self.color.note
+        self.pad:set_matrix(msg.x,msg.y,self.color.note)
+    else
+        column.note_value         = empty_note
+        column.instrument_value   = empty_instrument
+        self.matrix[msg.x][msg.y] = self.color.empty
+        self.pad:set_matrix(msg.x,msg.y,self.color.empty)
+    end
 end
 
 function Stepper:ensure_sub_column_exist()
