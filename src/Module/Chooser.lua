@@ -34,6 +34,11 @@ function Chooser:_activate()
     self:update_row()
     self:matrix_callback()
     self:top_callback()
+
+    -- notifier to update row
+    renoise.song().instruments_observable:add_notifier(function (_)
+        self:update_row()
+    end)
 end
 
 function Chooser:select_instrument(x)
