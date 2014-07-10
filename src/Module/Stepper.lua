@@ -24,12 +24,14 @@ function Stepper:__init()
     self.note        = note.c
     self.octave      = 4
     -- navigation
-    self.sub_column  = 1 -- the column in the track
-    self.zoom        = 1 -- influences grid size
-    self.pattern     = 1 -- actual pattern
-    self.page        = 1 -- page of actual pattern
-    self.page_start  = 0  -- line left before first pixel
-    self.page_end    = 33 -- line right after last pixel
+    self.zoom         = 1 -- influences grid size
+    self.zoom_inc_idx = 7
+    self.zoom_dec_idx = 6
+    self.sub_column   = 1 -- the column in the track
+    self.pattern      = 1 -- actual pattern
+    self.page         = 1 -- page of actual pattern
+    self.page_start   = 0  -- line left before first pixel
+    self.page_end     = 33 -- line right after last pixel
     -- rendering
     self.matrix      = {}
     self.color       = {
@@ -68,8 +70,8 @@ function Stepper:line_to_point(line)
     -- zoom
     local li = l
     if (self.zoom > 1) then
-        if (l % self.zoom) ~= 0 then return end
-        li = l / self.zoom
+        if ((l - 1) % self.zoom) ~= 0 then return end
+        li = ((l - 1) / self.zoom) + 1
     end
     local x = ((li - 1) % 8) + 1
     local y = math.floor((li - 1) / 8) + 1
@@ -104,12 +106,13 @@ function Stepper:_activate()
         self:matrix_listener(msg)
     end)
 
+    self:update_zoom_knobs()
     -- register pad right listener
     self.pad:register_top_listener(function (_,msg)
         if (msg.vel == 0 ) then return end
-        if (msg.x == 6 ) then
+        if (msg.x == self.zoom_dec_idx ) then
             self:zoom_dec()
-        elseif (msg.x == 7) then
+        elseif (msg.x == self.zoom_inc_idx) then
             self:zoom_inc()
         end
     end)
@@ -118,19 +121,28 @@ end
 function Stepper:zoom_inc()
     if (self.zoom < 16) then
         self.zoom = self.zoom * 2
-        self.pad:set_top(7,self.color.active)
+    end
+    self:update_zoom_knobs()
+end
+
+function Stepper:update_zoom_knobs()
+    if (self.zoom > 1) then
+        self.pad:set_top(self.zoom_dec_idx,self.color.active)
     else
-        self.pad:set_top(7,self.color.empty)
+        self.pad:set_top(self.zoom_dec_idx,self.color.empty)
+    end
+    if (self.zoom < 16) then
+        self.pad:set_top(self.zoom_inc_idx,self.color.active)
+    else
+        self.pad:set_top(self.zoom_inc_idx,self.color.empty)
     end
 end
 
 function Stepper:zoom_dec()
     if (self.zoom > 1) then
         self.zoom = self.zoom / 2
-        self.pad:set_top(6,self.color.active)
-    else
-        self.pad:set_top(6,self.color.empty)
     end
+    self:update_zoom_knobs()
 end
 
 function Stepper:matrix_listener(msg)
