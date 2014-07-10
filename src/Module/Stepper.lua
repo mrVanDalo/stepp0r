@@ -81,7 +81,7 @@ end
 -- ---
 -- point_to_line(line_to_point(l)) == l should allways be true ?
 function Stepper:point_to_line(x,y)
-    return (x + (8 * (y - 1))) * self.zoom
+    return ((x + (8 * (y - 1))) - 1) * self.zoom + 1
 end
 
 
