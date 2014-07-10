@@ -165,7 +165,6 @@ end
 function Stepper:page_inc() end
 function Stepper:page_dec() end
 
-
 function Stepper:zoom_inc()
     if (self.zoom < 16) then
         self.zoom = self.zoom * 2
@@ -222,14 +221,10 @@ function Stepper:ensure_sub_column_exist()
    -- todo write me
 end
 
-function active_pattern()
-    local pattern_index = renoise.song().selected_pattern_index
-    return renoise.song().patterns[pattern_index]
-end
 function Stepper:calculate_column(x,y)
     local line = self:point_to_line(x,y)
-    local pattern_index = renoise.song().selected_pattern_index
-    local l = renoise.song().patterns[pattern_index].tracks[self.track].lines[line]
+    local pattern = active_pattern()
+    local l = pattern.tracks[self.track].lines[line]
     if l then
         self:ensure_sub_column_exist()
         return l.note_columns[self.sub_column]
