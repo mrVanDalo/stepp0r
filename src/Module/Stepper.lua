@@ -25,7 +25,7 @@ function Stepper:__init()
     self.octave      = 4
     -- navigation
     self.sub_column  = 1 -- the column in the track
-    self.zoom_factor = 1 -- influences grid size
+    self.zoom        = 1 -- influences grid size
     self.pattern     = 1 -- actual pattern
     self.page        = 1 -- page of actual pattern
     self.page_start  = 0  -- line left before first pixel
@@ -33,9 +33,10 @@ function Stepper:__init()
     -- rendering
     self.matrix      = {}
     self.color       = {
-        off  = color.red,
-        note = color.yellow,
-        empty = color.off
+        off    = color.red,
+        note   = color.yellow,
+        empty  = color.off,
+        active = color.yellow
     }
 
     self.playback_position_observer = PlaybackPositionObserver()
@@ -66,9 +67,9 @@ function Stepper:line_to_point(line)
     if l < 1 then return end
     -- zoom
     local li = l
-    if (self.zoom_factor > 1) then
-        if (l % self.zoom_factor) ~= 0 then return end
-        li = l / self.zoom_factor
+    if (self.zoom > 1) then
+        if (l % self.zoom) ~= 0 then return end
+        li = l / self.zoom
     end
     local x = ((li - 1) % 8) + 1
     local y = math.floor((li - 1) / 8) + 1
@@ -102,6 +103,34 @@ function Stepper:_activate()
     self.pad:register_matrix_listener(function (_,msg)
         self:matrix_listener(msg)
     end)
+
+    -- register pad right listener
+    self.pad:register_top_listener(function (_,msg)
+        if (msg.vel == 0 ) then return end
+        if (msg.x == 6 ) then
+            self:zoom_dec()
+        elseif (msg.x == 7) then
+            self:zoom_inc()
+        end
+    end)
+end
+
+function Stepper:zoom_inc()
+    if (self.zoom < 16) then
+        self.zoom = self.zoom * 2
+        self.pad:set_top(7,self.color.active)
+    else
+        self.pad:set_top(7,self.color.empty)
+    end
+end
+
+function Stepper:zoom_dec()
+    if (self.zoom > 1) then
+        self.zoom = self.zoom / 2
+        self.pad:set_top(6,self.color.active)
+    else
+        self.pad:set_top(6,self.color.empty)
+    end
 end
 
 function Stepper:matrix_listener(msg)
