@@ -23,15 +23,21 @@ function Stepper:__init()
     self.instrument  = 1
     self.note        = note.c
     self.octave      = 4
+    -- ---
     -- navigation
+    -- ---
+    -- zoom
     self.zoom         = 1 -- influences grid size
     self.zoom_inc_idx = 7
     self.zoom_dec_idx = 6
-    self.sub_column   = 1 -- the column in the track
-    self.pattern      = 1 -- actual pattern
+    -- pagination
     self.page         = 1 -- page of actual pattern
+    self.page_inc_idx = 2
+    self.page_dec_idx = 1
     self.page_start   = 0  -- line left before first pixel
     self.page_end     = 33 -- line right after last pixel
+    self.sub_column   = 1 -- the column in the track
+    self.pattern      = 1 -- actual pattern
     -- rendering
     self.matrix      = {}
     self.color       = {
@@ -115,7 +121,7 @@ function Stepper:_activate()
     end)
 
     self:update_zoom_knobs()
-    -- register pad right listener
+    -- register pad top listener
     self.pad:register_top_listener(function (_,msg)
         if (msg.vel == 0 ) then return end
         if (msg.x == self.zoom_dec_idx ) then
@@ -124,7 +130,41 @@ function Stepper:_activate()
             self:zoom_inc()
         end
     end)
+
+    self:update_page_knobs()
+    -- register pad top listener
+    self.pad:register_top_listener(function (_,msg)
+        if (msg.vel == 0) then return end
+        if(msg.x == self.page_inc_idx) then
+            self:page_inc()
+        elseif(msg.x == self.page_dec_idx)then
+            self:page_dec()
+        end
+    end)
 end
+
+function active_pattern()
+    local pattern_index = renoise.song().selected_pattern_index
+    return renoise.song().patterns[pattern_index]
+end
+
+function Stepper:update_page_knobs()
+    if (self.page_start <= 0)  then
+        self.pad:set_top(self.page_dec_idx,self.color.empty)
+    else
+        self.pad:set_top(self.page_dec_idx,self.color.active)
+    end
+    local pattern = active_pattern()
+    if (self.page_end >= pattern.number_of_lines)  then
+        self.pad:set_top(self.page_inc_idx,self.color.empty)
+    else
+        self.pad:set_top(self.page_inc_idx,self.color.active)
+    end
+end
+
+function Stepper:page_inc() end
+function Stepper:page_dec() end
+
 
 function Stepper:zoom_inc()
     if (self.zoom < 16) then
@@ -182,6 +222,10 @@ function Stepper:ensure_sub_column_exist()
    -- todo write me
 end
 
+function active_pattern()
+    local pattern_index = renoise.song().selected_pattern_index
+    return renoise.song().patterns[pattern_index]
+end
 function Stepper:calculate_column(x,y)
     local line = self:point_to_line(x,y)
     local pattern_index = renoise.song().selected_pattern_index
