@@ -78,6 +78,12 @@ function Stepper:line_to_point(line)
     return {x,y}
 end
 
+-- ---
+-- point_to_line(line_to_point(l)) == l should allways be true ?
+function Stepper:point_to_line(x,y)
+    return (x + (8 * (y - 1))) * self.zoom
+end
+
 
 
 
@@ -121,6 +127,15 @@ end
 function Stepper:zoom_inc()
     if (self.zoom < 16) then
         self.zoom = self.zoom * 2
+        self:refresh_matrix()
+    end
+    self:update_zoom_knobs()
+end
+
+function Stepper:zoom_dec()
+    if (self.zoom > 1) then
+        self.zoom = self.zoom / 2
+        self:refresh_matrix()
     end
     self:update_zoom_knobs()
 end
@@ -138,12 +153,6 @@ function Stepper:update_zoom_knobs()
     end
 end
 
-function Stepper:zoom_dec()
-    if (self.zoom > 1) then
-        self.zoom = self.zoom / 2
-    end
-    self:update_zoom_knobs()
-end
 
 function Stepper:matrix_listener(msg)
     if (msg.vel == 0) then return end
@@ -152,16 +161,18 @@ function Stepper:matrix_listener(msg)
     local empty_note       = 121
     local off_note         = 120
     local empty_instrument = 255
-    if column.note_value == empty_note then
-        column.note_value         = pitch(self.note,self.octave)
-        column.instrument_value   = (self.instrument - 1)
-        self.matrix[msg.x][msg.y] = self.color.note
-        self.pad:set_matrix(msg.x,msg.y,self.color.note)
-    else
-        column.note_value         = empty_note
-        column.instrument_value   = empty_instrument
-        self.matrix[msg.x][msg.y] = self.color.empty
-        self.pad:set_matrix(msg.x,msg.y,self.color.empty)
+    if column then
+        if column.note_value == empty_note then
+            column.note_value         = pitch(self.note,self.octave)
+            column.instrument_value   = (self.instrument - 1)
+            self.matrix[msg.x][msg.y] = self.color.note
+            self.pad:set_matrix(msg.x,msg.y,self.color.note)
+        else
+            column.note_value         = empty_note
+            column.instrument_value   = empty_instrument
+            self.matrix[msg.x][msg.y] = self.color.empty
+            self.pad:set_matrix(msg.x,msg.y,self.color.empty)
+        end
     end
 end
 
@@ -170,10 +181,15 @@ function Stepper:ensure_sub_column_exist()
 end
 
 function Stepper:calculate_column(x,y)
-    local line = x + (8 * (y - 1))
-    self:ensure_sub_column_exist()
+    local line = self:point_to_line(x,y)
     local pattern_index = renoise.song().selected_pattern_index
-    return renoise.song().patterns[pattern_index].tracks[self.track].lines[line].note_columns[self.sub_column]
+    local l = renoise.song().patterns[pattern_index].tracks[self.track].lines[line]
+    if l then
+        self:ensure_sub_column_exist()
+        return l.note_columns[self.sub_column]
+    else
+        return nil
+    end
 end
 
 function Stepper:update_pad_with_matrix(x,y)
