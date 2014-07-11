@@ -28,8 +28,8 @@ function Stepper:__init()
     -- ---
     -- zoom
     self.zoom         = 1 -- influences grid size
-    self.zoom_inc_idx = 7
-    self.zoom_dec_idx = 6
+    self.zoom_out_idx = 7
+    self.zoom_in_idx  = 6
     -- pagination
     self.page         = 1 -- page of actual pattern
     self.page_inc_idx = 2
@@ -124,10 +124,10 @@ function Stepper:_activate()
     -- register pad top listener
     self.pad:register_top_listener(function (_,msg)
         if (msg.vel == 0 ) then return end
-        if (msg.x == self.zoom_dec_idx ) then
-            self:zoom_dec()
-        elseif (msg.x == self.zoom_inc_idx) then
-            self:zoom_inc()
+        if (msg.x == self.zoom_in_idx ) then
+            self:zoom_in()
+        elseif (msg.x == self.zoom_out_idx) then
+            self:zoom_out()
         end
     end)
 
@@ -162,20 +162,50 @@ function Stepper:update_page_knobs()
     end
 end
 
-function Stepper:page_inc() end
-function Stepper:page_dec() end
+function Stepper:page_inc()
+    local pattern = active_pattern()
+    if (self.page_end >= pattern.number_of_lines) then return end
+    self.page = self.page + 1
+    self:update_page_borders()
+    self:refresh_matrix()
+end
 
-function Stepper:zoom_inc()
+function Stepper:update_page_borders()
+    self.page_start = ((self.page - 1) * 32 * self.zoom)
+    self.page_end   = self.page_start + 1 + 32 * self.zoom
+    print("update page borders", self.page, self.page_start, self.page_end)
+end
+
+function Stepper:page_dec()
+    if(self.page_start <= 0 ) then return end
+    self.page = self.page - 1
+    self:update_page_borders()
+    self:refresh_matrix()
+end
+
+function Stepper:zoom_out()
     if (self.zoom < 16) then
+        -- update zoom
         self.zoom = self.zoom * 2
+        -- update page
+        self.page = (self.page * 2 ) - 1
+        self:update_page_borders()
+        -- refresh page
         self:refresh_matrix()
     end
     self:update_zoom_knobs()
 end
 
-function Stepper:zoom_dec()
+function Stepper:zoom_in()
     if (self.zoom > 1) then
+        -- update zoom
         self.zoom = self.zoom / 2
+        -- update page
+        if (self.page > 1) then
+            self.page = math.floor(self.page / 2)
+        end
+        self:update_page_borders()
+        -- refresh martix
         self:refresh_matrix()
     end
     self:update_zoom_knobs()
@@ -183,14 +213,14 @@ end
 
 function Stepper:update_zoom_knobs()
     if (self.zoom > 1) then
-        self.pad:set_top(self.zoom_dec_idx,self.color.active)
+        self.pad:set_top(self.zoom_in_idx,self.color.active)
     else
-        self.pad:set_top(self.zoom_dec_idx,self.color.empty)
+        self.pad:set_top(self.zoom_in_idx,self.color.empty)
     end
     if (self.zoom < 16) then
-        self.pad:set_top(self.zoom_inc_idx,self.color.active)
+        self.pad:set_top(self.zoom_out_idx,self.color.active)
     else
-        self.pad:set_top(self.zoom_inc_idx,self.color.empty)
+        self.pad:set_top(self.zoom_out_idx,self.color.empty)
     end
 end
 
