@@ -187,7 +187,8 @@ function Stepper:page_dec()
 end
 
 function Stepper:zoom_out()
-    if (self.zoom < 16) then
+    local pattern = active_pattern()
+    if (self.zoom < pattern.number_of_lines / 32) then
         -- update zoom
         self.zoom = self.zoom * 2
         -- update page
