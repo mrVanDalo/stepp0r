@@ -36,6 +36,7 @@ function Stepper:__init()
     self.page_dec_idx = 1
     self.page_start   = 0  -- line left before first pixel
     self.page_end     = 33 -- line right after last pixel
+    -- rest
     self.sub_column   = 1 -- the column in the track
     self.pattern      = 1 -- actual pattern
     -- rendering
@@ -89,7 +90,7 @@ end
 -- point_to_line(line_to_point(l)) == l should allways be true ?
 -- todo : wirte tests for me and optemize me
 function Stepper:point_to_line(x,y)
-    return ((x + (8 * (y - 1))) - 1) * self.zoom + 1
+    return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
 end
 
 
