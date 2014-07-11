@@ -196,6 +196,7 @@ function Stepper:zoom_out()
         -- refresh page
         self:refresh_matrix()
     end
+    self:update_page_knobs()
     self:update_zoom_knobs()
 end
 
@@ -211,6 +212,7 @@ function Stepper:zoom_in()
         -- refresh martix
         self:refresh_matrix()
     end
+    self:update_page_knobs()
     self:update_zoom_knobs()
 end
 
