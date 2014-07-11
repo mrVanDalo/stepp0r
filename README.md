@@ -12,3 +12,17 @@ Here I define basic functionality the Launchpad delivers.
 
 should show almost all the functions that are possible.
 You should have a look at that function to find out what is possible by the Launchpad class. 
+
+
+## Convention
+
+* functions starting with an underscore are meant to be used in public
+* functions without an underscore meant to be private
+
+### why?
+
+Almost all functions are private. 
+I don't want to write my functions in a way they are bad readable.
+In the main file there are a lot of underscore functions (because all the configuration takes place here).
+In that file an underscore kind a improves the readability (because there is moar space betweent them lettors).
+

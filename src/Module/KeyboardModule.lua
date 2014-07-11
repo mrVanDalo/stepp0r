@@ -163,7 +163,7 @@ function KeyboardModule:set_note(x,y)
     self:print_note()
     -- fullfill callbacks
     for _, callback in ipairs(self.callback_set_note) do
-        callback(self, self.note)
+        callback(self.note, self.octave)
     end
 end
 
@@ -221,10 +221,9 @@ end
 function KeyboardModule:trigger_note()
     local OscMessage = renoise.Osc.Message
     local track      = self.instrument
-    local pitch      = self.note[access.pitch]
+    local tone       = self.note[access.pitch]
     local velocity   = 127
-    print(("pitch : %s"):format(pitch))
-    if pitch == -1 then
+    if tone == -1 then
         -- todo make this turn of the notes
         self.client:send(OscMessage("/renoise/trigger/note_off",{
             {tag="i",value=self.instrument},
@@ -236,7 +235,7 @@ function KeyboardModule:trigger_note()
         self.client:send(OscMessage("/renoise/trigger/note_on",{
             {tag="i",value=self.instrument},
             {tag="i",value=track},
-            {tag="i",value=(pitch + (self.octave * 12))},
+            {tag="i",value=pitch(self.note,self.octave)},
             {tag="i",value=velocity}}))
     end
 end
