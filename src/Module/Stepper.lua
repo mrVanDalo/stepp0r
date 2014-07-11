@@ -228,7 +228,8 @@ function Stepper:update_zoom_knobs()
     else
         self.pad:set_top(self.zoom_in_idx,self.color.empty)
     end
-    if (self.zoom < 16) then
+    local pattern = active_pattern()
+    if (self.zoom < (pattern.number_of_lines / 32)) then
         self.pad:set_top(self.zoom_out_idx,self.color.active)
     else
         self.pad:set_top(self.zoom_out_idx,self.color.empty)
