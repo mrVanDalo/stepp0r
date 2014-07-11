@@ -97,10 +97,10 @@ end
 
 
 function Stepper:refresh_matrix()
-    self:clear_matrix()
-    self:update_matrix()
-    -- self:clear_pad_matrix()
-    self:update_pad_matrix()
+    self:matrix_clear()
+    self:matrix_update()
+    -- self:pad_matrix_clear()
+    self:pad_matrix_update()
 end
 
 function Stepper:_activate()
@@ -121,7 +121,7 @@ function Stepper:_activate()
         self:matrix_listener(msg)
     end)
 
-    self:update_zoom_knobs()
+    self:zoom_update_knobs()
     -- register pad top listener
     self.pad:register_top_listener(function (_,msg)
         if (msg.vel == 0 ) then return end
@@ -132,7 +132,7 @@ function Stepper:_activate()
         end
     end)
 
-    self:update_page_knobs()
+    self:page_update_knobs()
     -- register pad top listener
     self.pad:register_top_listener(function (_,msg)
         if (msg.vel == 0) then return end
@@ -149,7 +149,10 @@ function active_pattern()
     return renoise.song().patterns[pattern_index]
 end
 
-function Stepper:update_page_knobs()
+---------------------------------------------------------------
+-- pagination
+
+function Stepper:page_update_knobs()
     if (self.page_start <= 0)  then
         self.pad:set_top(self.page_dec_idx,self.color.empty)
     else
@@ -167,24 +170,27 @@ function Stepper:page_inc()
     local pattern = active_pattern()
     if (self.page_end >= pattern.number_of_lines) then return end
     self.page = self.page + 1
-    self:update_page_borders()
-    self:update_page_knobs()
+    self:page_update_borders()
+    self:page_update_knobs()
     self:refresh_matrix()
-end
-
-function Stepper:update_page_borders()
-    self.page_start = ((self.page - 1) * 32 * self.zoom)
-    self.page_end   = self.page_start + 1 + 32 * self.zoom
-    print("update page borders", self.page, self.page_start, self.page_end)
 end
 
 function Stepper:page_dec()
     if(self.page_start <= 0 ) then return end
     self.page = self.page - 1
-    self:update_page_borders()
-    self:update_page_knobs()
+    self:page_update_borders()
+    self:page_update_knobs()
     self:refresh_matrix()
 end
+
+function Stepper:page_update_borders()
+    self.page_start = ((self.page - 1) * 32 * self.zoom)
+    self.page_end   = self.page_start + 1 + 32 * self.zoom
+    print("update page borders", self.page, self.page_start, self.page_end)
+end
+
+---------------------------------------------------------------
+-- zooming
 
 function Stepper:zoom_out()
     local pattern = active_pattern()
@@ -193,17 +199,17 @@ function Stepper:zoom_out()
         self.zoom = self.zoom * 2
         -- update page
         self.page = (self.page * 2 ) - 1
-        self:update_page_borders()
+        self:page_update_borders()
         -- correction
         if (self.page_start >= pattern.number_of_lines) then
             self.page = self.page - 2
-            self:update_page_borders()
+            self:page_update_borders()
         end
         -- refresh page
         self:refresh_matrix()
     end
-    self:update_page_knobs()
-    self:update_zoom_knobs()
+    self:page_update_knobs()
+    self:zoom_update_knobs()
 end
 
 function Stepper:zoom_in()
@@ -214,15 +220,15 @@ function Stepper:zoom_in()
         if (self.page > 1) then
             self.page = math.floor(self.page / 2)
         end
-        self:update_page_borders()
+        self:page_update_borders()
         -- refresh martix
         self:refresh_matrix()
     end
-    self:update_page_knobs()
-    self:update_zoom_knobs()
+    self:page_update_knobs()
+    self:zoom_update_knobs()
 end
 
-function Stepper:update_zoom_knobs()
+function Stepper:zoom_update_knobs()
     if (self.zoom > 1) then
         self.pad:set_top(self.zoom_in_idx,self.color.active)
     else
@@ -275,7 +281,7 @@ function Stepper:calculate_column(x,y)
     end
 end
 
-function Stepper:update_pad_with_matrix(x,y)
+function Stepper:matrix_update_pad(x,y)
     if(self.matrix[x][y]) then
         self.pad:set_matrix(x,y,self.matrix[x][y])
     else
@@ -283,7 +289,7 @@ function Stepper:update_pad_with_matrix(x,y)
     end
 end
 
-function Stepper:update_matrix()
+function Stepper:matrix_update()
     local pattern_iter  = renoise.song().pattern_iterator
     local pattern_index = renoise.song().selected_pattern_index
     for pos,line in pattern_iter:lines_in_pattern_track(pattern_index, self.track) do
@@ -307,7 +313,12 @@ function Stepper:update_matrix()
     end
 end
 
-function Stepper:clear_pad_matrix()
+function Stepper:matrix_clear()
+    self.matrix = {}
+    for x = 1, 8 do self.matrix[x] = {} end
+end
+
+function Stepper:pad_matrix_clear()
     for y = 1, 4 do
         for x = 1,8 do
             self.pad:set_matrix(x,y,color.off)
@@ -315,15 +326,10 @@ function Stepper:clear_pad_matrix()
     end
 end
 
-function Stepper:clear_matrix()
-    self.matrix = {}
-    for x = 1, 8 do self.matrix[x] = {} end
-end
-
-function Stepper:update_pad_matrix()
+function Stepper:pad_matrix_update()
     for x = 1, 8 do
         for y = 1, 4 do
-            self:update_pad_with_matrix(x,y)
+            self:matrix_update_pad(x,y)
         end
     end
 end
@@ -334,17 +340,19 @@ end
 function Stepper:callback_playback_position(pos)
     if self.pattern ~= pos.sequence then return end
     local line = pos.line
+    if (line <= self.page_start) then return end
+    if (line >= self.page_end)   then return end
     local xy = self:line_to_point(line)
     if not xy then return end
     local x = xy[1]
     local y = xy[2]
     if (x < 9 and y < 5) then
         if (x == 1 and y == 1) then
-            self:update_pad_with_matrix(8,4)
+            self:matrix_update_pad(8,4)
         elseif (x == 1) then
-            self:update_pad_with_matrix(8,y-1)
+            self:matrix_update_pad(8,y-1)
         else
-            self:update_pad_with_matrix(x-1,y)
+            self:matrix_update_pad(x-1,y)
         end
         self.pad:set_matrix(x,y,color.green)
     end
