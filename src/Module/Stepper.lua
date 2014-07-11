@@ -194,6 +194,11 @@ function Stepper:zoom_out()
         -- update page
         self.page = (self.page * 2 ) - 1
         self:update_page_borders()
+        -- correction
+        if (self.page_start >= pattern.number_of_lines) then
+            self.page = self.page - 2
+            self:update_page_borders()
+        end
         -- refresh page
         self:refresh_matrix()
     end
