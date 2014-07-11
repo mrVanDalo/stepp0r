@@ -167,6 +167,7 @@ function Stepper:page_inc()
     if (self.page_end >= pattern.number_of_lines) then return end
     self.page = self.page + 1
     self:update_page_borders()
+    self:update_page_knobs()
     self:refresh_matrix()
 end
 
@@ -180,6 +181,7 @@ function Stepper:page_dec()
     if(self.page_start <= 0 ) then return end
     self.page = self.page - 1
     self:update_page_borders()
+    self:update_page_knobs()
     self:refresh_matrix()
 end
 
