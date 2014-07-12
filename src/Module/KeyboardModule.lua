@@ -48,7 +48,7 @@ end
 -- callback functions
 --
 function KeyboardModule:callback_set_instrument()
-    local function set_instrument(index)
+    local function set_instrument(index,_)
         -- backup
         self.instrument_backup[self.instrument] = self:state()
         -- switch

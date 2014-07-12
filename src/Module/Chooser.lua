@@ -19,7 +19,8 @@ end
 
 function Chooser:__init()
     LaunchpadModule:__init(self)
-    self.active      = 1  -- active instrument index
+    self.active        = 1  -- active instrument index
+    self.active_column = 1
     self.row         = 6
     self.color = {
         active  = color.flash.green,
@@ -74,14 +75,34 @@ function Chooser:_activate()
 end
 
 function Chooser:select_instrument(x)
-    self.active = self.inst_offset + x
-    local found = renoise.song().instruments[self.active]
+    local active = self.inst_offset + x
+    local found = renoise.song().instruments[active]
     if not found        then return  end
     if found.name == "" then return  end
-    print("found ", found.name)
-    -- callback
+    self.active        = active
+    self.active_column = 1
+    -- ensure track exist
+    local nr_of_tracks = renoise.song().sequencer_track_count
+    if (nr_of_tracks < self.active) then
+        -- create tracks to that point
+        local how_many_to_add = self.active -  nr_of_tracks
+        for _ = 1, how_many_to_add do
+            renoise.song():insert_track_at(nr_of_tracks + 1)
+        end
+    end
+    -- ensure column exist
+    -- find out the number of note_columns that exist
+    -- todo : write this part
+    -- local pattern_index = renoise.song().selected_pattern_index
+    -- local iterator = renoise.song().pattern_iterator:note_columns_in_track(self.active,true)
+    -- local iterator = renoise.song().pattern_iterator:note_columns_in_pattern_track(pattern_index, self.active,true)
+    -- for pos,column in iterator do
+        -- print(pos,column)
+    -- end
+    --
+    -- trigger callbacks
     for _, callback in ipairs(self.callback_select_instrument) do
-        callback(self.active)
+        callback(self.active,self.active_column)
     end
 end
 
