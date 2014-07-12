@@ -52,7 +52,7 @@ function Stepper:__init()
 end
 
 function Stepper:callback_set_instrument()
-    return function (index)
+    return function (index,_)
         self.track      = index
         self.instrument = index
         self:refresh_matrix()
