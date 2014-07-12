@@ -89,6 +89,33 @@ local function show_dialog()
       -- user pressed OK, do something  
     end
   --]]
+  require 'Launchpad'
+  require 'Module/LaunchpadModule'
+  require 'Module/KeyboardModule'
+  require 'Module/Chooser'
+  require 'Module/Stepper'
+  require 'Data/Note'
+  require 'Data/Color'
+
+  print('load dev main')
+
+  local pad = Launchpad()
+
+  local stepper = Stepper()
+  stepper:wire_launchpad(pad)
+
+  local key = KeyboardModule()
+  key:wire_launchpad(pad)
+  key:register_set_note(stepper:callback_set_note())
+
+  local chooser = Chooser()
+  chooser:wire_launchpad(pad)
+  chooser:register_select_instrument(key:callback_set_instrument())
+  chooser:register_select_instrument(stepper:callback_set_instrument())
+
+  key:activate()
+  stepper:activate()
+  chooser:activate()
 end
 
 
@@ -98,36 +125,9 @@ end
 
 renoise.tool():add_menu_entry {
   name = "Main Menu:Tools:"..tool_name.."...",
-  invoke = show_dialog  
+  invoke = show_dialog
+
 }
-
-require 'Launchpad'
-require 'Module/LaunchpadModule'
-require 'Module/KeyboardModule'
-require 'Module/Chooser'
-require 'Module/Stepper'
-require 'Data/Note'
-require 'Data/Color'
-
-print('load dev main')
-
-pad = Launchpad()
-
-stepper = Stepper()
-stepper:wire_launchpad(pad)
-
-key = KeyboardModule()
-key:wire_launchpad(pad)
-key:register_set_note(stepper:callback_set_note())
-
-chooser = Chooser()
-chooser:wire_launchpad(pad)
-chooser:register_select_instrument(key:callback_set_instrument())
-chooser:register_select_instrument(stepper:callback_set_instrument())
-
-key:activate()
-chooser:activate()
-stepper:activate()
 
 
 
