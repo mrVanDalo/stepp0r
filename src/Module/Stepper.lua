@@ -255,7 +255,11 @@ function Stepper:matrix_listener(msg)
             column.note_value         = pitch(self.note,self.octave)
             column.instrument_value   = (self.instrument - 1)
             self.matrix[msg.x][msg.y] = self.color.note
-            self.pad:set_matrix(msg.x,msg.y,self.color.note)
+            if column.note_value == 120 then
+                self.pad:set_matrix(msg.x,msg.y,self.color.off)
+            else
+                self.pad:set_matrix(msg.x,msg.y,self.color.note)
+            end
         else
             column.note_value         = empty_note
             column.instrument_value   = empty_instrument
@@ -301,7 +305,7 @@ function Stepper:matrix_update()
                     local x = xy[1]
                     local y = xy[2]
                     if (y < 5 and y > 0) then
-                        if (note_column.note_string == "OFF") then
+                        if (note_column.note_value == 120) then
                             self.matrix[x][y] = self.color.off
                         else
                             self.matrix[x][y] = self.color.note
