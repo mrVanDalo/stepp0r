@@ -79,7 +79,6 @@ function Chooser:_activate()
     local function mode_listener(_,msg)
         if msg.vel == 0             then return end
         if msg.x   ~= self.mode_idx then return end
-        print("change")
         self:mode_next()
         self:mode_update_knobs()
     end
@@ -212,7 +211,8 @@ function Chooser:row_update()
             local passive_color = self.color.passive
             local track = renoise.song().tracks[nr]
             if track then
-                if track.mute_state == renoise.Track.MUTE_STATE_MUTED then
+                if track.mute_state == renoise.Track.MUTE_STATE_OFF  or  track.mute_state == renoise.Track.MUTE_STATE_MUTED
+                then
                     active_color  = self.color.mute.active
                     passive_color = self.color.mute.passive
                 end
