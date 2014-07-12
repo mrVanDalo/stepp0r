@@ -124,10 +124,14 @@ function Chooser:mute_track(x)
     local active = self.inst_offset + x
     self:ensure_active_track_exist()
     local track = renoise.song().tracks[active]
-    if track.mute_state == renoise.Track.MUTE_STATE_ACTIVE then
-        track:mute()
-    else
-        track:unmute()
+    if track then
+        if track.type == renoise.Track.TRACK_TYPE_SEQUENCER then
+            if track.mute_state == renoise.Track.MUTE_STATE_ACTIVE then
+                track:mute()
+            else
+                track:unmute()
+            end
+        end
     end
 end
 
