@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RenoiseScriptingTool doc_version="0">
+  <Name>Steppor</Name>
+  <Id>org.ingolfwagner.Steppor</Id>
+  <Version>0.1</Version>
+  <ApiVersion>4</ApiVersion>
+  <Author>Ingolf Wagner (palipalo9@googlemail.com)</Author>
+  <AutoUpgraded>false</AutoUpgraded>
+  <Category>In Progress</Category>
+  <Description>The most awesome Step-Sequencer you've ever seen.</Description>
+  <Homepage>http://tools.renoise.com</Homepage>
+  <Platform/>
+  <Icon/>
+</RenoiseScriptingTool>
