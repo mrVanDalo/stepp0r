@@ -100,7 +100,7 @@ function Chooser:select_instrument(x)
         -- print(pos,column)
     -- end
     --
-    -- todo : rename track to instrument
+    renoise.song().tracks[self.active].name = found.name
     -- trigger callbacks
     for _, callback in ipairs(self.callback_select_instrument) do
         callback(self.active,self.active_column)
