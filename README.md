@@ -26,3 +26,16 @@ I don't want to write my functions in a way they are bad readable.
 In the main file there are a lot of underscore functions (because all the configuration takes place here).
 In that file an underscore kind a improves the readability (because there is moar space betweent them lettors).
 
+# Changelog
+
+Version names by Estonian Marathon Champions
+
+## 0.1 Aare Kuum
+
+* Basic usability works
+    * Pattern Editor
+    * Keyboard
+    * Instrument chooser/muter
+    * Pagination and Zooming works too
+* You can use an osc server to hear the keyboard preview sounds
+    

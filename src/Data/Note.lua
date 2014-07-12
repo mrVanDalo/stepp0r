@@ -33,6 +33,11 @@ note = {
 -- calculate pitch
 --
 function pitch(note,octave)
-    return note[access.pitch] + (octave * 12)
+    local p = note[access.pitch]
+    if (p > -1) then
+        return p + (octave * 12)
+    else
+        return 120
+    end
 end
 
