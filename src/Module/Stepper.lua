@@ -14,6 +14,21 @@ require 'Experimental/PlaybackPositionObserver'
 -- stepp the pattern
 class "Stepper" (LaunchpadModule)
 
+--- magic numbers
+StepperConst = {
+    note = {
+        off   = 120,
+        empty = 121,
+    },
+    instrument = {
+        empty = 255
+    }
+}
+
+---
+------------------------------------------------------------------ init
+---
+
 function Stepper:__init()
     self.track       = 1
     self.instrument  = 1
@@ -43,14 +58,18 @@ function Stepper:__init()
         empty  = color.off,
         active = color.yellow
     }
-
     self.playback_position_observer = PlaybackPositionObserver()
 end
+
+
+
+---
+------------------------------------------------------------------ dependencys
+---
 
 function Stepper:wire_launchpad(pad)
     self.pad = pad
 end
-
 
 function Stepper:callback_set_instrument()
     return function (index,_)
@@ -67,10 +86,16 @@ function Stepper:callback_set_note()
     end
 end
 
--- ---
--- calculate point (for matrix) of line
+---
+------------------------------------------------------------------ library
+---
+
+--- calculate point (for matrix) of line
+--
 -- nil for is not on the matrix
+--
 -- todo : wirte tests for me and optemize me
+--
 function Stepper:line_to_point(line)
     -- page
     local l = line - self.page_start
@@ -81,13 +106,16 @@ function Stepper:line_to_point(line)
         if ((l - 1) % self.zoom) ~= 0 then return end
         li = ((l - 1) / self.zoom) + 1
     end
+    -- transformation
     local x = ((li - 1) % 8) + 1
     local y = math.floor((li - 1) / 8) + 1
     return {x,y}
 end
 
--- ---
+--- calculate the line a point given by the actual matrix configuration
+--
 -- point_to_line(line_to_point(l)) == l should allways be true ?
+--
 -- todo : wirte tests for me and optemize me
 function Stepper:point_to_line(x,y)
     return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
@@ -99,6 +127,21 @@ function Stepper:refresh_matrix()
     -- self:pad_matrix_clear()
     self:pad_matrix_update()
 end
+
+--- get the active pattern object
+--
+-- self.pattern_idx will be kept up to date by an observable notifier
+--
+function Stepper:active_pattern()
+    return renoise.song().patterns[self.pattern_idx]
+end
+
+
+
+
+---
+------------------------------------------------------------------ boot
+---
 
 function Stepper:_activate()
     self:refresh_matrix()
@@ -121,7 +164,7 @@ function Stepper:_activate()
     --- pad matrix listener
     --
     -- listens on click events on the launchpad matrix
-    --
+    -- todo write this function inline and extract the sub routines
     self.pad:register_matrix_listener(function (_,msg)
         self:matrix_listener(msg)
     end)
@@ -155,16 +198,15 @@ function Stepper:_activate()
     end)
 end
 
-
---- short-cut to get the active pattern object
+--- tear down
 --
-function Stepper:active_pattern()
-    return renoise.song().patterns[self.pattern_idx]
+function Stepper:_deactivate()
+    self.playback_position_observer:unregister(f)
 end
 
-
----------------------------------------------------------------
--- pagination
+---
+------------------------------------------------------------------ pagination
+---
 
 function Stepper:page_update_knobs()
     if (self.page_start <= 0)  then
@@ -203,8 +245,14 @@ function Stepper:page_update_borders()
     print("update page borders", self.page, self.page_start, self.page_end)
 end
 
----------------------------------------------------------------
--- zooming
+
+
+
+
+
+----
+------------------------------------------------------------------ zoom
+---
 
 function Stepper:zoom_out()
     local pattern = self:active_pattern()
@@ -256,16 +304,18 @@ function Stepper:zoom_update_knobs()
     end
 end
 
+---
+------------------------------------------------------------------ stepper
+---
 
+--- listens to events from the user on the matrix
+--
 function Stepper:matrix_listener(msg)
     if (msg.vel == 0) then return end
     if (msg.y > 4 )   then return end
-    local column           = self:calculate_column(msg.x,msg.y)
-    local empty_note       = 121
-    local off_note         = 120
-    local empty_instrument = 255
+    local column           = self:calculate_track_position(msg.x,msg.y)
     if column then
-        if column.note_value == empty_note then
+        if column.note_value == StepperData.note.empty then
             column.note_value         = pitch(self.note,self.octave)
             column.instrument_value   = (self.instrument - 1)
             self.matrix[msg.x][msg.y] = self.color.note
@@ -275,30 +325,43 @@ function Stepper:matrix_listener(msg)
                 self.pad:set_matrix(msg.x,msg.y,self.color.note)
             end
         else
-            column.note_value         = empty_note
-            column.instrument_value   = empty_instrument
+            column.note_value         = StepperData.note.empty
+            column.instrument_value   = StepperData.instrument.empty
             self.matrix[msg.x][msg.y] = self.color.empty
             self.pad:set_matrix(msg.x,msg.y,self.color.empty)
         end
     end
 end
 
+--- should ensure the column exist
+--
+-- todo might be deprecated, because this should be done by the choosser
+--
 function Stepper:ensure_sub_column_exist()
    -- todo write me
 end
 
-function Stepper:calculate_column(x,y)
-    local line = self:point_to_line(x,y)
-    local pattern = self:active_pattern()
-    local l = pattern.tracks[self.track].lines[line]
-    if l then
+--- calculates the position in track
+--
+-- the point should come from the launchpad.
+-- the note_column that is selected will be taken in account
+--
+-- @return nil if nothing found
+--
+function Stepper:calculate_track_position(x,y)
+    local line       = self:point_to_line(x,y)
+    local pattern    = self:active_pattern()
+    local found_line = pattern.tracks[self.track].lines[line]
+    if found_line then
         self:ensure_sub_column_exist()
-        return l.note_columns[self.sub_column]
+        return found_line.note_columns[self.sub_column]
     else
         return nil
     end
 end
 
+--- update pad by the given matrix
+--
 function Stepper:matrix_update_pad(x,y)
     if(self.matrix[x][y]) then
         self.pad:set_matrix(x,y,self.matrix[x][y])
@@ -307,19 +370,20 @@ function Stepper:matrix_update_pad(x,y)
     end
 end
 
+--- update memory-matrix by the current selected pattern
 function Stepper:matrix_update()
     local pattern_iter  = renoise.song().pattern_iterator
-    local pattern_index = renoise.song().selected_pattern_index
-    for pos,line in pattern_iter:lines_in_pattern_track(pattern_index, self.track) do
+    for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_index, self.track) do
         if not table.is_empty(line.note_columns) then
             local note_column = line:note_column(self.sub_column)
-            if(note_column.note_string ~= "---") then
+            print (StepperData.note.empty)
+            if(note_column.note_value ~= StepperData.note.empty) then
                 local xy = self:line_to_point(pos.line)
                 if xy then
                     local x = xy[1]
                     local y = xy[2]
                     if (y < 5 and y > 0) then
-                        if (note_column.note_value == 120) then
+                        if (note_column.note_value == StepperData.note.off) then
                             self.matrix[x][y] = self.color.off
                         else
                             self.matrix[x][y] = self.color.note
@@ -376,7 +440,4 @@ function Stepper:callback_playback_position(pos)
     end
 end
 
-function Stepper:_deactivate()
-    self.playback_position_observer:unregister(f)
-end
 
