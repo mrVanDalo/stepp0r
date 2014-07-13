@@ -158,6 +158,7 @@ function Stepper:_activate()
 
     --- selected pattern changes
     --
+    self.pattern_idx = renoise.song().selected_pattern_index
     self.pattern_callback = function (_)
         self.pattern_idx = renoise.song().selected_pattern_index
         self:refresh_matrix()
