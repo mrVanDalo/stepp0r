@@ -5,7 +5,7 @@
 
 require 'Data/Color'
 
-chooser_data =  {
+ChooserData =  {
     access = {
         id    = 1,
         color = 2,
@@ -34,7 +34,7 @@ function Chooser:__init()
     self.active        = 1  -- active instrument index
     self.active_column = 1
     self.row           = 6
-    self.mode          = chooser_data.mode.choose
+    self.mode          = ChooserData.mode.choose
     self.mode_idx      = self.row
     self.color = {
         active  = color.flash.green,
@@ -62,9 +62,9 @@ function Chooser:_activate()
     local function matrix_listener(_,msg)
         if msg.vel == 0x00    then return end
         if msg.y  ~= self.row then return end
-        if self.mode == chooser_data.mode.choose then
+        if self.mode == ChooserData.mode.choose then
             self:select_instrument(msg.x)
-        elseif self.mode == chooser_data.mode.mute then
+        elseif self.mode == ChooserData.mode.mute then
             self:mute_track(msg.x)
         end
         self:row_update()
@@ -106,18 +106,18 @@ function Chooser:_activate()
 end
 
 function Chooser:mode_next()
-    if self.mode == chooser_data.mode.choose then
-        self.mode = chooser_data.mode.mute
-    elseif self.mode == chooser_data.mode.mute then
-        self.mode = chooser_data.mode.choose
+    if self.mode == ChooserData.mode.choose then
+        self.mode = ChooserData.mode.mute
+    elseif self.mode == ChooserData.mode.mute then
+        self.mode = ChooserData.mode.choose
     else
-        self.mode = chooser_data.mode.choose
+        self.mode = ChooserData.mode.choose
     end
 end
 
 function Chooser:mode_update_knobs()
     -- print(self.mode)
-    self.pad:set_right(self.mode_idx, self.mode[chooser_data.access.color])
+    self.pad:set_right(self.mode_idx, self.mode[ChooserData.access.color])
 end
 
 function Chooser:mute_track(x)
