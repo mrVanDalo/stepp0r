@@ -15,7 +15,7 @@ require 'Experimental/PlaybackPositionObserver'
 class "Stepper" (LaunchpadModule)
 
 --- magic numbers
-StepperConst = {
+StepperData = {
     note = {
         off   = 120,
         empty = 121,
@@ -373,10 +373,9 @@ end
 --- update memory-matrix by the current selected pattern
 function Stepper:matrix_update()
     local pattern_iter  = renoise.song().pattern_iterator
-    for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_index, self.track) do
+    for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track) do
         if not table.is_empty(line.note_columns) then
             local note_column = line:note_column(self.sub_column)
-            print (StepperData.note.empty)
             if(note_column.note_value ~= StepperData.note.empty) then
                 local xy = self:line_to_point(pos.line)
                 if xy then
