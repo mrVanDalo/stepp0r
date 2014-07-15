@@ -71,15 +71,13 @@ function Stepper:__init()
     self.playback_position_observer = PlaybackPositionObserver()
 end
 
-
+function Stepper:wire_launchpad(pad)
+    self.pad = pad
+end
 
 ---
 ------------------------------------------------------------------ dependencys
 ---
-
-function Stepper:wire_launchpad(pad)
-    self.pad = pad
-end
 
 function Stepper:callback_set_instrument()
     return function (index,_)
