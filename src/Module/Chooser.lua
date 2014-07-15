@@ -14,7 +14,9 @@ ChooserData =  {
         choose = {1, color.yellow},
         mute   = {2, color.red},
     },
-    clear = color.off,
+    color = {
+        clear = color.off,
+    },
 }
 
 -- A class to choose the Instruments
