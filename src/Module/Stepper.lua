@@ -22,6 +22,9 @@ StepperData = {
     },
     instrument = {
         empty = 255
+    },
+    color = {
+        clear = color.off
     }
 }
 
@@ -375,7 +378,7 @@ function Stepper:matrix_update_pad(x,y)
     if(self.matrix[x][y]) then
         self.pad:set_matrix(x,y,self.matrix[x][y])
     else
-        self.pad:set_matrix(x,y,color.off)
+        self.pad:set_matrix(x,y,StepperData.color.clear)
     end
 end
 
@@ -412,7 +415,7 @@ end
 function Stepper:pad_matrix_clear()
     for y = 1, 4 do
         for x = 1,8 do
-            self.pad:set_matrix(x,y,color.off)
+            self.pad:set_matrix(x,y,StepperData.color.clear)
         end
     end
 end
