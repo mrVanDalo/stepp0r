@@ -9,7 +9,7 @@ require 'Data/Color'
 class "KeyboardModule" (LaunchpadModule)
 
 -- this is a strange y -> x map for notes
-keyboard = {
+KeyboardData = {
     reverse_mapping = {
         { Note.note.off, Note.note.cis, Note.note.dis, Note.note.off, Note.note.fis, Note.note.gis, Note.note.ais, Note.note.off},
         { Note.note.c  , Note.note.d  , Note.note.e  , Note.note.f  , Note.note.g  , Note.note.a  , Note.note.b  , Note.note.C  },
@@ -62,6 +62,7 @@ function KeyboardModule:__init()
         octave      = color.yellow,
         off         = color.red,
         manover     = color.orange,
+        clear       = color.off,
     }
     self.note       = Note.note.c
     self.octave     = 4
@@ -172,8 +173,7 @@ end
 --- note arithmetics
 --
 function KeyboardModule:set_note(x,y)
-    self.note = keyboard.reverse_mapping[y - self.offset][x]
-    --- self:print_note()
+    self.note = KeyboardData.reverse_mapping[y - self.offset][x]
     -- fullfill callbacks
     for _, callback in ipairs(self.callback_set_note) do
         callback(self.note, self.octave)
@@ -236,8 +236,8 @@ function KeyboardModule:clear()
     local y0 = self.offset + 1
     local y1 = self.offset + 2
     for x=1,8,1 do
-        self.pad:set_matrix(x,y0,self.pad.color.off)
-        self.pad:set_matrix(x,y1,self.pad.color.off)
+        self.pad:set_matrix(x,y0,self.color.clear)
+        self.pad:set_matrix(x,y1,self.color.clear)
     end
 end
 
