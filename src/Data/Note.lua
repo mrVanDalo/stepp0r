@@ -12,6 +12,7 @@ access = {
     label  = 2,
 }
 
+-- todo rename me to a data type
 note = {
     c   = {  0 , "C-"  , 1, 2 },
     cis = {  1 , "C#"  , 2, 1 },
@@ -32,6 +33,7 @@ note = {
 -- ---
 -- calculate pitch
 --
+-- todo remove magic numbers
 function pitch(note,octave)
     local p = note[access.pitch]
     if (p > -1) then
@@ -40,4 +42,7 @@ function pitch(note,octave)
         return 120
     end
 end
+
+function is_not_off(tone) return tone[access.pitch] ~= -1 end
+function is_off(tone)     return tone[access.pitch] == -1 end
 
