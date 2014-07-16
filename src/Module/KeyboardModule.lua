@@ -66,6 +66,10 @@ function KeyboardModule:__init()
         manover     = color.orange,
         clear       = color.off,
     }
+    self.osc = {
+        host = "localhost",
+        port = 8008,
+    }
     self.note       = Note.note.c
     self.octave     = 4
     self.instrument = 1
@@ -89,8 +93,10 @@ end
 
 function KeyboardModule:_setup_callbacks()
     local function matrix_callback(_,msg)
+        -- todo move these to a Data Module
         -- local press   = 0x7F
         local release = 0x00
+        -- todo optimize me
         if (msg.y > self.offset and msg.y < (self.offset + 3) ) then
             if (msg.vel == release) then
                 self:untrigger_note()
@@ -131,7 +137,7 @@ end
 
 function KeyboardModule:_setup_client()
     --self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
-    self.client = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
+    self.client = renoise.Socket.create_client( self.osc.host , self.osc.port,  renoise.Socket.PROTOCOL_UDP)
 end
 
 function KeyboardModule:_deactivate()
