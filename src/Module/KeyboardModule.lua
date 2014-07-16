@@ -57,10 +57,12 @@ function KeyboardModule:__init()
     self.offset = 6
     -- default
     self.color = {
-        note        = color.green ,
-        active_note = color.flash.orange,
+        note = {
+            on      = color.green ,
+            active  = color.flash.orange,
+            off     = color.red,
+        },
         octave      = color.yellow,
-        off         = color.red,
         manover     = color.orange,
         clear       = color.off,
     }
@@ -222,8 +224,7 @@ end
 function KeyboardModule:update_active_note()
     local x     = self.note[Note.access.x]
     local y     = self.note[Note.access.y] + self.offset
-    print(("active note : (%s,%s)"):format(x,y))
-    self.pad:set_matrix( x, y, self.color.active_note )
+    self.pad:set_matrix( x, y, self.color.note.active)
 end
 
 function KeyboardModule:_refresh()
@@ -235,7 +236,7 @@ end
 function KeyboardModule:clear()
     local y0 = self.offset + 1
     local y1 = self.offset + 2
-    for x=1,8,1 do
+    for x=1,8 do
         self.pad:set_matrix(x,y0,self.color.clear)
         self.pad:set_matrix(x,y1,self.color.clear)
     end
@@ -260,12 +261,12 @@ function KeyboardModule:update_notes()
             self.pad:set_matrix(
                 tone[Note.access.x],
                 tone[Note.access.y] + self.offset,
-                self.color.note)
+                self.color.note.on)
         else
             self.pad:set_matrix(
                 tone[Note.access.x],
                 tone[Note.access.y] + self.offset,
-                self.color.off)
+                self.color.note.off)
         end
     end
 end
