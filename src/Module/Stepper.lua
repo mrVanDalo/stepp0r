@@ -35,7 +35,7 @@ StepperData = {
 function Stepper:__init()
     self.track       = 1
     self.instrument  = 1
-    self.note        = note.c
+    self.note        = Note.note.c
     self.octave      = 4
     -- ---
     -- navigation

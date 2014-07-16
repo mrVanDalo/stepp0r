@@ -11,8 +11,8 @@ class "KeyboardModule" (LaunchpadModule)
 -- this is a strange y -> x map for notes
 keyboard = {
     reverse_mapping = {
-        { note.off, note.cis, note.dis, note.off, note.fis, note.gis, note.ais, note.off},
-        { note.c  , note.d  , note.e  , note.f  , note.g  , note.a  , note.b  , note.C  },
+        { Note.note.off, Note.note.cis, Note.note.dis, Note.note.off, Note.note.fis, Note.note.gis, Note.note.ais, Note.note.off},
+        { Note.note.c  , Note.note.d  , Note.note.e  , Note.note.f  , Note.note.g  , Note.note.a  , Note.note.b  , Note.note.C  },
     }
 }
 
@@ -63,7 +63,7 @@ function KeyboardModule:__init()
         off         = color.red,
         manover     = color.orange,
     }
-    self.note       = note.c
+    self.note       = Note.note.c
     self.octave     = 4
     self.instrument = 1
     self.instrument_backup = {}
@@ -179,11 +179,6 @@ function KeyboardModule:set_note(x,y)
         callback(self.note, self.octave)
     end
 end
--- todo move me to note
-function KeyboardModule:print_note()
-    print(("note : %s%s"):format(self.note[access.label],self.octave))
-end
-
 
 
 
@@ -196,7 +191,7 @@ end
 function KeyboardModule:trigger_note()
     local OscMessage = renoise.Osc.Message
     local track      = self.instrument
-    local tone       = self.note[access.pitch]
+    local tone       = self.note[Note.access.pitch]
     local velocity   = 127
     if tone == -1 then
         -- todo make this turn of the notes
@@ -225,8 +220,8 @@ end
 ---
 
 function KeyboardModule:update_active_note()
-    local x     = self.note[access.x]
-    local y     = self.note[access.y] + self.offset
+    local x     = self.note[Note.access.x]
+    local y     = self.note[Note.access.y] + self.offset
     print(("active note : (%s,%s)"):format(x,y))
     self.pad:set_matrix( x, y, self.color.active_note )
 end
@@ -260,16 +255,16 @@ function KeyboardModule:update_octave()
 end
 
 function KeyboardModule:update_notes()
-    for note,tone in pairs(note) do
+    for _,tone in pairs(Note.note) do
         if (is_not_off(tone)) then
             self.pad:set_matrix(
-                tone[access.x],
-                tone[access.y] + self.offset,
+                tone[Note.access.x],
+                tone[Note.access.y] + self.offset,
                 self.color.note)
         else
             self.pad:set_matrix(
-                tone[access.x],
-                tone[access.y] + self.offset,
+                tone[Note.access.x],
+                tone[Note.access.y] + self.offset,
                 self.color.off)
         end
     end
