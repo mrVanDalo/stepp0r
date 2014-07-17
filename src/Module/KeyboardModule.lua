@@ -42,7 +42,7 @@ function KeyboardModule:callback_set_instrument()
             self:load_state(newState)
         end
         -- refresh
-        self:_refresh()
+        self:matrix_refresh()
     end
     return set_instrument
 end
@@ -83,15 +83,12 @@ end
 ---
 
 function KeyboardModule:_activate()
-    self:clear()
-    self.pad:set_flash()
-    self:_setup_keys()
-    self:_setup_callbacks()
-    self:_setup_client()
-    -- todo use refresh
+    self:matrix_refresh()
+    self:register_matrix_listener()
+    self:setup_osc_client()
 end
 
-function KeyboardModule:_setup_callbacks()
+function KeyboardModule:register_matrix_listener()
     local function matrix_callback(_,msg)
         -- todo move these to a Data Module
         -- local press   = 0x7F
@@ -115,35 +112,21 @@ function KeyboardModule:_setup_callbacks()
                         self:trigger_note()
                     end
                 end
-                self:update_keys()
+                self:matrix_update_keys()
             end
         end
     end
     self.pad:register_matrix_listener(matrix_callback)
 end
 
-function KeyboardModule:_setup_keys()
-    self:update_keys()
-    -- manover buttons
-    self.pad:set_matrix(
-        1,
-        1 + self.offset,
-        self.color.manover)
-    self.pad:set_matrix(
-        8,
-        1 + self.offset,
-        self.color.manover)
-end
-
-function KeyboardModule:_setup_client()
-    --self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
-    self.client = renoise.Socket.create_client( self.osc.host , self.osc.port,  renoise.Socket.PROTOCOL_UDP)
-end
 
 function KeyboardModule:_deactivate()
-    self:clear()
+    self:matrix_clear()
     self.pad:unregister_matrix_listener()
 end
+
+
+
 
 
 ---
@@ -191,10 +174,15 @@ end
 
 
 
+
 ---
 ------------------------------------------------------------------ osc client
 ---
 
+function KeyboardModule:setup_osc_client()
+    --self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
+    self.client = renoise.Socket.create_client( self.osc.host , self.osc.port,  renoise.Socket.PROTOCOL_UDP)
+end
 
 function KeyboardModule:trigger_note()
     local OscMessage = renoise.Osc.Message
@@ -227,19 +215,15 @@ end
 ------------------------------------------------------------------ rendering
 ---
 
-function KeyboardModule:update_active_note()
-    local x     = self.note[Note.access.x]
-    local y     = self.note[Note.access.y] + self.offset
-    self.pad:set_matrix( x, y, self.color.note.active)
-end
 
-function KeyboardModule:_refresh()
-    self:clear()
+function KeyboardModule:matrix_refresh()
+    self:matrix_clear()
     self.pad:set_flash()
-    self:_setup_keys()
+    self:matrix_update_keys()
+    self:matrix_update_keys_manover()
 end
 
-function KeyboardModule:clear()
+function KeyboardModule:matrix_clear()
     local y0 = self.offset + 1
     local y1 = self.offset + 2
     for x=1,8 do
@@ -248,20 +232,20 @@ function KeyboardModule:clear()
     end
 end
 
-function KeyboardModule:update_keys()
-    self:update_notes()
-    self:update_octave()
-    self:update_active_note()
+function KeyboardModule:matrix_update_keys()
+    self:matrix_update_keys_note()
+    self:matrix_update_keys_octave()
+    self:matrix_update_key_note_active()
 end
 
-function KeyboardModule:update_octave()
+function KeyboardModule:matrix_update_keys_octave()
     self.pad:set_matrix(
         self.octave,
         2 + self.offset,
         self.color.octave)
 end
 
-function KeyboardModule:update_notes()
+function KeyboardModule:matrix_update_keys_note()
     for _,tone in pairs(Note.note) do
         if (is_not_off(tone)) then
             self.pad:set_matrix(
@@ -277,3 +261,19 @@ function KeyboardModule:update_notes()
     end
 end
 
+function KeyboardModule:matrix_update_key_note_active()
+    local x     = self.note[Note.access.x]
+    local y     = self.note[Note.access.y] + self.offset
+    self.pad:set_matrix( x, y, self.color.note.active)
+end
+
+function KeyboardModule:matrix_update_keys_manover()
+    self.pad:set_matrix(
+        1,
+        1 + self.offset,
+        self.color.manover)
+    self.pad:set_matrix(
+        8,
+        1 + self.offset,
+        self.color.manover)
+end
