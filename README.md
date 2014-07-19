@@ -2,29 +2,36 @@
 
 This will be a step sequencer for Renoise using the Launchpad.
 
-## Lauchpad.lua
+## Structure
 
-Here I define basic functionality the Launchpad delivers.
+### Module
 
-    pad = Launchpad()
-    
-    example_colors(pad)
+A module is something that is used by other Modules. 
+Moste of the time that is something that writes something to the Launchpad.
 
-should show almost all the functions that are possible.
-You should have a look at that function to find out what is possible by the Launchpad class. 
+#### parts of a module
 
+#### init
 
-## Convention
+The init part is the part that holds the constructor and everything that should be used from outside.
+Most of the time these are callbacks, setter (starte withe `wire` because it sound cooler) and 
+un/register callback functions.
 
-* functions starting with an underscore are meant to be used in public
-* functions without an underscore meant to be private
+#### boot
 
-### why?
+The boot part is kinda fuzzy, in here are the `_activate` and `_deactivate` functions.
+And most of the time all the functions that are called in those 2 functions.
 
-Almost all functions are private. 
-I don't want to write my functions in a way they are bad readable.
-In the main file there are a lot of underscore functions (because all the configuration takes place here).
-In that file an underscore kind a improves the readability (because there is moar space betweent them lettors).
+#### lib / _functionality_
+
+This part/s hold logic function that derive from the init and boot parts.
+
+### Data
+
+Modules have them too, and the convention is `<Modulename>Data`. 
+It holds the Constant values for the modul or this artifact (Color or Note for example).
+Its a dictionary (table).
+For more complex objects it has a access key (containing the indecies to access parts of the complex object)
 
 # Changelog
 
