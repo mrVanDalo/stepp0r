@@ -26,7 +26,7 @@ StepperData = {
         empty = 255
     },
     color = {
-        clear = color.off
+        clear = Color.off
     }
 }
 
@@ -58,19 +58,19 @@ function Stepper:__init()
     -- rendering
     self.matrix      = {}
     self.color       = {
-        stepper = color.green,
+        stepper = Color.green,
         page = {
-            active   = color.yellow,
-            inactive = color.off,
+            active   = Color.yellow,
+            inactive = Color.off,
         },
         zoom = {
-            active   = color.yellow,
-            inactive = color.off,
+            active   = Color.yellow,
+            inactive = Color.off,
         },
         note = {
-            off   = color.red,
-            on    = color.yellow,
-            empty = color.off,
+            off   = Color.red,
+            on    = Color.yellow,
+            empty = Color.off,
         },
     }
     self.playback_position_observer = PlaybackPositionObserver()

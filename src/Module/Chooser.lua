@@ -17,11 +17,11 @@ ChooserData =  {
         color = 2,
     },
     mode = {
-        choose = {1, color.yellow},
-        mute   = {2, color.red},
+        choose = {1, Color.yellow},
+        mute   = {2, Color.red},
     },
     color = {
-        clear = color.off,
+        clear = Color.off,
     },
 }
 
@@ -49,16 +49,16 @@ function Chooser:__init()
     self.mode_idx      = self.row
     self.color = {
         instrument = {
-            active  = color.flash.green,
-            passive = color.green,
+            active  = Color.flash.green,
+            passive = Color.green,
         },
         mute = {
-            active  = color.flash.red,
-            passive = color.red,
+            active  = Color.flash.red,
+            passive = Color.red,
         },
         page = {
-            active   = color.yellow,
-            inactive = color.off,
+            active   = Color.yellow,
+            inactive = Color.off,
         }
     }
     -- page

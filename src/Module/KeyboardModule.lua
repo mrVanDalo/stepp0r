@@ -2,6 +2,8 @@
 require 'Module/LaunchpadModule'
 require 'Data/Note'
 require 'Data/Color'
+require 'Data/Velocity'
+
 
 -- --
 -- Keyboard Module
@@ -58,13 +60,13 @@ function KeyboardModule:__init()
     -- default
     self.color = {
         note = {
-            on      = color.green ,
-            active  = color.flash.orange,
-            off     = color.red,
+            on      = Color.green ,
+            active  = Color.flash.orange,
+            off     = Color.red,
         },
-        octave      = color.yellow,
-        manover     = color.orange,
-        clear       = color.off,
+        octave      = Color.yellow,
+        manover     = Color.orange,
+        clear       = Color.off,
     }
     self.osc = {
         host = "localhost",
@@ -91,12 +93,9 @@ end
 
 function KeyboardModule:register_matrix_listener()
     local function matrix_callback(_,msg)
-        -- todo move these to a Data Module
-        -- local press   = 0x7F
-        local release = 0x00
         -- todo optimize me
         if (msg.y > self.offset and msg.y < (self.offset + 3) ) then
-            if (msg.vel == release) then
+            if (msg.vel == Velocity.release) then
                 self:untrigger_note()
             else
                 if (msg.y == 2 + self.offset ) then

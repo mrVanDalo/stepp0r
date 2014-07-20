@@ -3,7 +3,7 @@
 -- Date: 7/6/14
 --
 
-color = {
+Color = {
     red    = 0x07,
     orange = 0x27,
     yellow = 0x3F,
