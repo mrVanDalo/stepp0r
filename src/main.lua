@@ -94,7 +94,7 @@ local function show_dialog()
   require 'Module/KeyboardModule'
   require 'Module/Chooser'
   require 'Module/Stepper'
-  require 'Module/Delay'
+  require 'Module/Effect'
   require 'Data/Note'
   require 'Data/Color'
 
@@ -105,9 +105,9 @@ local function show_dialog()
   local stepper = Stepper()
   stepper:wire_launchpad(pad)
 
-  local delay = Delay()
-  delay:wire_launchpad(pad)
-  delay:register_set_delay(stepper:callback_set_delay())
+  local effect = Effect()
+  effect:wire_launchpad(pad)
+  effect:register_set_delay(stepper:callback_set_delay())
 
   local key = KeyboardModule()
   key:wire_launchpad(pad)
@@ -117,13 +117,13 @@ local function show_dialog()
   chooser:wire_launchpad(pad)
   chooser:register_select_instrument(key:callback_set_instrument())
   chooser:register_select_instrument(stepper:callback_set_instrument())
-  chooser:register_select_instrument(delay:callback_set_instrument())
+  chooser:register_select_instrument(effect:callback_set_instrument())
 
   --- activate them all
   key:activate()
   stepper:activate()
   chooser:activate()
-  delay:activate()
+  effect:activate()
 end
 
 
