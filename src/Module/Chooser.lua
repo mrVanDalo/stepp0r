@@ -5,47 +5,60 @@
 
 require 'Data/Color'
 
-chooser_data =  {
+--- ======================================================================================================
+---
+---                                                   Chooser Moudle
+---
+--- To choose instruments, tracks and track rows.
+
+ChooserData =  {
     access = {
         id    = 1,
         color = 2,
     },
     mode = {
-        choose = {1, color.yellow},
-        mute   = {2, color.red},
-    }
+        choose = {1, Color.yellow},
+        mute   = {2, Color.red},
+    },
+    color = {
+        clear = Color.off,
+    },
 }
 
 -- A class to choose the Instruments
 class "Chooser" (LaunchpadModule)
 
 
--- register callback that gets a `index of instrument`
-function Chooser:register_select_instrument(callback)
-    table.insert(self.callback_select_instrument, callback)
-end
 
-function Chooser:wire_launchpad(pad)
-    self.pad = pad
-end
+
+
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ INIT ]
+
 
 function Chooser:__init()
     LaunchpadModule:__init(self)
     self.active        = 1  -- active instrument index
     self.active_column = 1
     self.row           = 6
-    self.mode          = chooser_data.mode.choose
+    self.mode          = ChooserData.mode.choose
     self.mode_idx      = self.row
     self.color = {
-        active  = color.flash.green,
-        passive = color.green,
+        instrument = {
+            active  = Color.flash.green,
+            passive = Color.green,
+        },
         mute = {
-            active  = color.flash.red,
-            passive = color.red,
+            active  = Color.flash.red,
+            passive = Color.red,
         },
         page = {
-            active   = color.yellow,
-            inactive = color.off,
+            active   = Color.yellow,
+            inactive = Color.off,
         }
     }
     -- page
@@ -57,14 +70,36 @@ function Chooser:__init()
     self.callback_select_instrument = {}
 end
 
+function Chooser:wire_launchpad(pad)
+    self.pad = pad
+end
+
+--- register callback
+--
+-- the callback gets the `index of instrument` and `the active note column`
+function Chooser:register_select_instrument(callback)
+    table.insert(self.callback_select_instrument, callback)
+end
+
+
+
+
+
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ BOOT ]
+
 function Chooser:_activate()
     -- chooser line
     local function matrix_listener(_,msg)
         if msg.vel == 0x00    then return end
         if msg.y  ~= self.row then return end
-        if self.mode == chooser_data.mode.choose then
+        if self.mode == ChooserData.mode.choose then
             self:select_instrument(msg.x)
-        elseif self.mode == chooser_data.mode.mute then
+        elseif self.mode == ChooserData.mode.mute then
             self:mute_track(msg.x)
         end
         self:row_update()
@@ -75,7 +110,7 @@ function Chooser:_activate()
     end)
     self:row_update()
 
-    -- mode control
+    --- mode control
     local function mode_listener(_,msg)
         if msg.vel == 0             then return end
         if msg.x   ~= self.mode_idx then return end
@@ -105,19 +140,34 @@ function Chooser:_activate()
     self:page_update_knobs()
 end
 
+function Chooser:_deactivate()
+    self:row_clear()
+end
+
+
+
+
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ Mode Control ]
+
+
 function Chooser:mode_next()
-    if self.mode == chooser_data.mode.choose then
-        self.mode = chooser_data.mode.mute
-    elseif self.mode == chooser_data.mode.mute then
-        self.mode = chooser_data.mode.choose
+    if self.mode == ChooserData.mode.choose then
+        self.mode = ChooserData.mode.mute
+    elseif self.mode == ChooserData.mode.mute then
+        self.mode = ChooserData.mode.choose
     else
-        self.mode = chooser_data.mode.choose
+        self.mode = ChooserData.mode.choose
     end
 end
 
 function Chooser:mode_update_knobs()
     -- print(self.mode)
-    self.pad:set_right(self.mode_idx, self.mode[chooser_data.access.color])
+    self.pad:set_right(self.mode_idx, self.mode[ChooserData.access.color])
 end
 
 function Chooser:mute_track(x)
@@ -172,8 +222,9 @@ function Chooser:select_instrument(x)
     end
 end
 
-function Chooser:top_callback()
-end
+--- ======================================================================================================
+---
+---                                                 [ PAGINATION ]
 
 function Chooser:page_update_knobs()
     local instrument_count = table.getn(renoise.song().instruments)
@@ -202,6 +253,14 @@ function Chooser:page_dec()
     end
 end
 
+
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ RENDERING ]
+
 function Chooser:row_update()
     -- todo using the mute state too
     self:row_clear()
@@ -211,8 +270,8 @@ function Chooser:row_update()
         end
         if instrument.name ~= "" then
             -- print(nr, instrument.name)
-            local active_color  = self.color.active
-            local passive_color = self.color.passive
+            local active_color  = self.color.instrument.active
+            local passive_color = self.color.instrument.passive
             local track = renoise.song().tracks[nr]
             if track then
                 if track.mute_state == renoise.Track.MUTE_STATE_OFF  or  track.mute_state == renoise.Track.MUTE_STATE_MUTED
@@ -232,10 +291,7 @@ end
 
 function Chooser:row_clear()
     for x = 1, 8, 1 do
-        self.pad:set_matrix(x,self.row,self.pad.color.off)
+        self.pad:set_matrix(x,self.row, ChooserData.color.clear)
     end
 end
 
-function Chooser:_deactivate()
-    self:row_clear()
-end
