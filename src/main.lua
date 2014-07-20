@@ -94,12 +94,16 @@ local function show_dialog()
   require 'Module/KeyboardModule'
   require 'Module/Chooser'
   require 'Module/Stepper'
+  require 'Module/Delay'
   require 'Data/Note'
   require 'Data/Color'
 
   print('load dev main')
 
   local pad = Launchpad()
+
+  local delay = Delay()
+  delay:wire_launchpad(pad)
 
   local stepper = Stepper()
   stepper:wire_launchpad(pad)
@@ -116,6 +120,7 @@ local function show_dialog()
   key:activate()
   stepper:activate()
   chooser:activate()
+  delay:activate()
 end
 
 

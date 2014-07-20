@@ -23,7 +23,7 @@ DalayData = {
 
 function Delay:__init()
     LaunchpadModule:__init(self)
-    self.delay = 0
+    self.delay = 1
     self.row   = 5
     self.color = {
         on  = Color.orange,
@@ -48,10 +48,12 @@ end
 ---                                                 [ Boot ]
 
 function Delay:_activate()
-    -- register row
+    -- register launchpad handling
+    self:matrix_refresh()
     self.pad:register_matrix_listener(function (_,msg)
         if (msg.y ~= self.row) then return end
         self.delay = msg.x
+        self:matrix_refresh()
         -- trigger callbacks
         local percent = intToPercent(self.delay)
         for _, callback in ipairs(self.callbacks_set_delay) do
@@ -60,9 +62,7 @@ function Delay:_activate()
     end)
 end
 
-function Delay:_deactivate()
-
-end
+function Delay:_deactivate()  end
 
 --- ======================================================================================================
 ---
@@ -72,7 +72,7 @@ end
 -- number must be 1-8
 
 function intToPercent(number)
-    if (number < 1 ) then return 0 end
+    if (number < 2 ) then return 0 end
     if (number > 8 ) then return 0 end
     -- return ((256 / 8) * (number - 1) - 1)
     return (256 / 8) * (number - 1)
@@ -82,4 +82,18 @@ end
 --- ======================================================================================================
 ---
 ---                                                 [ Rendering ]
+
+--- update matrix with the delay information
+function Delay:matrix_update()
+    self.pad:set_matrix(self.delay,self.row,self.color.on)
+end
+function Delay:matrix_clear()
+    for i = 1, 8 do
+        self.pad:set_matrix(i, self.row,self.color.off)
+    end
+end
+function Delay:matrix_refresh()
+    self:matrix_clear()
+    self:matrix_update()
+end
 
