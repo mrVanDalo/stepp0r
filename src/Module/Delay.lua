@@ -7,9 +7,7 @@
 --- updaten an manage Delay information
 
 
-class "Delay"
-
-
+class "Delay" (LaunchpadModule)
 
 
 
@@ -20,6 +18,7 @@ class "Delay"
 ---                                                 [ INIT ]
 
 function Delay:__init()
+    LaunchpadModule:__init(self)
     self.delay = 0
     self.callbacks_set_delay = {}
 end
@@ -35,4 +34,26 @@ function Delay:register_set_delay(callback)
 end
 
 
+--- ======================================================================================================
+---
+---                                                 [ Boot ]
+
+function Delay:_activate()
+
+end
+
+function Delay:_deactivate()
+
+end
+
+--- ======================================================================================================
+---
+---                                                 [ Library ]
+
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ Rendering ]
 
