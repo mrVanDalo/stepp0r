@@ -9,6 +9,9 @@
 
 class "Delay" (LaunchpadModule)
 
+DalayData = {
+
+}
 
 
 
@@ -50,7 +53,15 @@ end
 ---
 ---                                                 [ Library ]
 
+--- transforms key number to percentage
+-- number must be 1-8
 
+function intToPercent(number)
+    if (number < 1 ) then return 0 end
+    if (number > 8 ) then return 0 end
+    -- return ((256 / 8) * (number - 1) - 1)
+    return (256 / 8) * (number - 1)
+end
 
 
 --- ======================================================================================================
