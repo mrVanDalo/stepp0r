@@ -31,10 +31,10 @@ EffectData = {
 
 function Effect:__init()
     LaunchpadModule:__init(self)
-    self.mode  = EffectData.mode.DELAY
-    self.delay = 1 -- init values
-    self.pan   = 0 -- init values
-    self.vol   = 1 -- init values
+    self.mode   = EffectData.mode.DELAY
+    self.delay  = 1 -- init values
+    self.pan    = 0 -- init values
+    self.volume = 1 -- init values
     -- configuration
     self.row           = 5
     self.mode_knob_idx = self.row
