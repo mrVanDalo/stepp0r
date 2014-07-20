@@ -186,14 +186,14 @@ function Effect:matrix_update_pan()
     if self.pan == 0 then return end
     if self.pan < 5 then
         for i = 1, 4 do
-            local color = self.color.off
-            if self.pan >= i then color = self.color.on end
+            local color = self.color.on
+            if self.pan > i then color = self.color.off end
             self.pad:set_matrix(i,self.row,color)
         end
     else
         for i = 5, 8 do
-            local color = self.color.off
-            if self.pan <= i then color = self.color.on end
+            local color = self.color.on
+            if self.pan < i then color = self.color.off end
             self.pad:set_matrix(i,self.row,color)
         end
     end
