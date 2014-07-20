@@ -74,6 +74,7 @@ function KeyboardModule:__init()
     self.octave     = 4
     self.instrument = 1
     self.instrument_backup = {}
+    self.velocity   = 127
     -- callback
     self.callback_set_note = {}
 end
@@ -187,22 +188,12 @@ end
 function KeyboardModule:trigger_note()
     local OscMessage = renoise.Osc.Message
     local track      = self.instrument
-    local tone       = self.note[Note.access.pitch]
-    local velocity   = 127
-    if tone == -1 then
-        -- todo make this turn of the notes
-        self.client:send(OscMessage("/renoise/trigger/note_off",{
-            {tag="i",value=self.instrument},
-            {tag="i",value=track},
-            {tag="i",value=-1},
-            }))
-    else
-        -- self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
+    if is_not_off(self.note) then
         self.client:send(OscMessage("/renoise/trigger/note_on",{
             {tag="i",value=self.instrument},
             {tag="i",value=track},
             {tag="i",value=pitch(self.note,self.octave)},
-            {tag="i",value=velocity}}))
+            {tag="i",value=self.velocity}}))
     end
 end
 

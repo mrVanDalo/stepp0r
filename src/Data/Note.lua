@@ -33,6 +33,10 @@ Note = {
         C   = { 13 , "C-"  , 8, 2 },
         off = { -1 , "OFF" , 4, 1 },
     },
+    off    = {
+        value = -1,
+        pitch = 120,
+    }
 }
 
 
@@ -45,7 +49,7 @@ function pitch(note,octave)
     if (p > -1) then
         return p + (octave * 12)
     else
-        return 120
+        return Note.off.pitch
     end
 end
 
