@@ -147,7 +147,7 @@ end
 -- number must be 1-8
 function xToVolume(number)
     if number < 1 or number > 8 then return 127 end
-    return (number  * 16) - 1
+    return ((9 - number)  * 16) - 1
 end
 function Effect:set_volume(volume)
     self.volume = volume
@@ -173,27 +173,32 @@ end
 
 --- update matrix with the delay information
 function Effect:matrix_update_delay()
-    self.pad:set_matrix(self.delay,self.row,self.color.on)
+    local on  = self:mode_color()
+    self.pad:set_matrix(self.delay,self.row,on)
 end
 function Effect:matrix_update_volume()
+    local on  = self:mode_color()
+    local off = self.color.off
     for i = 1, 8 do
-        local color = self.color.off
-        if (self.volume >= i) then color = self.color.on end
+        local color = off
+        if (self.volume <= i) then color = on end
         self.pad:set_matrix(i,self.row,color)
     end
 end
 function Effect:matrix_update_pan()
     if self.pan == 0 then return end
+    local on  = self:mode_color()
+    local off = self.color.off
     if self.pan < 5 then
         for i = 1, 4 do
-            local color = self.color.on
-            if self.pan > i then color = self.color.off end
+            local color = on
+            if self.pan > i then color = off end
             self.pad:set_matrix(i,self.row,color)
         end
     else
         for i = 5, 8 do
-            local color = self.color.on
-            if self.pan < i then color = self.color.off end
+            local color = on
+            if self.pan < i then color = off end
             self.pad:set_matrix(i,self.row,color)
         end
     end
@@ -215,8 +220,12 @@ function Effect:matrix_refresh()
     end
 end
 
+function Effect:mode_color()
+    return self.mode[EffectData.access.color]
+end
+
 function Effect:right_refresh()
-    self.pad:set_right(self.mode_knob_idx,self.mode[EffectData.access.color])
+    self.pad:set_right(self.mode_knob_idx,self:mode_color())
 end
 
 function Effect:refresh()
