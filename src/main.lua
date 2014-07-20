@@ -107,7 +107,9 @@ local function show_dialog()
 
   local effect = Effect()
   effect:wire_launchpad(pad)
-  effect:register_set_delay(stepper:callback_set_delay())
+  effect:register_set_delay (stepper:callback_set_delay())
+  effect:register_set_volume(stepper:callback_set_volume())
+  effect:register_set_pan   (stepper:callback_set_pan())
 
   local key = KeyboardModule()
   key:wire_launchpad(pad)

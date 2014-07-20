@@ -4,6 +4,7 @@
 --
 
 require 'Data/Note'
+require 'Data/Velocity'
 require 'Data/Color'
 require 'Module/LaunchpadModule'
 require 'Experimental/PlaybackPositionObserver'
@@ -40,6 +41,8 @@ function Stepper:__init()
     self.note        = Note.note.c
     self.octave      = 4
     self.delay       = 0
+    self.volume      = 127
+    self.pan         = 63
     -- ---
     -- navigation
     -- ---
@@ -101,7 +104,16 @@ function Stepper:callback_set_delay()
         self.delay = delay
     end
 end
-
+function Stepper:callback_set_volume()
+    return function (volume)
+        self.volume = volume
+    end
+end
+function Stepper:callback_set_pan()
+    return function (pan)
+        self.pan = pan
+    end
+end
 
 
 
@@ -151,7 +163,7 @@ function Stepper:_activate()
     --
     self:zoom_update_knobs()
     self.pad:register_top_listener(function (_,msg)
-        if (msg.vel == 0 ) then return end
+        if (msg.vel == Velocity.release ) then return end
         if (msg.x == self.zoom_in_idx ) then
             self:zoom_in()
         elseif (msg.x == self.zoom_out_idx) then
@@ -165,7 +177,7 @@ function Stepper:_activate()
     --
     self:page_update_knobs()
     self.pad:register_top_listener(function (_,msg)
-        if (msg.vel == 0) then return end
+        if (msg.vel == Velocity.release) then return end
         if(msg.x == self.page_inc_idx) then
             self:page_inc()
         elseif(msg.x == self.page_dec_idx)then
@@ -346,7 +358,7 @@ end
 --- listens to events from the user on the matrix
 --
 function Stepper:matrix_listener(msg)
-    if (msg.vel == 0) then return end
+    if (msg.vel == Velocity.release) then return end
     if (msg.y > 4 )   then return end
     local column           = self:calculate_track_position(msg.x,msg.y)
     if column then
@@ -354,6 +366,8 @@ function Stepper:matrix_listener(msg)
             column.note_value         = pitch(self.note,self.octave)
             column.instrument_value   = (self.instrument - 1)
             column.delay_value        = self.delay
+            column.panning_value      = self.pan
+            column.volume_value       = self.volume
             self.matrix[msg.x][msg.y] = self.color.note.on
             if column.note_value == 120 then
                 self.pad:set_matrix(msg.x,msg.y,self.color.note.off)
@@ -363,7 +377,10 @@ function Stepper:matrix_listener(msg)
         else
             column.note_value         = StepperData.note.empty
             column.instrument_value   = StepperData.instrument.empty
+            -- todo no magic numbers
             column.delay_value        = 0
+            column.panning_value      = 0
+            column.volume_value       = 0
             self.matrix[msg.x][msg.y] = self.color.note.empty
             self.pad:set_matrix(msg.x,msg.y,self.color.note.empty)
         end
