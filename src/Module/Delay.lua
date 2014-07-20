@@ -42,6 +42,7 @@ function Delay:register_set_delay(callback)
     table.insert(self.callbacks_set_delay,callback)
 end
 
+-- todo : add set_instrument listener
 
 --- ======================================================================================================
 ---
