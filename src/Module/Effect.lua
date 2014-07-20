@@ -1,5 +1,6 @@
 
 require 'Data/Color'
+require 'Data/Velocity'
 
 --- ======================================================================================================
 ---
@@ -80,15 +81,23 @@ end
 ---                                                 [ Boot ]
 
 function Effect:_activate()
-    -- register launchpad handling
     self:refresh()
+    -- matrix
     self.pad:register_matrix_listener(function (_,msg)
-        if (msg.y ~= self.row) then return end
+        if (msg.vel == Velocity.release) then return end
+        if (msg.y ~= self.row)           then return end
         if     self.mode == EffectData.mode.DELAY  then self:set_delay(msg.x)
         elseif self.mode == EffectData.mode.VOLUME then self:set_volume(msg.x)
         else                                            self:set_pan(msg.x)
         end
     end)
+    -- right
+    self.pad:register_right_listener(function (_,msg)
+        if (msg.vel == Velocity.release) then return end
+        if (msg.x ~= self.mode_knob_idx) then return end
+        self:next_mode()
+    end)
+
 end
 
 function Effect:_deactivate()  end
@@ -170,7 +179,7 @@ function Effect:matrix_update_volume()
     for i = 1, 8 do
         local color = self.color.off
         if (self.volume >= i) then color = self.color.on end
-        self.pad:set_matrix(self.i,self.row,color)
+        self.pad:set_matrix(i,self.row,color)
     end
 end
 function Effect:matrix_update_pan()
