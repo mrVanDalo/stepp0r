@@ -39,6 +39,7 @@ function Stepper:__init()
     self.instrument  = 1
     self.note        = Note.note.c
     self.octave      = 4
+    self.delay       = 0
     -- ---
     -- navigation
     -- ---
@@ -348,6 +349,7 @@ function Stepper:matrix_listener(msg)
         if column.note_value == StepperData.note.empty then
             column.note_value         = pitch(self.note,self.octave)
             column.instrument_value   = (self.instrument - 1)
+            column.delay_value        = self.delay
             self.matrix[msg.x][msg.y] = self.color.note.on
             if column.note_value == 120 then
                 self.pad:set_matrix(msg.x,msg.y,self.color.note.off)
@@ -357,6 +359,7 @@ function Stepper:matrix_listener(msg)
         else
             column.note_value         = StepperData.note.empty
             column.instrument_value   = StepperData.instrument.empty
+            column.delay_value        = 0
             self.matrix[msg.x][msg.y] = self.color.note.empty
             self.pad:set_matrix(msg.x,msg.y,self.color.note.empty)
         end
