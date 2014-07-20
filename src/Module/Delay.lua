@@ -1,4 +1,5 @@
 
+require 'Data/Color'
 
 --- ======================================================================================================
 ---
@@ -23,6 +24,11 @@ DalayData = {
 function Delay:__init()
     LaunchpadModule:__init(self)
     self.delay = 0
+    self.row   = 5
+    self.color = {
+        on  = Color.orange,
+        off = Color.off,
+    }
     self.callbacks_set_delay = {}
 end
 
@@ -42,7 +48,16 @@ end
 ---                                                 [ Boot ]
 
 function Delay:_activate()
-
+    -- register row
+    self.pad:register_matrix_listener(function (_,msg)
+        if (msg.y ~= self.row) then return end
+        self.delay = msg.x
+        -- trigger callbacks
+        local percent = intToPercent(self.delay)
+        for _, callback in ipairs(self.callbacks_set_delay) do
+            callback(percent)
+        end
+    end)
 end
 
 function Delay:_deactivate()
