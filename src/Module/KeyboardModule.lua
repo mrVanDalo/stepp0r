@@ -4,13 +4,15 @@ require 'Data/Note'
 require 'Data/Color'
 require 'Data/Velocity'
 
+--- ======================================================================================================
+---
+---                                                 [ Keyboard Module ]
+---
+--- To trigger notes and set notes for a system
 
--- --
--- Keyboard Module
---
 class "KeyboardModule" (LaunchpadModule)
 
--- this is a strange y -> x map for notes
+--- this is a strange y -> x map for notes
 KeyboardData = {
     reverse_mapping = {
         { Note.note.off, Note.note.cis, Note.note.dis, Note.note.off, Note.note.fis, Note.note.gis, Note.note.ais, Note.note.off},
@@ -18,9 +20,16 @@ KeyboardData = {
     }
 }
 
+
+
+
+
+
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- init
----
+---                                                 [ INIT ]
 
 --- register a callback (which gets a note)
 --
@@ -81,9 +90,16 @@ function KeyboardModule:__init()
     self.callback_set_note = {}
 end
 
+
+
+
+
+
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- boot
----
+---                                                 [ BOOT ]
 
 function KeyboardModule:_activate()
     self:matrix_refresh()
@@ -129,9 +145,16 @@ end
 
 
 
+
+
+
+
+
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- library
----
+---                                                 [ Library ]
 
 --- save and load state
 --
@@ -175,9 +198,12 @@ end
 
 
 
+
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- osc client
----
+---                                                 [ OSC Client ]
 
 function KeyboardModule:setup_osc_client()
     --self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
@@ -201,10 +227,18 @@ function KeyboardModule:untrigger_note()
     print("not yet")
 end
 
----
------------------------------------------------------------------- rendering
----
 
+
+
+
+
+
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ Rendering ]
 
 function KeyboardModule:matrix_refresh()
     self:matrix_clear()

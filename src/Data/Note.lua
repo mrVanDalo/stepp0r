@@ -2,13 +2,19 @@
 -- User: palo
 -- Date: 7/4/14
 --
--- should be a standard note translation system, if you need moar information put them at the end of every note,
--- or create a new mapping
---
+--- ======================================================================================================
+---
+---                                                 [ Notes ]
 
---- Note is a key on the keyboard
---- octave are 13 notes
---- tone is always a combination of note and octave
+--- Renoise Note system
+-- should be a standard note translation system,
+-- if you need moar information put them at the end of every note,
+-- or create a new mappig
+
+--- Definitions
+-- Note is a key on the keyboard
+-- octave are 13 notes
+-- tone is always a combination of note and octave
 
 Note = {
     access = {
@@ -36,6 +42,11 @@ Note = {
     empty =   { 121 , "---" , 0, 0 },  -- just for completeness
 }
 
+
+
+--- ======================================================================================================
+---
+---                                                 [ Functions ]
 
 --- calculate pitch
 --

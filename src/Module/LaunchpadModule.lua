@@ -1,11 +1,12 @@
--- --
--- mode super class
---
--- this class should some-how define how every module should behave
--- which should make creating modes easier
---
--- A mode is a mix of modules
---
+--- ======================================================================================================
+---
+---                                                 [ Launchpad Module ]
+--- mode super class
+---
+--- this class should some-how define how every module should behave
+--- which should make creating modes easier
+---
+--- A mode is a mix of modules
 
 class "LaunchpadModule"
 
