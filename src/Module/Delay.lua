@@ -43,6 +43,11 @@ function Delay:register_set_delay(callback)
 end
 
 -- todo : add set_instrument listener
+function Delay:callback_set_instrument()
+    return function (_,_)
+        self:set_delay(1)
+    end
+end
 
 --- ======================================================================================================
 ---
@@ -53,13 +58,7 @@ function Delay:_activate()
     self:matrix_refresh()
     self.pad:register_matrix_listener(function (_,msg)
         if (msg.y ~= self.row) then return end
-        self.delay = msg.x
-        self:matrix_refresh()
-        -- trigger callbacks
-        local percent = intToPercent(self.delay)
-        for _, callback in ipairs(self.callbacks_set_delay) do
-            callback(percent)
-        end
+        self:set_delay(msg.x)
     end)
 end
 
@@ -77,6 +76,16 @@ function intToPercent(number)
     if (number > 8 ) then return 0 end
     -- return ((256 / 8) * (number - 1) - 1)
     return (256 / 8) * (number - 1)
+end
+
+function Delay:set_delay(delay)
+    self.delay = delay
+    self:matrix_refresh()
+    -- trigger callbacks
+    local percent = intToPercent(self.delay)
+    for _, callback in ipairs(self.callbacks_set_delay) do
+        callback(percent)
+    end
 end
 
 
