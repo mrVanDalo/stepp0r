@@ -96,7 +96,11 @@ function Stepper:callback_set_note()
     end
 end
 
-
+function Stepper:callback_set_delay()
+    return function (delay)
+        self.delay = delay
+    end
+end
 
 
 

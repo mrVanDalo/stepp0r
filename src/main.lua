@@ -102,11 +102,13 @@ local function show_dialog()
 
   local pad = Launchpad()
 
-  local delay = Delay()
-  delay:wire_launchpad(pad)
-
   local stepper = Stepper()
   stepper:wire_launchpad(pad)
+
+  local delay = Delay()
+  delay:wire_launchpad(pad)
+  delay:register_set_delay(stepper:callback_set_delay())
+
 
   local key = KeyboardModule()
   key:wire_launchpad(pad)
@@ -117,6 +119,7 @@ local function show_dialog()
   chooser:register_select_instrument(key:callback_set_instrument())
   chooser:register_select_instrument(stepper:callback_set_instrument())
 
+  --- activate them all
   key:activate()
   stepper:activate()
   chooser:activate()
