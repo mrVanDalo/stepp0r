@@ -188,13 +188,13 @@ function Effect:matrix_update_pan()
         for i = 1, 4 do
             local color = self.color.off
             if self.pan >= i then color = self.color.on end
-            self.pad:set_matrix(self.i,self.row,color)
+            self.pad:set_matrix(i,self.row,color)
         end
     else
         for i = 5, 8 do
             local color = self.color.off
             if self.pan <= i then color = self.color.on end
-            self.pad:set_matrix(self.i,self.row,color)
+            self.pad:set_matrix(i,self.row,color)
         end
     end
 end
