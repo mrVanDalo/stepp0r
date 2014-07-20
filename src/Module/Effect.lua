@@ -147,6 +147,7 @@ end
 -- number must be 1-8
 function xToVolume(number)
     if number < 1 or number > 8 then return 127 end
+    -- todo this is not working correct ?
     return ((9 - number)  * 16) - 1
 end
 function Effect:set_volume(volume)
