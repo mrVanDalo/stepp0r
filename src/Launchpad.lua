@@ -1,13 +1,20 @@
 
--- ============================================================
---                                                    Launchpad
--- todo move me to module
+--- ======================================================================================================
+---
+---                                                 [ Launchpad Module ]
+---
+--- to connect to the launchpad and talk to it in a propper way
 
 class "Launchpad"
+
+--- ======================================================================================================
+---
+---                                                 [ INIT ]
 
 function Launchpad:__init()
     self:unregister_all()
     self:_watch()
+    -- todo use Data Object for that.
     self.color = {
         red    = 0x07,
         orange = 0x27,
@@ -34,12 +41,10 @@ function Launchpad:__init()
     }
 end
 
--- ------------------------------------------------------------
---                                          connection handling
-
 -- watches for launchpad connections
 -- (should handle all the reconnection stuff and all)
 -- will be removed by another component soon
+-- todo remove me by ui
 function Launchpad:_watch()
     for _,v in pairs(renoise.Midi.available_input_devices()) do
         if string.find(v, "Launchpad") then
@@ -48,8 +53,7 @@ function Launchpad:_watch()
     end
 end
 
--- --
--- connect launchpad to a midi device
+--- connect launchpad to a midi device
 --
 function Launchpad:connect(midi_device_name)
     print("connect : " ..  midi_device_name)
@@ -84,23 +88,48 @@ function Launchpad:connect(midi_device_name)
     self.midi_input  = renoise.Midi.create_input_device(midi_device_name, main_callback)
 end
 
--- --
--- register a callback handler
+
+--- ======================================================================================================
+---
+---                                                 [ Output ]
+
+--- register handler functions
 --
+function Launchpad:register_top_listener(handler)
+    self:_register(self._top_listener,   handler)
+end
+function Launchpad:register_right_listener(handler)
+    self:_register(self._right_listener, handler)
+end
+function Launchpad:register_matrix_listener(handler)
+    self:_register(self._matrix_listener,handler)
+end
 function Launchpad:_register(list,handle)
     -- print("register")
     table.insert(list,handle)
 end
 
+--- unregister
+--
+function Launchpad:unregister_top_listener()
+    self._top_listener = {}
+end
+function Launchpad:unregister_right_listener()
+    self._right_listener = {}
+end
+function Launchpad:unregister_matrix_listener()
+    self._matrix_listener = {}
+end
+function Launchpad:unregister_all()
+    self:unregister_top_listener()
+    self:unregister_right_listener()
+    self:unregister_matrix_listener()
+end
 
--- ------------------------------------------------------------
---                                          receiving (midi in)
-
--- callback convention always return an array first slot is true 
+--- callback convention always return an array first slot is true
 no = { flag = false }
 
--- --
--- Test functions for the handler
+--- Test functions for the handler
 --
 function _is_top(msg)
     if msg[1] == 0xB0 then
@@ -111,7 +140,6 @@ function _is_top(msg)
     end
     return no
 end
-
 function _is_right(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
@@ -124,7 +152,6 @@ function _is_right(msg)
     end
     return no 
 end
-
 function _is_matrix(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
@@ -139,63 +166,11 @@ function _is_matrix(msg)
     return no
 end
 
--- --
--- register handler functions
---
-function Launchpad:register_top_listener(handler)
-    self:_register(self._top_listener,   handler)
-end
-function Launchpad:register_right_listener(handler)
-    self:_register(self._right_listener, handler)
-end
-function Launchpad:register_matrix_listener(handler)
-    self:_register(self._matrix_listener,handler)
-end
 
--- --
--- unregister
---
-function Launchpad:unregister_top_listener()
-    self._top_listener = {}
-end
-function Launchpad:unregister_right_listener()
-    self._right_listener = {}
-end
-function Launchpad:unregister_matrix_listener()
-    self._matrix_listener = {}
-end
 
-function Launchpad:unregister_all()
-    self:unregister_top_listener()
-    self:unregister_right_listener()
-    self:unregister_matrix_listener()
-end
-
--- --
--- example handler
---
-function echo_top(_,msg)
-    local x   = msg.x
-    local vel = msg.vel
-    --print(top)
-    print(("top    : (%X) = %X"):format(x,vel))
-end
-function echo_right(_,msg)
-    local x   = msg.x
-    local vel = msg.vel
-    --print(right)
-    print(("right  : (%X) = %X"):format(x,vel))
-end
-function echo_matrix(_,msg)
-    local x   = msg.x
-    local y   = msg.y
-    local vel = msg.vel
-    --print(matrix)
-    print(("matrix : (%X,%X) = %X"):format(x,y,vel))
-end
-
--- ------------------------------------------------------------
---                                           sending (midi out)
+--- ======================================================================================================
+---
+---                                                 [ Input ]
 
 function Launchpad:send(channel, number, value)
     --if (not self.midi_out or not self.midi_out.is_open) then
@@ -267,11 +242,35 @@ end
 
 
 
+--- ======================================================================================================
+---
+---                                                 [ Examples ]
+
+--- example handler
+--
+function echo_top(_,msg)
+    local x   = msg.x
+    local vel = msg.vel
+    --print(top)
+    print(("top    : (%X) = %X"):format(x,vel))
+end
+function echo_right(_,msg)
+    local x   = msg.x
+    local vel = msg.vel
+    --print(right)
+    print(("right  : (%X) = %X"):format(x,vel))
+end
+function echo_matrix(_,msg)
+    local x   = msg.x
+    local y   = msg.y
+    local vel = msg.vel
+    --print(matrix)
+    print(("matrix : (%X,%X) = %X"):format(x,y,vel))
+end
 
 
--- ------------------------------------------------------------
---                                            example functions
-
+--- example functions
+--
 function example_matrix(pad)
     for y=0,7,1 do 
         for x=0,7,1 do 
@@ -279,7 +278,6 @@ function example_matrix(pad)
         end 
     end 
 end
-
 function example_colors(pad)
     -- send
     -- configuration
@@ -328,7 +326,6 @@ function example_colors(pad)
     pad:register_top_listener(echo_top)
     pad:register_right_listener(echo_right)
 end
-
 function example(pad)
     -- configuration
     example_colors(pad)

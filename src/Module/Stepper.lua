@@ -8,13 +8,15 @@ require 'Data/Color'
 require 'Module/LaunchpadModule'
 require 'Experimental/PlaybackPositionObserver'
 
--- ------------------------------------------------------------
--- Stepper Module
---
--- stepp the pattern
+
+--- ======================================================================================================
+---
+---                                                 [ Stepper Module ]
+---
+--- stepp the pattern
+
 class "Stepper" (LaunchpadModule)
 
---- magic numbers
 StepperData = {
     note = {
         off   = 120,
@@ -28,9 +30,9 @@ StepperData = {
     }
 }
 
+--- ======================================================================================================
 ---
------------------------------------------------------------------- init
----
+---                                                 [ INIT ]
 
 function Stepper:__init()
     self.track       = 1
@@ -78,10 +80,6 @@ function Stepper:wire_launchpad(pad)
     self.pad = pad
 end
 
----
------------------------------------------------------------------- dependencys
----
-
 function Stepper:callback_set_instrument()
     return function (index,_)
         self.track      = index
@@ -97,62 +95,23 @@ function Stepper:callback_set_note()
     end
 end
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- library
----
-
---- calculate point (for matrix) of line
---
--- nil for is not on the matrix
---
--- todo : wirte tests for me and optemize me
---
-function Stepper:line_to_point(line)
-    -- page
-    local l = line - self.page_start
-    if l < 1 then return end
-    -- zoom
-    local li = l
-    if (self.zoom > 1) then
-        if ((l - 1) % self.zoom) ~= 0 then return end
-        li = ((l - 1) / self.zoom) + 1
-    end
-    -- transformation
-    local x = ((li - 1) % 8) + 1
-    local y = math.floor((li - 1) / 8) + 1
-    return {x,y}
-end
-
---- calculate the line a point given by the actual matrix configuration
---
--- point_to_line(line_to_point(l)) == l should allways be true ?
---
--- todo : wirte tests for me and optemize me
-function Stepper:point_to_line(x,y)
-    return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
-end
-
-function Stepper:refresh_matrix()
-    self:matrix_clear()
-    self:matrix_update()
-    -- self:pad_matrix_clear()
-    self:pad_matrix_update()
-end
-
---- get the active pattern object
---
--- self.pattern_idx will be kept up to date by an observable notifier
---
-function Stepper:active_pattern()
-    return renoise.song().patterns[self.pattern_idx]
-end
-
-
-
-
----
------------------------------------------------------------------- boot
----
+---                                                 [ BooT ]
 
 function Stepper:_activate()
     self:refresh_matrix()
@@ -216,9 +175,18 @@ function Stepper:_deactivate()
     self.playback_position_observer:unregister(f)
 end
 
+
+
+
+
+
+
+
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- pagination
----
+---                                                 [ Pagination ]
 
 function Stepper:page_update_knobs()
     if (self.page_start <= 0)  then
@@ -262,9 +230,9 @@ end
 
 
 
-----
------------------------------------------------------------------- zoom
+--- ======================================================================================================
 ---
+---                                                 [ ZOOM ]
 
 function Stepper:zoom_out()
     local pattern = self:active_pattern()
@@ -316,9 +284,59 @@ function Stepper:zoom_update_knobs()
     end
 end
 
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- stepper
----
+---                                                 [ Library ]
+
+--- calculate point (for matrix) of line
+--
+-- nil for is not on the matrix
+--
+-- todo : wirte tests for me and optemize me
+--
+function Stepper:line_to_point(line)
+    -- page
+    local l = line - self.page_start
+    if l < 1 then return end
+    -- zoom
+    local li = l
+    if (self.zoom > 1) then
+        if ((l - 1) % self.zoom) ~= 0 then return end
+        li = ((l - 1) / self.zoom) + 1
+    end
+    -- transformation
+    local x = ((li - 1) % 8) + 1
+    local y = math.floor((li - 1) / 8) + 1
+    return {x,y}
+end
+
+--- calculate the line a point given by the actual matrix configuration
+--
+-- point_to_line(line_to_point(l)) == l should allways be true ?
+--
+-- todo : wirte tests for me and optemize me
+function Stepper:point_to_line(x,y)
+    return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
+end
+
+function Stepper:refresh_matrix()
+    self:matrix_clear()
+    self:matrix_update()
+    -- self:pad_matrix_clear()
+    self:pad_matrix_update()
+end
+
+--- get the active pattern object
+--
+-- self.pattern_idx will be kept up to date by an observable notifier
+--
+function Stepper:active_pattern()
+    return renoise.song().patterns[self.pattern_idx]
+end
+
+
 
 --- listens to events from the user on the matrix
 --
@@ -371,6 +389,13 @@ function Stepper:calculate_track_position(x,y)
         return nil
     end
 end
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ Rendering ]
+
 
 --- update pad by the given matrix
 --

@@ -5,6 +5,12 @@
 
 require 'Data/Color'
 
+--- ======================================================================================================
+---
+---                                                   Chooser Moudle
+---
+--- To choose instruments, tracks and track rows.
+
 ChooserData =  {
     access = {
         id    = 1,
@@ -23,9 +29,16 @@ ChooserData =  {
 class "Chooser" (LaunchpadModule)
 
 
+
+
+
+
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- init
----
+---                                                 [ INIT ]
+
 
 function Chooser:__init()
     LaunchpadModule:__init(self)
@@ -68,9 +81,16 @@ function Chooser:register_select_instrument(callback)
     table.insert(self.callback_select_instrument, callback)
 end
 
+
+
+
+
+
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- boot
----
+---                                                 [ BOOT ]
 
 function Chooser:_activate()
     -- chooser line
@@ -126,9 +146,14 @@ end
 
 
 
+
+
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- mode controll
----
+---                                                 [ Mode Control ]
+
 
 function Chooser:mode_next()
     if self.mode == ChooserData.mode.choose then
@@ -144,10 +169,6 @@ function Chooser:mode_update_knobs()
     -- print(self.mode)
     self.pad:set_right(self.mode_idx, self.mode[ChooserData.access.color])
 end
-
----
------------------------------------------------------------------- mode commands
----
 
 function Chooser:mute_track(x)
     local active = self.inst_offset + x
@@ -201,10 +222,9 @@ function Chooser:select_instrument(x)
     end
 end
 
-
+--- ======================================================================================================
 ---
------------------------------------------------------------------- pagination
----
+---                                                 [ PAGINATION ]
 
 function Chooser:page_update_knobs()
     local instrument_count = table.getn(renoise.song().instruments)
@@ -235,9 +255,11 @@ end
 
 
 
+
+
+--- ======================================================================================================
 ---
------------------------------------------------------------------- rendering
----
+---                                                 [ RENDERING ]
 
 function Chooser:row_update()
     -- todo using the mute state too
