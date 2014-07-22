@@ -14,8 +14,8 @@ class "Effect" (Module)
 
 EffectData = {
     mode = {
-        DELAY  = {1, Color.green },
-        PAN    = {2, Color.red   },
+        DELAY  = {1, Color.yellow},
+        PAN    = {2, Color.green },
         VOLUME = {3, Color.orange},
     },
     access = {
