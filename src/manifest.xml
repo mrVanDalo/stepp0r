@@ -2,7 +2,7 @@
 <RenoiseScriptingTool doc_version="0">
   <Name>Steppor</Name>
   <Id>org.ingolfwagner.Steppor</Id>
-  <Version>0.1</Version>
+  <Version>0.1.1</Version>
   <ApiVersion>4</ApiVersion>
   <Author>Ingolf Wagner (palipalo9@googlemail.com)</Author>
   <AutoUpgraded>false</AutoUpgraded>

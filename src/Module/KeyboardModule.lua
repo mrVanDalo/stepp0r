@@ -103,36 +103,35 @@ end
 
 function KeyboardModule:_activate()
     self:matrix_refresh()
-    self:register_matrix_listener()
-    self:setup_osc_client()
+    if self.first_run then
+        self:setup_matrix_listener()
+        self:setup_osc_client()
+    end
 end
 
-function KeyboardModule:register_matrix_listener()
-    local function matrix_callback(_,msg)
-        -- todo optimize me
-        if (msg.y > self.offset and msg.y < (self.offset + 3) ) then
-            if (msg.vel == Velocity.release) then
-                self:untrigger_note()
-            else
-                if (msg.y == 2 + self.offset ) then
-                    -- notes only
-                    self:set_note(msg.x, msg.y)
-                    self:trigger_note()
-                else
-                    if (msg.x == 1) then
-                        self:octave_down()
-                    elseif (msg.x == 8) then
-                        self:octave_up()
-                    else
-                        self:set_note(msg.x, msg.y)
-                        self:trigger_note()
-                    end
-                end
-                self:matrix_update_keys()
-            end
+function KeyboardModule:setup_matrix_listener()
+    self.pad:register_matrix_listener(function (_,msg)
+        -- precondition
+        if self.is_not_active        then return end
+        if msg.y <= self.offset      then return  end
+        if msg.y > (self.offset + 2) then return end
+        -- react on signal
+        if (msg.vel == Velocity.release) then
+            self:untrigger_note()
+        elseif (msg.y == 2 + self.offset ) then
+            -- second line notes only
+            self:set_note(msg.x, msg.y)
+            self:trigger_note()
+        elseif (msg.x == 1) then
+            self:octave_down()
+        elseif (msg.x == 8) then
+            self:octave_up()
+        else
+            self:set_note(msg.x, msg.y)
+            self:trigger_note()
         end
-    end
-    self.pad:register_matrix_listener(matrix_callback)
+        self:matrix_update_keys()
+    end)
 end
 
 
