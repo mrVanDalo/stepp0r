@@ -71,6 +71,7 @@ end
 
 function Effect:callback_set_instrument()
     return function (_,_)
+        if self.is_not_active then return end
         self:set_delay(1)
         self:set_volume(1)
         self:set_pan(0)
@@ -84,21 +85,25 @@ end
 function Effect:_activate()
     -- todo send default value to all registered listeners
     self:refresh()
-    -- matrix
-    self.pad:register_matrix_listener(function (_,msg)
-        if (msg.vel == Velocity.release) then return end
-        if (msg.y ~= self.row)           then return end
-        if     self.mode == EffectData.mode.DELAY  then self:set_delay(msg.x)
-        elseif self.mode == EffectData.mode.VOLUME then self:set_volume(msg.x)
-        else                                            self:set_pan(msg.x)
-        end
-    end)
-    -- right
-    self.pad:register_right_listener(function (_,msg)
-        if (msg.vel == Velocity.release) then return end
-        if (msg.x ~= self.mode_knob_idx) then return end
-        self:next_mode()
-    end)
+    if self.is_first_run then
+        -- matrix
+        self.pad:register_matrix_listener(function (_,msg)
+            if self.is_not_active          then return end
+            if msg.vel == Velocity.release then return end
+            if msg.y ~= self.row           then return end
+            if     self.mode == EffectData.mode.DELAY  then self:set_delay(msg.x)
+            elseif self.mode == EffectData.mode.VOLUME then self:set_volume(msg.x)
+            else                                            self:set_pan(msg.x)
+            end
+        end)
+        -- right
+        self.pad:register_right_listener(function (_,msg)
+            if self.is_not_active          then return end
+            if msg.vel == Velocity.release then return end
+            if msg.x ~= self.mode_knob_idx then return end
+            self:next_mode()
+        end)
+    end
 
 end
 

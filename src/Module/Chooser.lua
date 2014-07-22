@@ -94,51 +94,58 @@ end
 ---                                                 [ BOOT ]
 
 function Chooser:_activate()
-    -- chooser line
-    local function matrix_listener(_,msg)
-        if msg.vel == 0x00    then return end
-        if msg.y  ~= self.row then return end
-        if self.mode == ChooserData.mode.choose then
-            self:select_instrument(msg.x)
-        elseif self.mode == ChooserData.mode.mute then
-            self:mute_track(msg.x)
-        end
-        self:row_update()
-    end
-    self.pad:register_matrix_listener(matrix_listener)
-    renoise.song().instruments_observable:add_notifier(function (_)
-        self:row_update()
-    end)
+
+    --- chooser line
     self:row_update()
+    if self.is_first_run then
+        self.pad:register_matrix_listener(function (_,msg)
+            if self.is_not_active          then return end
+            if msg.vel == Velocity.release then return end
+            if msg.y  ~= self.row          then return end
+            if self.mode == ChooserData.mode.choose then
+                self:select_instrument(msg.x)
+            elseif self.mode == ChooserData.mode.mute then
+                self:mute_track(msg.x)
+            end
+            self:row_update()
+        end)
+        renoise.song().instruments_observable:add_notifier(function (_)
+            self:row_update()
+        end)
+    end
 
     --- mode control
-    local function mode_listener(_,msg)
-        if msg.vel == 0             then return end
-        if msg.x   ~= self.mode_idx then return end
-        self:mode_next()
-        self:mode_update_knobs()
-    end
-    self.pad:register_right_listener(mode_listener)
     self:mode_update_knobs()
+    if self.is_first_run then
+        self.pad:register_right_listener(function (_,msg)
+            if self.is_not_active          then return end
+            if msg.vel == Velocity.release then return end
+            if msg.x   ~= self.mode_idx    then return end
+            self:mode_next()
+            self:mode_update_knobs()
+        end)
+    end
 
     -- page logic
-    local function page_knobs_listener(_,msg)
-        if (msg.vel == 0) then return end
-        if (msg.x == self.page_inc_idx) then
-            self:page_inc()
-            self:page_update_knobs()
-            self:row_update()
-        elseif (msg.x == self.page_dec_idx) then
-            self:page_dec()
-            self:page_update_knobs()
-            self:row_update()
-        end
-    end
-    self.pad:register_top_listener(page_knobs_listener)
-    renoise.song().instruments_observable:add_notifier(function (_)
-        self:page_update_knobs()
-    end)
     self:page_update_knobs()
+    if self.is_first_run then
+        self.pad:register_top_listener(function (_,msg)
+            if self.is_not_active         then return end
+            if msg.vel == 0               then return end
+            if msg.x == self.page_inc_idx then
+                self:page_inc()
+                self:page_update_knobs()
+                self:row_update()
+            elseif msg.x == self.page_dec_idx then
+                self:page_dec()
+                self:page_update_knobs()
+                self:row_update()
+            end
+        end)
+        renoise.song().instruments_observable:add_notifier(function (_)
+            self:page_update_knobs()
+        end)
+    end
 end
 
 function Chooser:_deactivate()
