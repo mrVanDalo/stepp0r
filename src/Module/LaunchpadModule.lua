@@ -11,17 +11,19 @@
 -- todo rename me to module
 class "LaunchpadModule"
 
-function LaunchpadModule:__init()
+function LaunchpadModule:__init(self)
     self.is_active     = false
     self.is_not_active = true
     self.first_run     = true   -- is this the first run
+    self.is_first_run  = true   -- is this the first run
 end
 
 function LaunchpadModule:activate()
-    self.is_active = true
+    self.is_active     = true
     self.is_not_active = false
     self:_activate()
-    self.first_run = false
+    self.first_run     = false
+    self.is_first_run  = false
 end
 
 --- to deactivate this Module
@@ -30,7 +32,7 @@ end
 --
 -- The Module should be able to activate afterwards
 function LaunchpadModule:deactivate()
-    self.is_active = false
+    self.is_active     = false
     self.is_not_active = true
     self:_deactivate()
 end

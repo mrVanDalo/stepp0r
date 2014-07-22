@@ -37,29 +37,23 @@ function KeyboardModule:register_set_note(callback)
     table.insert(self.callback_set_note, callback)
 end
 
-function KeyboardModule:unregister_set_note(_)
-    print("can't unregister right now")
-end
-
 function KeyboardModule:callback_set_instrument()
-    local function set_instrument(index,_)
-        -- backup
+    return function (index,_)
+        if self.is_not_active then return end
+        -- save
         self.instrument_backup[self.instrument] = self:state()
         -- switch
         self.instrument = index
-        -- load backup
+        -- load
         local newState = self.instrument_backup[self.instrument]
-        if(newState) then
-            self:load_state(newState)
-        end
+        if newState then self:load_state(newState) end
         -- refresh
         self:matrix_refresh()
     end
-    return set_instrument
 end
 
-
 function KeyboardModule:wire_launchpad(pad)
+    if self.is_active then return end
     self.pad = pad
 end
 
@@ -103,7 +97,7 @@ end
 
 function KeyboardModule:_activate()
     self:matrix_refresh()
-    if self.first_run then
+    if self.is_first_run then
         self:setup_matrix_listener()
         self:setup_osc_client()
     end
@@ -115,19 +109,22 @@ function KeyboardModule:setup_matrix_listener()
         if self.is_not_active        then return end
         if msg.y <= self.offset      then return  end
         if msg.y > (self.offset + 2) then return end
+        -- scale to the keyboard
+        local x = msg.x
+        local y = msg.y - self.offset
         -- react on signal
         if (msg.vel == Velocity.release) then
-            self:untrigger_note()
-        elseif (msg.y == 2 + self.offset ) then
+            self:untrigger_note(x,y)
+        elseif (y == 2) then
             -- second line notes only
-            self:set_note(msg.x, msg.y)
+            self:set_note(x, y)
             self:trigger_note()
-        elseif (msg.x == 1) then
+        elseif (x == 1) then
             self:octave_down()
-        elseif (msg.x == 8) then
+        elseif (x == 8) then
             self:octave_up()
         else
-            self:set_note(msg.x, msg.y)
+            self:set_note(x, y)
             self:trigger_note()
         end
         self:matrix_update_keys()
@@ -137,7 +134,6 @@ end
 
 function KeyboardModule:_deactivate()
     self:matrix_clear()
-    self.pad:unregister_matrix_listener()
 end
 
 
@@ -184,9 +180,9 @@ end
 
 
 --- note arithmetics
---
+-- x and y are relative to the keyboard, not on the matrix!
 function KeyboardModule:set_note(x,y)
-    self.note = KeyboardData.reverse_mapping[y - self.offset][x]
+    self.note = KeyboardData.reverse_mapping[y][x]
     -- fullfill callbacks
     for _, callback in ipairs(self.callback_set_note) do
         callback(self.note, self.octave)
@@ -221,7 +217,7 @@ function KeyboardModule:trigger_note()
     end
 end
 
-function KeyboardModule:untrigger_note()
+function KeyboardModule:untrigger_note(x,y)
     --self.client:send(OscMessage("/renoise/trigger/note_on",{
     print("not yet")
 end
