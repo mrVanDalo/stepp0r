@@ -41,7 +41,7 @@ function Stepper:__init()
     self.note        = Note.note.c
     self.octave      = 4
     self.delay       = 0
-    self.volume      = 127
+    self.volume      = 255
     self.pan         = 63
     -- ---
     -- navigation

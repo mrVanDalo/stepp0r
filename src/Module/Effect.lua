@@ -81,6 +81,7 @@ end
 ---                                                 [ Boot ]
 
 function Effect:_activate()
+    -- todo send default value to all registered listeners
     self:refresh()
     -- matrix
     self.pad:register_matrix_listener(function (_,msg)
@@ -130,14 +131,17 @@ end
 -- number must be 0-8
 function xToPan(number)
     if number < 1 or number > 8 then return 64 end
-    -- todo write this correct
-    return ((number - 1) * 18)
+    if number < 5 then
+        return 64 - (16 * (5 - number))
+    else
+        return 64 + (16 * (number - 4))
+    end
 end
 function Effect:set_pan(pan)
     self.pan = pan
     self:matrix_refresh()
     -- trigger callbacks
-    local percent = xToPan(self.volume)
+    local percent = xToPan(self.pan)
     for _, callback in ipairs(self.callbacks_set_pan) do
         callback(percent)
     end
@@ -146,9 +150,8 @@ end
 --- transforms key number to volume
 -- number must be 1-8
 function xToVolume(number)
-    if number < 1 or number > 8 then return 127 end
-    -- todo this is not working correct ?
-    return ((9 - number)  * 16) - 1
+    if number < 2 or number > 8 then return 255 end
+    return 16 * (9 - number ) - 1
 end
 function Effect:set_volume(volume)
     self.volume = volume
