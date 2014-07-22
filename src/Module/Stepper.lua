@@ -23,9 +23,10 @@ StepperData = {
         off   = 120,
         empty = 121,
     },
-    instrument = {
-        empty = 255
-    },
+    instrument = { empty = 255 },
+    delay      = { empty = 0 },
+    volume     = { empty = 255 },
+    panning    = { empty = 255 },
     color = {
         clear = Color.off
     }
@@ -378,9 +379,9 @@ function Stepper:matrix_listener(msg)
             column.note_value         = StepperData.note.empty
             column.instrument_value   = StepperData.instrument.empty
             -- todo no magic numbers
-            column.delay_value        = 0
-            column.panning_value      = StepperData.instrument.empty
-            column.volume_value       = StepperData.instrument.empty
+            column.delay_value        = StepperData.delay.empty
+            column.panning_value      = StepperData.panning.empty
+            column.volume_value       = StepperData.volume.empty
             self.matrix[msg.x][msg.y] = self.color.note.empty
             self.pad:set_matrix(msg.x,msg.y,self.color.note.empty)
         end
