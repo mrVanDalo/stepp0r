@@ -90,8 +90,8 @@ local function show_dialog()
     end
   --]]
   require 'Launchpad'
-  require 'Module/LaunchpadModule'
-  require 'Module/KeyboardModule'
+  require 'Module/Module'
+  require 'Module/Keyboard'
   require 'Module/Chooser'
   require 'Module/Stepper'
   require 'Module/Effect'
@@ -111,7 +111,7 @@ local function show_dialog()
   effect:register_set_volume(stepper:callback_set_volume())
   effect:register_set_pan   (stepper:callback_set_pan())
 
-  local key = KeyboardModule()
+  local key = Keyboard()
   key:wire_launchpad(pad)
   key:register_set_note(stepper:callback_set_note())
 

@@ -6,7 +6,7 @@
 require 'Data/Note'
 require 'Data/Velocity'
 require 'Data/Color'
-require 'Module/LaunchpadModule'
+require 'Module/Module'
 require 'Experimental/PlaybackPositionObserver'
 
 
@@ -16,7 +16,7 @@ require 'Experimental/PlaybackPositionObserver'
 ---
 --- stepp the pattern
 
-class "Stepper" (LaunchpadModule)
+class "Stepper" (Module)
 
 StepperData = {
     note = {
@@ -37,6 +37,7 @@ StepperData = {
 ---                                                 [ INIT ]
 
 function Stepper:__init()
+    Module:__init(self)
     self.track       = 1
     self.instrument  = 1
     self.note        = Note.note.c

@@ -1,5 +1,5 @@
 
-require 'Module/LaunchpadModule'
+require 'Module/Module'
 require 'Data/Note'
 require 'Data/Color'
 require 'Data/Velocity'
@@ -10,7 +10,7 @@ require 'Data/Velocity'
 ---
 --- To trigger notes and set notes for a system
 
-class "KeyboardModule" (LaunchpadModule)
+class "Keyboard" (Module)
 
 --- this is a strange y -> x map for notes
 KeyboardData = {
@@ -33,11 +33,11 @@ KeyboardData = {
 
 --- register a callback (which gets a note)
 --
-function KeyboardModule:register_set_note(callback)
+function Keyboard:register_set_note(callback)
     table.insert(self.callback_set_note, callback)
 end
 
-function KeyboardModule:callback_set_instrument()
+function Keyboard:callback_set_instrument()
     return function (index,_)
         if self.is_not_active then return end
         -- save
@@ -52,13 +52,13 @@ function KeyboardModule:callback_set_instrument()
     end
 end
 
-function KeyboardModule:wire_launchpad(pad)
+function Keyboard:wire_launchpad(pad)
     if self.is_active then return end
     self.pad = pad
 end
 
-function KeyboardModule:__init()
-    LaunchpadModule:__init(self)
+function Keyboard:__init()
+    Module:__init(self)
     self.offset = 6
     -- default
     self.color = {
@@ -95,7 +95,7 @@ end
 ---
 ---                                                 [ BOOT ]
 
-function KeyboardModule:_activate()
+function Keyboard:_activate()
     self:matrix_refresh()
     if self.is_first_run then
         self:setup_matrix_listener()
@@ -103,7 +103,7 @@ function KeyboardModule:_activate()
     end
 end
 
-function KeyboardModule:setup_matrix_listener()
+function Keyboard:setup_matrix_listener()
     self.pad:register_matrix_listener(function (_,msg)
         -- precondition
         if self.is_not_active        then return end
@@ -132,7 +132,7 @@ function KeyboardModule:setup_matrix_listener()
 end
 
 
-function KeyboardModule:_deactivate()
+function Keyboard:_deactivate()
     self:matrix_clear()
 end
 
@@ -153,13 +153,13 @@ end
 
 --- save and load state
 --
-function KeyboardModule:state()
+function Keyboard:state()
     return {
         note   = self.note,
         octave = self.octave,
     }
 end
-function KeyboardModule:load_state(state)
+function Keyboard:load_state(state)
     self.note   = state.note
     self.octave = state.octave
 end
@@ -167,12 +167,12 @@ end
 
 --- octave arithmetics
 --
-function KeyboardModule:octave_down()
+function Keyboard:octave_down()
     if (self.octave > 1) then
         self.octave = self.octave - 1
     end
 end
-function KeyboardModule:octave_up()
+function Keyboard:octave_up()
     if (self.octave < 8) then
         self.octave = self.octave + 1
     end
@@ -181,7 +181,7 @@ end
 
 --- note arithmetics
 -- x and y are relative to the keyboard, not on the matrix!
-function KeyboardModule:set_note(x,y)
+function Keyboard:set_note(x,y)
     self.note = KeyboardData.reverse_mapping[y][x]
     -- fullfill callbacks
     for _, callback in ipairs(self.callback_set_note) do
@@ -200,12 +200,12 @@ end
 ---
 ---                                                 [ OSC Client ]
 
-function KeyboardModule:setup_osc_client()
+function Keyboard:setup_osc_client()
     --self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
     self.client = renoise.Socket.create_client( self.osc.host , self.osc.port,  renoise.Socket.PROTOCOL_UDP)
 end
 
-function KeyboardModule:trigger_note()
+function Keyboard:trigger_note()
     local OscMessage = renoise.Osc.Message
     local track      = self.instrument
     if is_not_off(self.note) then
@@ -217,7 +217,7 @@ function KeyboardModule:trigger_note()
     end
 end
 
-function KeyboardModule:untrigger_note(x,y)
+function Keyboard:untrigger_note(x,y)
     --self.client:send(OscMessage("/renoise/trigger/note_on",{
     print("not yet")
 end
@@ -235,14 +235,14 @@ end
 ---
 ---                                                 [ Rendering ]
 
-function KeyboardModule:matrix_refresh()
+function Keyboard:matrix_refresh()
     self:matrix_clear()
     self.pad:set_flash()
     self:matrix_update_keys()
     self:matrix_update_keys_manover()
 end
 
-function KeyboardModule:matrix_clear()
+function Keyboard:matrix_clear()
     local y0 = self.offset + 1
     local y1 = self.offset + 2
     for x=1,8 do
@@ -251,20 +251,20 @@ function KeyboardModule:matrix_clear()
     end
 end
 
-function KeyboardModule:matrix_update_keys()
+function Keyboard:matrix_update_keys()
     self:matrix_update_keys_note()
     self:matrix_update_keys_octave()
     self:matrix_update_key_note_active()
 end
 
-function KeyboardModule:matrix_update_keys_octave()
+function Keyboard:matrix_update_keys_octave()
     self.pad:set_matrix(
         self.octave,
         2 + self.offset,
         self.color.octave)
 end
 
-function KeyboardModule:matrix_update_keys_note()
+function Keyboard:matrix_update_keys_note()
     for _,tone in pairs(Note.note) do
         if (is_not_off(tone)) then
             self.pad:set_matrix(
@@ -280,13 +280,13 @@ function KeyboardModule:matrix_update_keys_note()
     end
 end
 
-function KeyboardModule:matrix_update_key_note_active()
+function Keyboard:matrix_update_key_note_active()
     local x     = self.note[Note.access.x]
     local y     = self.note[Note.access.y] + self.offset
     self.pad:set_matrix( x, y, self.color.note.active)
 end
 
-function KeyboardModule:matrix_update_keys_manover()
+function Keyboard:matrix_update_keys_manover()
     self.pad:set_matrix(
         1,
         1 + self.offset,

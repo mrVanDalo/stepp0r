@@ -1,6 +1,7 @@
 
 require 'Data/Color'
 require 'Data/Velocity'
+require 'Module/Module'
 
 --- ======================================================================================================
 ---
@@ -9,7 +10,7 @@ require 'Data/Velocity'
 --- updaten an manage Effect information
 
 
-class "Effect" (LaunchpadModule)
+class "Effect" (Module)
 
 EffectData = {
     mode = {
@@ -30,7 +31,7 @@ EffectData = {
 ---                                                 [ INIT ]
 
 function Effect:__init()
-    LaunchpadModule:__init(self)
+    Module:__init(self)
     self.mode   = EffectData.mode.DELAY
     self.delay  = 1 -- init values
     self.pan    = 0 -- init values

@@ -4,6 +4,7 @@
 --
 
 require 'Data/Color'
+require 'Module/Module'
 
 --- ======================================================================================================
 ---
@@ -26,7 +27,7 @@ ChooserData =  {
 }
 
 -- A class to choose the Instruments
-class "Chooser" (LaunchpadModule)
+class "Chooser" (Module)
 
 
 
@@ -41,7 +42,7 @@ class "Chooser" (LaunchpadModule)
 
 
 function Chooser:__init()
-    LaunchpadModule:__init(self)
+    Module:__init(self)
     self.active        = 1  -- active instrument index
     self.active_column = 1
     self.row           = 6
