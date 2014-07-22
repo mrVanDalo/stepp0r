@@ -54,17 +54,20 @@ end
 
 --- register a listener on the set delay
 -- callbacks will receive a number 0-255
+-- 0 is empty
 function Effect:register_set_delay(callback)
     table.insert(self.callbacks_set_delay,callback)
 end
 --- register a listener on the set pan
 -- callbacks will receive a number 0-127
+-- 255 is empty
 -- 64 is the center
 function Effect:register_set_pan(callback)
     table.insert(self.callbacks_set_pan,callback)
 end
 --- register a listener on the set volume
 -- callbacks will receive a number 0-127
+-- 255 is empty
 function Effect:register_set_volume(callback)
     table.insert(self.callbacks_set_volume,callback)
 end
