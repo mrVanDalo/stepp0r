@@ -41,8 +41,8 @@ function Stepper:__init()
     self.note        = Note.note.c
     self.octave      = 4
     self.delay       = 0
-    self.volume      = 255
-    self.pan         = 63
+    self.volume      = StepperData.instrument.empty
+    self.pan         = StepperData.instrument.empty
     -- ---
     -- navigation
     -- ---
@@ -379,8 +379,8 @@ function Stepper:matrix_listener(msg)
             column.instrument_value   = StepperData.instrument.empty
             -- todo no magic numbers
             column.delay_value        = 0
-            column.panning_value      = 0
-            column.volume_value       = 0
+            column.panning_value      = StepperData.instrument.empty
+            column.volume_value       = StepperData.instrument.empty
             self.matrix[msg.x][msg.y] = self.color.note.empty
             self.pad:set_matrix(msg.x,msg.y,self.color.note.empty)
         end

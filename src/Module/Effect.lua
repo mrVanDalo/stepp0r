@@ -130,7 +130,7 @@ end
 --- transforms key number to paning
 -- number must be 0-8
 function xToPan(number)
-    if number < 1 or number > 8 then return 64 end
+    if number < 1 or number > 8 then return 255 end
     if number < 5 then
         return 64 - (16 * (5 - number))
     else
@@ -138,7 +138,9 @@ function xToPan(number)
     end
 end
 function Effect:set_pan(pan)
-    self.pan = pan
+    if self.pan == pan then self.pan = 0
+                       else self.pan = pan
+    end
     self:matrix_refresh()
     -- trigger callbacks
     local percent = xToPan(self.pan)
