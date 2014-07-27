@@ -80,6 +80,7 @@ function Keyboard:__init()
     self.instrument = 1
     self.instrument_backup = {}
     self.velocity   = 127
+    self.triggered_notes = {}
     -- callback
     self.callback_set_note = {}
 end
