@@ -1,6 +1,7 @@
 
 require 'Data/Color'
 require 'Data/Velocity'
+require 'Module/Module'
 
 --- ======================================================================================================
 ---
@@ -9,12 +10,12 @@ require 'Data/Velocity'
 --- updaten an manage Effect information
 
 
-class "Effect" (LaunchpadModule)
+class "Effect" (Module)
 
 EffectData = {
     mode = {
-        DELAY  = {1, Color.green },
-        PAN    = {2, Color.red   },
+        DELAY  = {1, Color.yellow},
+        PAN    = {2, Color.green },
         VOLUME = {3, Color.orange},
     },
     access = {
@@ -30,7 +31,7 @@ EffectData = {
 ---                                                 [ INIT ]
 
 function Effect:__init()
-    LaunchpadModule:__init(self)
+    Module:__init(self)
     self.mode   = EffectData.mode.DELAY
     self.delay  = 1 -- init values
     self.pan    = 0 -- init values
@@ -53,23 +54,27 @@ end
 
 --- register a listener on the set delay
 -- callbacks will receive a number 0-255
+-- 0 is empty
 function Effect:register_set_delay(callback)
     table.insert(self.callbacks_set_delay,callback)
 end
 --- register a listener on the set pan
 -- callbacks will receive a number 0-127
+-- 255 is empty
 -- 64 is the center
 function Effect:register_set_pan(callback)
     table.insert(self.callbacks_set_pan,callback)
 end
 --- register a listener on the set volume
 -- callbacks will receive a number 0-127
+-- 255 is empty
 function Effect:register_set_volume(callback)
     table.insert(self.callbacks_set_volume,callback)
 end
 
 function Effect:callback_set_instrument()
     return function (_,_)
+        if self.is_not_active then return end
         self:set_delay(1)
         self:set_volume(1)
         self:set_pan(0)
@@ -83,21 +88,25 @@ end
 function Effect:_activate()
     -- todo send default value to all registered listeners
     self:refresh()
-    -- matrix
-    self.pad:register_matrix_listener(function (_,msg)
-        if (msg.vel == Velocity.release) then return end
-        if (msg.y ~= self.row)           then return end
-        if     self.mode == EffectData.mode.DELAY  then self:set_delay(msg.x)
-        elseif self.mode == EffectData.mode.VOLUME then self:set_volume(msg.x)
-        else                                            self:set_pan(msg.x)
-        end
-    end)
-    -- right
-    self.pad:register_right_listener(function (_,msg)
-        if (msg.vel == Velocity.release) then return end
-        if (msg.x ~= self.mode_knob_idx) then return end
-        self:next_mode()
-    end)
+    if self.is_first_run then
+        -- matrix
+        self.pad:register_matrix_listener(function (_,msg)
+            if self.is_not_active          then return end
+            if msg.vel == Velocity.release then return end
+            if msg.y ~= self.row           then return end
+            if     self.mode == EffectData.mode.DELAY  then self:set_delay(msg.x)
+            elseif self.mode == EffectData.mode.VOLUME then self:set_volume(msg.x)
+            else                                            self:set_pan(msg.x)
+            end
+        end)
+        -- right
+        self.pad:register_right_listener(function (_,msg)
+            if self.is_not_active          then return end
+            if msg.vel == Velocity.release then return end
+            if msg.x ~= self.mode_knob_idx then return end
+            self:next_mode()
+        end)
+    end
 
 end
 

@@ -6,7 +6,7 @@
 require 'Data/Note'
 require 'Data/Velocity'
 require 'Data/Color'
-require 'Module/LaunchpadModule'
+require 'Module/Module'
 require 'Experimental/PlaybackPositionObserver'
 
 
@@ -16,7 +16,7 @@ require 'Experimental/PlaybackPositionObserver'
 ---
 --- stepp the pattern
 
-class "Stepper" (LaunchpadModule)
+class "Stepper" (Module)
 
 StepperData = {
     note = {
@@ -37,6 +37,7 @@ StepperData = {
 ---                                                 [ INIT ]
 
 function Stepper:__init()
+    Module:__init(self)
     self.track       = 1
     self.instrument  = 1
     self.note        = Note.note.c
@@ -87,6 +88,7 @@ end
 
 function Stepper:callback_set_instrument()
     return function (index,_)
+        if self.is_not_active then return end
         self.track      = index
         self.instrument = index
         self:refresh_matrix()
@@ -95,6 +97,7 @@ end
 
 function Stepper:callback_set_note()
     return function (note,octave)
+        if self.is_not_active then return end
         self.note   = note
         self.octave = octave
     end
@@ -102,16 +105,19 @@ end
 
 function Stepper:callback_set_delay()
     return function (delay)
+        if self.is_not_active then return end
         self.delay = delay
     end
 end
 function Stepper:callback_set_volume()
     return function (volume)
+        if self.is_not_active then return end
         self.volume = volume
     end
 end
 function Stepper:callback_set_pan()
     return function (pan)
+        if self.is_not_active then return end
         self.pan = pan
     end
 end
@@ -132,65 +138,105 @@ end
 ---                                                 [ BooT ]
 
 function Stepper:_activate()
-    self:refresh_matrix()
 
     --- selected pattern changes
     --
     self.pattern_idx = renoise.song().selected_pattern_index
-    self.pattern_callback = function (_)
-        self.pattern_idx = renoise.song().selected_pattern_index
-        self:refresh_matrix()
+    if self.is_first_run then
+        renoise.song().selected_pattern_index_observable:add_notifier(function (_)
+            if self.is_not_active then return end
+            self.pattern_idx = renoise.song().selected_pattern_index
+            self:refresh_matrix()
+        end)
     end
-    renoise.song().selected_pattern_index_observable:add_notifier(self.pattern_callback)
 
     --- selected playback position
     --
     -- the green light that runs
     --
-    self.playback_observer = function (line) self:callback_playback_position(line) end
-    self.playback_position_observer:register(self.playback_observer)
+    -- todo : maybe this should also be inlined here
+    if self.is_first_run then
+        self.playback_position_observer:register(function (line)
+            if self.is_not_active then return end
+            self:callback_playback_position(line)
+        end)
+    end
 
     --- pad matrix listener
     --
     -- listens on click events on the launchpad matrix
-    -- todo write this function inline and extract the sub routines
-    self.pad:register_matrix_listener(function (_,msg)
-        self:matrix_listener(msg)
-    end)
+    if self.is_first_run then
+        self.pad:register_matrix_listener(function (_,msg)
+            if self.is_not_active          then return end
+            if msg.vel == Velocity.release then return end
+            if msg.y > 4                   then return end
+            local column           = self:calculate_track_position(msg.x,msg.y)
+            if not column then return end
+            if column.note_value == StepperData.note.empty then
+                column.note_value         = pitch(self.note,self.octave)
+                column.instrument_value   = (self.instrument - 1)
+                column.delay_value        = self.delay
+                column.panning_value      = self.pan
+                column.volume_value       = self.volume
+                if column.note_value == StepperData.note.off then
+                    self.matrix[msg.x][msg.y] = self.color.note.off
+                else
+                    self.matrix[msg.x][msg.y] = self.color.note.on
+                end
+            else
+                column.note_value         = StepperData.note.empty
+                column.instrument_value   = StepperData.instrument.empty
+                column.delay_value        = StepperData.delay.empty
+                column.panning_value      = StepperData.panning.empty
+                column.volume_value       = StepperData.volume.empty
+                self.matrix[msg.x][msg.y] = self.color.note.empty
+            end
+            self.pad:set_matrix(msg.x,msg.y,self.matrix[msg.x][msg.y])
+        end)
+    end
 
     --- zoom knobs listener
     --
     -- listens on click events to manipulate the zoom
     --
     self:zoom_update_knobs()
-    self.pad:register_top_listener(function (_,msg)
-        if (msg.vel == Velocity.release ) then return end
-        if (msg.x == self.zoom_in_idx ) then
-            self:zoom_in()
-        elseif (msg.x == self.zoom_out_idx) then
-            self:zoom_out()
-        end
-    end)
+    if self.is_first_run then
+        self.pad:register_top_listener(function (_,msg)
+            if self.is_not_active            then return end
+            if msg.vel == Velocity.release   then return end
+            if (msg.x == self.zoom_in_idx ) then
+                self:zoom_in()
+            elseif msg.x == self.zoom_out_idx then
+                self:zoom_out()
+            end
+        end)
+    end
 
     --- pageination knobs listener
     --
     -- listens on click events to manipulate the pagination
     --
     self:page_update_knobs()
-    self.pad:register_top_listener(function (_,msg)
-        if (msg.vel == Velocity.release) then return end
-        if(msg.x == self.page_inc_idx) then
-            self:page_inc()
-        elseif(msg.x == self.page_dec_idx)then
-            self:page_dec()
-        end
-    end)
+    if self.is_first_run then
+        self.pad:register_top_listener(function (_,msg)
+            if self.is_not_active            then return end
+            if msg.vel == Velocity.release   then return end
+            if msg.x == self.page_inc_idx then
+                self:page_inc()
+            elseif msg.x == self.page_dec_idx then
+                self:page_dec()
+            end
+        end)
+    end
+
+    --- refresh the matrix
+    self:refresh_matrix()
 end
 
 --- tear down
 --
 function Stepper:_deactivate()
-    self.playback_position_observer:unregister(f)
+    -- todo unregister playback position here
 end
 
 
@@ -354,39 +400,6 @@ function Stepper:active_pattern()
     return renoise.song().patterns[self.pattern_idx]
 end
 
-
-
---- listens to events from the user on the matrix
---
-function Stepper:matrix_listener(msg)
-    if (msg.vel == Velocity.release) then return end
-    if (msg.y > 4 )   then return end
-    local column           = self:calculate_track_position(msg.x,msg.y)
-    if column then
-        if column.note_value == StepperData.note.empty then
-            column.note_value         = pitch(self.note,self.octave)
-            column.instrument_value   = (self.instrument - 1)
-            column.delay_value        = self.delay
-            column.panning_value      = self.pan
-            column.volume_value       = self.volume
-            self.matrix[msg.x][msg.y] = self.color.note.on
-            if column.note_value == 120 then
-                self.pad:set_matrix(msg.x,msg.y,self.color.note.off)
-            else
-                self.pad:set_matrix(msg.x,msg.y,self.color.note.on)
-            end
-        else
-            column.note_value         = StepperData.note.empty
-            column.instrument_value   = StepperData.instrument.empty
-            -- todo no magic numbers
-            column.delay_value        = StepperData.delay.empty
-            column.panning_value      = StepperData.panning.empty
-            column.volume_value       = StepperData.volume.empty
-            self.matrix[msg.x][msg.y] = self.color.note.empty
-            self.pad:set_matrix(msg.x,msg.y,self.color.note.empty)
-        end
-    end
-end
 
 --- should ensure the column exist
 --
