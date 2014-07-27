@@ -80,7 +80,10 @@ function Keyboard:__init()
     self.instrument = 1
     self.instrument_backup = {}
     self.velocity   = 127
-    self.triggered_notes = {}
+    self.triggered_notes = {
+        {nil,nil, nil, nil, nil, nil, nil, nil },
+        {nil,nil, nil, nil, nil, nil, nil, nil }
+    }
     -- callback
     self.callback_set_note = {}
 end
@@ -119,14 +122,14 @@ function Keyboard:setup_matrix_listener()
         elseif (y == 2) then
             -- second line notes only
             self:set_note(x, y)
-            self:trigger_note()
+            self:trigger_note(x,y)
         elseif (x == 1) then
             self:octave_down()
         elseif (x == 8) then
             self:octave_up()
         else
             self:set_note(x, y)
-            self:trigger_note()
+            self:trigger_note(x,y)
         end
         self:matrix_update_keys()
     end)
@@ -206,21 +209,31 @@ function Keyboard:setup_osc_client()
     self.client = renoise.Socket.create_client( self.osc.host , self.osc.port,  renoise.Socket.PROTOCOL_UDP)
 end
 
-function Keyboard:trigger_note()
+function Keyboard:trigger_note(x,y)
     local OscMessage = renoise.Osc.Message
     local track      = self.instrument
+    local note       = pitch(self.note,self.octave)
     if is_not_off(self.note) then
+        self.triggered_notes[y][x] = note
         self.client:send(OscMessage("/renoise/trigger/note_on",{
             {tag="i",value=self.instrument},
             {tag="i",value=track},
-            {tag="i",value=pitch(self.note,self.octave)},
+            {tag="i",value=note},
             {tag="i",value=self.velocity}}))
     end
 end
 
 function Keyboard:untrigger_note(x,y)
-    --self.client:send(OscMessage("/renoise/trigger/note_on",{
-    print("not yet")
+    local OscMessage = renoise.Osc.Message
+    local note       = self.triggered_notes[y][x]
+    if not note then return end
+    local instrument = self.instrument
+    local track      = self.instrument
+    self.client:send(OscMessage("/renoise/trigger/note_off",{
+        {tag="i",value=instrument},
+        {tag="i",value=track},
+        {tag="i",value=note},
+    }))
 end
 
 
