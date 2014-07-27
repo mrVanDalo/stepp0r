@@ -143,6 +143,7 @@ function Chooser:_activate()
             end
         end)
         renoise.song().instruments_observable:add_notifier(function (_)
+            if self.is_not_active then return end
             self:page_update_knobs()
         end)
     end

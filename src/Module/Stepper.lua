@@ -236,7 +236,7 @@ end
 --- tear down
 --
 function Stepper:_deactivate()
-    -- self.playback_position_observer:unregister()
+    -- todo unregister playback position here
 end
 
 
