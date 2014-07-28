@@ -89,7 +89,7 @@ local function show_dialog()
       -- user pressed OK, do something  
     end
   --]]
-  require 'Launchpad'
+  require 'Layer/Launchpad'
   require 'Module/Module'
   require 'Module/Keyboard'
   require 'Module/Chooser'
