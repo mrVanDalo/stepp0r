@@ -258,7 +258,7 @@ end
 
 function Chooser:update_set_instrument_listeners()
     for _, callback in ipairs(self.callback_select_instrument) do
-        callback(self.active,self.column)
+        callback(self.active,self.column_idx)
     end
 end
 

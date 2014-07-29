@@ -59,7 +59,7 @@ function Stepper:__init()
     self.page_start   = 0  -- line left before first pixel
     self.page_end     = 33 -- line right after last pixel
     -- rest
-    self.sub_column   = 1 -- the column in the track
+    self.track_column = 1 -- the column in the track
     self.pattern_idx  = 1 -- actual pattern
     -- rendering
     self.matrix      = {}
@@ -87,10 +87,11 @@ function Stepper:wire_launchpad(pad)
 end
 
 function Stepper:callback_set_instrument()
-    return function (index,_)
+    return function (index,column)
         if self.is_not_active then return end
-        self.track      = index
-        self.instrument = index
+        self.track        = index
+        self.track_column = column
+        self.instrument   = index
         self:refresh_matrix()
     end
 end
@@ -401,14 +402,6 @@ function Stepper:active_pattern()
 end
 
 
---- should ensure the column exist
---
--- todo might be deprecated, because this should be done by the choosser
---
-function Stepper:ensure_sub_column_exist()
-   -- todo write me
-end
-
 --- calculates the position in track
 --
 -- the point should come from the launchpad.
@@ -421,8 +414,7 @@ function Stepper:calculate_track_position(x,y)
     local pattern    = self:active_pattern()
     local found_line = pattern.tracks[self.track].lines[line]
     if found_line then
-        self:ensure_sub_column_exist()
-        return found_line.note_columns[self.sub_column]
+        return found_line.note_columns[self.track_column]
     else
         return nil
     end
@@ -451,7 +443,9 @@ function Stepper:matrix_update()
     local pattern_iter  = renoise.song().pattern_iterator
     for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track) do
         if not table.is_empty(line.note_columns) then
-            local note_column = line:note_column(self.sub_column)
+            print("note_column")
+            print(self.track_column)
+            local note_column = line:note_column(self.track_column)
             if(note_column.note_value ~= StepperData.note.empty) then
                 local xy = self:line_to_point(pos.line)
                 if xy then
