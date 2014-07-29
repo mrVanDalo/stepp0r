@@ -115,6 +115,7 @@ function Chooser:_activate()
             elseif self.mode == ChooserData.mode.mute then
                 self:mute_track(msg.x)
             end
+            self:column_update_knobs()
             self:row_update()
         end)
         renoise.song().instruments_observable:add_notifier(function (_)
@@ -232,13 +233,11 @@ end
 function Chooser:ensure_column_idx_exists()
     local track = renoise.song().tracks[self.active]
     -- ensure column exist
-    -- find out the number of note_columns that exist
-    -- todo : write this part
-    -- local pattern_index = renoise.song().selected_pattern_index
-    local iterator = renoise.song().pattern_iterator:note_columns_in_track(self.active,true)
-    -- local iterator = renoise.song().pattern_iterator:note_columns_in_pattern_track(pattern_index, self.active,true)
-    for pos,column in iterator do
-        print(pos,column)
+    if track.visible_note_columns < self.column_idx then
+        print("update note_columns")
+        track.visible_note_columns = self.column_idx
+    else
+        print("dont update note_columns")
     end
 end
 
@@ -251,7 +250,7 @@ function Chooser:select_instrument(x)
     self.column_idx = 1
     -- ensure track exist
     self:ensure_active_track_exist()
-    --
+    -- rename track
     renoise.song().tracks[self.active].name = found.name
     -- trigger callbacks
     self:update_set_instrument_listeners()
