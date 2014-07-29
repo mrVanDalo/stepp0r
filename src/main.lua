@@ -89,11 +89,12 @@ local function show_dialog()
       -- user pressed OK, do something  
     end
   --]]
-  require 'Launchpad'
-  require 'Module/LaunchpadModule'
-  require 'Module/KeyboardModule'
+  require 'Layer/Launchpad'
+  require 'Module/Module'
+  require 'Module/Keyboard'
   require 'Module/Chooser'
   require 'Module/Stepper'
+  require 'Module/Effect'
   require 'Data/Note'
   require 'Data/Color'
 
@@ -104,7 +105,13 @@ local function show_dialog()
   local stepper = Stepper()
   stepper:wire_launchpad(pad)
 
-  local key = KeyboardModule()
+  local effect = Effect()
+  effect:wire_launchpad(pad)
+  effect:register_set_delay (stepper:callback_set_delay())
+  effect:register_set_volume(stepper:callback_set_volume())
+  effect:register_set_pan   (stepper:callback_set_pan())
+
+  local key = Keyboard()
   key:wire_launchpad(pad)
   key:register_set_note(stepper:callback_set_note())
 
@@ -112,10 +119,13 @@ local function show_dialog()
   chooser:wire_launchpad(pad)
   chooser:register_select_instrument(key:callback_set_instrument())
   chooser:register_select_instrument(stepper:callback_set_instrument())
+  chooser:register_select_instrument(effect:callback_set_instrument())
 
+  --- activate them all
   key:activate()
   stepper:activate()
   chooser:activate()
+  effect:activate()
 end
 
 
