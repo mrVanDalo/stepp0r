@@ -61,8 +61,9 @@ function Chooser:__init()
             inactive = Color.off,
         },
         column = {
-            active   = Color.yellow,
-            inactive = Color.off,
+            active    = Color.yellow,
+            inactive  = Color.dim.green,
+            invisible = Color.off,
         },
     }
     -- page
@@ -171,6 +172,7 @@ function Chooser:_activate()
             self:column_update_knobs()
             self:update_set_instrument_listeners()
         end)
+        -- todo add observable on visible_note_columns to update them
     end
 end
 
@@ -232,12 +234,8 @@ end
 
 function Chooser:ensure_column_idx_exists()
     local track = renoise.song().tracks[self.active]
-    -- ensure column exist
     if track.visible_note_columns < self.column_idx then
-        print("update note_columns")
         track.visible_note_columns = self.column_idx
-    else
-        print("dont update note_columns")
     end
 end
 
@@ -338,10 +336,14 @@ end
 
 
 function Chooser:column_update_knobs()
+    local track = renoise.song().tracks[self.active]
+    local visible = track.visible_note_columns + self.column_idx_start
     for i = self.column_idx_start, self.column_idx_stop do
-        local color = self.color.column.inactive
+        local color = self.color.column.invisible
         if i == self.column_idx then
             color = self.color.column.active
+        elseif i < visible then
+            color = self.color.column.inactive
         end
         self.pad:set_right(i,color)
     end
