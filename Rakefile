@@ -1,6 +1,6 @@
 
 BUILD_DIR='./build'
-version='0.1'
+version='0.2'
 project_title="stepsequencer"
 export_folder="#{project_title}-#{version}"
 
