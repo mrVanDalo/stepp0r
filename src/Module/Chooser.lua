@@ -43,8 +43,7 @@ class "Chooser" (Module)
 
 function Chooser:__init()
     Module:__init(self)
-    self.active        = 1  -- active instrument index
-    self.active_column = 1
+    self.active        = 1  -- active instrument index and track index
     self.row           = 6
     self.mode          = ChooserData.mode.choose
     self.mode_idx      = self.row
@@ -60,13 +59,23 @@ function Chooser:__init()
         page = {
             active   = Color.yellow,
             inactive = Color.off,
-        }
+        },
+        column = {
+            active    = Color.yellow,
+            inactive  = Color.dim.green,
+            invisible = Color.off,
+        },
     }
     -- page
     self.page         = 1
     self.page_inc_idx = 4
     self.page_dec_idx = 3
+    -- instruments
     self.inst_offset  = 0  -- which is the first instrument
+    -- column
+    self.column_idx       = 1 -- number of the column
+    self.column_idx_start = 1
+    self.column_idx_stop  = 4
     -- callbacks
     self.callback_select_instrument = {}
 end
@@ -91,7 +100,7 @@ end
 
 --- ======================================================================================================
 ---
----                                                 [ BOOT ]
+---                                                 [ boot ]
 
 function Chooser:_activate()
 
@@ -107,6 +116,7 @@ function Chooser:_activate()
             elseif self.mode == ChooserData.mode.mute then
                 self:mute_track(msg.x)
             end
+            self:column_update_knobs()
             self:row_update()
         end)
         renoise.song().instruments_observable:add_notifier(function (_)
@@ -126,7 +136,7 @@ function Chooser:_activate()
         end)
     end
 
-    -- page logic
+    --- page logic
     self:page_update_knobs()
     if self.is_first_run then
         self.pad:register_top_listener(function (_,msg)
@@ -146,6 +156,23 @@ function Chooser:_activate()
             if self.is_not_active then return end
             self:page_update_knobs()
         end)
+    end
+
+    --- column logic
+    self:column_update_knobs()
+    if self.is_first_run then
+        self.pad:register_right_listener(function (_,msg)
+            if self.is_not_active            then return end
+            if msg.vel == Velocity.release   then return end
+            if msg.x > self.column_idx_stop  then return end
+            if msg.x < self.column_idx_start then return end
+
+            self.column_idx = msg.x
+            self:ensure_column_idx_exists()
+            self:column_update_knobs()
+            self:update_set_instrument_listeners()
+        end)
+        -- todo add observable on visible_note_columns to update them
     end
 end
 
@@ -205,29 +232,31 @@ function Chooser:ensure_active_track_exist()
     end
 end
 
+function Chooser:ensure_column_idx_exists()
+    local track = renoise.song().tracks[self.active]
+    if track.visible_note_columns < self.column_idx then
+        track.visible_note_columns = self.column_idx
+    end
+end
+
 function Chooser:select_instrument(x)
     local active = self.inst_offset + x
     local found = renoise.song().instruments[active]
     if not found        then return  end
     if found.name == "" then return  end
-    self.active        = active
-    self.active_column = 1
+    self.active     = active
+    self.column_idx = 1
     -- ensure track exist
     self:ensure_active_track_exist()
-    -- ensure column exist
-    -- find out the number of note_columns that exist
-    -- todo : write this part
-    -- local pattern_index = renoise.song().selected_pattern_index
-    -- local iterator = renoise.song().pattern_iterator:note_columns_in_track(self.active,true)
-    -- local iterator = renoise.song().pattern_iterator:note_columns_in_pattern_track(pattern_index, self.active,true)
-    -- for pos,column in iterator do
-        -- print(pos,column)
-    -- end
-    --
+    -- rename track
     renoise.song().tracks[self.active].name = found.name
     -- trigger callbacks
+    self:update_set_instrument_listeners()
+end
+
+function Chooser:update_set_instrument_listeners()
     for _, callback in ipairs(self.callback_select_instrument) do
-        callback(self.active,self.active_column)
+        callback(self.active,self.column_idx)
     end
 end
 
@@ -301,6 +330,22 @@ end
 function Chooser:row_clear()
     for x = 1, 8, 1 do
         self.pad:set_matrix(x,self.row, ChooserData.color.clear)
+    end
+end
+
+
+
+function Chooser:column_update_knobs()
+    local track = renoise.song().tracks[self.active]
+    local visible = track.visible_note_columns + self.column_idx_start
+    for i = self.column_idx_start, self.column_idx_stop do
+        local color = self.color.column.invisible
+        if i == self.column_idx then
+            color = self.color.column.active
+        elseif i < visible then
+            color = self.color.column.inactive
+        end
+        self.pad:set_right(i,color)
     end
 end
 
