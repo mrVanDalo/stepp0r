@@ -31,10 +31,10 @@ class "RenoiseScriptingTool" (renoise.Document.DocumentNode)
     self:add_property("Id", "Unknown Id")
   end
 
-local manifest = RenoiseScriptingTool()
-local ok,err = manifest:load_from("manifest.xml")
-local tool_name = manifest:property("Name").value
-local tool_id = manifest:property("Id").value
+local manifest    = RenoiseScriptingTool()
+local ok,err      = manifest:load_from("manifest.xml")
+local tool_name   = manifest:property("Name").value
+local tool_id     = manifest:property("Id").value
 
 
 --------------------------------------------------------------------------------
@@ -60,6 +60,27 @@ local stepper = nil
 local effect  = nil
 local key     = nil
 local chooser = nil
+local launchpad_chooser = nil
+
+
+local function launchpads()
+    local list = {}
+    for _,v in pairs(renoise.Midi.available_input_devices()) do
+        if string.find(v, "Launchpad") then
+            table.insert(list,v)
+        end
+    end
+    return list
+end
+
+
+local function update_launchpad_chooser()
+    launchpad_chooser.items = launchpads()
+end
+
+local function press_refresh()
+    update_launchpad_chooser()
+end
 
 local function show_dialog()
 
@@ -107,13 +128,34 @@ local function show_dialog()
 
     -- The ViewBuilder is the basis
     vb = renoise.ViewBuilder()
-  
+
+    launchpad_chooser = vb:popup {
+        items = launchpads()
+    }
+
     -- The content of the dialog, built with the ViewBuilder.
     local content = vb:column {
         margin = 10,
+        spacing = 10,
         vb:text {
-            text = get_greeting()
-        }
+            text = "Awesome"
+        },
+        vb:row {
+            vb:text {
+                text = "Launchpad : ",
+            },
+            launchpad_chooser,
+        },
+        vb:row {
+            spacing = 10,
+            vb:button {
+                text = "start"
+            },
+            vb:button {
+                text = "refresh",
+                pressed = press_refresh
+            },
+        },
     }
   
     -- A custom dialog is non-modal and displays a user designed
