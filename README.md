@@ -47,6 +47,12 @@ For more complex objects it has a access key (containing the indecies to access 
 
 Version names by Estonian Marathon Champions
 
+## 0.2 Rene Meimer
+
+* cleaned up code
+* add columns to chooser
+* propper activate and deactivate behavior
+
 ## 0.1 Aare Kuum
 
 * Basic usability works
