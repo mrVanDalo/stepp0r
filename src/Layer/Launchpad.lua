@@ -16,7 +16,7 @@ class "Launchpad"
 
 function Launchpad:__init()
     self:unregister_all()
-    self:_watch()
+    -- self:_watch()
 end
 
 -- watches for launchpad connections

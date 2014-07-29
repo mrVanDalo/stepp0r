@@ -33,6 +33,7 @@ end
 function Module:deactivate()
     self.is_active     = false
     self.is_not_active = true
+    if self.is_first_run then return end
     self:_deactivate()
 end
 

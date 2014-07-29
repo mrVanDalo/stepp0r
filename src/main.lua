@@ -82,6 +82,25 @@ local function press_refresh()
     update_launchpad_chooser()
 end
 
+local function press_start()
+    --- deactivate them all
+    key:deactivate()
+    stepper:deactivate()
+    chooser:deactivate()
+    effect:deactivate()
+
+
+    local pad_name = launchpad_chooser.items[launchpad_chooser.value]
+    pad:connect(pad_name)
+
+    --- activate them all
+    key:activate()
+    stepper:activate()
+    chooser:activate()
+    effect:activate()
+
+end
+
 local function show_dialog()
 
     if not dialog then
@@ -114,17 +133,6 @@ local function show_dialog()
         dialog:show()
         return
     end
-    --- deactivate them all
-    key:deactivate()
-    stepper:deactivate()
-    chooser:deactivate()
-    effect:deactivate()
-
-    --- activate them all
-    key:activate()
-    stepper:activate()
-    chooser:activate()
-    effect:activate()
 
     -- The ViewBuilder is the basis
     vb = renoise.ViewBuilder()
@@ -149,7 +157,8 @@ local function show_dialog()
         vb:row {
             spacing = 10,
             vb:button {
-                text = "start"
+                text = "start",
+                pressed = press_start,
             },
             vb:button {
                 text = "refresh",
