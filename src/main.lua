@@ -2,6 +2,15 @@
 main.lua
 ============================================================================]]--
 
+require 'Layer/Launchpad'
+require 'Module/Module'
+require 'Module/Keyboard'
+require 'Module/Chooser'
+require 'Module/Stepper'
+require 'Module/Effect'
+require 'Data/Note'
+require 'Data/Color'
+
 -- Placeholder for the dialog
 local dialog = nil
 
@@ -46,39 +55,80 @@ end
 -- GUI
 --------------------------------------------------------------------------------
 
+local pad     = nil
+local stepper = nil
+local effect  = nil
+local key     = nil
+local chooser = nil
+
 local function show_dialog()
 
-  -- This block makes sure a non-modal dialog is shown once.
-  -- If the dialog is already opened, it will be focused.
-  if dialog and dialog.visible then
-    dialog:show()
-    return
-  end
+    if not dialog then
+        -- initialize efferything
+        pad = Launchpad()
+
+        stepper = Stepper()
+        stepper:wire_launchpad(pad)
+
+        effect = Effect()
+        effect:wire_launchpad(pad)
+        effect:register_set_delay (stepper:callback_set_delay())
+        effect:register_set_volume(stepper:callback_set_volume())
+        effect:register_set_pan   (stepper:callback_set_pan())
+
+        key = Keyboard()
+        key:wire_launchpad(pad)
+        key:register_set_note(stepper:callback_set_note())
+
+        chooser = Chooser()
+        chooser:wire_launchpad(pad)
+        chooser:register_select_instrument(key:callback_set_instrument())
+        chooser:register_select_instrument(stepper:callback_set_instrument())
+        chooser:register_select_instrument(effect:callback_set_instrument())
+    end
+
+    -- This block makes sure a non-modal dialog is shown once.
+    -- If the dialog is already opened, it will be focused.
+    if dialog and dialog.visible then
+        dialog:show()
+        return
+    end
+    --- deactivate them all
+    key:deactivate()
+    stepper:deactivate()
+    chooser:deactivate()
+    effect:deactivate()
+
+    --- activate them all
+    key:activate()
+    stepper:activate()
+    chooser:activate()
+    effect:activate()
+
+    -- The ViewBuilder is the basis
+    vb = renoise.ViewBuilder()
   
-  -- The ViewBuilder is the basis
-  vb = renoise.ViewBuilder()
-  
-  -- The content of the dialog, built with the ViewBuilder.
-  local content = vb:column {
-    margin = 10,
-    vb:text {
-      text = get_greeting()
+    -- The content of the dialog, built with the ViewBuilder.
+    local content = vb:column {
+        margin = 10,
+        vb:text {
+            text = get_greeting()
+        }
     }
-  } 
   
-  -- A custom dialog is non-modal and displays a user designed
-  -- layout built with the ViewBuilder.   
-  dialog = renoise.app():show_custom_dialog(tool_name, content)  
+    -- A custom dialog is non-modal and displays a user designed
+    -- layout built with the ViewBuilder.
+    dialog = renoise.app():show_custom_dialog(tool_name, content)
   
   
-  -- A custom prompt is a modal dialog, restricting interaction to itself. 
-  -- As long as the prompt is displayed, the GUI thread is paused. Since 
-  -- currently all scripts run in the GUI thread, any processes that were running 
-  -- in scripts will be paused. 
-  -- A custom prompt requires buttons. The prompt will return the label of 
-  -- the button that was pressed or nil if the dialog was closed with the 
-  -- standard X button.  
-  --[[ 
+    -- A custom prompt is a modal dialog, restricting interaction to itself.
+    -- As long as the prompt is displayed, the GUI thread is paused. Since
+    -- currently all scripts run in the GUI thread, any processes that were running
+    -- in scripts will be paused.
+    -- A custom prompt requires buttons. The prompt will return the label of
+    -- the button that was pressed or nil if the dialog was closed with the
+    -- standard X button.
+    --[[
     local buttons = {"OK", "Cancel"}
     local choice = renoise.app():show_custom_prompt(
       tool_name, 
@@ -89,43 +139,8 @@ local function show_dialog()
       -- user pressed OK, do something  
     end
   --]]
-  require 'Layer/Launchpad'
-  require 'Module/Module'
-  require 'Module/Keyboard'
-  require 'Module/Chooser'
-  require 'Module/Stepper'
-  require 'Module/Effect'
-  require 'Data/Note'
-  require 'Data/Color'
 
-  print('load dev main')
 
-  local pad = Launchpad()
-
-  local stepper = Stepper()
-  stepper:wire_launchpad(pad)
-
-  local effect = Effect()
-  effect:wire_launchpad(pad)
-  effect:register_set_delay (stepper:callback_set_delay())
-  effect:register_set_volume(stepper:callback_set_volume())
-  effect:register_set_pan   (stepper:callback_set_pan())
-
-  local key = Keyboard()
-  key:wire_launchpad(pad)
-  key:register_set_note(stepper:callback_set_note())
-
-  local chooser = Chooser()
-  chooser:wire_launchpad(pad)
-  chooser:register_select_instrument(key:callback_set_instrument())
-  chooser:register_select_instrument(stepper:callback_set_instrument())
-  chooser:register_select_instrument(effect:callback_set_instrument())
-
-  --- activate them all
-  key:activate()
-  stepper:activate()
-  chooser:activate()
-  effect:activate()
 end
 
 
@@ -134,8 +149,8 @@ end
 --------------------------------------------------------------------------------
 
 renoise.tool():add_menu_entry {
-  name = "Main Menu:Tools:"..tool_name.."...",
-  invoke = show_dialog
+    name = "Main Menu:Tools:"..tool_name.."...",
+    invoke = show_dialog
 
 }
 
