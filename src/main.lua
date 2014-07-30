@@ -2,6 +2,7 @@
 main.lua
 ============================================================================]]--
 
+require 'Init/LaunchpadSetup'
 require 'Layer/Launchpad'
 require 'Module/Module'
 require 'Module/Keyboard'
@@ -55,15 +56,13 @@ end
 -- GUI
 --------------------------------------------------------------------------------
 
-local pad     = nil
-local stepper = nil
-local effect  = nil
-local key     = nil
-local chooser = nil
 local launchpad_chooser = nil
+local stop_button       = nil
+local start_button      = nil
+local launchpad_setup   = nil
 
 
-local function launchpads()
+local function get_launchpads()
     local list = {}
     for _,v in pairs(renoise.Midi.available_input_devices()) do
         if string.find(v, "Launchpad") then
@@ -75,7 +74,7 @@ end
 
 
 local function update_launchpad_chooser()
-    launchpad_chooser.items = launchpads()
+    launchpad_chooser.items = get_launchpads()
 end
 
 local function press_refresh()
@@ -83,49 +82,20 @@ local function press_refresh()
 end
 
 local function press_start()
-    --- deactivate them all
-    key:deactivate()
-    stepper:deactivate()
-    chooser:deactivate()
-    effect:deactivate()
-
-
-    local pad_name = launchpad_chooser.items[launchpad_chooser.value]
-    pad:connect(pad_name)
-
-    --- activate them all
-    key:activate()
-    stepper:activate()
-    chooser:activate()
-    effect:activate()
-
+    stop_button.visible  = true
+    start_button.visible = false
+    launchpad_setup = LaunchpadSetup()
+    launchpad_setup:wire()
+    launchpad_setup:connect(launchpad_chooser.items[launchpad_chooser.value])
+    launchpad_setup:activate()
+end
+local function press_stop()
+    stop_button.visible  = false
+    start_button.visible = true
+    launchpad_setup:deactivate()
 end
 
 local function show_dialog()
-
-    if not dialog then
-        -- initialize efferything
-        pad = Launchpad()
-
-        stepper = Stepper()
-        stepper:wire_launchpad(pad)
-
-        effect = Effect()
-        effect:wire_launchpad(pad)
-        effect:register_set_delay (stepper:callback_set_delay())
-        effect:register_set_volume(stepper:callback_set_volume())
-        effect:register_set_pan   (stepper:callback_set_pan())
-
-        key = Keyboard()
-        key:wire_launchpad(pad)
-        key:register_set_note(stepper:callback_set_note())
-
-        chooser = Chooser()
-        chooser:wire_launchpad(pad)
-        chooser:register_select_instrument(key:callback_set_instrument())
-        chooser:register_select_instrument(stepper:callback_set_instrument())
-        chooser:register_select_instrument(effect:callback_set_instrument())
-    end
 
     -- This block makes sure a non-modal dialog is shown once.
     -- If the dialog is already opened, it will be focused.
@@ -138,7 +108,19 @@ local function show_dialog()
     vb = renoise.ViewBuilder()
 
     launchpad_chooser = vb:popup {
-        items = launchpads()
+        width = 200,
+        items = get_launchpads()
+    }
+
+    stop_button = vb:button {
+        visible = false,
+        text    = "stop",
+        pressed = press_stop,
+    }
+    start_button = vb:button {
+        visible = true,
+        text    = "start",
+        pressed = press_start,
     }
 
     -- The content of the dialog, built with the ViewBuilder.
@@ -156,10 +138,8 @@ local function show_dialog()
         },
         vb:row {
             spacing = 10,
-            vb:button {
-                text = "start",
-                pressed = press_start,
-            },
+            start_button,
+            stop_button,
             vb:button {
                 text = "refresh",
                 pressed = press_refresh
