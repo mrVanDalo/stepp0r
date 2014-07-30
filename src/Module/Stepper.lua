@@ -238,6 +238,8 @@ end
 --
 function Stepper:_deactivate()
     -- todo unregister playback position here
+    self:page_clear_knobs()
+    self:zoom_clear_knobs()
 end
 
 
@@ -265,6 +267,11 @@ function Stepper:page_update_knobs()
     else
         self.pad:set_top(self.page_inc_idx,self.color.page.active)
     end
+end
+
+function Stepper:page_clear_knobs()
+    self.pad:set_top(self.page_dec_idx,Color.off)
+    self.pad:set_top(self.page_inc_idx,Color.off)
 end
 
 function Stepper:page_inc()
@@ -349,7 +356,10 @@ function Stepper:zoom_update_knobs()
     end
 end
 
-
+function Stepper:zoom_clear_knobs()
+    self.pad:set_top(self.zoom_in_idx,Color.off)
+    self.pad:set_top(self.zoom_out_idx,Color.off)
+end
 
 --- ======================================================================================================
 ---

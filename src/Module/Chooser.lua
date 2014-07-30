@@ -177,6 +177,9 @@ function Chooser:_activate()
 end
 
 function Chooser:_deactivate()
+    self:column_clear_knobs()
+    self:page_clear_knobs()
+    self:mode_clear_knobs()
     self:row_clear()
 end
 
@@ -204,6 +207,10 @@ end
 function Chooser:mode_update_knobs()
     -- print(self.mode)
     self.pad:set_right(self.mode_idx, self.mode[ChooserData.access.color])
+end
+function Chooser:mode_clear_knobs()
+    -- print(self.mode)
+    self.pad:set_right(self.mode_idx, Color.off)
 end
 
 function Chooser:mute_track(x)
@@ -278,6 +285,11 @@ function Chooser:page_update_knobs()
     end
 end
 
+function Chooser:page_clear_knobs()
+    self.pad:set_top(self.page_dec_idx,Color.off)
+    self.pad:set_top(self.page_inc_idx,Color.off)
+end
+
 function Chooser:page_inc()
     local instrument_count = table.getn(renoise.song().instruments)
     if (self.inst_offset + 8) < instrument_count then
@@ -346,6 +358,12 @@ function Chooser:column_update_knobs()
             color = self.color.column.inactive
         end
         self.pad:set_right(i,color)
+    end
+end
+
+function Chooser:column_clear_knobs()
+    for i = self.column_idx_start, self.column_idx_stop do
+        self.pad:set_right(i,Color.off)
     end
 end
 
