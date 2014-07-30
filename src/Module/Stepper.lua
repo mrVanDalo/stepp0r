@@ -240,6 +240,8 @@ function Stepper:_deactivate()
     -- todo unregister playback position here
     self:page_clear_knobs()
     self:zoom_clear_knobs()
+    self:matrix_clear()
+    self:pad_matrix_update()
 end
 
 
