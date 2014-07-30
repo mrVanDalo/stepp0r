@@ -59,8 +59,9 @@ end
 local launchpad_chooser = nil
 local stop_button       = nil
 local start_button      = nil
-local launchpad_setup   = nil
 
+local launchpad_setup   = LaunchpadSetup()
+launchpad_setup:wire()
 
 local function get_launchpads()
     local list = {}
@@ -84,8 +85,6 @@ end
 local function press_start()
     stop_button.visible  = true
     start_button.visible = false
-    launchpad_setup = LaunchpadSetup()
-    launchpad_setup:wire()
     launchpad_setup:connect(launchpad_chooser.items[launchpad_chooser.value])
     launchpad_setup:activate()
 end

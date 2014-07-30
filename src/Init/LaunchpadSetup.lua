@@ -41,6 +41,7 @@ function LaunchpadSetup:activate()
 end
 
 function LaunchpadSetup:connect(pad_name)
+    self.pad:disconnect()
     self.pad:connect(pad_name)
 end
 
