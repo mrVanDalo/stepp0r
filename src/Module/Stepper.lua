@@ -238,6 +238,10 @@ end
 --
 function Stepper:_deactivate()
     -- todo unregister playback position here
+    self:page_clear_knobs()
+    self:zoom_clear_knobs()
+    self:matrix_clear()
+    self:pad_matrix_update()
 end
 
 
@@ -267,6 +271,11 @@ function Stepper:page_update_knobs()
     end
 end
 
+function Stepper:page_clear_knobs()
+    self.pad:set_top(self.page_dec_idx,Color.off)
+    self.pad:set_top(self.page_inc_idx,Color.off)
+end
+
 function Stepper:page_inc()
     local pattern = self:active_pattern()
     if (self.page_end >= pattern.number_of_lines) then return end
@@ -287,7 +296,7 @@ end
 function Stepper:page_update_borders()
     self.page_start = ((self.page - 1) * 32 * self.zoom)
     self.page_end   = self.page_start + 1 + 32 * self.zoom
-    print("update page borders", self.page, self.page_start, self.page_end)
+    -- print("update page borders", self.page, self.page_start, self.page_end)
 end
 
 
@@ -349,7 +358,10 @@ function Stepper:zoom_update_knobs()
     end
 end
 
-
+function Stepper:zoom_clear_knobs()
+    self.pad:set_top(self.zoom_in_idx,Color.off)
+    self.pad:set_top(self.zoom_out_idx,Color.off)
+end
 
 --- ======================================================================================================
 ---
@@ -443,8 +455,8 @@ function Stepper:matrix_update()
     local pattern_iter  = renoise.song().pattern_iterator
     for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track) do
         if not table.is_empty(line.note_columns) then
-            print("note_column")
-            print(self.track_column)
+            -- print("note_column")
+            -- print(self.track_column)
             local note_column = line:note_column(self.track_column)
             if(note_column.note_value ~= StepperData.note.empty) then
                 local xy = self:line_to_point(pos.line)

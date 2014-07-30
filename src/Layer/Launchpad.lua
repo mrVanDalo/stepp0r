@@ -16,7 +16,7 @@ class "Launchpad"
 
 function Launchpad:__init()
     self:unregister_all()
-    self:_watch()
+    -- self:_watch()
 end
 
 -- watches for launchpad connections
@@ -64,6 +64,15 @@ function Launchpad:connect(midi_device_name)
         end
     end
     self.midi_input  = renoise.Midi.create_input_device(midi_device_name, main_callback)
+end
+
+function Launchpad:disconnect()
+    if self.midi_input then
+        self.midi_input:close()
+    end
+    if self.midi_out then
+        self.midi_out:close()
+    end
 end
 
 
