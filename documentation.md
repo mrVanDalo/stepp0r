@@ -31,11 +31,38 @@ For Playing Tones.
 
 The last key you've pressed is blinking and will be used to edit the *Stepper-Area*.
 
+On the top left and right you can change the octave, which is displayed as an yellow button in the 
+second row.
+
 ### Instruments / Tracks
 
+You can choose the different Instruments here. 
+Choosing a new Instrument will update the *Stepper-Area*.
 
+The *Instrument-Row* is paged. 
+
+On the right you can toggle between *choose* and *mute*.
 
 ### Effects 
+
+To change the *Delay/Volume/Panning*.
+You can toggle through the different Effect on the right side.
+
+#### Delay 
+
+* On the first key you will put in the full step.
+* On the 5th key in the row, you will delay the tone by half the time of the step.
+* On the 7th key in the row, you will delay the tone by 3/4 the time of the step.
+etc.
+
+#### Panning
+
+Is centered in the middle.
+If you want to center the panning again, just press the panning again.
+
+#### Volume
+
+very obvious.
 
 ### Stepper
 
