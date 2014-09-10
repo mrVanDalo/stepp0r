@@ -8,3 +8,4 @@ url: "http://mrvandalo.github.io/steppor/"
 # Build settings
 markdown: kramdown
 permalink: pretty
+limit_posts: 5

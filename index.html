@@ -1,15 +1,30 @@
 ---
 layout: default
 ---
+<div class="row">
+    <header>
+        <img src="/assets/Stepp0r.png" alt="Stepp0r" class="img-responsive center-block"/>
+    </header>
+</div>
 
 <div class="row">
     <div class="col-md-12">
-        <h1>News</h1>
+        <article>
+            The home of the Awesome Stepp0r.
+            A Launchpad Step-Sequencer for Renoise written by Palo van Dalo.
+            Have a look at the Documentation.
+        </article>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>News</h2>
             {% for post in site.posts %}
             <div class="media">
-                <a class="pull-left" href="#">
-                    <img class="media-object" src="/assets/news-icon.png" alt="News">
-                </a>
+                <!--<a class="pull-left img-responsive" href="#">-->
+                    <!--<img class="media-object" src="/assets/news-icon.png" alt="News">-->
+                <!--</a>-->
                 <div class="media-body">
                     <h4 class="media-heading">
                         <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
