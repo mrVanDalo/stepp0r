@@ -4,4 +4,6 @@ title: Documentation
 permalink: /documentation/
 ---
 
-hier
+![Launchpad Pads](/assets/Launchpad.svg)
+
+balasdfasdf
