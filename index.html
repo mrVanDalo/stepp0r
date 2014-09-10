@@ -1,20 +1,41 @@
 ---
 layout: default
 ---
-
-<div class="home">
-
-  <h1>Posts</h1>
-
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
-
+<div class="row">
+    <header>
+        <img src="/assets/Stepp0r.png" alt="Stepp0r" class="img-responsive center-block"/>
+    </header>
 </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <article>
+            The home of the Awesome Stepp0r.
+            A Launchpad Step-Sequencer for Renoise written by Palo van Dalo.
+            Have a look at the Documentation.
+        </article>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>News</h2>
+            {% for post in site.posts %}
+            <div class="media">
+                <!--<a class="pull-left img-responsive" href="#">-->
+                    <!--<img class="media-object" src="/assets/news-icon.png" alt="News">-->
+                <!--</a>-->
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+                        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+                    </h4>
+                    <p>
+                       {{ post.abstract }}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+    </div>
+</div>
+
