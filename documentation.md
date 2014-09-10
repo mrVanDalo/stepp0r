@@ -20,7 +20,7 @@ So you don't _have_ to use it.
 
 Here are the parts of the Stepp0r.
 
-<img class="img-responsive center-block" src="/assets/Launchpad.svg" alt="Launchpad Parts" />
+<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad.svg" alt="Launchpad Parts" />
 
 
 ### Keyboard

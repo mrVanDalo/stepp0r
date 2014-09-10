@@ -2,8 +2,8 @@
 title: Steppor
 email: palipalo9@googlemail.com
 description: "A Launchpad Step Sequencer for Renoise"
-baseurl: ""
-url: "http://mrvandalo.github.io/steppor/"
+baseurl: "/steppor"
+url: "http://mrvandalo.github.io"
 
 # Build settings
 markdown: kramdown
