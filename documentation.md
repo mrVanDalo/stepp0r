@@ -43,6 +43,22 @@ The *Instrument-Row* is paged.
 
 On the right you can toggle between *choose* and *mute*.
 
+> Changing an instrument/track will also change the focus in on the *Pattern Editor*.
+
+> Changing the track in *Renoise* will also change the selection in *Stepp0r*.
+
+### Stepper
+
+The core view of **Stepp0r*. 
+When you hit play and you select the actual pattern in the *Pattern Matrix*, you will see a green light running 
+from left to right, which represents the current play position.
+
+You have **Pagination** and **Zooming** for the Stepper.
+
+Pressing keys will place or remove a note (using the *Keyboard* and *Effects*) at this specific place.
+
+You can choose use up to 4 different *Note Columns* per track.
+
 ### Effects 
 
 To change the *Delay/Volume/Panning*.
@@ -63,7 +79,5 @@ If you want to center the panning again, just press the panning again.
 #### Volume
 
 very obvious.
-
-### Stepper
 
 
