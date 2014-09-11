@@ -1,7 +1,7 @@
 
 BUILD_DIR='./build'
 version='0.2'
-project_title="stepsequencer"
+project_title="Stepp0r"
 export_folder="#{project_title}-#{version}"
 
 def copyTask srcGlob, targetDirSuffix, taskSymbol
