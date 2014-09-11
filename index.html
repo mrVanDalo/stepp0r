@@ -9,26 +9,34 @@ layout: default
 
 <div class="row">
     <div class="col-md-1 col-md-offset-2 col-xs-3">
-        <ul class="list-unstyled">
+        <ul class="list-unstyled button-list">
             <li>
                 <script id='fbupg0w'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=mrVanDalo&url=http%3A%2F%2Fmrvandalo.github.io%2Fsteppor%2F';f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbupg0w');</script>
             </li>
             <li>
                 <a href="https://github.com/mrVanDalo/stepp0r">
-                    <img src="{{ site.baseurl }}/assets/github-64px.png" alt="github"/>
+                    <img class="img-responsive img-circle" src="{{ site.baseurl }}/assets/github-64px.png" alt="github" />
                 </a>
             </li>
         </ul>
     </div>
-    <div class="col-xs-9">
+    <div class="col-md-6">
         <article>
             The home of the Awesome Stepp0r.
             A Launchpad Step-Sequencer for Renoise written by Palo van Dalo.
             Have a look at the Documentation.
         </article>
+        <div class="media">
+            <a class="pull-left" href="{{ site.baseurl }}/downloads/Stepp0r-0.2.xrnx">
+                <img class="img-responsive img-circle" src="{{ site.baseurl }}/assets/Download.svg" alt="Download" />
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">Download</h4>
+                The actual <strong>beta</strong> version.
+            </div>
+        </div>
     </div>
 </div>
-
 <div class="row">
     <div class="col-md-9 col-md-offset-3">
         <h2>News</h2>
@@ -36,8 +44,8 @@ layout: default
             <div class="media">
                 <div class="media-body">
                     <h4 class="media-heading">
-                        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-                        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+                        <a href="{{ post.url | prepend: site.baseurl }}"><h4>{{ post.title }}</h4></a>
+                        <span class="">{{ post.date | date: "%b %-d, %Y" }}</span>
                     </h4>
                     <p>
                        {{ post.abstract }}
