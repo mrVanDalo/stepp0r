@@ -59,19 +59,19 @@ layout: default
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2">
         <h2>News</h2>
+        <ul class="list-unstyled">
             {% for post in site.posts %}
-            <div class="media">
-                <div class="media-body">
-                    <h4 class="media-heading">
-                        <a href="{{ post.url | prepend: site.baseurl }}"><h4>{{ post.title }}</h4></a>
-                        <span class="">{{ post.date | date: "%b %-d, %Y" }}</span>
-                    </h4>
-                    <p>
-                       {{ post.abstract }}
-                    </p>
-                </div>
-            </div>
+            <li class="top-buffer">
+                <h4>
+                    <a class="" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }} </a>
+                    <small>{{ post.date | date: "%b %-d, %Y" }}</small>
+                </h4>
+                <p>
+                    {{ post.abstract }}
+                </p>
+            </li>
             {% endfor %}
+        </ul>
     </div>
 </div>
 
