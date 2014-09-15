@@ -2,15 +2,17 @@
 layout: default
 ---
 <div class="row">
-    <div class="col-md-12">
-
+    <div class="col-md-12 col-lg-8 col-lg-offset-2">
         <header>
             <h1>{{ page.title }}</h1>
             <p class="meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
         </header>
 
-        {{ page.abstract }}
         <article>
+            {{ page.abstract }}
+        </article>
+
+        <article class="top-buffer">
             {{ content }}
         </article>
     </div>
