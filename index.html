@@ -6,21 +6,11 @@ layout: default
         <img src="{{ site.baseurl }}/assets/Stepp0r.png" alt="Stepp0r" class="img-responsive center-block"/>
     </header>
 </div>
-
 <div class="row">
-    <div class="col-md-1 col-md-offset-2 col-xs-3">
-        <ul class="list-unstyled button-list">
-            <li>
-                <script id='fbupg0w'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=mrVanDalo&url=http%3A%2F%2Fmrvandalo.github.io%2Fsteppor%2F';f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbupg0w');</script>
-            </li>
-            <li>
-                <a href="https://github.com/mrVanDalo/stepp0r">
-                    <img class="img-responsive img-circle" src="{{ site.baseurl }}/assets/github-64px.png" alt="github" />
-                </a>
-            </li>
-        </ul>
+    <div class="col-lg-offset-1 col-lg-1">
+        <script id='fbupg0w'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=mrVanDalo&url=http%3A%2F%2Fmrvandalo.github.io%2Fsteppor%2F';f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbupg0w');</script>
     </div>
-    <div class="col-md-6">
+    <div class="col-lg-8">
         <h1>The Awesome Step-Sequencer</h1>
         <article>
             A Launchpad Step-Sequencer for
@@ -32,6 +22,10 @@ layout: default
             And if you want to join the development just visit the
             <a href="https://github.com/mrVanDalo/stepp0r"> github page</a>.
         </article>
+    </div>
+</div>
+<div class="row top-buffer">
+    <div class="col-lg-4 col-lg-offset-2">
         <div class="media">
             <a class="pull-left" href="{{ site.baseurl }}/downloads/Stepp0r-0.2.xrnx">
                 <img class="img-responsive img-circle" src="{{ site.baseurl }}/assets/Download.svg" alt="Download" />
@@ -42,9 +36,21 @@ layout: default
             </div>
         </div>
     </div>
+    <div class="col-lg-4">
+        <div class="media">
+            <a class="pull-left" href="https://github.com/mrVanDalo/stepp0r">
+                <img class="img-responsive img-circle" src="{{ site.baseurl }}/assets/github-64px.png" alt="github" />
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">Github</h4>
+                Write Bug/Enhancement Tickets.
+            </div>
+        </div>
+
+    </div>
 </div>
-<div class="row">
-    <div class="col-md-9 col-md-offset-3">
+<div class="row top-buffer">
+    <div class="col-lg-8 col-lg-offset-2">
         <h2>News</h2>
             {% for post in site.posts %}
             <div class="media">
