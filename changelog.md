@@ -4,7 +4,7 @@ title: Changelog
 permalink: /changelog/
 ---
 
-Version names by Estonian Marathon Champions
+Version names by Estonian Marathon Champions. Don't ask why, there is nothing you can do about it.
 
 ## 0.2 Rene Meimer
 
