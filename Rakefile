@@ -16,7 +16,8 @@ def copyTask srcGlob, targetDirSuffix, taskSymbol
     end
 end
 
-copyTask 'src/*'         ,export_folder             ,:export_main
+copyTask 'src/*'       , export_folder , :export_main
+copyTask 'LICENSE.txt' , export_folder , :export_main
 
 desc 'build the project'
 task :build => :export_main
