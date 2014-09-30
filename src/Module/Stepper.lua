@@ -7,7 +7,6 @@ require 'Data/Note'
 require 'Data/Velocity'
 require 'Data/Color'
 require 'Module/Module'
-require 'Experimental/PlaybackPositionObserver'
 
 
 --- ======================================================================================================

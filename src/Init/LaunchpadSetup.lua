@@ -1,12 +1,12 @@
 
 
 require 'Layer/Launchpad'
+require 'Layer/PlaybackPositionObserver'
 require 'Module/Module'
 require 'Module/Keyboard'
 require 'Module/Chooser'
 require 'Module/Stepper'
 require 'Module/Effect'
-
 
 --- ======================================================================================================
 ---
