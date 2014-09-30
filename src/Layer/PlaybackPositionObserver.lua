@@ -11,26 +11,12 @@ class "PlaybackPositionObserver"
 ---                                                 [ INIT ]
 
 function PlaybackPositionObserver:__init()
-    self.observer   = InternalObserver()
-end
-
---- register a function that gets the value
-function PlaybackPositionObserver:register(id,hook)
-    self.observer:add_notifier(id,hook)
-end
-
-function PlaybackPositionObserver:unregister(id)
-    self.observer:remove_notifier(id)
-end
-
-
-class "InternalObserver"
-
-function InternalObserver:__init()
     self._hooks = {}
 end
 
-function InternalObserver:add_notifier(id, hook)
+--- id : a key to find the hook later (to delete it)
+--- hook : a function called (with the updated value)
+function PlaybackPositionObserver:register(id,hook)
 
     if self._hooks[id] then
         self:remove_notifier(id)
@@ -53,8 +39,7 @@ function InternalObserver:add_notifier(id, hook)
     renoise.tool().app_idle_observable:add_notifier(internal_hook_func)
 end
 
-
-function InternalObserver:remove_notifier(id)
+function PlaybackPositionObserver:unregister(id)
     if self._hooks[id] then
         if renoise.tool().app_idle_observable:has_notifier(self._hooks[id].internal_hook) then
             renoise.tool().app_idle_observable:remove_notifier(self._hooks[id].internal_hook)
@@ -63,10 +48,11 @@ function InternalObserver:remove_notifier(id)
     end
 end
 
-function InternalObserver:has_notifier(id)
+function PlaybackPositionObserver:has_notifier(id)
     if self._hooks[id] then
         return true
     else
         return false
     end
 end
+
