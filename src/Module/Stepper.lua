@@ -161,10 +161,7 @@ function Stepper:_activate()
     --
     -- the green light that runs
     --
-    -- todo : maybe this should also be inlined here
-    if self.is_first_run then
-        self:register_playback_position_observer()
-    end
+    self:register_playback_position_observer()
 
 
     --- pad matrix listener
