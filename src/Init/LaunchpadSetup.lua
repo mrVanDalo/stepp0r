@@ -47,8 +47,6 @@ end
 
 function LaunchpadSetup:wire()
     self.pad = Launchpad()
-
-
     self.playback_position_observer = PlaybackPositionObserver()
 
     self.stepper = Stepper()

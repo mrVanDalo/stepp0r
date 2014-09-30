@@ -86,10 +86,10 @@ function Stepper:wire_launchpad(pad)
 end
 
 function Stepper:wire_playback_position_observer(playback_position_observer)
-    if self.playback_position_obeserver then
+    if self.playback_position_observer then
         self:unregister_playback_position_observer()
     end
-    self.playback_position_obeserver = playback_position_observer
+    self.playback_position_observer = playback_position_observer
 end
 
 function Stepper:callback_set_instrument()
