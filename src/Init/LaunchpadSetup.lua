@@ -46,6 +46,10 @@ function LaunchpadSetup:connect(pad_name)
 end
 
 function LaunchpadSetup:wire()
+    --- layers are the basic connection
+    -- they are used to change while the system is inactive
+    -- layers should not be changed after the system is active
+    -- If you want to do that you have to deactivate the system first.
     self.pad = Launchpad()
     self.playback_position_observer = PlaybackPositionObserver()
 
