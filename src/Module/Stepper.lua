@@ -7,7 +7,6 @@ require 'Data/Note'
 require 'Data/Velocity'
 require 'Data/Color'
 require 'Module/Module'
-require 'Experimental/PlaybackPositionObserver'
 
 
 --- ======================================================================================================
@@ -79,11 +78,18 @@ function Stepper:__init()
             empty = Color.off,
         },
     }
-    self.playback_position_observer = PlaybackPositionObserver()
+    self.playback_position_observer = nil
 end
 
 function Stepper:wire_launchpad(pad)
     self.pad = pad
+end
+
+function Stepper:wire_playback_position_observer(playback_position_observer)
+    if self.playback_position_observer then
+        self:unregister_playback_position_observer()
+    end
+    self.playback_position_observer = playback_position_observer
 end
 
 function Stepper:callback_set_instrument()
@@ -155,13 +161,8 @@ function Stepper:_activate()
     --
     -- the green light that runs
     --
-    -- todo : maybe this should also be inlined here
-    if self.is_first_run then
-        self.playback_position_observer:register(function (line)
-            if self.is_not_active then return end
-            self:callback_playback_position(line)
-        end)
-    end
+    self:register_playback_position_observer()
+
 
     --- pad matrix listener
     --
@@ -234,14 +235,25 @@ function Stepper:_activate()
     self:refresh_matrix()
 end
 
+function Stepper:register_playback_position_observer()
+    self.playback_position_observer:register('stepper', function (line)
+        if self.is_not_active then return end
+        self:callback_playback_position(line)
+    end)
+end
+
+function Stepper:unregister_playback_position_observer()
+    self.playback_position_observer:unregister('stepper' )
+end
+
 --- tear down
 --
 function Stepper:_deactivate()
-    -- todo unregister playback position here
     self:page_clear_knobs()
     self:zoom_clear_knobs()
     self:matrix_clear()
     self:pad_matrix_update()
+    self:unregister_playback_position_observer()
 end
 
 
