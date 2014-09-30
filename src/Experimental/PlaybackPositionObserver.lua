@@ -1,10 +1,6 @@
 --
 -- User: palo
 -- Date: 7/7/14
---
-
--- require 'Experimental/Observable'
-
 
 --- ======================================================================================================
 ---
@@ -13,8 +9,6 @@
 --- observes the playback position to make listeners on the playback position possible
 
 class "PlaybackPositionObserver"
-
-
 
 --- ======================================================================================================
 ---
@@ -25,15 +19,13 @@ function PlaybackPositionObserver:__init()
 end
 
 --- register a function that gets the value
-function PlaybackPositionObserver:register(f)
-    -- self.observer:add_notifier(f,"renoise.song().transport.playback_pos")
-    self.observer:add_notifier('foo',f)
+function PlaybackPositionObserver:register(id,hook)
+    self.observer:add_notifier(id,hook)
 end
 
-function PlaybackPositionObserver:unregister(_)
-    self.observer:remove_notifier('foo')
+function PlaybackPositionObserver:unregister(id)
+    self.observer:remove_notifier(id)
 end
-
 
 
 class "InternalObserver"
