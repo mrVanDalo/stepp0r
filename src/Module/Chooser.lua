@@ -268,13 +268,10 @@ end
 --- only instruments with names are instruments
 function instrument_name(instrument)
     if not instrument then return nil end
-    print(instrument)
     if not instrument.name then return nil end
-    print(instrument.name)
     if instrument.name ~= "" then
         return instrument.name
     end
-    print("name is nil")
     if not instrument.midi_output_properties then
         return nil
     end
@@ -289,7 +286,6 @@ function Chooser:select_instrument(active)
     local found = renoise.song().instruments[active]
     local  name = instrument_name(found)
     if not name then return end
-    print(name)
     self.active     = active
     self.column_idx = 1
     -- ensure track exist
@@ -358,7 +354,8 @@ function Chooser:row_update()
         if nr - self.inst_offset > 8 then
             break
         end
-        if instrument.name ~= "" then
+        local name = instrument_name(instrument)
+        if name then
             -- print(nr, instrument.name)
             local active_color  = self.color.instrument.active
             local passive_color = self.color.instrument.passive
