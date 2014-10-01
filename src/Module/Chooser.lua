@@ -266,7 +266,7 @@ end
 
 
 --- only instruments with names are instruments
-function instrument_name(instrument)
+function Chooser:instrument_name(instrument)
     if not instrument then return nil end
     if not instrument.name then return nil end
     if instrument.name ~= "" then
@@ -284,7 +284,7 @@ end
 
 function Chooser:select_instrument(active)
     local found = renoise.song().instruments[active]
-    local  name = instrument_name(found)
+    local  name = self:instrument_name(found)
     if not name then return end
     self.active     = active
     self.column_idx = 1
@@ -353,7 +353,7 @@ function Chooser:row_update()
     for nr, instrument in ipairs(renoise.song().instruments) do
         local scaled_index = nr - self.inst_offset
         if scaled_index > 8 then break end
-        local name = instrument_name(instrument)
+        local name = self:instrument_name(instrument)
         if name and scaled_index > 0 then
             -- print(nr, instrument.name)
             local active_color  = self.color.instrument.active
