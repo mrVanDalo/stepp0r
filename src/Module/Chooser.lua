@@ -264,16 +264,34 @@ function Chooser:select_instrument_with_offset(x)
     self:select_instrument(active)
 end
 
+
+--- only instruments with names are instruments
+function instrument_name(instrument)
+    if not instrument then return nil end
+    if not instrument.name then return nil end
+    if not instrument.name == "" then
+        return instrument.name
+    end
+    if not instrument.midi_output_properties then
+        return nil
+    end
+    if instrument.midi_output_properties.device_name == "" then
+        return nil
+    else
+        return instrument.midi_output_properties.device_name
+    end
+end
+
 function Chooser:select_instrument(active)
     local found = renoise.song().instruments[active]
-    if not found        then return  end
-    if found.name == "" then return  end
+    local  name = instrument_name(found)
+    if not name then return  end
     self.active     = active
     self.column_idx = 1
     -- ensure track exist
     self:ensure_active_track_exist()
     -- rename track
-    renoise.song().tracks[self.active].name = found.name
+    renoise.song().tracks[self.active].name = name
     renoise.song().selected_track_index = self.active
     -- trigger callbacks
     self:update_set_instrument_listeners()
