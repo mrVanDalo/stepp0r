@@ -351,11 +351,12 @@ function Chooser:row_update()
     -- todo using the mute state too
     self:row_clear()
     for nr, instrument in ipairs(renoise.song().instruments) do
-        if nr - self.inst_offset > 8 then
-            break
-        end
+        local scaled_index = nr - self.inst_offset
+        if scaled_index > 8 then break end
         local name = instrument_name(instrument)
-        if name then
+        if name and scaled_index > 0 then
+            print("update row")
+            print(nr)
             -- print(nr, instrument.name)
             local active_color  = self.color.instrument.active
             local passive_color = self.color.instrument.passive
@@ -368,9 +369,9 @@ function Chooser:row_update()
                 end
             end
             if nr == self.active then
-                self.pad:set_matrix(nr - self.inst_offset, self.row, active_color)
+                self.pad:set_matrix(scaled_index, self.row, active_color)
             else
-                self.pad:set_matrix(nr - self.inst_offset, self.row, passive_color)
+                self.pad:set_matrix(scaled_index, self.row, passive_color)
             end
         end
     end
