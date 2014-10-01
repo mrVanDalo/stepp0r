@@ -355,8 +355,6 @@ function Chooser:row_update()
         if scaled_index > 8 then break end
         local name = instrument_name(instrument)
         if name and scaled_index > 0 then
-            print("update row")
-            print(nr)
             -- print(nr, instrument.name)
             local active_color  = self.color.instrument.active
             local passive_color = self.color.instrument.passive
