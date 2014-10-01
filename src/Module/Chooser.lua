@@ -264,16 +264,34 @@ function Chooser:select_instrument_with_offset(x)
     self:select_instrument(active)
 end
 
+
+--- only instruments with names are instruments
+function Chooser:instrument_name(instrument)
+    if not instrument then return nil end
+    if not instrument.name then return nil end
+    if instrument.name ~= "" then
+        return instrument.name
+    end
+    if not instrument.midi_output_properties then
+        return nil
+    end
+    if instrument.midi_output_properties.device_name == "" then
+        return nil
+    else
+        return instrument.midi_output_properties.device_name
+    end
+end
+
 function Chooser:select_instrument(active)
     local found = renoise.song().instruments[active]
-    if not found        then return  end
-    if found.name == "" then return  end
+    local  name = self:instrument_name(found)
+    if not name then return end
     self.active     = active
     self.column_idx = 1
     -- ensure track exist
     self:ensure_active_track_exist()
     -- rename track
-    renoise.song().tracks[self.active].name = found.name
+    renoise.song().tracks[self.active].name = name
     renoise.song().selected_track_index = self.active
     -- trigger callbacks
     self:update_set_instrument_listeners()
@@ -333,10 +351,10 @@ function Chooser:row_update()
     -- todo using the mute state too
     self:row_clear()
     for nr, instrument in ipairs(renoise.song().instruments) do
-        if nr - self.inst_offset > 8 then
-            break
-        end
-        if instrument.name ~= "" then
+        local scaled_index = nr - self.inst_offset
+        if scaled_index > 8 then break end
+        local name = self:instrument_name(instrument)
+        if name and scaled_index > 0 then
             -- print(nr, instrument.name)
             local active_color  = self.color.instrument.active
             local passive_color = self.color.instrument.passive
@@ -349,9 +367,9 @@ function Chooser:row_update()
                 end
             end
             if nr == self.active then
-                self.pad:set_matrix(nr - self.inst_offset, self.row, active_color)
+                self.pad:set_matrix(scaled_index, self.row, active_color)
             else
-                self.pad:set_matrix(nr - self.inst_offset, self.row, passive_color)
+                self.pad:set_matrix(scaled_index, self.row, passive_color)
             end
         end
     end
