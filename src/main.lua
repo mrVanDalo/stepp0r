@@ -11,6 +11,7 @@ require 'Module/Stepper'
 require 'Module/Effect'
 require 'Data/Note'
 require 'Data/Color'
+require 'Init/MainUI'
 
 -- Placeholder for the dialog
 local dialog = nil
@@ -148,8 +149,11 @@ local function show_dialog()
   
     -- A custom dialog is non-modal and displays a user designed
     -- layout built with the ViewBuilder.
-    dialog = renoise.app():show_custom_dialog(tool_name, content)
-  
+    --dialog = renoise.app():show_custom_dialog(tool_name, content)
+    local mainUI = MainUI()
+    mainUI:createUI()
+    dialog = renoise.app():show_custom_dialog(tool_name, mainUI.container)
+
   
     -- A custom prompt is a modal dialog, restricting interaction to itself.
     -- As long as the prompt is displayed, the GUI thread is paused. Since
