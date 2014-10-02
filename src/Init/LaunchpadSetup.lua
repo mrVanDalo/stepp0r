@@ -19,7 +19,10 @@ class "LaunchpadSetup"
 
 
 function LaunchpadSetup:__init()
+    -- layer
     self.pad               = nil
+    self.playback_position_observer = nil
+    -- modules
     self.stepper           = nil
     self.effect            = nil
     self.key               = nil
