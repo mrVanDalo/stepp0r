@@ -14,8 +14,24 @@ function OscClient:__init()
     self.client = nil
 end
 
-function OscClient:setup_osc_client()
+function OscClient:set_host(host)
+    if not host then return end
+    self.host = host
+end
+
+function OscClient:set_port(port)
+    if not port then return end
+    self.port = port
+end
+
+function OscClient:start()
     self.client = renoise.Socket.create_client(self.host , self.port, self.protocol)
+end
+
+function OscClient:tear_down()
+    if not self.client then return end
+    self.client.close()
+    self.client = nil
 end
 
 --- send note to osc
