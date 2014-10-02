@@ -24,9 +24,6 @@ KeyboardData = {
 
 
 
-
-
-
 --- ======================================================================================================
 ---
 ---                                                 [ INIT ]
@@ -57,6 +54,10 @@ function Keyboard:wire_launchpad(pad)
     self.pad = pad
 end
 
+function Keyboard:wire_osc_client(client)
+    self.osc_client = client
+end
+
 function Keyboard:__init()
     Module:__init(self)
     self.offset = 6
@@ -71,10 +72,7 @@ function Keyboard:__init()
         manover     = Color.orange,
         clear       = Color.off,
     }
-    self.osc = {
-        host = "localhost",
-        port = 8008,
-    }
+    self.osc_client = nil
     self.note       = Note.note.c
     self.octave     = 4
     self.instrument = 1
@@ -103,7 +101,6 @@ function Keyboard:_activate()
     self:matrix_refresh()
     if self.is_first_run then
         self:setup_matrix_listener()
-        self:setup_osc_client()
     end
 end
 
@@ -204,37 +201,18 @@ end
 ---
 ---                                                 [ OSC Client ]
 
--- deprectated
-function Keyboard:setup_osc_client()
-    --self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
-    self.client = renoise.Socket.create_client( self.osc.host , self.osc.port,  renoise.Socket.PROTOCOL_UDP)
-end
-
 function Keyboard:trigger_note(x,y)
-    local OscMessage = renoise.Osc.Message
-    local track      = self.instrument
-    local note       = pitch(self.note,self.octave)
     if is_not_off(self.note) then
+        local note = pitch(self.note,self.octave)
         self.triggered_notes[y][x] = note
-        self.client:send(OscMessage("/renoise/trigger/note_on",{
-            {tag="i",value=self.instrument},
-            {tag="i",value=track},
-            {tag="i",value=note},
-            {tag="i",value=self.velocity}}))
+        self.osc_client:trigger_note(self.instrument, note, self.velocity)
     end
 end
 
 function Keyboard:untrigger_note(x,y)
-    local OscMessage = renoise.Osc.Message
-    local note       = self.triggered_notes[y][x]
+    local note = self.triggered_notes[y][x]
     if not note then return end
-    local instrument = self.instrument
-    local track      = self.instrument
-    self.client:send(OscMessage("/renoise/trigger/note_off",{
-        {tag="i",value=instrument},
-        {tag="i",value=track},
-        {tag="i",value=note},
-    }))
+    self.osc_client:untrigger_note(self.instrument, note)
 end
 
 

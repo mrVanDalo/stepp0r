@@ -23,6 +23,7 @@ function LaunchpadSetup:__init()
     -- layer
     self.pad               = nil
     self.playback_position_observer = nil
+    self.osc_client        = nil
     -- modules
     self.stepper           = nil
     self.effect            = nil
@@ -31,13 +32,19 @@ function LaunchpadSetup:__init()
 end
 
 function LaunchpadSetup:deactivate()
+    -- modules
     self.key:deactivate()
     self.stepper:deactivate()
     self.chooser:deactivate()
     self.effect:deactivate()
+    -- layers
+    self.osc_client:tear_down()
 end
 
 function LaunchpadSetup:activate()
+    -- layers
+    self.osc_client:start()
+    -- modules
     self.key:activate()
     self.stepper:activate()
     self.chooser:activate()
@@ -70,6 +77,7 @@ function LaunchpadSetup:wire()
 
     self.key = Keyboard()
     self.key:wire_launchpad(self.pad)
+    self.key:wire_osc_client(self.osc_client)
     self.key:register_set_note(self.stepper:callback_set_note())
 
     self.chooser = Chooser()
