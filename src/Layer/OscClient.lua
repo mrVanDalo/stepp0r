@@ -2,8 +2,8 @@
 --- ======================================================================================================
 ---
 ---                                                 [ OSC Client ]
-
-
+---
+--- triggers notes via osc on renoise
 
 class "OscClient"
 
@@ -24,6 +24,13 @@ function OscClient:set_port(port)
     self.port = port
 end
 
+
+--- ======================================================================================================
+---
+---                                                 [ Boot ]
+
+
+
 function OscClient:start()
     self.client = renoise.Socket.create_client(self.host , self.port, self.protocol)
 end
@@ -33,6 +40,11 @@ function OscClient:tear_down()
     self.client.close()
     self.client = nil
 end
+
+
+--- ======================================================================================================
+---
+---                                                 [ Commands ]
 
 --- send note to osc
 -- -----------------
