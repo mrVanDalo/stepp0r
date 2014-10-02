@@ -204,6 +204,7 @@ end
 ---
 ---                                                 [ OSC Client ]
 
+-- deprectated
 function Keyboard:setup_osc_client()
     --self.client, socket_error = renoise.Socket.create_client( "localhost", 8008, renoise.Socket.PROTOCOL_UDP)
     self.client = renoise.Socket.create_client( self.osc.host , self.osc.port,  renoise.Socket.PROTOCOL_UDP)
