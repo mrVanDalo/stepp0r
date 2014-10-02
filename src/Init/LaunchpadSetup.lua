@@ -2,6 +2,7 @@
 
 require 'Layer/Launchpad'
 require 'Layer/PlaybackPositionObserver'
+require 'Layer/OscClient'
 require 'Module/Module'
 require 'Module/Keyboard'
 require 'Module/Chooser'
@@ -55,6 +56,7 @@ function LaunchpadSetup:wire()
     -- If you want to do that you have to deactivate the system first.
     self.pad = Launchpad()
     self.playback_position_observer = PlaybackPositionObserver()
+    self.osc_client = OscClient()
 
     self.stepper = Stepper()
     self.stepper:wire_launchpad(self.pad)
