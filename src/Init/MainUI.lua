@@ -60,9 +60,14 @@ function MainUI:create_osc_row()
         width   = self.button_size,
         tooltip = "send notes to local osc server (UDP)"
     }
+    self.osc_row_text = self.vb:text {
+        text = 'none',
+        width = self.input_size,
+        tooltip = "port of the local osc server (UDP)",
+        visible = false,
+    }
     self.osc_row_textfield = self.vb:textfield {
         text = '1234',
-        value = '555',
         width = self.input_size,
         tooltip = "port of the local osc server (UDP)"
     }
@@ -74,17 +79,21 @@ function MainUI:create_osc_row()
             width = self.text_size,
         },
         self.osc_row_textfield,
+        self.osc_row_text,
     }
 end
 
 function MainUI:disable_osc_row()
     self.osc_row_checkbox.active = false
-    self.osc_row_textfield.active = false
+    self.osc_row_text.text = self.osc_row_textfield.text
+    self.osc_row_textfield.visible = false
+    self.osc_row_text.visible = true
 end
 
 function MainUI:enable_osc_row()
     self.osc_row_checkbox.active = true
-    self.osc_row_textfield.active = true
+    self.osc_row_text.visible = false
+    self.osc_row_textfield.visible = true
 end
 
 function MainUI:create_container()
@@ -114,7 +123,10 @@ function MainUI: create_start_stop_button()
     self.start_stop_button = self.vb:button {
         text = "Start",
         width = self.command_button_size,
-        notifier = function () self:disable_device_row() end
+        notifier = function ()
+            self:disable_device_row()
+            self:disable_osc_row()
+        end
     }
 end
 
@@ -122,7 +134,10 @@ function MainUI:create_quit_button()
     self.quit_button = self.vb:button {
         text = "Quit",
         width = self.command_button_size,
-        notifier = function () self:enable_device_row() end
+        notifier = function ()
+            self:enable_device_row()
+            self:enable_osc_row()
+        end
     }
 end
 
