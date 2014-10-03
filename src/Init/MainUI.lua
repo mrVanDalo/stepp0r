@@ -26,8 +26,8 @@ function MainUI:create_device_row()
         spacing = 3,
         self.vb:button{
             visible = true,
-            text    = "re",
-            width   = self.button_size,
+            bitmap = "reload.bmp",
+--            width   = self.button_size,
         },
         self.vb:text{
             text = "Device",
