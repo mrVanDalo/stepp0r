@@ -1,4 +1,8 @@
-
+--- ======================================================================================================
+---
+---                                                 [ Main UI ]
+---
+--- To Create the Dialog, functionallity will be given by wires.
 
 
 class "MainUI"
@@ -9,6 +13,7 @@ function MainUI:__init()
     self.text_size   = 70
     self.input_size  = 200
     self.command_button_size = 80
+    self.is_running = false
 end
 
 function MainUI:create_ui()
@@ -20,6 +25,49 @@ function MainUI:create_ui()
     self:create_quit_button()
     self:create_container()
 end
+
+function MainUI:create_container()
+    self.container = self.vb:column{
+        margin = 6,
+        spacing = 8,
+        self.vb:horizontal_aligner{
+            mode = "center",
+            self.logo,
+        },
+        self.vb:column {
+            spacing = 4,
+            margin = 4,
+            self.osc_row,
+            self.device_row,
+        },
+        self.vb:row {
+            margin = 4,
+            spacing = 4,
+            self.start_stop_button,
+            self.quit_button,
+        }
+    }
+end
+
+function MainUI:create_logo()
+    self.logo = self.vb:bitmap{
+        bitmap = "logo.png",
+        mode = "transparent",
+    }
+end
+
+function MainUI:create_title()
+    self.title = self.vb:text {
+        text = "Awesome"
+    }
+end
+
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ Device Row ]
 
 function MainUI:create_device_row()
     self.device_row_button = self.vb:button{
@@ -52,6 +100,15 @@ function MainUI:enable_device_row()
     self.device_row_button.active = true
     self.device_row_popup.active = true
 end
+
+
+
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ OSC Row ]
 
 function MainUI:create_osc_row()
     self.osc_row_checkbox = self.vb:checkbox{
@@ -96,36 +153,26 @@ function MainUI:enable_osc_row()
     self.osc_row_textfield.visible = true
 end
 
-function MainUI:create_container()
-    self.container = self.vb:column{
-        margin = 6,
-        spacing = 8,
-        self.vb:horizontal_aligner{
-            mode = "center",
-            self.logo,
-        },
-        self.vb:column {
-            spacing = 4,
-            margin = 4,
-            self.osc_row,
-            self.device_row,
-        },
-        self.vb:row {
-            margin = 4,
-            spacing = 4,
-            self.start_stop_button,
-            self.quit_button,
-        }
-    }
-end
+
+
+
+
+
+
+--- ======================================================================================================
+---
+---                                                 [ Start Stop Buttons ]
 
 function MainUI: create_start_stop_button()
     self.start_stop_button = self.vb:button {
         text = "Start",
         width = self.command_button_size,
         notifier = function ()
-            self:disable_device_row()
-            self:disable_osc_row()
+            if self.is_running then
+                self:stop()
+            else
+                self:run()
+            end
         end
     }
 end
@@ -134,24 +181,19 @@ function MainUI:create_quit_button()
     self.quit_button = self.vb:button {
         text = "Quit",
         width = self.command_button_size,
-        notifier = function ()
-            self:enable_device_row()
-            self:enable_osc_row()
-        end
     }
 end
 
-
-function MainUI:create_logo()
-    self.logo = self.vb:bitmap{
-        bitmap = "logo.png",
-        mode = "transparent",
-    }
+function MainUI:run()
+    self.is_running = true
+    self.start_stop_button.text = "Stop"
+    self:disable_device_row()
+    self:disable_osc_row()
 end
 
-function MainUI:create_title()
-    self.title = self.vb:text {
-        text = "Awesome"
-    }
+function MainUI:stop()
+    self.is_running = false
+    self.start_stop_button.text = "Start"
+    self:enable_device_row()
+    self:enable_osc_row()
 end
-
