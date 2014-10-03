@@ -189,11 +189,45 @@ function MainUI:run()
     self.start_stop_button.text = "Stop"
     self:disable_device_row()
     self:disable_osc_row()
+    self.run_callback(self:run_properties())
 end
+
+--- returns an object of all configurations
+function MainUI:run_properties()
+    local list_of_lauchpad_devices = self.device_row_popup.items
+    return {
+        osc = {
+            host   = "localhost"  ,
+            port   = self.osc_row_textfield.text,
+            active = self.osc_row_checkbox.value
+        },
+        launchpad = {
+            name = list_of_lauchpad_devices[self.device_row_popup.value],
+        },
+    }
+end
+
+function MainUI:register_run_callback(callback)
+    self.run_callback = callback
+end
+
+function MainUI:unregister_run_callback()
+    self.run_callback = function (_) end
+end
+
+function MainUI:register_stop_callback(callback)
+    self.stop_callback = callback
+end
+
+function MainUI:unregister_stop_callback()
+    self.stop_callback = function (_) end
+end
+
 
 function MainUI:stop()
     self.is_running = false
     self.start_stop_button.text = "Start"
     self:enable_device_row()
     self:enable_osc_row()
+    self.stop_callback()
 end
