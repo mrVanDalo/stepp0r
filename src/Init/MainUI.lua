@@ -5,9 +5,9 @@ class "MainUI"
 
 function MainUI:__init()
     self.vb = renoise.ViewBuilder()
-    self.button_size = 40
-    self.text_size   = 100
-    self.input_size  = 150
+    self.button_size = 20
+    self.text_size   = 70
+    self.input_size  = 200
     self.command_button_size = 80
 end
 
@@ -98,7 +98,8 @@ end
 
 function MainUI:create_logo()
     self.logo = self.vb:bitmap{
-        bitmap = "logo.png"
+        bitmap = "logo.png",
+        mode = "transparent",
     }
 end
 
