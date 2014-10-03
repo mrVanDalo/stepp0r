@@ -5,7 +5,7 @@ class "MainUI"
 
 function MainUI:__init()
     self.vb = renoise.ViewBuilder()
-    self.button_size = 20
+    self.button_size = 18
     self.text_size   = 70
     self.input_size  = 200
     self.command_button_size = 80
@@ -27,7 +27,7 @@ function MainUI:create_device_row()
         self.vb:button{
             visible = true,
             bitmap = "reload.bmp",
---            width   = self.button_size,
+            width   = self.button_size,
         },
         self.vb:text{
             text = "Device",
