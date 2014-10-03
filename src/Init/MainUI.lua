@@ -61,6 +61,7 @@ end
 
 function MainUI:create_container()
     self.container = self.vb:column{
+        margin = 6,
         spacing = 8,
         self.vb:horizontal_aligner{
             mode = "center",
