@@ -8,6 +8,7 @@ function MainUI:__init()
     self.button_size = 40
     self.text_size   = 100
     self.input_size  = 150
+    self.command_button_size = 80
 end
 
 function MainUI:createUI()
@@ -15,6 +16,8 @@ function MainUI:createUI()
     self:create_title()
     self:create_device_row()
     self:create_osc_row()
+    self:create_start_stop_button()
+    self:create_quit_button()
     self:create_container()
 end
 
@@ -59,15 +62,39 @@ end
 function MainUI:create_container()
     self.container = self.vb:column{
         spacing = 8,
-        self.logo,
+        self.vb:horizontal_aligner{
+            mode = "center",
+            self.logo,
+        },
         self.vb:column {
             spacing = 4,
             margin = 4,
             self.osc_row,
             self.device_row,
+        },
+        self.vb:row {
+            margin = 4,
+            spacing = 4,
+            self.start_stop_button,
+            self.quit_button,
         }
     }
 end
+
+function MainUI: create_start_stop_button()
+    self.start_stop_button = self.vb:button {
+        text = "Start",
+        width = self.command_button_size,
+    }
+end
+
+function MainUI:create_quit_button()
+    self.quit_button = self.vb:button {
+        text = "Quit",
+        width = self.command_button_size,
+    }
+end
+
 
 function MainUI:create_logo()
     self.logo = self.vb:bitmap{
