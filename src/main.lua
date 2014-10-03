@@ -151,7 +151,7 @@ local function show_dialog()
     -- layout built with the ViewBuilder.
     --dialog = renoise.app():show_custom_dialog(tool_name, content)
     local mainUI = MainUI()
-    mainUI:createUI()
+    mainUI:create_ui()
     dialog = renoise.app():show_custom_dialog(tool_name, mainUI.container)
 
   
