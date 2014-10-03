@@ -26,8 +26,9 @@ function MainUI:create_device_row()
         spacing = 3,
         self.vb:button{
             visible = true,
-            bitmap = "reload.bmp",
+            bitmap  = "reload.bmp",
             width   = self.button_size,
+            tooltip = "reload device list"
         },
         self.vb:text{
             text = "Device",
@@ -35,6 +36,7 @@ function MainUI:create_device_row()
         },
         self.vb:popup {
             width = self.input_size,
+            tooltip = "Choose a Device to operate on"
         },
     }
 end
@@ -46,6 +48,7 @@ function MainUI:create_osc_row()
             visible = true,
             value   = true,
             width   = self.button_size,
+            tooltip = "send notes to local osc server (UDP)"
         },
         self.vb:text{
             text = "OSC Port",
@@ -55,6 +58,7 @@ function MainUI:create_osc_row()
             text = '1234',
             value = '555',
             width = self.input_size,
+            tooltip = "port of the local osc server (UDP)"
         }
     }
 end
