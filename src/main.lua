@@ -54,7 +54,7 @@ local function show_dialog()
         create_main_UI()
     end
     dialog = renoise.app():show_custom_dialog(tool_name, mainUI.container)
-    update_main_UI_callbacks()
+    update_main_UI_callbacks(dialog)
 
   
     -- A custom prompt is a modal dialog, restricting interaction to itself.
@@ -123,7 +123,7 @@ function create_main_UI()
     mainUI:boot()
 end
 
-function update_main_UI_callbacks()
+function update_main_UI_callbacks(dialog)
     mainUI:register_quit_callback(function()
         if (dialog) then
             dialog:close()
