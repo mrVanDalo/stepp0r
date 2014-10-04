@@ -17,6 +17,7 @@ require 'Init/MainUI'
 local dialog = nil
 local ui = nil
 local vb = nil
+local mainUI = nil
 
 -- Reload the script whenever this file is saved.
 -- Additionally, execute the attached function.
@@ -129,35 +130,10 @@ local function show_dialog()
             },
         },
     }
-  
-    -- A custom dialog is non-modal and displays a user designed
-    -- layout built with the ViewBuilder.
-    --dialog = renoise.app():show_custom_dialog(tool_name, content)
-    local mainUI = MainUI()
-    mainUI:register_run_callback(function (options)
-        print("host")
-        print(options.osc.host)
-        print("port")
-        print(options.osc.port)
-        print("osc active")
-        print(options.osc.active)
-        print("launchpad")
-        print(options.launchpad.name)
-    end)
-    mainUI:register_stop_callback(function ()
-        print("stop")
-    end)
-    mainUI:register_device_update_callback(function ()
-        local list = {}
-        for _,v in pairs(renoise.Midi.available_input_devices()) do
-            if string.find(v, "Launchpad") then
-                table.insert(list,v)
-            end
-        end
-        return list
-    end)
-    mainUI:create_ui()
-    mainUI:boot()
+
+    if not mainUI then
+        create_main_UI()
+    end
     dialog = renoise.app():show_custom_dialog(tool_name, mainUI.container)
 
   
@@ -191,8 +167,38 @@ end
 renoise.tool():add_menu_entry {
     name = "Main Menu:Tools:"..tool_name.."...",
     invoke = show_dialog
-
 }
+
+function create_main_UI()
+    -- A custom dialog is non-modal and displays a user designed
+    -- layout built with the ViewBuilder.
+    --dialog = renoise.app():show_custom_dialog(tool_name, content)
+    mainUI = MainUI()
+    mainUI:register_run_callback(function (options)
+        print("host")
+        print(options.osc.host)
+        print("port")
+        print(options.osc.port)
+        print("osc active")
+        print(options.osc.active)
+        print("launchpad")
+        print(options.launchpad.name)
+    end)
+    mainUI:register_stop_callback(function ()
+        print("stop")
+    end)
+    mainUI:register_device_update_callback(function ()
+        local list = {}
+        for _,v in pairs(renoise.Midi.available_input_devices()) do
+            if string.find(v, "Launchpad") then
+                table.insert(list,v)
+            end
+        end
+        return list
+    end)
+    mainUI:create_ui()
+    mainUI:boot()
+end
 
 
 
