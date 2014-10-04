@@ -101,10 +101,19 @@ function create_main_UI()
         print("launchpad")
         print(options.launchpad.name)
 
-        if options.launchpad.name then
-            launchpad_setup:connect(options.launchpad.name)
-            launchpad_setup:activate()
+        if not options.launchpad.name then
+            return
         end
+
+        if options.osc.active then
+            launchpad_setup:connect_osc_client(options.osc.host,options.osc.port)
+            print("activate osc")
+        else
+            print("not activate osc")
+        end
+
+        launchpad_setup:connect_launchpad(options.launchpad.name)
+        launchpad_setup:activate()
     end)
     mainUI:register_stop_callback(function ()
         print("stop")

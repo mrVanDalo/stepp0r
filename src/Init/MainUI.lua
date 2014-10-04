@@ -217,7 +217,7 @@ function MainUI:run_properties()
     return {
         osc = {
             host   = "localhost"  ,
-            port   = self.osc_row_textfield.text,
+            port   = tonumber(self.osc_row_textfield.text),
             active = self.osc_row_checkbox.value
         },
         launchpad = {
