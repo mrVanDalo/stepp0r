@@ -42,8 +42,6 @@ function LaunchpadSetup:deactivate()
 end
 
 function LaunchpadSetup:activate()
-    -- layers
-    self.osc_client:start()
     -- modules
     self.key:activate()
     self.stepper:activate()
@@ -51,10 +49,17 @@ function LaunchpadSetup:activate()
     self.effect:activate()
 end
 
-function LaunchpadSetup:connect(pad_name)
+function LaunchpadSetup:connect_launchpad(pad_name)
     self.pad:disconnect()
     self.pad:connect(pad_name)
 end
+
+function LaunchpadSetup:connect_osc_client(host, port)
+    self.osc_client:set_host(host)
+    self.osc_client:set_port(port)
+    self.osc_client:start()
+end
+
 
 function LaunchpadSetup:wire()
     --- layers are the basic connection

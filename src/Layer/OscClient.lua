@@ -37,7 +37,7 @@ end
 
 function OscClient:tear_down()
     if not self.client then return end
-    self.client.close()
+    self.client:close()
     self.client = nil
 end
 
