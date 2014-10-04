@@ -14,6 +14,7 @@ function MainUI:__init()
     self.input_size  = 200
     self.command_button_size = 80
     self.is_running = false
+    self.default_osc_port = '8008'
 end
 
 function MainUI:create_ui()
@@ -78,7 +79,10 @@ function MainUI:create_device_row()
         visible = true,
         bitmap  = "reload.bmp",
         width   = self.button_size,
-        tooltip = "reload device list"
+        tooltip = "reload device list",
+        notifier = function ()
+            self:device_row_update_device_list()
+        end,
     }
     self.device_row_popup = self.vb:popup {
         width = self.input_size,
@@ -142,7 +146,7 @@ function MainUI:create_osc_row()
         visible = false,
     }
     self.osc_row_textfield = self.vb:textfield {
-        text = '1234',
+        text = self.default_osc_port,
         width = self.input_size,
         tooltip = "port of the local osc server (UDP)"
     }

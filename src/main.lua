@@ -170,9 +170,6 @@ renoise.tool():add_menu_entry {
 }
 
 function create_main_UI()
-    -- A custom dialog is non-modal and displays a user designed
-    -- layout built with the ViewBuilder.
-    --dialog = renoise.app():show_custom_dialog(tool_name, content)
     mainUI = MainUI()
     mainUI:register_run_callback(function (options)
         print("host")
