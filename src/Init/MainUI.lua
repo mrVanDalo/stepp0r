@@ -206,7 +206,9 @@ function MainUI:create_quit_button()
     self.quit_button = self.vb:button {
         text = "Quit",
         width = self.command_button_size,
-        notifier = self:quit(),
+        notifier = function ()
+            self:quit()
+        end,
     }
 end
 
@@ -266,4 +268,5 @@ end
 
 function MainUI:quit()
     self.quit_callback()
+    print("quit")
 end
