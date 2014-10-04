@@ -15,15 +15,12 @@ require 'Init/MainUI'
 
 -- Placeholder for the dialog
 local dialog = nil
-
--- Placeholder to expose the ViewBuilder outside the show_dialog() function
+local ui = nil
 local vb = nil
 
--- Reload the script whenever this file is saved. 
+-- Reload the script whenever this file is saved.
 -- Additionally, execute the attached function.
-_AUTO_RELOAD_DEBUG = function()
-  
-end
+_AUTO_RELOAD_DEBUG = function()  end
 
 -- Read from the manifest.xml file.
 class "RenoiseScriptingTool" (renoise.Document.DocumentNode)
@@ -37,20 +34,6 @@ local manifest    = RenoiseScriptingTool()
 local ok,err      = manifest:load_from("manifest.xml")
 local tool_name   = manifest:property("Name").value
 local tool_id     = manifest:property("Id").value
-
-
---------------------------------------------------------------------------------
--- Main functions
---------------------------------------------------------------------------------
-
--- This example function is called from the GUI below.
--- It will return a random string. The GUI function displays 
--- that string in a dialog.
-local function get_greeting()
-  local words = {"Hello world!", "Nice to meet you :)", "Hi there!"}
-  local id = math.random(#words)
-  return words[id]
-end
 
 
 --------------------------------------------------------------------------------
@@ -164,6 +147,15 @@ local function show_dialog()
     end)
     mainUI:register_stop_callback(function ()
         print("stop")
+    end)
+    mainUI:register_device_update_callback(function ()
+        local list = {}
+        for _,v in pairs(renoise.Midi.available_input_devices()) do
+            if string.find(v, "Launchpad") then
+                table.insert(list,v)
+            end
+        end
+        return list
     end)
     dialog = renoise.app():show_custom_dialog(tool_name, mainUI.container)
 

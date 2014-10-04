@@ -99,10 +99,23 @@ end
 function MainUI:enable_device_row()
     self.device_row_button.active = true
     self.device_row_popup.active = true
+    self:device_row_update_device_list()
 end
 
+function MainUI:register_device_update_callback(callback)
+    self.device_update_callback = callback
+end
 
+function MainUI:update_row_update_device_list()
+    if (self.device_update_callback) then
+        self.device_row_popup.items = self.device_update_callback()
+    end
+end
 
+function MainUI:selected_device()
+    local list_of_lauchpad_devices = self.device_row_popup.items
+    return list_of_lauchpad_devices[self.device_row_popup.value]
+end
 
 
 
@@ -194,7 +207,6 @@ end
 
 --- returns an object of all configurations
 function MainUI:run_properties()
-    local list_of_lauchpad_devices = self.device_row_popup.items
     return {
         osc = {
             host   = "localhost"  ,
@@ -202,7 +214,7 @@ function MainUI:run_properties()
             active = self.osc_row_checkbox.value
         },
         launchpad = {
-            name = list_of_lauchpad_devices[self.device_row_popup.value],
+            name = self:list_of_lauchpad_devices(),
         },
     }
 end
