@@ -15,6 +15,9 @@ function MainUI:__init()
     self.command_button_size = 80
     self.is_running = false
     self.default_osc_port = '8008'
+    self:unregister_run_callback()
+    self:unregister_quit_callback()
+    self:unregister_stop_callback()
 end
 
 function MainUI:create_ui()
@@ -203,15 +206,8 @@ function MainUI:create_quit_button()
     self.quit_button = self.vb:button {
         text = "Quit",
         width = self.command_button_size,
+        notifier = self:quit(),
     }
-end
-
-function MainUI:run()
-    self.is_running = true
-    self.start_stop_button.text = "Stop"
-    self:disable_device_row()
-    self:disable_osc_row()
-    self.run_callback(self:run_properties())
 end
 
 --- returns an object of all configurations
@@ -236,6 +232,14 @@ function MainUI:unregister_run_callback()
     self.run_callback = function (_) end
 end
 
+function MainUI:run()
+    self.is_running = true
+    self.start_stop_button.text = "Stop"
+    self:disable_device_row()
+    self:disable_osc_row()
+    self.run_callback(self:run_properties())
+end
+
 function MainUI:register_stop_callback(callback)
     self.stop_callback = callback
 end
@@ -244,11 +248,22 @@ function MainUI:unregister_stop_callback()
     self.stop_callback = function (_) end
 end
 
-
 function MainUI:stop()
     self.is_running = false
     self.start_stop_button.text = "Start"
     self:enable_device_row()
     self:enable_osc_row()
     self.stop_callback()
+end
+
+function MainUI:register_quit_callback(callback)
+    self.quit_callback = callback
+end
+
+function MainUI:unregister_quit_callback()
+    self.quit_callback = function (_) end
+end
+
+function MainUI:quit()
+    self.quit_callback()
 end
