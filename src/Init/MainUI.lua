@@ -26,6 +26,10 @@ function MainUI:create_ui()
     self:create_container()
 end
 
+function MainUI:boot()
+    self:device_row_update_device_list()
+end
+
 function MainUI:create_container()
     self.container = self.vb:column{
         margin = 6,
@@ -102,11 +106,12 @@ function MainUI:enable_device_row()
     self:device_row_update_device_list()
 end
 
+
 function MainUI:register_device_update_callback(callback)
     self.device_update_callback = callback
 end
 
-function MainUI:update_row_update_device_list()
+function MainUI:device_row_update_device_list()
     if (self.device_update_callback) then
         self.device_row_popup.items = self.device_update_callback()
     end
@@ -214,7 +219,7 @@ function MainUI:run_properties()
             active = self.osc_row_checkbox.value
         },
         launchpad = {
-            name = self:list_of_lauchpad_devices(),
+            name = self:selected_device(),
         },
     }
 end

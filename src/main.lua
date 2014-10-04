@@ -134,7 +134,6 @@ local function show_dialog()
     -- layout built with the ViewBuilder.
     --dialog = renoise.app():show_custom_dialog(tool_name, content)
     local mainUI = MainUI()
-    mainUI:create_ui()
     mainUI:register_run_callback(function (options)
         print("host")
         print(options.osc.host)
@@ -157,6 +156,8 @@ local function show_dialog()
         end
         return list
     end)
+    mainUI:create_ui()
+    mainUI:boot()
     dialog = renoise.app():show_custom_dialog(tool_name, mainUI.container)
 
   
