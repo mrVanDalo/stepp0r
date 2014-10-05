@@ -32,6 +32,7 @@ end
 
 
 function OscClient:start()
+    if self.client then return end
     self.client = renoise.Socket.create_client(self.host , self.port, self.protocol)
 end
 
