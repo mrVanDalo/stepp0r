@@ -383,8 +383,6 @@ end
 --
 -- nil for is not on the matrix
 --
--- todo : wirte tests for me and optemize me
---
 function Stepper:line_to_point(line)
     -- page
     local l = line - self.page_start
@@ -405,7 +403,6 @@ end
 --
 -- point_to_line(line_to_point(l)) == l should allways be true ?
 --
--- todo : wirte tests for me and optemize me
 function Stepper:point_to_line(x,y)
     return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
 end

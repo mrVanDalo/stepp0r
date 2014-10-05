@@ -19,18 +19,6 @@ function Launchpad:__init()
     -- self:_watch()
 end
 
--- watches for launchpad connections
--- (should handle all the reconnection stuff and all)
--- will be removed by another component soon
--- todo remove me by ui
-function Launchpad:_watch()
-    for _,v in pairs(renoise.Midi.available_input_devices()) do
-        if string.find(v, "Launchpad") then
-            self:connect(v)
-        end
-    end
-end
-
 --- connect launchpad to a midi device
 --
 function Launchpad:connect(midi_device_name)
@@ -69,9 +57,11 @@ end
 function Launchpad:disconnect()
     if self.midi_input then
         self.midi_input:close()
+        self.midi_input = nil
     end
     if self.midi_out then
         self.midi_out:close()
+        self.midi_out = nil
     end
 end
 
@@ -160,10 +150,10 @@ end
 ---                                                 [ Input ]
 
 function Launchpad:send(channel, number, value)
-    --if (not self.midi_out or not self.midi_out.is_open) then
+    if (not self.midi_out or not self.midi_out.is_open) then
     --    print("midi is not open")
-    --    return
-    --end
+        return
+    end
     local message = {channel, number, value}
     -- print(("Launchpad : send MIDI %X %X %X"):format(message[1], message[2], message[3]))
     self.midi_out:send(message)

@@ -179,6 +179,7 @@ function Chooser:_activate()
     --- selected track changes
     if self.is_first_run then
         renoise.song().selected_track_index_observable:add_notifier(function()
+            if self.is_not_active then return end
             local track_index = renoise.song().selected_track_index
             if track_index == self.active then return end
             self:select_instrument(track_index)
