@@ -38,7 +38,7 @@ function LaunchpadSetup:deactivate()
     self.chooser:deactivate()
     self.effect:deactivate()
     -- layers
-    self.osc_client:tear_down()
+    self.osc_client:disconnect()
     self.pad:disconnect()
 end
 
@@ -56,7 +56,7 @@ function LaunchpadSetup:connect_launchpad(pad_name)
 end
 
 function LaunchpadSetup:connect_osc_client(host, port)
-    self.osc_client:tear_down()
+    self.osc_client:disconnect()
     self.osc_client:set_host(host)
     self.osc_client:set_port(port)
     self.osc_client:start()

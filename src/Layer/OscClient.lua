@@ -36,7 +36,7 @@ function OscClient:start()
     self.client = renoise.Socket.create_client(self.host , self.port, self.protocol)
 end
 
-function OscClient:tear_down()
+function OscClient:disconnect()
     if not self.client then return end
     self.client:close()
     self.client = nil

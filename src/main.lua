@@ -13,11 +13,6 @@ require 'Data/Note'
 require 'Data/Color'
 require 'Init/MainUI'
 
--- Placeholder for the dialog
-local dialog = nil
-local ui = nil
-local vb = nil
-local mainUI = nil
 
 -- Reload the script whenever this file is saved.
 -- Additionally, execute the attached function.
@@ -37,47 +32,11 @@ local tool_name   = manifest:property("Name").value
 local tool_id     = manifest:property("Id").value
 
 
-local launchpad_setup   = LaunchpadSetup()
-launchpad_setup:wire()
+-- Placeholder for the dialog
+local dialog = nil
+local mainUI = nil
+local launchpad_setup = nil
 
-
-local function show_dialog()
-
-    -- This block makes sure a non-modal dialog is shown once.
-    -- If the dialog is already opened, it will be focused.
-    if dialog and dialog.visible then
-        dialog:show()
-        return
-    end
-
-    if not mainUI then
-        create_main_UI()
-    end
-    dialog = renoise.app():show_custom_dialog(tool_name, mainUI.container)
-    update_main_UI_callbacks(dialog)
-
-  
-    -- A custom prompt is a modal dialog, restricting interaction to itself.
-    -- As long as the prompt is displayed, the GUI thread is paused. Since
-    -- currently all scripts run in the GUI thread, any processes that were running
-    -- in scripts will be paused.
-    -- A custom prompt requires buttons. The prompt will return the label of
-    -- the button that was pressed or nil if the dialog was closed with the
-    -- standard X button.
-    --[[
-    local buttons = {"OK", "Cancel"}
-    local choice = renoise.app():show_custom_prompt(
-      tool_name, 
-      content, 
-      buttons
-    )  
-    if (choice == buttons[1]) then
-      -- user pressed OK, do something  
-    end
-  --]]
-
-
-end
 
 
 --------------------------------------------------------------------------------
@@ -89,17 +48,23 @@ renoise.tool():add_menu_entry {
     invoke = show_dialog
 }
 
+
+--------------------------------------------------------------------------------
+-- Main UI
+--------------------------------------------------------------------------------
+
+
 function create_main_UI()
     mainUI = MainUI()
     mainUI:register_run_callback(function (options)
-        print("host")
-        print(options.osc.host)
-        print("port")
-        print(options.osc.port)
-        print("osc active")
-        print(options.osc.active)
-        print("launchpad")
-        print(options.launchpad.name)
+--        print("host")
+--        print(options.osc.host)
+--        print("port")
+--        print(options.osc.port)
+--        print("osc active")
+--        print(options.osc.active)
+--        print("launchpad")
+--        print(options.launchpad.name)
 
         if not options.launchpad.name then
             return
@@ -107,9 +72,6 @@ function create_main_UI()
 
         if options.osc.active then
             launchpad_setup:connect_osc_client(options.osc.host,options.osc.port)
-            print("activate osc")
-        else
-            print("not activate osc")
         end
 
         launchpad_setup:connect_launchpad(options.launchpad.name)
@@ -141,26 +103,26 @@ function update_main_UI_callbacks(dialog)
 end
 
 
+local function show_dialog()
 
---------------------------------------------------------------------------------
--- Key Binding
---------------------------------------------------------------------------------
+    -- This block makes sure a non-modal dialog is shown once.
+    -- If the dialog is already opened, it will be focused.
+    if dialog and dialog.visible then
+        dialog:show()
+        return
+    end
 
---[[
-renoise.tool():add_keybinding {
-  name = "Global:Tools:" .. tool_name.."...",
-  invoke = show_dialog
-}
---]]
+    if not launchpad_setup then
+        launchpad_setup = LaunchpadSetup()
+        launchpad_setup:wire()
+    end
 
+    if not mainUI then
+        create_main_UI()
+    end
 
---------------------------------------------------------------------------------
--- MIDI Mapping
---------------------------------------------------------------------------------
+    dialog = renoise.app():show_custom_dialog(tool_name, mainUI.container)
+    update_main_UI_callbacks(dialog)
 
---[[
-renoise.tool():add_midi_mapping {
-  name = tool_id..":Show Dialog...",
-  invoke = show_dialog
-}
---]]
+end
+
