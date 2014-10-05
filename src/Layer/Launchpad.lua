@@ -19,18 +19,6 @@ function Launchpad:__init()
     -- self:_watch()
 end
 
--- watches for launchpad connections
--- (should handle all the reconnection stuff and all)
--- will be removed by another component soon
--- todo remove me by ui
-function Launchpad:_watch()
-    for _,v in pairs(renoise.Midi.available_input_devices()) do
-        if string.find(v, "Launchpad") then
-            self:connect(v)
-        end
-    end
-end
-
 --- connect launchpad to a midi device
 --
 function Launchpad:connect(midi_device_name)
