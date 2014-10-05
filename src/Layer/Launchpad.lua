@@ -69,9 +69,11 @@ end
 function Launchpad:disconnect()
     if self.midi_input then
         self.midi_input:close()
+        self.midi_input = nil
     end
     if self.midi_out then
         self.midi_out:close()
+        self.midi_out = nil
     end
 end
 
@@ -160,10 +162,10 @@ end
 ---                                                 [ Input ]
 
 function Launchpad:send(channel, number, value)
-    --if (not self.midi_out or not self.midi_out.is_open) then
+    if (not self.midi_out or not self.midi_out.is_open) then
     --    print("midi is not open")
-    --    return
-    --end
+        return
+    end
     local message = {channel, number, value}
     -- print(("Launchpad : send MIDI %X %X %X"):format(message[1], message[2], message[3]))
     self.midi_out:send(message)
