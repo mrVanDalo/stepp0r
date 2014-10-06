@@ -5,9 +5,9 @@ Version names by Estonian Marathon Champions
 ## 0.3 Vladimir Heerik
 
 * nice UI
-  * change osc port.
-  * more robust.
-  * closing the window does not restart the UI.
+    * change osc port.
+    * more robust.
+    * closing the window does not restart the UI.
 * recognize midi instruments.
 * improved playback position observer.
 * instrument update is properly working now (add an instrument will update launchpad now).
