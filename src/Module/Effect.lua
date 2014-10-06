@@ -83,7 +83,7 @@ end
 
 --- ======================================================================================================
 ---
----                                                 [ Boot ]
+---                                                 [ boot ]
 
 function Effect:_activate()
     -- todo send default value to all registered listeners
@@ -110,7 +110,10 @@ function Effect:_activate()
 
 end
 
-function Effect:_deactivate()  end
+function Effect:_deactivate()
+    self:matrix_clear()
+    self.pad:set_right(self.mode_knob_idx,Color.off)
+end
 
 --- ======================================================================================================
 ---

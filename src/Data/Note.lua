@@ -49,8 +49,10 @@ Note = {
 ---                                                 [ Functions ]
 
 --- calculate pitch
---
-function pitch(note,octave)
+-- ----------------
+-- note : Note Object
+-- octave : integer of octave
+function pitch(note, octave)
     local p = note[Note.access.pitch]
     if (p < 14) then
         return p + (octave * 12)

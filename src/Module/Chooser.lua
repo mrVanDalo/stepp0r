@@ -112,7 +112,7 @@ function Chooser:_activate()
             if msg.vel == Velocity.release then return end
             if msg.y  ~= self.row          then return end
             if self.mode == ChooserData.mode.choose then
-                self:select_instrument(msg.x)
+                self:select_instrument_with_offset(msg.x)
             elseif self.mode == ChooserData.mode.mute then
                 self:mute_track(msg.x)
             end
@@ -174,9 +174,26 @@ function Chooser:_activate()
         end)
         -- todo add observable on visible_note_columns to update them
     end
+
+
+    --- selected track changes
+    if self.is_first_run then
+        renoise.song().selected_track_index_observable:add_notifier(function()
+            if self.is_not_active then return end
+            local track_index = renoise.song().selected_track_index
+            if track_index == self.active then return end
+            self:select_instrument(track_index)
+            self:column_update_knobs()
+            self:row_update()
+        end)
+    end
+
 end
 
 function Chooser:_deactivate()
+    self:column_clear_knobs()
+    self:page_clear_knobs()
+    self:mode_clear_knobs()
     self:row_clear()
 end
 
@@ -204,6 +221,10 @@ end
 function Chooser:mode_update_knobs()
     -- print(self.mode)
     self.pad:set_right(self.mode_idx, self.mode[ChooserData.access.color])
+end
+function Chooser:mode_clear_knobs()
+    -- print(self.mode)
+    self.pad:set_right(self.mode_idx, Color.off)
 end
 
 function Chooser:mute_track(x)
@@ -239,17 +260,40 @@ function Chooser:ensure_column_idx_exists()
     end
 end
 
-function Chooser:select_instrument(x)
+function Chooser:select_instrument_with_offset(x)
     local active = self.inst_offset + x
+    self:select_instrument(active)
+end
+
+
+--- only instruments with names are instruments
+function Chooser:instrument_name(instrument)
+    if not instrument then return nil end
+    if not instrument.name then return nil end
+    if instrument.name ~= "" then
+        return instrument.name
+    end
+    if not instrument.midi_output_properties then
+        return nil
+    end
+    if instrument.midi_output_properties.device_name == "" then
+        return nil
+    else
+        return instrument.midi_output_properties.device_name
+    end
+end
+
+function Chooser:select_instrument(active)
     local found = renoise.song().instruments[active]
-    if not found        then return  end
-    if found.name == "" then return  end
+    local  name = self:instrument_name(found)
+    if not name then return end
     self.active     = active
     self.column_idx = 1
     -- ensure track exist
     self:ensure_active_track_exist()
     -- rename track
-    renoise.song().tracks[self.active].name = found.name
+    renoise.song().tracks[self.active].name = name
+    renoise.song().selected_track_index = self.active
     -- trigger callbacks
     self:update_set_instrument_listeners()
 end
@@ -278,6 +322,11 @@ function Chooser:page_update_knobs()
     end
 end
 
+function Chooser:page_clear_knobs()
+    self.pad:set_top(self.page_dec_idx,Color.off)
+    self.pad:set_top(self.page_inc_idx,Color.off)
+end
+
 function Chooser:page_inc()
     local instrument_count = table.getn(renoise.song().instruments)
     if (self.inst_offset + 8) < instrument_count then
@@ -303,10 +352,10 @@ function Chooser:row_update()
     -- todo using the mute state too
     self:row_clear()
     for nr, instrument in ipairs(renoise.song().instruments) do
-        if nr - self.inst_offset > 8 then
-            break
-        end
-        if instrument.name ~= "" then
+        local scaled_index = nr - self.inst_offset
+        if scaled_index > 8 then break end
+        local name = self:instrument_name(instrument)
+        if name and scaled_index > 0 then
             -- print(nr, instrument.name)
             local active_color  = self.color.instrument.active
             local passive_color = self.color.instrument.passive
@@ -319,9 +368,9 @@ function Chooser:row_update()
                 end
             end
             if nr == self.active then
-                self.pad:set_matrix(nr - self.inst_offset, self.row, active_color)
+                self.pad:set_matrix(scaled_index, self.row, active_color)
             else
-                self.pad:set_matrix(nr - self.inst_offset, self.row, passive_color)
+                self.pad:set_matrix(scaled_index, self.row, passive_color)
             end
         end
     end
@@ -346,6 +395,12 @@ function Chooser:column_update_knobs()
             color = self.color.column.inactive
         end
         self.pad:set_right(i,color)
+    end
+end
+
+function Chooser:column_clear_knobs()
+    for i = self.column_idx_start, self.column_idx_stop do
+        self.pad:set_right(i,Color.off)
     end
 end
 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RenoiseScriptingTool>
-  <Name>Steppor</Name>
-  <Id>org.ingolfwagner.Steppor</Id>
-  <Version>0.2</Version>
+  <Name>Stepp0r</Name>
+  <Id>com.mrVanDalo.Stepp0r</Id>
+  <Version>0.3</Version>
   <ApiVersion>4</ApiVersion>
   <Author>Ingolf Wagner (palipalo9@googlemail.com)</Author>
   <AutoUpgraded>false</AutoUpgraded>
   <Category>In Progress</Category>
-  <Description>The most awesome Step-Sequencer you've ever seen.</Description>
-  <Homepage>http://tools.renoise.com</Homepage>
+  <Description>The awesome Launchpad Step-Sequencer.</Description>
+  <Homepage>http://mrvandalo.github.io/stepp0r/</Homepage>
   <Platform/>
   <Icon>icon.png</Icon>
 </RenoiseScriptingTool>
