@@ -60,6 +60,10 @@ function create_main_UI()
             return
         end
 
+        if options.launchpad.name == "None" then
+            return
+        end
+
         if options.osc.active then
             launchpad_setup:connect_osc_client(options.osc.host,options.osc.port)
         end
