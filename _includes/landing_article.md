@@ -7,7 +7,7 @@ You can punch in your sequences, or you can use the keyboard to record your melo
 
 ## You want to start using it? 
 * Buy a launchpad (at ebay for example).
-* [Download]({{ site.baseurl }}/downloads/Stepp0r-0.3.xrnx) the plugin.
+* [Download]({{ site.baseurl }}/downloads/{{ site.actual_version }}) the plugin.
 * [Install the plugin](http://www.renoise.com/tools) in renoise.
 * Have a look at the  [Documentation]({{ site.baseurl }}/documentation/).
 
