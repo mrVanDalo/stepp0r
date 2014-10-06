@@ -1,13 +1,12 @@
 ---
 layout: post
-title:  "Add documentation page"
+title: "Released version 0.3"
 date:   2014-10-06 19:30:00
 categories: update documentation
 author: "Palo van Dalo"
-abstract: "Released version 0.3"
+abstract: "I'm happy to announce the newest version 0.3
+which shouldn't be a beta anymore."
 ---
-
-I'm happy to announce the newest version 0.3
 
 Here is the Changelog for this release
 
