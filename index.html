@@ -11,31 +11,21 @@ layout: default
         <script id='fbupg0w'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=mrVanDalo&url=http%3A%2F%2Fmrvandalo.github.io%2Fsteppor%2F';f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbupg0w');</script>
     </div>
     <div class="col-md-8">
-        <h1>The Awesome Step-Sequencer</h1>
-        <article>
-            A Launchpad Step-Sequencer for
-            <a href="http://www.renoise.com/">Renoise </a>
-            written by Palo van Dalo.
-            Have a look at the <a href="{{ site.baseurl }}/documentation/">Documentation</a>.
-            If you find bugs please report them
-            <a href="https://github.com/mrVanDalo/stepp0r/issues"> here </a> or 
-            use UserVoice (on the bottom right).
-            And if you want to join the development just visit the
-            <a href="https://github.com/mrVanDalo/stepp0r"> github page</a>.
-        </article>
+        {% capture landing %}{% include landing_article.md %}{% endcapture %}
+        {{ landing | markdownify }}
     </div>
 </div>
 <div class="row top-buffer">
     <div class="col-md-4 col-md-offset-2 col-sm-6">
         <div class="panel panel-default">
-            <a class="btn btn-block" href="{{ site.baseurl }}/downloads/Stepp0r-0.2.xrnx">
+            <a class="btn btn-block" href="{{ site.baseurl }}/downloads/{{ site.actual_version }}">
                 <div class="media panel-body">
                     <div class="pull-left">
                         <img class="img-responsive img-circle" src="{{ site.baseurl }}/assets/Download.svg" alt="Download" />
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading">Download</h4>
-                        The actual <strong>beta</strong> version.
+                        The actual version.
                     </div>
                 </div>
             </a>
