@@ -1,13 +1,27 @@
 # Launchpad Step Sequencer
 
-This will be a step sequencer for Renoise using the Launchpad.
+This will be a step sequencer for [Renoise](http://www.renoise.com/) 
+using the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad).
 
 ## Structure
+
+### Layer
+
+Layers should represent something that exists and you can talk to. Like the `Launchpad` or an `OscClient`. 
+
+### Data
+
+Should prevent you from [magic numbers](http://en.wikipedia.org/wiki/Magic_number_\(programming\)).
+
+### Init 
+
+Should hold all the stuff you need to set up the system. 
+Everything from `main.lua` will call stuff from in here.
 
 ### Module
 
 A module is something that is used by other Modules. 
-Moste of the time that is something that writes something to the Launchpad.
+Most of the time that is something that writes something to the Launchpad.
 
 #### Module fields
 
@@ -24,7 +38,7 @@ Use them to control the wiring against notifies.
 ##### init
 
 The init part is the part that holds the constructor and everything that should be used from outside.
-Most of the time these are callbacks, setter (starte withe `wire` because it sound cooler) and 
+Most of the time these are callbacks, setter (start with `wire` because it sound cooler) and 
 un/register callback functions.
 
 ##### boot
@@ -38,10 +52,10 @@ This part/s hold logic function that derive from the init and boot parts.
 
 ### Data
 
-Modules have them too, and the convention is `<Modulename>Data`. 
-It holds the Constant values for the modul or this artifact (Color or Note for example).
+Modules have them too, and the convention is `<ModuleName>Data`. 
+It holds the Constant values for the module or this artifact (`Color` or `Note` for example).
 Its a dictionary (table).
-For more complex objects it has a access key (containing the indecies to access parts of the complex object)
+For more complex objects it has a access key (containing the indices to access parts of the complex object)
 
 # Changelog
 
@@ -51,7 +65,7 @@ Version names by Estonian Marathon Champions
 
 * cleaned up code
 * add columns to chooser
-* propper activate and deactivate behavior
+* proper activate and deactivate behavior
 
 ## 0.1 Aare Kuum
 
