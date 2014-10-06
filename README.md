@@ -7,7 +7,8 @@ using the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launch
 
 ### Layer
 
-Layers should represent something that exists and you can talk to. Like the `Launchpad` or an `OscClient`. 
+Layers should represent something that exists and you can talk to. 
+Like the `Launchpad` or an `OscClient`. 
 
 ### Data
 
