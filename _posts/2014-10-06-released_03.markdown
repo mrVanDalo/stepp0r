@@ -1,0 +1,24 @@
+---
+layout: post
+title:  "Add documentation page"
+date:   2014-10-06 19:30:00
+categories: update documentation
+author: "Palo van Dalo"
+abstract: "Released version 0.3"
+---
+
+I'm happy to announce the newest version 0.3
+
+Here is the Changelog for this release
+
+### 0.3 Vladimir Heerik
+
+* nice UI
+    * change osc port.
+    * more robust.
+    * closing the window does not restart the UI.
+* recognize midi instruments.
+* improved playback position observer.
+* instrument update is properly working now (add an instrument will update launchpad now).
+* Licensed under GPL v3 now.
+* send release note over osc when releasing the note on the launchpad
