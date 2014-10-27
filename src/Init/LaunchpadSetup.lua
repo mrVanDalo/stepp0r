@@ -1,8 +1,14 @@
 
+require 'Data/Color'
+require 'Data/Note'
+require 'Data/Velocity'
 
 require 'Layer/Launchpad'
 require 'Layer/PlaybackPositionObserver'
 require 'Layer/OscClient'
+require 'Layer/Logger'
+require 'Layer/IT_Selection'
+
 require 'Module/Module'
 require 'Module/Keyboard'
 require 'Module/Chooser'
@@ -24,6 +30,7 @@ function LaunchpadSetup:__init()
     self.pad               = nil
     self.playback_position_observer = nil
     self.osc_client        = nil
+    self.it_selection      = nil
     -- modules
     self.stepper           = nil
     self.effect            = nil
@@ -48,11 +55,18 @@ function LaunchpadSetup:activate()
     self.stepper:activate()
     self.chooser:activate()
     self.effect:activate()
+    -- boot
+    self.it_selection:boot()
 end
 
 function LaunchpadSetup:connect_launchpad(pad_name)
     self.pad:disconnect()
     self.pad:connect(pad_name)
+end
+
+function LaunchpadSetup:connect_it_selection()
+    self.it_selection:disconnect()
+    self.it_selection:connect()
 end
 
 function LaunchpadSetup:connect_osc_client(host, port)
@@ -71,6 +85,7 @@ function LaunchpadSetup:wire()
     self.pad = Launchpad()
     self.playback_position_observer = PlaybackPositionObserver()
     self.osc_client = OscClient()
+    self.it_selection = IT_Selection()
 
     self.stepper = Stepper()
     self.stepper:wire_launchpad(self.pad)
@@ -89,8 +104,12 @@ function LaunchpadSetup:wire()
 
     self.chooser = Chooser()
     self.chooser:wire_launchpad(self.pad)
-    self.chooser:register_select_instrument(self.key:callback_set_instrument())
-    self.chooser:register_select_instrument(self.stepper:callback_set_instrument())
-    self.chooser:register_select_instrument(self.effect:callback_set_instrument())
+    self.chooser:wire_it_selection(self.it_selection)
+
+    self.it_selection:register_select_instrument(self.key:callback_set_instrument())
+    self.it_selection:register_select_instrument(self.stepper:callback_set_instrument())
+    self.it_selection:register_select_instrument(self.effect:callback_set_instrument())
+    self.it_selection:register_select_instrument(self.chooser:callback_set_instrument())
+
 end
 

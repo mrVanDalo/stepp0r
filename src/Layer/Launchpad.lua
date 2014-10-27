@@ -1,13 +1,9 @@
-
-require 'Data/Color'
-
 --- ======================================================================================================
 ---
 ---                                                 [ Launchpad Module ]
 ---
 --- to connect to the launchpad and talk to it in a propper way
 
--- todo move me to module (or Layer)
 class "Launchpad"
 
 --- ======================================================================================================

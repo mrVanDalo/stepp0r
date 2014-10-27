@@ -1,8 +1,3 @@
-
-require 'Data/Color'
-require 'Data/Velocity'
-require 'Module/Module'
-
 --- ======================================================================================================
 ---
 ---                                                 [ Effect Module ]
@@ -73,7 +68,7 @@ function Effect:register_set_volume(callback)
 end
 
 function Effect:callback_set_instrument()
-    return function (_,_)
+    return function (_,_,_)
         if self.is_not_active then return end
         self:set_delay(1)
         self:set_volume(1)

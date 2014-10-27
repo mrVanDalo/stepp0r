@@ -69,6 +69,7 @@ function create_main_UI()
         end
 
         launchpad_setup:connect_launchpad(options.launchpad.name)
+        launchpad_setup:connect_it_selection()
         launchpad_setup:activate()
     end)
     mainUI:register_stop_callback(function ()

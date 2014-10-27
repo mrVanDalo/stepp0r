@@ -1,9 +1,3 @@
-
-require 'Module/Module'
-require 'Data/Note'
-require 'Data/Color'
-require 'Data/Velocity'
-
 --- ======================================================================================================
 ---
 ---                                                 [ Keyboard Module ]
@@ -35,14 +29,15 @@ function Keyboard:register_set_note(callback)
 end
 
 function Keyboard:callback_set_instrument()
-    return function (index,_)
+    return function (instrument_idx, track_idx, _)
         if self.is_not_active then return end
         -- save
-        self.instrument_backup[self.instrument] = self:state()
+        self.instrument_backup[self.instrument_idx] = self:state()
         -- switch
-        self.instrument = index
+        self.instrument_idx = instrument_idx
+        self.track_idx      = track_idx
         -- load
-        local newState = self.instrument_backup[self.instrument]
+        local newState = self.instrument_backup[self.instrument_idx]
         if newState then self:load_state(newState) end
         -- refresh
         self:matrix_refresh()
@@ -75,7 +70,8 @@ function Keyboard:__init()
     self.osc_client = nil
     self.note       = Note.note.c
     self.octave     = 4
-    self.instrument = 1
+    self.instrument_idx = 1
+    self.track_idx      = 1
     self.instrument_backup = {}
     self.velocity   = 127
     self.triggered_notes = {
@@ -199,14 +195,14 @@ function Keyboard:trigger_note(x,y)
     if is_not_off(self.note) then
         local note = pitch(self.note,self.octave)
         self.triggered_notes[y][x] = note
-        self.osc_client:trigger_note(self.instrument, note, self.velocity)
+        self.osc_client:trigger_note(self.instrument_idx, self.track_idx, note, self.velocity)
     end
 end
 
 function Keyboard:untrigger_note(x,y)
     local note = self.triggered_notes[y][x]
     if not note then return end
-    self.osc_client:untrigger_note(self.instrument, note)
+    self.osc_client:untrigger_note(self.instrument_idx, self.track_idx, note)
 end
 
 

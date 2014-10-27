@@ -1,14 +1,3 @@
---
--- User: palo
--- Date: 7/6/14
---
-
-require 'Data/Note'
-require 'Data/Velocity'
-require 'Data/Color'
-require 'Module/Module'
-
-
 --- ======================================================================================================
 ---
 ---                                                 [ Stepper Module ]
@@ -37,8 +26,8 @@ StepperData = {
 
 function Stepper:__init()
     Module:__init(self)
-    self.track       = 1
-    self.instrument  = 1
+    self.track_idx       = 1
+    self.instrument_idx  = 1
     self.note        = Note.note.c
     self.octave      = 4
     self.delay       = 0
@@ -58,8 +47,8 @@ function Stepper:__init()
     self.page_start   = 0  -- line left before first pixel
     self.page_end     = 33 -- line right after last pixel
     -- rest
-    self.track_column = 1 -- the column in the track
-    self.pattern_idx  = 1 -- actual pattern
+    self.track_column_idx = 1 -- the column in the track
+    self.pattern_idx      = 1 -- actual pattern
     -- rendering
     self.matrix      = {}
     self.color       = {
@@ -93,11 +82,11 @@ function Stepper:wire_playback_position_observer(playback_position_observer)
 end
 
 function Stepper:callback_set_instrument()
-    return function (index,column)
+    return function (instrument_idx, track_idx, column_idx)
         if self.is_not_active then return end
-        self.track        = index
-        self.track_column = column
-        self.instrument   = index
+        self.track_idx        = track_idx
+        self.track_column_idx = column_idx
+        self.instrument_idx   = instrument_idx
         self:refresh_matrix()
     end
 end
@@ -176,7 +165,7 @@ function Stepper:_activate()
             if not column then return end
             if column.note_value == StepperData.note.empty then
                 column.note_value         = pitch(self.note,self.octave)
-                column.instrument_value   = (self.instrument - 1)
+                column.instrument_value   = (self.instrument_idx - 1)
                 column.delay_value        = self.delay
                 column.panning_value      = self.pan
                 column.volume_value       = self.volume
@@ -433,9 +422,9 @@ end
 function Stepper:calculate_track_position(x,y)
     local line       = self:point_to_line(x,y)
     local pattern    = self:active_pattern()
-    local found_line = pattern.tracks[self.track].lines[line]
+    local found_line = pattern.tracks[self.track_idx].lines[line]
     if found_line then
-        return found_line.note_columns[self.track_column]
+        return found_line.note_columns[self.track_column_idx]
     else
         return nil
     end
@@ -462,11 +451,11 @@ end
 --
 function Stepper:matrix_update()
     local pattern_iter  = renoise.song().pattern_iterator
-    for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track) do
+    for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track_idx) do
         if not table.is_empty(line.note_columns) then
             -- print("note_column")
-            -- print(self.track_column)
-            local note_column = line:note_column(self.track_column)
+            -- print(self.track_column_idx)
+            local note_column = line:note_column(self.track_column_idx)
             if(note_column.note_value ~= StepperData.note.empty) then
                 local xy = self:line_to_point(pos.line)
                 if xy then
