@@ -18,7 +18,7 @@ end
 --- connect launchpad to a midi device
 --
 function Launchpad:connect(midi_device_name)
-    print("connect : " ..  midi_device_name)
+    log("connect : ", midi_device_name)
     self.midi_out    = renoise.Midi.create_output_device(midi_device_name)
     --
     -- magic callback function

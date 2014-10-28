@@ -68,6 +68,8 @@ function Stepper:__init()
         },
     }
     self.playback_position_observer = nil
+    self.playback_position_last_x = 1
+    self.playback_position_last_y = 1
 end
 
 function Stepper:wire_launchpad(pad)
@@ -240,8 +242,8 @@ end
 function Stepper:_deactivate()
     self:page_clear_knobs()
     self:zoom_clear_knobs()
-    self:matrix_clear()
-    self:pad_matrix_update()
+    self:__matrix_clear()
+    self:__render_matrix()
     self:unregister_playback_position_observer()
 end
 
@@ -397,10 +399,9 @@ function Stepper:point_to_line(x,y)
 end
 
 function Stepper:refresh_matrix()
-    self:matrix_clear()
-    self:matrix_update()
-    -- self:pad_matrix_clear()
-    self:pad_matrix_update()
+    self:__matrix_clear()
+    self:__matrix_update()
+    self:__render_matrix()
 end
 
 --- get the active pattern object
@@ -439,7 +440,7 @@ end
 
 --- update pad by the given matrix
 --
-function Stepper:matrix_update_pad(x,y)
+function Stepper:__render_matrix_position(x,y)
     if(self.matrix[x][y]) then
         self.pad:set_matrix(x,y,self.matrix[x][y])
     else
@@ -449,12 +450,10 @@ end
 
 --- update memory-matrix by the current selected pattern
 --
-function Stepper:matrix_update()
+function Stepper:__matrix_update()
     local pattern_iter  = renoise.song().pattern_iterator
     for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track_idx) do
         if not table.is_empty(line.note_columns) then
-            -- print("note_column")
-            -- print(self.track_column_idx)
             local note_column = line:note_column(self.track_column_idx)
             if(note_column.note_value ~= StepperData.note.empty) then
                 local xy = self:line_to_point(pos.line)
@@ -474,23 +473,15 @@ function Stepper:matrix_update()
     end
 end
 
-function Stepper:matrix_clear()
+function Stepper:__matrix_clear()
     self.matrix = {}
     for x = 1, 8 do self.matrix[x] = {} end
 end
 
-function Stepper:pad_matrix_clear()
-    for y = 1, 4 do
-        for x = 1,8 do
-            self.pad:set_matrix(x,y,StepperData.color.clear)
-        end
-    end
-end
-
-function Stepper:pad_matrix_update()
+function Stepper:__render_matrix()
     for x = 1, 8 do
         for y = 1, 4 do
-            self:matrix_update_pad(x,y)
+            self:__render_matrix_position(x,y)
         end
     end
 end
@@ -501,22 +492,29 @@ end
 --
 function Stepper:callback_playback_position(pos)
     if self.pattern_idx ~= pos.sequence then return end
+    self:__clean_up_old_playback_position()
     local line = pos.line
     if (line <= self.page_start) then return end
     if (line >= self.page_end)   then return end
     local xy = self:line_to_point(line)
     if not xy then return end
-    local x = xy[1]
-    local y = xy[2]
-    if (x < 9 and y < 5) then
-        if (x == 1 and y == 1) then
-            self:matrix_update_pad(8,4)
-        elseif (x == 1) then
-            self:matrix_update_pad(8,y-1)
-        else
-            self:matrix_update_pad(x-1,y)
-        end
-        self.pad:set_matrix(x,y,self.color.stepper)
+    self:__set_playback_position(xy[1],xy[2])
+end
+
+function Stepper:__set_playback_position(x,y)
+    self.pad:set_matrix(x,y,self.color.stepper)
+    self.playback_position_last_x = x
+    self.playback_position_last_y = y
+    self.removed_old_playback_position = true
+end
+
+function Stepper:__clean_up_old_playback_position()
+    if (self.removed_old_playback_position) then
+        self:__render_matrix_position(
+            self.playback_position_last_x,
+            self.playback_position_last_y
+        )
+        self.removed_old_playback_position = nil
     end
 end
 
