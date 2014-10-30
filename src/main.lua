@@ -8,6 +8,7 @@ require 'Module/Effect'
 require 'Data/Note'
 require 'Data/Color'
 require 'Init/MainUI'
+require 'Init/AboutUI'
 
 
 -- Reload the script whenever this file is saved.
@@ -30,7 +31,11 @@ local tool_id     = manifest:property("Id").value
 
 -- Placeholder for the dialog
 local dialog = nil
-local mainUI = nil
+local main_ui = nil
+
+local about_dialog = nil
+local about_ui = nil
+
 local launchpad_setup = nil
 
 
@@ -45,16 +50,8 @@ local launchpad_setup = nil
 
 
 function create_main_UI()
-    mainUI = MainUI()
-    mainUI:register_run_callback(function (options)
---        print("host")
---        print(options.osc.host)
---        print("port")
---        print(options.osc.port)
---        print("osc active")
---        print(options.osc.active)
---        print("launchpad")
---        print(options.launchpad.name)
+    main_ui = MainUI()
+    main_ui:register_run_callback(function (options)
 
         if not options.launchpad.name then
             return
@@ -72,11 +69,11 @@ function create_main_UI()
         launchpad_setup:connect_it_selection()
         launchpad_setup:activate()
     end)
-    mainUI:register_stop_callback(function ()
+    main_ui:register_stop_callback(function ()
         print("stop")
         launchpad_setup:deactivate()
     end)
-    mainUI:register_device_update_callback(function ()
+    main_ui:register_device_update_callback(function ()
         local list = {}
         for _,v in pairs(renoise.Midi.available_input_devices()) do
             if string.find(v, "Launchpad") then
@@ -85,18 +82,26 @@ function create_main_UI()
         end
         return list
     end)
-    mainUI:create_ui()
-    mainUI:boot()
+    main_ui:create_ui()
+    main_ui:boot()
 end
 
 function update_main_UI_callbacks(dialog)
-    mainUI:register_quit_callback(function()
+    main_ui:register_quit_callback(function()
         if (dialog) then
             dialog:close()
         end
     end)
 end
 
+
+local function show_about()
+    if not about_ui then
+        about_ui = AboutUI()
+        about_ui:create_ui()
+    end
+    renoise.app():show_custom_dialog("About"..tool_name, about_ui.container)
+end
 
 local function show_dialog()
 
@@ -112,11 +117,11 @@ local function show_dialog()
         launchpad_setup:wire()
     end
 
-    if not mainUI then
+    if not main_ui then
         create_main_UI()
     end
 
-    dialog = renoise.app():show_custom_dialog(tool_name, mainUI.container)
+    dialog = renoise.app():show_custom_dialog(tool_name, main_ui.container)
     update_main_UI_callbacks(dialog)
 
 end
@@ -132,4 +137,8 @@ end
 renoise.tool():add_menu_entry {
     name = "Main Menu:Tools:"..tool_name.."...",
     invoke = show_dialog
+}
+renoise.tool():add_menu_entry {
+    name = "Main Menu:Tools:"..tool_name.." about ".."...",
+    invoke = show_about
 }
