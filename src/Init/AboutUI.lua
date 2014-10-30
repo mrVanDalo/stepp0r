@@ -12,16 +12,28 @@ class "AboutUI"
 
 function AboutUI:__init()
     self.vb = renoise.ViewBuilder()
-    self.topic_size = 100
-    self.text_size = 300
-    self.design_text = "asdsadf"
-    self.author_text = "Ingolf Wagner Aka Palo van Dalo"
+    self.topic_size = 40
+    self.text_width = 350
+    self.text_height = 250
+    self.textarea_text = {
+        "Author",
+        "====",
+        "Ingolf Wagner Aka Palo Van Dalo","",
+        "Logo",
+        "===",
+        "© by stylefusion.de","",
+        "Homepage",
+        "=======",
+        "http://mrvandalo.github.io/stepp0r/","",
+        "License",
+        "=====",
+        "GPLv3 http://www.gnu.org/copyleft/gpl.html",
+    }
 end
 
 function AboutUI:create_ui()
     self:create_logo()
-    self:create_author_row()
-    self:create_design_row()
+    self:create_textarea()
     self:create_container()
 end
 
@@ -34,8 +46,8 @@ end
 
 function AboutUI:create_container()
     self.container = self.vb:column{
-        margin = 6,
-        spacing = 8,
+        margin = 8,
+        spacing = 13,
         self.vb:horizontal_aligner{
             mode = "center",
             self.logo,
@@ -46,34 +58,15 @@ function AboutUI:create_container()
             self.author_row,
             self.design_row,
         },
+        self.textarea
     }
 end
 
-
-function AboutUI:create_author_row()
-    self.author_row = self.vb:row{
-        spacing = 3,
-        self.vb:text{
-            text = "Author",
-            width = self.topic_size,
-        },
-        self.vb:text{
-            text = self.author_text,
-            width = self.text_size,
-        },
+function AboutUI:create_textarea()
+    self.textarea = self.vb:multiline_text{
+        paragraphs = self.textarea_text,
+        width = self.text_width,
+        height = self.text_height,
     }
 end
 
-function AboutUI:create_design_row()
-    self.design_row = self.vb:row{
-        spacing = 3,
-        self.vb:text{
-            text = "Logo Design",
-            width = self.topic_size,
-        },
-        self.vb:text{
-            text = self.design_text,
-            width = self.text_size,
-        },
-    }
-end
