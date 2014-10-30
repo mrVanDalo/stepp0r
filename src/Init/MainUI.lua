@@ -22,7 +22,6 @@ end
 
 function MainUI:create_ui()
     self:create_logo()
-    self:create_title()
     self:create_device_row()
     self:create_osc_row()
     self:create_start_stop_button()
@@ -63,14 +62,6 @@ function MainUI:create_logo()
         mode = "transparent",
     }
 end
-
-function MainUI:create_title()
-    self.title = self.vb:text {
-        text = "Awesome"
-    }
-end
-
-
 
 
 --- ======================================================================================================
