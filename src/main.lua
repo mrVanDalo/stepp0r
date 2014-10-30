@@ -30,7 +30,7 @@ local tool_id     = manifest:property("Id").value
 
 
 -- Placeholder for the dialog
-local dialog = nil
+local main_dialog = nil
 local main_ui = nil
 
 local about_dialog = nil
@@ -86,10 +86,10 @@ function create_main_UI()
     main_ui:boot()
 end
 
-function update_main_UI_callbacks(dialog)
+function update_main_UI_callbacks(main_dialog)
     main_ui:register_quit_callback(function()
-        if (dialog) then
-            dialog:close()
+        if (main_dialog) then
+            main_dialog:close()
         end
     end)
 end
@@ -100,15 +100,15 @@ local function show_about()
         about_ui = AboutUI()
         about_ui:create_ui()
     end
-    renoise.app():show_custom_dialog("About"..tool_name, about_ui.container)
+    renoise.app():show_custom_dialog("About "..tool_name, about_ui.container)
 end
 
-local function show_dialog()
+local function show_main_dialog()
 
     -- This block makes sure a non-modal dialog is shown once.
     -- If the dialog is already opened, it will be focused.
-    if dialog and dialog.visible then
-        dialog:show()
+    if main_dialog and main_dialog.visible then
+        main_dialog:show()
         return
     end
 
@@ -121,8 +121,8 @@ local function show_dialog()
         create_main_UI()
     end
 
-    dialog = renoise.app():show_custom_dialog(tool_name, main_ui.container)
-    update_main_UI_callbacks(dialog)
+    main_dialog = renoise.app():show_custom_dialog(tool_name, main_ui.container)
+    update_main_UI_callbacks(main_dialog)
 
 end
 
@@ -135,10 +135,10 @@ end
 
 
 renoise.tool():add_menu_entry {
-    name = "Main Menu:Tools:"..tool_name.."...",
-    invoke = show_dialog
+    name = "Main Menu:Tools:"..tool_name,
+    invoke = show_main_dialog
 }
 renoise.tool():add_menu_entry {
-    name = "Main Menu:Tools:"..tool_name.." about ".."...",
+    name = "Main Menu:Help:".. "About "..tool_name,
     invoke = show_about
 }
