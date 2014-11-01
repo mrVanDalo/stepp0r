@@ -17,25 +17,30 @@ end
 function Adjuster:_matrix_update()
     local pattern_iter  = renoise.song().pattern_iterator
     for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track_idx) do
-        if not table.is_empty(line.note_columns) then
-            local note_column = line:note_column(self.track_column_idx)
-            if(note_column.note_value ~= AdjusterData.note.empty) then
-                local xy = self:line_to_point(pos.line)
-                if xy then
-                    local x = xy[1]
-                    local y = xy[2]
-                    if (y < 5 and y > 0) then
-                        if (note_column.note_value == AdjusterData.note.off) then
-                            self.__pattern_matrix[x][y] = self.color.note.off
-                        else
-                            self.__pattern_matrix[x][y] = self.color.note.on
-                        end
-                    end
-                end
-            end
-        end
+        self:__update_matrix_position(pos,line)
     end
 end
+
+function Adjuster:__update_matrix_position(pos,line)
+    if table.is_empty(line.note_columns) then return end
+
+    local note_column = line:note_column(self.track_column_idx)
+    if (note_column.note_value == AdjusterData.note.empty) then return end
+
+    local xy = self:line_to_point(pos.line)
+    if not xy then return end
+
+    local x = xy[1]
+    local y = xy[2]
+    if (y > 4 or y < 1) then return end
+
+    if (note_column.note_value == AdjusterData.note.off) then
+        self.__pattern_matrix[x][y] = self.color.note.off
+    else
+        self.__pattern_matrix[x][y] = self.color.note.on
+    end
+end
+
 
 function Adjuster:_matrix_clear()
     self.__pattern_matrix = {}
