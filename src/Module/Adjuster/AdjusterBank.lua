@@ -28,11 +28,11 @@ end
 
 function Adjuster:_set_bank_interval(line_start, line_stop, pitch, vel, pan, delay, column)
     for line = line_start, line_stop do
-        self:_set_bank(line, pitch, vel, pan, delay,column)
+        self:__set_bank(line, pitch, vel, pan, delay,column)
     end
 end
 
-function Adjuster:_set_bank(line, pitch,vel, pan, delay, column)
+function Adjuster:__set_bank(line, pitch,vel, pan, delay, column)
     self.bank[line] = {line, pitch, vel, pan, delay,column }
     if line > self.bank_max then self.bank_max = line end
     if line < self.bank_min then self.bank_min = line end
