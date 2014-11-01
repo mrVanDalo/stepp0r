@@ -84,19 +84,28 @@ end
 
 --- unregister
 --
-function Launchpad:unregister_top_listener()
-    self._top_listener = {}
+function Launchpad:unregister_top_listener(handler)
+    self:__unregister(self._top_listener, handler)
 end
-function Launchpad:unregister_right_listener()
-    self._right_listener = {}
+function Launchpad:unregister_right_listener(handler)
+    self:__unregister(self._right_listener, handler)
 end
-function Launchpad:unregister_matrix_listener()
-    self._matrix_listener = {}
+function Launchpad:unregister_matrix_listener(handler)
+    self:__unregister(self._matrix_listener, handler)
 end
 function Launchpad:unregister_all()
-    self:unregister_top_listener()
-    self:unregister_right_listener()
-    self:unregister_matrix_listener()
+    self._top_listener = {}
+    self._right_listener = {}
+    self._matrix_listener = {}
+end
+function Launchpad:__unregister(list,handle)
+    if list[handle] then
+        log('removed handle', handle)
+        list.remove(handle)
+    else
+        log('not found', handle)
+    end
+
 end
 
 --- callback convention always return an array first slot is true

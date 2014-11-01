@@ -6,7 +6,7 @@ require 'Data/Velocity'
 require 'Layer/Launchpad'
 require 'Layer/PlaybackPositionObserver'
 require 'Layer/OscClient'
-require 'Layer/Logger'
+require 'Layer/Util'
 require 'Layer/IT_Selection'
 
 require 'Module/Module'
@@ -106,6 +106,7 @@ function LaunchpadSetup:wire()
     self.chooser:wire_launchpad(self.pad)
     self.chooser:wire_it_selection(self.it_selection)
 
+    --- Layer callback registration
     self.it_selection:register_select_instrument(self.key:callback_set_instrument())
     self.it_selection:register_select_instrument(self.stepper:callback_set_instrument())
     self.it_selection:register_select_instrument(self.effect:callback_set_instrument())
