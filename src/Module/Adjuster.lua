@@ -17,7 +17,15 @@ AdjusterData = {
     panning    = { empty = 255 },
     color = {
         clear = Color.off
-    }
+    },
+    bank = {
+        line   = 1,
+        pitch  = 2,
+        vel    = 3,
+        pan    = 4,
+        delay  = 5,
+        column = 6,
+    },
 }
 
 --- ======================================================================================================
@@ -76,9 +84,8 @@ function Adjuster:__init()
             on    = Color.yellow,
             empty = Color.off,
             selected = {
-                off   = Color.red,
-                on    = Color.yellow,
-                empty = Color.off,
+                off   = Color.flash.red,
+                on    = Color.flash.yellow,
             }
         },
     }
