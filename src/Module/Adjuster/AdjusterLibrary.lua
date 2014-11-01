@@ -66,3 +66,12 @@ function Adjuster:calculate_track_position(x,y)
 end
 
 
+function Adjuster:_get_line(line)
+    local pattern    = self:active_pattern()
+    local found_line = pattern.tracks[self.track_idx].lines[line]
+    if found_line then
+        return found_line.note_columns[self.track_column_idx]
+    else
+        return nil
+    end
+end

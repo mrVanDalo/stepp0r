@@ -10,11 +10,15 @@ function Adjuster:_update_bank_inteval(line_start, line_stop, pitch, vel, pan, d
 end
 
 function Adjuster:_update_bank(line, pitch,vel, pan, delay, column)
-    self.bank[line] = {line, pitch, vel, pan, delay,column}
+    self.bank[line] = {line, pitch, vel, pan, delay,column }
+    if line > self.bank_max then self.bank_max = line end
+    if line < self.bank_min then self.bank_min = line end
 end
 
 function Adjuster:_clear_bank()
     self.bank = {}
+    self.bank_max = 1
+    self.bank_min = 1
 end
 
 --- updates the matrix (which will be rendered afterwards)
@@ -34,4 +38,28 @@ function Adjuster:_update_bank_matrix()
         local y = xy[2]
         self.bank_matrix[x][y] = color
     end
+end
+
+function Adjuster:_insert_bank_at(line)
+    local counter = 0
+    for position = self.bank_min, self.bank_max do
+       self:__insert_bank_line_at_line(line + counter, position)
+       counter = counter + 1
+    end
+end
+
+function Adjuster:__insert_bank_line_at_line(target_line, bank_position)
+
+    local bank_entry = self.bank[bank_position]
+    if not bank_entry then return end
+
+    local column = self:_get_line(target_line)
+    if not column then return end
+
+    column.note_value         = bank_entry[AdjusterData.bank.pitch]
+    column.instrument_value   = (self.instrument_idx - 1)
+    column.delay_value        = bank_entry[AdjusterData.bank.delay]
+    column.panning_value      = bank_entry[AdjusterData.bank.pan]
+    column.volume_value       = bank_entry[AdjusterData.bank.vel]
+
 end

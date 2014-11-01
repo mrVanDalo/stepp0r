@@ -66,8 +66,10 @@ function Adjuster:__init()
     self.page_end     = 33 -- line right after last pixel
 
 
-    self.bank        = {}
     self.bank_matrix = {}
+    self.bank        = {}
+    self.bank_max    = 1
+    self.bank_min    = 1
 
     -- rendering
     self.__pattern_matrix = {}
