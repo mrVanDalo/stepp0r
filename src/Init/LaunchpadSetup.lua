@@ -13,6 +13,7 @@ require 'Module/Module'
 require 'Module/Keyboard'
 require 'Module/Chooser'
 require 'Module/Stepper'
+require 'Module/Stepper_render'
 require 'Module/Effect'
 
 --- ======================================================================================================
