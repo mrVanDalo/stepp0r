@@ -55,6 +55,7 @@ function Adjuster:callback_set_delay()
     --        self.delay = delay
     --    end
 end
+
 function Adjuster:callback_set_volume()
     return function() end
     -- todo does nothing yet
@@ -63,6 +64,7 @@ function Adjuster:callback_set_volume()
     --        self.volume = volume
     --    end
 end
+
 function Adjuster:callback_set_pan()
     return function() end
     -- todo does nothing yet
@@ -70,4 +72,9 @@ function Adjuster:callback_set_pan()
     --        if self.is_not_active then return end
     --        self.pan = pan
     --    end
+end
+
+function Adjuster:callback_set_bank()
+    return function () end
+    -- todo write me
 end

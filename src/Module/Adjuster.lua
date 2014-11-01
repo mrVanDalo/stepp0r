@@ -2,7 +2,7 @@
 ---
 ---                                                 [ Adjuster Module ]
 ---
---- Find Addjust
+--- Adjustment module (copy/paste after editing)
 
 class "Adjuster" (Module)
 
@@ -26,29 +26,39 @@ AdjusterData = {
 
 function Adjuster:__init()
     Module:__init(self)
-    self.track_idx       = 1
-    self.instrument_idx  = 1
+
+    -- position
+    self.track_idx        = 1
+    self.instrument_idx   = 1
+    self.track_column_idx = 1 -- the column in the track
+    self.pattern_idx      = 1 -- actual pattern
+
     self.note        = Note.note.c
     self.octave      = 4
+
     self.delay       = 0
     self.volume      = AdjusterData.instrument.empty
     self.pan         = AdjusterData.instrument.empty
+
+    self.bank        = {}
+
     -- ---
     -- navigation
     -- ---
+
     -- zoom
     self.zoom         = 1 -- influences grid size
     self.zoom_out_idx = 7
     self.zoom_in_idx  = 6
+
     -- pagination
     self.page         = 1 -- page of actual pattern
     self.page_inc_idx = 2
     self.page_dec_idx = 1
     self.page_start   = 0  -- line left before first pixel
     self.page_end     = 33 -- line right after last pixel
-    -- rest
-    self.track_column_idx = 1 -- the column in the track
-    self.pattern_idx      = 1 -- actual pattern
+
+
     -- rendering
     self.matrix      = {}
     self.color       = {
@@ -72,6 +82,8 @@ function Adjuster:__init()
             }
         },
     }
+
+    -- playback position
     self.playback_position_observer = nil
     self.playback_position_last_x = 1
     self.playback_position_last_y = 1
@@ -93,13 +105,4 @@ function Adjuster:wire_playback_position_observer(playback_position_observer)
     end
     self.playback_position_observer = playback_position_observer
 end
-
-
-
-
-
-
-
-
-
 

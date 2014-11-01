@@ -9,11 +9,11 @@ function Adjuster:zoom_out()
         self.zoom = self.zoom * 2
         -- update page
         self.page = (self.page * 2 ) - 1
-        self:page_update_borders()
+        self:_page_update_borders()
         -- correction
         if (self.page_start >= pattern.number_of_lines) then
             self.page = self.page - 2
-            self:page_update_borders()
+            self:_page_update_borders()
         end
         -- refresh page
         self:_refresh_matrix()
@@ -30,7 +30,7 @@ function Adjuster:zoom_in()
         if (self.page > 1) then
             self.page = math.floor(self.page / 2)
         end
-        self:page_update_borders()
+        self:_page_update_borders()
         -- refresh martix
         self:_refresh_matrix()
     end
