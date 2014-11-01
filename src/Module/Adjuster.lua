@@ -76,9 +76,8 @@ function Adjuster:__init()
     self.playback_position_last_x = 1
     self.playback_position_last_y = 1
 
-
     -- create listeners
-    self:__create_pad_listener()
+    self:__create_matrix_listener()
     self:__create_zoom_listener()
     self:__create_page_listener()
     self:__create_select_pattern_listener()
@@ -138,45 +137,6 @@ function Adjuster:callback_set_pan()
 --    end
 end
 
-function Adjuster:__create_select_pattern_listener()
-    self.__select_pattern_listener = function (_)
-        if self.is_not_active then return end
-        self.pattern_idx = renoise.song().selected_pattern_index
-        self:refresh_matrix()
-    end
-end
-
---- zoom knobs listener
---
--- listens on click events to manipulate the zoom
---
-function Adjuster:__create_zoom_listener()
-    self.__zoom_listener = function (_,msg)
-        if self.is_not_active            then return end
-        if msg.vel == Velocity.release   then return end
-        if (msg.x == self.zoom_in_idx ) then
-            self:zoom_in()
-        elseif msg.x == self.zoom_out_idx then
-            self:zoom_out()
-        end
-    end
-end
-
---- pageination knobs listener
---
--- listens on click events to manipulate the pagination
---
-function Adjuster:__create_page_listener()
-    self.__page_listener = function (_,msg)
-        if self.is_not_active            then return end
-        if msg.vel == Velocity.release   then return end
-        if msg.x == self.page_inc_idx then
-            self:page_inc()
-        elseif msg.x == self.page_dec_idx then
-            self:page_dec()
-        end
-    end
-end
 
 --- ======================================================================================================
 ---
@@ -216,10 +176,50 @@ function Adjuster:_deactivate()
 end
 
 
+--- selected pattern has changed listener
+function Adjuster:__create_select_pattern_listener()
+    self.__select_pattern_listener = function (_)
+        if self.is_not_active then return end
+        self.pattern_idx = renoise.song().selected_pattern_index
+        self:refresh_matrix()
+    end
+end
+
+--- zoom knobs listener
+--
+-- listens on click events to manipulate the zoom
+--
+function Adjuster:__create_zoom_listener()
+    self.__zoom_listener = function (_,msg)
+        if self.is_not_active            then return end
+        if msg.vel == Velocity.release   then return end
+        if (msg.x == self.zoom_in_idx ) then
+            self:zoom_in()
+        elseif msg.x == self.zoom_out_idx then
+            self:zoom_out()
+        end
+    end
+end
+
+--- pageination knobs listener
+--
+-- listens on click events to manipulate the pagination
+--
+function Adjuster:__create_page_listener()
+    self.__page_listener = function (_,msg)
+        if self.is_not_active            then return end
+        if msg.vel == Velocity.release   then return end
+        if msg.x == self.page_inc_idx then
+            self:page_inc()
+        elseif msg.x == self.page_dec_idx then
+            self:page_dec()
+        end
+    end
+end
 --- pad matrix listener
 --
 -- listens on click events on the launchpad matrix
-function Adjuster:__create_pad_listener()
+function Adjuster:__create_matrix_listener()
     self.__matrix_listener = function (_,msg)
         if self.is_not_active          then return end
         if msg.vel == Velocity.release then return end
@@ -255,6 +255,7 @@ end
 --
 -- the green light that runs
 --
+-- todo replace by standard renoise lua convention
 function Adjuster:__register_playback_position_observer()
     self.playback_position_observer:register('stepper', function (line)
         if self.is_not_active then return end
