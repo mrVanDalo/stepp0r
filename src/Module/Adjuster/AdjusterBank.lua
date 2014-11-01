@@ -1,3 +1,6 @@
+--- ======================================================================================================
+---
+---                                                 [ Bank of Selection ]
 
 
 function Adjuster:_update_bank_inteval(line_start, line_stop, pitch, vel, pan, delay, column)

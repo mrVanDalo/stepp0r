@@ -26,9 +26,9 @@ function Adjuster:_matrix_update()
                     local y = xy[2]
                     if (y < 5 and y > 0) then
                         if (note_column.note_value == AdjusterData.note.off) then
-                            self.matrix[x][y] = self.color.note.off
+                            self.__pattern_matrix[x][y] = self.color.note.off
                         else
-                            self.matrix[x][y] = self.color.note.on
+                            self.__pattern_matrix[x][y] = self.color.note.on
                         end
                     end
                 end
@@ -38,8 +38,8 @@ function Adjuster:_matrix_update()
 end
 
 function Adjuster:_matrix_clear()
-    self.matrix = {}
-    for x = 1, 8 do self.matrix[x] = {} end
+    self.__pattern_matrix = {}
+    for x = 1, 8 do self.__pattern_matrix[x] = {} end
 end
 
 function Adjuster:_render_matrix()
@@ -57,8 +57,8 @@ end
 --- update pad by the given matrix
 --
 function Adjuster:__render_matrix_position(x,y)
-    if(self.matrix[x][y]) then
-        self.pad:set_matrix(x,y,self.matrix[x][y])
+    if(self.__pattern_matrix[x][y]) then
+        self.pad:set_matrix(x,y,self.__pattern_matrix[x][y])
     else
         self.pad:set_matrix(x,y,AdjusterData.color.clear)
     end

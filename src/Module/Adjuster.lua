@@ -48,7 +48,6 @@ function Adjuster:__init()
     self.volume      = AdjusterData.instrument.empty
     self.pan         = AdjusterData.instrument.empty
 
-    self.bank        = {}
 
     -- ---
     -- navigation
@@ -67,9 +66,12 @@ function Adjuster:__init()
     self.page_end     = 33 -- line right after last pixel
 
 
+    self.bank        = {}
+    self.bank_matrix = {}
+
     -- rendering
-    self.matrix      = {}
-    self.color       = {
+    self.__pattern_matrix = {}
+    self.color = {
         stepper = Color.green,
         page = {
             active   = Color.yellow,
