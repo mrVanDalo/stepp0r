@@ -16,6 +16,15 @@ require 'Module/Stepper'
 require 'Module/Stepper_render'
 require 'Module/Effect'
 
+require 'Module/Adjuster'
+require 'Module/Adjuster/AdjusterBank'
+require 'Module/Adjuster/AdjusterBoot'
+require 'Module/Adjuster/AdjusterCallbacks'
+require 'Module/Adjuster/AdjusterLibrary'
+require 'Module/Adjuster/AdjusterPagination'
+require 'Module/Adjuster/AdjusterPattern'
+require 'Module/Adjuster/AdjusterZoom'
+
 --- ======================================================================================================
 ---
 ---                                                 [ Launchpad Setup ]
@@ -88,7 +97,8 @@ function LaunchpadSetup:wire()
     self.osc_client = OscClient()
     self.it_selection = IT_Selection()
 
-    self.stepper = Stepper()
+    -- self.stepper = Stepper()
+    self.stepper = Adjuster()
     self.stepper:wire_launchpad(self.pad)
     self.stepper:wire_playback_position_observer(self.playback_position_observer)
 

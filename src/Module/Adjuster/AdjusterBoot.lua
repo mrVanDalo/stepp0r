@@ -1,3 +1,5 @@
+require 'Layer/Util'
+
 --- ======================================================================================================
 ---
 ---                                                 [ BooT ]
@@ -14,12 +16,13 @@ function Adjuster:_activate()
     -- pagination
     self:_page_update_knobs()
     self.pad:register_top_listener(self.__page_listener)
+    -- todo remove me tmp
+    self:_clear_bank_matrix()
+    self:_set_bank_interval(6, 14, 55, 120, 1, 1, 1)
+    self:_update_bank_matrix()
     -- main matrix
     self:_refresh_matrix()
     self.pad:register_matrix_listener(self.__matrix_listener)
-    -- todo remove me tmp
-    self:_set_bank_interval(6, 14, 55, 120, 1, 1, 1)
-    self:_update_bank_matrix()
 end
 
 --- tear down
@@ -33,9 +36,9 @@ function Adjuster:_deactivate()
     -- unregister notifiers/listeners
     self:unregister_playback_position_observer()
     remove_notifier(renoise.song().selected_pattern_index_observable, self.__select_pattern_listener)
-    self:pad:unregister_top_listener(self.__zoom_listener)
+    self.pad:unregister_top_listener(self.__zoom_listener)
     self.pad:unregister_top_listener(self.__page_listener)
-    self:pad:unregister_matrix_listener(self.__matrix_listener)
+    self.pad:unregister_matrix_listener(self.__matrix_listener)
 end
 
 

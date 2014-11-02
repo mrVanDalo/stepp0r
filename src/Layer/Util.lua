@@ -6,7 +6,7 @@ function log(key, value)
     print(string.format("%s : %s", key,value))
 end
 
-function add_notifer(observable, handler)
+function add_notifier(observable, handler)
     observable:add_notifier(handler)
 end
 
