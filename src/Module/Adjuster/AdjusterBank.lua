@@ -51,6 +51,7 @@ function Adjuster:_update_bank_matrix()
         local bank_entry = self.bank[line]
         if not bank_entry then
         elseif bank_entry[AdjusterData.bank.pitch] == Note.empty then
+            color = self.color.note.selected.empty
         elseif bank_entry[AdjusterData.bank.pitch] == Note.note.off then
             color = self.color.note.selected.off
         else

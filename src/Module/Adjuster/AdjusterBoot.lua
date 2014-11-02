@@ -17,6 +17,9 @@ function Adjuster:_activate()
     -- main matrix
     self:_refresh_matrix()
     self.pad:register_matrix_listener(self.__matrix_listener)
+    -- todo remove me tmp
+    self:_set_bank_interval(6, 14, 55, 120, 1, 1, 1)
+    self:_update_bank_matrix()
 end
 
 --- tear down

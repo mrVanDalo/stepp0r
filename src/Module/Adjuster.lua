@@ -88,8 +88,9 @@ function Adjuster:__init()
             on    = Color.yellow,
             empty = Color.off,
             selected = {
-                off   = Color.flash.red,
-                on    = Color.flash.yellow,
+                off   = Color.flash.green,
+                on    = Color.flash.green,
+                empty = Color.flash.green,
             }
         },
     }

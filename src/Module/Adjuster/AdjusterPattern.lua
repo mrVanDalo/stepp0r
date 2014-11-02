@@ -67,5 +67,8 @@ function Adjuster:__render_matrix_position(x,y)
     else
         self.pad:set_matrix(x,y,AdjusterData.color.clear)
     end
+    if(self.__bank_matrix[x][y]) then
+        self.pad:set_matrix(x, y, self.__bank_matrix[x][y])
+    end
 end
 
