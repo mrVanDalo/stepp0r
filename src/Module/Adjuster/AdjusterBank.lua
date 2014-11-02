@@ -30,8 +30,10 @@ end
 function Adjuster:_set_bank_interval(line_start, line_stop)
     local pattern_iter  = renoise.song().pattern_iterator
     for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track_idx) do
-        if pos.line <= line_start and pos.line >= line_stop then
+        if pos.line >= line_start and pos.line <= line_stop then
             self:__update_bank_matrix_position(pos.line,line)
+        else
+
         end
     end
 end
@@ -46,13 +48,6 @@ function Adjuster:__update_bank_matrix_position(pos, line)
     self:__set_bank(pos, pitch, vel , panning, delay, self.track_column_idx)
 end
 
----- todo not used, remove it
---function Adjuster:__set_bank_interval(line_start, line_stop, pitch, vel, pan, delay, column)
---    for line = line_start, line_stop do
---        self:__set_bank(line, pitch, vel, pan, delay,column)
---    end
---end
-
 function Adjuster:__set_bank(line, pitch,vel, pan, delay, column)
     self.bank[line] = {line, pitch, vel, pan, delay,column }
     if line > self.bank_max then self.bank_max = line end
@@ -63,8 +58,12 @@ function Adjuster:_clear_bank_interval(line_start, line_stop)
     for line = line_start, line_stop do
         self.bank[line] = nil
     end
-    if self.bank_max <= line_stop then self.bank_max = line_start end
-    if self.bank_min >= line_start then self.bank_min = line_stop end
+    if self.bank_max <= line_stop and self.bank_max >= line_start then
+        self.bank_max = line_start
+    end
+    if self.bank_min <= line_stop and self.bank_min >= line_start then
+        self.bank_min = line_stop
+    end
 end
 
 function Adjuster:_clear_bank()

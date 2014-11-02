@@ -99,8 +99,10 @@ function Adjuster:__create_matrix_listener()
         -- todo optimize me
         local line = self:point_to_line(msg.x, msg.y)
         if self.bank[line] then
+            print('clear bank : ' .. line .. ',' .. (line + self.zoom - 1))
             self:_clear_bank_interval(line, (line + self.zoom - 1))
         else
+            print('set bank : ' .. line .. ',' .. (line + self.zoom - 1))
             self:_set_bank_interval(line, (line + self.zoom - 1))
         end
         self:_update_bank_matrix_at_point(msg.x,msg.y)
