@@ -97,7 +97,7 @@ function LaunchpadSetup:wire()
     self.osc_client = OscClient()
     self.it_selection = IT_Selection()
 
-    -- self.stepper = Stepper()
+--    self.stepper = Stepper()
     self.stepper = Adjuster()
     self.stepper:wire_launchpad(self.pad)
     self.stepper:wire_playback_position_observer(self.playback_position_observer)
