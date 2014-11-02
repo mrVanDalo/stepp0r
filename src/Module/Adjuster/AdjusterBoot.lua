@@ -16,9 +16,8 @@ function Adjuster:_activate()
     -- pagination
     self:_page_update_knobs()
     self.pad:register_top_listener(self.__page_listener)
-    -- todo remove me tmp
+    -- bank matrix
     self:_clear_bank_matrix()
-    self:_set_bank_interval(6, 14, 55, 120, 1, 1, 1)
     self:_update_bank_matrix()
     -- main matrix
     self:_refresh_matrix()
@@ -97,27 +96,16 @@ function Adjuster:__create_matrix_listener()
         if msg.y > 4                   then return end
         local column = self:calculate_track_position(msg.x,msg.y)
         if not column then return end
-    -- todo implement me now
-    --        if column.note_value == AdjusterData.note.empty then
-    --            column.note_value         = pitch(self.note,self.octave)
-    --            column.instrument_value   = (self.instrument_idx - 1)
-    --            column.delay_value        = self.delay
-    --            column.panning_value      = self.pan
-    --            column.volume_value       = self.volume
-    --            if column.note_value == AdjusterData.note.off then
-    --                self.matrix[msg.x][msg.y] = self.color.note.off
-    --            else
-    --                self.matrix[msg.x][msg.y] = self.color.note.on
-    --            end
-    --        else
-    --            column.note_value         = AdjusterData.note.empty
-    --            column.instrument_value   = AdjusterData.instrument.empty
-    --            column.delay_value        = AdjusterData.delay.empty
-    --            column.panning_value      = AdjusterData.panning.empty
-    --            column.volume_value       = AdjusterData.volume.empty
-    --            self.matrix[msg.x][msg.y] = self.color.note.empty
-    --        end
-    --        self.pad:set_matrix(msg.x,msg.y,self.matrix[msg.x][msg.y])
+        -- todo optimize me
+        local line = self:point_to_line(msg.x, msg.y)
+        if self.bank[line] then
+            self:_clear_bank_interval(line, (line + self.zoom - 1))
+        else
+            self:_set_bank_interval(line, (line + self.zoom - 1))
+        end
+        self:_update_bank_matrix_at_point(msg.x,msg.y)
+        self:_render_matrix_position(msg.x, msg.y)
+        self:_log_bank()
     end
 end
 

@@ -3,7 +3,7 @@
 ---                                                 [ Logging Layer ]
 
 function log(key, value)
-    print(string.format("%s : %s", key,value))
+    print(key .. " : " .. value)
 end
 
 function add_notifier(observable, handler)
