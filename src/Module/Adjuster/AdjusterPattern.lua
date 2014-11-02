@@ -9,6 +9,8 @@
 function Adjuster:_refresh_matrix()
     self:_matrix_clear()
     self:_matrix_update()
+    self:_clear_bank_matrix()
+    self:_update_bank_matrix()
     self:_render_matrix()
 end
 

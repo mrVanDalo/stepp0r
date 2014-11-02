@@ -46,7 +46,7 @@ end
 
 --- updates the matrix (which will be rendered afterwards)
 function Adjuster:_update_bank_matrix()
-    for line = self.page_start, (self.page_end - 1), self.zoom do
+    for line = self.page_start, (self.page_end - 1) do
         local color
         local bank_entry = self.bank[line]
         if not bank_entry then
