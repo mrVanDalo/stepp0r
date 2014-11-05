@@ -18,6 +18,7 @@ end
 function Bank:__create_matrix_listener()
     self.__matrix_listener = function (_,msg)
         if self.is_not_active then return end
+        if Velocity.press == msg.vel then return end
         local y = msg.y - self.offset
         if y == 1 then
             self:_toggle_mode(msg.x)

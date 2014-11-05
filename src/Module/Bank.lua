@@ -26,7 +26,7 @@ function Bank:__init()
         toggle = {
             selected = {
                 copy =  Color.flash.green,
-                paste = Color.flash.yellow,
+                paste = Color.flash.red,
             },
             unselected = Color.orange,
         },

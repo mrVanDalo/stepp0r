@@ -3,6 +3,9 @@
 --- ======================================================================================================
 ---
 ---                                                 [ Bank update Listeners ]
+--
+-- The update will give you a reference to the actual bank.
+-- so you your callbanks have to write stuff to the bank itself.
 
 function Bank:register_bank_update(handler)
     self.bank_update_listeners[handler] = handler
@@ -24,10 +27,5 @@ function Bank:_update_bank_listeners()
         handler(new_bank)
     end
 end
-
-
---- ======================================================================================================
----
----                                                 [ Bank set listeners ]
 
 
