@@ -18,13 +18,9 @@ end
 function Bank:_update_bank_listeners()
     -- assure bank at index exists
     local new_bank = self.banks[self.bank_idx]
-    if not new_bank then
-        self.banks[self.bank_idx] = {}
-        new_bank = self.banks[self.bank_idx]
-    end
     -- loop over all listeners
     for _, handler in pairs(self.bank_update_listeners) do
-        handler(new_bank)
+        handler(new_bank, self.mode)
     end
 end
 

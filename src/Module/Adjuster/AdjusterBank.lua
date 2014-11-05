@@ -67,11 +67,7 @@ function Adjuster:_clear_bank_interval(line_start, line_stop)
 end
 
 function Adjuster:_clear_bank()
-    self.bank = {
-        bank = {},
-        max = 1,
-        min = 1,
-    }
+    self.bank = create_bank()
 end
 
 --- updates the matrix (which will be rendered afterwards)

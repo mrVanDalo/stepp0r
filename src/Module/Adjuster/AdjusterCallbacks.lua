@@ -1,4 +1,15 @@
 
+function Adjuster:_create_callbacks()
+    self:__create_bank_update_handler()
+end
+
+function Adjuster:__create_bank_update_handler()
+    self.bank_update_handler = function (bank, mode)
+        self.bank     = bank
+        self.mode     = mode
+        self:_refresh_matrix()
+    end
+end
 
 --- updates the point that should blink on the launchpad
 --

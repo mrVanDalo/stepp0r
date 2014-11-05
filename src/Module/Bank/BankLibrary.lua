@@ -17,16 +17,9 @@ end
 function Bank:_clear_bank(bank_idx)
     self.bank_idx = bank_idx
     self.mode = BankData.mode.copy
-    self.banks[self.bank_idx] = self:_create_bank()
+    self.banks[self.bank_idx] = create_bank()
     self:_update_bank_listeners()
     self:_render_matrix()
 end
 
-function Bank:_create_bank()
-    return {
-        bank = {},
-        min  = 1,
-        max  = 1,
-    }
-end
 

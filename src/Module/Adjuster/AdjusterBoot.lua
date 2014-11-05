@@ -45,15 +45,8 @@ function Adjuster:_first_run()
     self:__create_zoom_listener()
     self:__create_page_listener()
     self:__create_select_pattern_listener()
-    self:__create_bank_update_handler()
 end
 
-function Adjuster:__create_bank_update_handler()
-    self.bank_update_handler = function (bank)
-        self.bank     = bank
-        self:_refresh_matrix()
-    end
-end
 
 --- selected pattern has changed listener
 function Adjuster:__create_select_pattern_listener()

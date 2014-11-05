@@ -19,3 +19,11 @@ function remove_notifier(observable, handler)
     end
 end
 
+function create_bank()
+    return {
+        bank = {},
+        min  = 1,
+        max  = 1,
+        mode = BankData.mode.copy
+    }
+end

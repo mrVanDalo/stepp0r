@@ -1,7 +1,7 @@
 
 function Bank:_first_run()
     self:__create_matrix_listener()
-    for x = 1, 8 do self.banks[x] = self:_create_bank() end
+    for x = 1, 8 do self.banks[x] = create_bank() end
 end
 
 function Bank:_activate()

@@ -100,6 +100,7 @@ function Adjuster:__init()
 
     -- create listeners
     self:_first_run()
+    self:_create_callbacks()
 end
 
 function Adjuster:wire_launchpad(pad)
