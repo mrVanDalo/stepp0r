@@ -67,9 +67,7 @@ function Adjuster:__init()
 
 
     self.bank_matrix = {}
-    self.bank        = {}
-    self.bank_max    = 1
-    self.bank_min    = 1
+    self:_clear_bank()
 
     -- rendering
     self.__pattern_matrix = {}
@@ -101,10 +99,7 @@ function Adjuster:__init()
     self.playback_position_last_y = 1
 
     -- create listeners
-    self:__create_matrix_listener()
-    self:__create_zoom_listener()
-    self:__create_page_listener()
-    self:__create_select_pattern_listener()
+    self:_first_run()
 end
 
 function Adjuster:wire_launchpad(pad)

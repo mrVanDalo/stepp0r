@@ -40,11 +40,20 @@ function Adjuster:_deactivate()
     self.pad:unregister_matrix_listener(self.__matrix_listener)
 end
 
+function Adjuster:_first_run()
+    self:__create_matrix_listener()
+    self:__create_zoom_listener()
+    self:__create_page_listener()
+    self:__create_select_pattern_listener()
+    self:__create_bank_update_handler()
+end
 
-
-
-
-
+function Adjuster:__create_bank_update_handler()
+    self.bank_update_handler = function (bank)
+        self.bank     = bank
+        self:_refresh_matrix()
+    end
+end
 
 --- selected pattern has changed listener
 function Adjuster:__create_select_pattern_listener()
@@ -98,7 +107,7 @@ function Adjuster:__create_matrix_listener()
         if not column then return end
         -- todo optimize me
         local line = self:point_to_line(msg.x, msg.y)
-        if self.bank[line] then
+        if self.bank.bank[line] then
             print('clear bank : ' .. line .. ',' .. (line + self.zoom - 1))
             self:_clear_bank_interval(line, (line + self.zoom - 1))
         else

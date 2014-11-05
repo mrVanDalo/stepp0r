@@ -5,7 +5,7 @@
 
 function Adjuster:_insert_bank_at(line)
     local counter = 0
-    for position = self.bank_min, self.bank_max do
+    for position = self.bank.min, self.bank.max do
         self:__insert_bank_line_at_line(line + counter, position)
         counter = counter + 1
     end
@@ -13,7 +13,7 @@ end
 
 function Adjuster:__insert_bank_line_at_line(target_line, bank_position)
     -- check for bank entry
-    local bank_entry = self.bank[bank_position]
+    local bank_entry = self.bank.bank[bank_position]
     if not bank_entry then return end
     -- check for position
     local position = self:_get_line(target_line)
@@ -49,34 +49,36 @@ function Adjuster:__update_bank_matrix_position(pos, line)
 end
 
 function Adjuster:__set_bank(line, pitch,vel, pan, delay, column)
-    self.bank[line] = {line, pitch, vel, pan, delay,column }
-    if line > self.bank_max then self.bank_max = line end
-    if line < self.bank_min then self.bank_min = line end
+    self.bank.bank[line] = {line, pitch, vel, pan, delay,column }
+    if line > self.bank.max then self.bank.max = line end
+    if line < self.bank.min then self.bank.min = line end
 end
 
 function Adjuster:_clear_bank_interval(line_start, line_stop)
     for line = line_start, line_stop do
-        self.bank[line] = nil
+        self.bank.bank[line] = nil
     end
-    if self.bank_max <= line_stop and self.bank_max >= line_start then
-        self.bank_max = line_start
+    if self.bank.max <= line_stop and self.bank.max >= line_start then
+        self.bank.max = line_start
     end
-    if self.bank_min <= line_stop and self.bank_min >= line_start then
-        self.bank_min = line_stop
+    if self.bank.min <= line_stop and self.bank.min >= line_start then
+        self.bank.min = line_stop
     end
 end
 
 function Adjuster:_clear_bank()
-    self.bank = {}
-    self.bank_max = 1
-    self.bank_min = 1
+    self.bank = {
+        bank = {},
+        max = 1,
+        min = 1,
+    }
 end
 
 --- updates the matrix (which will be rendered afterwards)
 function Adjuster:_update_bank_matrix()
     for line = self.page_start, (self.page_end - 1) do
         local color
-        local bank_entry = self.bank[line]
+        local bank_entry = self.bank.bank[line]
         if not bank_entry then
         elseif bank_entry[AdjusterData.bank.pitch] == Note.empty then
             color = self.color.note.selected.empty
@@ -99,7 +101,7 @@ function Adjuster:_update_bank_matrix_at_point(x,y)
     if not line then return end
 
     local color
-    local bank_entry = self.bank[line]
+    local bank_entry = self.bank.bank[line]
     if not bank_entry then
     elseif bank_entry[AdjusterData.bank.pitch] == Note.empty then
         color = self.color.note.selected.empty
@@ -119,8 +121,8 @@ end
 
 function Adjuster:_log_bank()
     print("log bank")
-    for position = self.bank_min, self.bank_max do
-        local bank_entry = self.bank[position]
+    for position = self.bank.min, self.bank.max do
+        local bank_entry = self.bank.bank[position]
         if (bank_entry) then
             print(position .. " : " .. bank_entry[AdjusterData.bank.pitch])
         else

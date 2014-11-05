@@ -120,6 +120,7 @@ function LaunchpadSetup:wire()
 
     self.bank = Bank()
     self.bank:wire_launchpad(self.pad)
+    self.bank:register_bank_update(self.stepper.bank_update_handler)
 
     self.chooser = Chooser()
     self.chooser:wire_launchpad(self.pad)
