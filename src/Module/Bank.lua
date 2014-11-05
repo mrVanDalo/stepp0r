@@ -3,6 +3,12 @@
 ---                                                 [ Bank Module ]
 -- to store Copy paste Pattern
 
+class "Bank" (Module)
+
+require 'Module/Bank/BankBoot'
+require 'Module/Bank/BankCallbacks'
+require 'Module/Bank/BankLibrary'
+require 'Module/Bank/BankRender'
 
 BankData = {
     mode = {
@@ -11,17 +17,24 @@ BankData = {
     }
 }
 
-class "Bank" (Module)
 
-function Bank:__init(self)
+function Bank:__init()
     Module:__init(self)
     self.offset = 6
     -- default
     self.color = {
-
+        toggle = {
+            selected = {
+                copy =  Color.flash.green,
+                paste = Color.flash.yellow,
+            },
+            unselected = Color.orange,
+        },
+        clear = Color.red,
     }
     self.banks    = {}
     self.bank_idx = 1 -- active bank right now
+    self.mode     = BankData.mode.copy
 
     self.pad = nil
     self.bank_update_listeners = {}
