@@ -104,7 +104,7 @@ function Adjuster:__create_matrix_listener()
             self:_update_bank_matrix_at_point(msg.x,msg.y)
             self:_render_matrix_position(msg.x, msg.y)
         else
-            print("copy mode")
+            print("paste mode")
             self:__insert_selection(msg.x,msg.y)
             self:_refresh_matrix()
         end
