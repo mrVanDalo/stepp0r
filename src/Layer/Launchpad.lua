@@ -103,7 +103,6 @@ function Launchpad:__unregister(list,handle)
         print("removed handle")
         print(handle)
         list[handle] = nil
-        -- list.remove(handle)
     else
         print("not found")
         print(handle)
