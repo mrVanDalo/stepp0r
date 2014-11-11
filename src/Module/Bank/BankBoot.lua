@@ -6,6 +6,7 @@ end
 
 function Bank:_activate()
     self.pad:register_matrix_listener(self.__matrix_listener)
+    self:_update_bank_listeners()
     self:_render_matrix()
 end
 

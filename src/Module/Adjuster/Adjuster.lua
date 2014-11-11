@@ -56,7 +56,7 @@ function Adjuster:__init()
     self.volume      = AdjusterData.instrument.empty
     self.pan         = AdjusterData.instrument.empty
 
-    self.mode = BankData.mode.copy
+    self.mode        = BankData.mode.copy
 
     -- ---
     -- navigation
