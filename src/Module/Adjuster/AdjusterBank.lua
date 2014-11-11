@@ -5,19 +5,24 @@
 
 function Adjuster:_insert_bank_at(line)
     local counter = 0
+    local start_to_insert = false
     for position = self.bank.min, self.bank.max do
-        self:__insert_bank_line_at_line(line + counter, position)
-        counter = counter + 1
+        -- check for bank entry
+        local bank_entry = self.bank.bank[position]
+        if bank_entry then start_to_insert = true end
+        if start_to_insert then
+            self:__insert_bank_line_at_line(line + counter, bank_entry)
+            counter = counter + 1
+        end
     end
 end
 
-function Adjuster:__insert_bank_line_at_line(target_line, bank_position)
-    -- check for bank entry
-    local bank_entry = self.bank.bank[bank_position]
+function Adjuster:__insert_bank_line_at_line(target_line, bank_entry)
     if not bank_entry then return end
     -- check for position
     local position = self:_get_line(target_line)
     if not position then return end
+    print("update line " .. target_line)
     -- update position
     position.note_value         = bank_entry[AdjusterData.bank.pitch]
     position.instrument_value   = (self.instrument_idx - 1)
@@ -32,8 +37,6 @@ function Adjuster:_set_bank_interval(line_start, line_stop)
     for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track_idx) do
         if pos.line >= line_start and pos.line <= line_stop then
             self:__update_bank_matrix_position(pos.line,line)
-        else
-
         end
     end
 end
@@ -116,13 +119,13 @@ end
 
 
 function Adjuster:_log_bank()
-    print("log bank")
-    for position = self.bank.min, self.bank.max do
-        local bank_entry = self.bank.bank[position]
-        if (bank_entry) then
-            print(position .. " : " .. bank_entry[AdjusterData.bank.pitch])
-        else
-            print(position .. ' : nil')
-        end
-    end
+--    print("log bank")
+--    for position = self.bank.min, self.bank.max do
+--        local bank_entry = self.bank.bank[position]
+--        if (bank_entry) then
+--            print(position .. " : " .. bank_entry[AdjusterData.bank.pitch])
+--        else
+--            print(position .. ' : nil')
+--        end
+--    end
 end
