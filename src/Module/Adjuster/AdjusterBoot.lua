@@ -94,13 +94,20 @@ end
 function Adjuster:__create_matrix_listener()
     self.__matrix_listener = function (_,msg)
         if self.is_not_active          then return end
-        if msg.vel == Velocity.release then return end
+        if msg.vel ~= Velocity.release then return end
         if msg.y > 4                   then return end
         local column = self:calculate_track_position(msg.x,msg.y)
         if not column then return end
-        self:__update_selection(msg.x,msg.y)
-        self:_update_bank_matrix_at_point(msg.x,msg.y)
-        self:_render_matrix_position(msg.x, msg.y)
+        if (self.mode == BankData.mode.copy) then
+            print("copy mode")
+            self:__update_selection(msg.x,msg.y)
+            self:_update_bank_matrix_at_point(msg.x,msg.y)
+            self:_render_matrix_position(msg.x, msg.y)
+        else
+            print("copy mode")
+            self:__insert_selection(msg.x,msg.y)
+            self:_refresh_matrix()
+        end
         self:_log_bank()
     end
 end
@@ -115,6 +122,12 @@ function Adjuster:__update_selection(x,y)
         print('set bank : ' .. line .. ',' .. (line + self.zoom - 1))
         self:_set_bank_interval(line, (line + self.zoom - 1))
     end
+end
+
+
+function Adjuster:__insert_selection(x,y)
+    local line = self:point_to_line(x,y)
+    self:_insert_bank_at(line)
 end
 
 

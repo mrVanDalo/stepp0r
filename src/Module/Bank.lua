@@ -14,7 +14,7 @@ BankData = {
     mode = {
         copy  = 1,
         paste = 2,
-    }
+    },
 }
 
 
