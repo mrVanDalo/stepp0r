@@ -98,18 +98,22 @@ function Adjuster:__create_matrix_listener()
         if msg.y > 4                   then return end
         local column = self:calculate_track_position(msg.x,msg.y)
         if not column then return end
-        -- todo optimize me
-        local line = self:point_to_line(msg.x, msg.y)
-        if self.bank.bank[line] then
-            print('clear bank : ' .. line .. ',' .. (line + self.zoom - 1))
-            self:_clear_bank_interval(line, (line + self.zoom - 1))
-        else
-            print('set bank : ' .. line .. ',' .. (line + self.zoom - 1))
-            self:_set_bank_interval(line, (line + self.zoom - 1))
-        end
+        self:__update_selection(msg.x,msg.y)
         self:_update_bank_matrix_at_point(msg.x,msg.y)
         self:_render_matrix_position(msg.x, msg.y)
         self:_log_bank()
+    end
+end
+
+-- todo optimize me
+function Adjuster:__update_selection(x,y)
+    local line = self:point_to_line(x,y)
+    if self.bank.bank[line] then
+        print('clear bank : ' .. line .. ',' .. (line + self.zoom - 1))
+        self:_clear_bank_interval(line, (line + self.zoom - 1))
+    else
+        print('set bank : ' .. line .. ',' .. (line + self.zoom - 1))
+        self:_set_bank_interval(line, (line + self.zoom - 1))
     end
 end
 

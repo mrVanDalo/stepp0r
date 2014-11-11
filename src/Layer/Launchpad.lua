@@ -100,12 +100,11 @@ function Launchpad:unregister_all()
 end
 function Launchpad:__unregister(list,handle)
     if list[handle] then
-        log('removed handle', handle)
+        print("removed handle " .. handle)
         list.remove(handle)
     else
-        log('not found', handle)
+        print("not found ")
     end
-
 end
 
 --- callback convention always return an array first slot is true
