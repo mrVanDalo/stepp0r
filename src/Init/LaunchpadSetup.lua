@@ -16,16 +16,9 @@ require 'Module/Stepper'
 require 'Module/Stepper_render'
 require 'Module/Effect'
 
-require 'Module/Adjuster'
-require 'Module/Adjuster/AdjusterBank'
-require 'Module/Adjuster/AdjusterBoot'
-require 'Module/Adjuster/AdjusterCallbacks'
-require 'Module/Adjuster/AdjusterLibrary'
-require 'Module/Adjuster/AdjusterPagination'
-require 'Module/Adjuster/AdjusterPattern'
-require 'Module/Adjuster/AdjusterZoom'
 
-require 'Module/Bank'
+require 'Module/Adjuster/Adjuster'
+require 'Module/Bank/Bank'
 
 --- ======================================================================================================
 ---
