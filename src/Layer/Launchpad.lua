@@ -25,7 +25,7 @@ function Launchpad:connect(midi_device_name)
     local function main_callback(msg)
         local result = _is_matrix(msg)
         if (result.flag) then
-            for _, callback in ipairs(self._matrix_listener) do
+            for _, callback in pairs(self._matrix_listener) do
                 callback(self, result)
             end
             return
@@ -33,7 +33,7 @@ function Launchpad:connect(midi_device_name)
         --
         result = _is_top(msg)
         if (result.flag) then
-            for _, callback in ipairs(self._top_listener) do
+            for _, callback in pairs(self._top_listener) do
                 callback(self, result)
             end
             return
@@ -41,7 +41,7 @@ function Launchpad:connect(midi_device_name)
         --
         result = _is_right(msg)
         if (result.flag) then
-            for _, callback in ipairs(self._right_listener) do
+            for _, callback in pairs(self._right_listener) do
                 callback(self, result)
             end
             return
@@ -79,7 +79,7 @@ function Launchpad:register_matrix_listener(handler)
 end
 function Launchpad:_register(list,handle)
     -- print("register")
-    table.insert(list,handle)
+    list[handle] = handle
 end
 
 --- unregister
@@ -100,10 +100,13 @@ function Launchpad:unregister_all()
 end
 function Launchpad:__unregister(list,handle)
     if list[handle] then
-        print("removed handle " .. handle)
-        list.remove(handle)
+        print("removed handle")
+        print(handle)
+        list[handle] = nil
+        -- list.remove(handle)
     else
-        print("not found ")
+        print("not found")
+        print(handle)
     end
 end
 
