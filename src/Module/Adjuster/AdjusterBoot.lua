@@ -137,7 +137,7 @@ end
 --
 -- todo replace by standard renoise lua convention
 function Adjuster:__register_playback_position_observer()
-    self.playback_position_observer:register('stepper', function (line)
+    self.playback_position_observer:register('adjuster', function (line)
         if self.is_not_active then return end
         self:callback_playback_position(line)
     end)

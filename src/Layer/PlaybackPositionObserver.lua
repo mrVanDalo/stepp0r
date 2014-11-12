@@ -20,7 +20,7 @@ end
 function PlaybackPositionObserver:register(id,hook)
 
     if self._hooks[id] then
-        self:remove_notifier(id)
+        self:unregister(id)
     end
 
     local internal_hook_func = function()

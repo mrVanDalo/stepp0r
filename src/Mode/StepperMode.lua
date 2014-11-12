@@ -21,7 +21,7 @@ function StepperMode:__init()
     self:__create_top_listener()
 end
 
-function StepperMode:wire_pad(pad)
+function StepperMode:wire_launchpad(pad)
     self.pad = pad
 end
 
