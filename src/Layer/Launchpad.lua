@@ -25,7 +25,7 @@ function Launchpad:connect(midi_device_name)
     local function main_callback(msg)
         local result = _is_matrix(msg)
         if (result.flag) then
-            for _, callback in ipairs(self._matrix_listener) do
+            for _, callback in pairs(self._matrix_listener) do
                 callback(self, result)
             end
             return
@@ -33,7 +33,7 @@ function Launchpad:connect(midi_device_name)
         --
         result = _is_top(msg)
         if (result.flag) then
-            for _, callback in ipairs(self._top_listener) do
+            for _, callback in pairs(self._top_listener) do
                 callback(self, result)
             end
             return
@@ -41,7 +41,7 @@ function Launchpad:connect(midi_device_name)
         --
         result = _is_right(msg)
         if (result.flag) then
-            for _, callback in ipairs(self._right_listener) do
+            for _, callback in pairs(self._right_listener) do
                 callback(self, result)
             end
             return
@@ -79,24 +79,34 @@ function Launchpad:register_matrix_listener(handler)
 end
 function Launchpad:_register(list,handle)
     -- print("register")
-    table.insert(list,handle)
+    list[handle] = handle
 end
 
 --- unregister
 --
-function Launchpad:unregister_top_listener()
-    self._top_listener = {}
+function Launchpad:unregister_top_listener(handler)
+    self:__unregister(self._top_listener, handler)
 end
-function Launchpad:unregister_right_listener()
-    self._right_listener = {}
+function Launchpad:unregister_right_listener(handler)
+    self:__unregister(self._right_listener, handler)
 end
-function Launchpad:unregister_matrix_listener()
-    self._matrix_listener = {}
+function Launchpad:unregister_matrix_listener(handler)
+    self:__unregister(self._matrix_listener, handler)
 end
 function Launchpad:unregister_all()
-    self:unregister_top_listener()
-    self:unregister_right_listener()
-    self:unregister_matrix_listener()
+    self._top_listener = {}
+    self._right_listener = {}
+    self._matrix_listener = {}
+end
+function Launchpad:__unregister(list,handle)
+    if list[handle] then
+        print("removed handle")
+        print(handle)
+        list[handle] = nil
+    else
+        print("not found")
+        print(handle)
+    end
 end
 
 --- callback convention always return an array first slot is true

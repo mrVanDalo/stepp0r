@@ -16,10 +16,11 @@ end
 
 --- id : a key to find the hook later (to delete it)
 --- hook : a function called (with the updated value)
+-- todo rename me to renoise lua standard
 function PlaybackPositionObserver:register(id,hook)
 
     if self._hooks[id] then
-        self:remove_notifier(id)
+        self:unregister(id)
     end
 
     local internal_hook_func = function()
@@ -39,6 +40,7 @@ function PlaybackPositionObserver:register(id,hook)
     renoise.tool().app_idle_observable:add_notifier(internal_hook_func)
 end
 
+-- todo rename me to renoise lua standard
 function PlaybackPositionObserver:unregister(id)
     if self._hooks[id] then
         if renoise.tool().app_idle_observable:has_notifier(self._hooks[id].internal_hook) then
