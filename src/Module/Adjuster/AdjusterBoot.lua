@@ -31,6 +31,7 @@ function Adjuster:_deactivate()
     self:_page_clear_knobs()
     self:_zoom_clear_knobs()
     self:_matrix_clear()
+    self:_clear_bank_matrix()
     self:_render_matrix()
     -- unregister notifiers/listeners
     self:unregister_playback_position_observer()

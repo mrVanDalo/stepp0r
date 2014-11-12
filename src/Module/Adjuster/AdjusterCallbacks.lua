@@ -42,11 +42,12 @@ end
 
 function Adjuster:callback_set_instrument()
     return function (instrument_idx, track_idx, column_idx)
-        if self.is_not_active then return end
         self.track_idx        = track_idx
         self.track_column_idx = column_idx
         self.instrument_idx   = instrument_idx
-        self:_refresh_matrix()
+        if self.is_active then
+            self:_refresh_matrix()
+        end
     end
 end
 

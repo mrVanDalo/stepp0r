@@ -85,17 +85,17 @@ end
 
 function Stepper:callback_set_instrument()
     return function (instrument_idx, track_idx, column_idx)
-        if self.is_not_active then return end
         self.track_idx        = track_idx
         self.track_column_idx = column_idx
         self.instrument_idx   = instrument_idx
-        self:refresh_matrix()
+        if self.is_active then
+            self:refresh_matrix()
+        end
     end
 end
 
 function Stepper:callback_set_note()
     return function (note,octave)
-        if self.is_not_active then return end
         self.note   = note
         self.octave = octave
     end
@@ -103,19 +103,16 @@ end
 
 function Stepper:callback_set_delay()
     return function (delay)
-        if self.is_not_active then return end
         self.delay = delay
     end
 end
 function Stepper:callback_set_volume()
     return function (volume)
-        if self.is_not_active then return end
         self.volume = volume
     end
 end
 function Stepper:callback_set_pan()
     return function (pan)
-        if self.is_not_active then return end
         self.pan = pan
     end
 end
