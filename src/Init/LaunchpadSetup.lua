@@ -54,10 +54,6 @@ function LaunchpadSetup:deactivate()
     -- modules
     self.stepper_mode_module:deactivate()
     self.stepper_mode:deactivate()
---    self.key:deactivate()
---    self.bank:deactivate()
---    self.stepper:deactivate()
---    self.adjuster:deactivate()
     self.chooser:deactivate()
     self.effect:deactivate()
     -- layers
@@ -69,10 +65,6 @@ function LaunchpadSetup:activate()
     -- modules
     self.stepper_mode_module:activate()
     self.stepper_mode:activate()
---    self.key:activate()
---    self.bank:activate()
---    self.stepper:activate()
---    self.adjuster:activate()
     self.chooser:activate()
     self.effect:activate()
     -- boot
