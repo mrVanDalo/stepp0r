@@ -47,7 +47,7 @@ function Mode:_deactivate()
     if self.module then
         self.module:unregister_mode_update(self.mode_update_callback)
     end
-    self:__deactivate()
+    self:__deactivate_mode()
 end
 
 
