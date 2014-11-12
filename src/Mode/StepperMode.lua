@@ -21,7 +21,7 @@ function StepperMode:__init()
         off = Color.off
     }
     self.color.mode[StepperModeData.mode.copy_paste] = Color.red
-    self.color.mode[StepperModeData.mode.edit]       = Color.orange
+    self.color.mode[StepperModeData.mode.edit]       = Color.green
 
     self.mode = StepperModeData.mode.edit
     self.callbacks = {}
