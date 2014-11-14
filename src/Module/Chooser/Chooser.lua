@@ -21,6 +21,8 @@ ChooserData =  {
 -- A class to choose the Instruments
 class "Chooser" (Module)
 
+requier "Module/Chooser/ChooserNoteColumn"
+requier "Module/Chooser/ChooserPagination"
 
 
 
@@ -68,6 +70,7 @@ function Chooser:__init()
     self.column_idx_stop  = 4
     -- callbacks
     self.callback_select_instrument = {}
+    self:__create_callbacks()
 end
 
 function Chooser:wire_launchpad(pad)
@@ -79,7 +82,9 @@ function Chooser:wire_it_selection(selection)
 end
 
 
-
+function Chooser:__create_callbacks()
+    self:__create_column_update()
+end
 
 --- ======================================================================================================
 ---
@@ -143,23 +148,13 @@ function Chooser:_activate()
 
     --- column logic
     self:column_update_knobs()
-    if self.is_first_run then
-        self.pad:register_right_listener(function (_,msg)
-            if self.is_not_active            then return end
-            if msg.vel == Velocity.release   then return end
-            if msg.x > self.column_idx_stop  then return end
-            if msg.x < self.column_idx_start then return end
-
-            self.column_idx = msg.x
-            self.it_selection:ensure_column_idx_exists()
-            self:column_update_knobs()
-        end)
-    end
+    self.pad:register_right_listener(self._column_listener)
 
 end
 
 function Chooser:_deactivate()
     self:column_clear_knobs()
+    self.pad:unregister_right_listener(self._column_listener)
     self:page_clear_knobs()
     self:mode_clear_knobs()
     self:row_clear()
@@ -167,7 +162,7 @@ end
 
 
 function Chooser:callback_set_instrument()
-    return function(instrument_idx, track_idx, column_idx)
+    self.callback_set_instrument =  function(instrument_idx, track_idx, column_idx)
         self.instrument_idx = instrument_idx
         self.track_idx      = track_idx
         self.column_idx     = column_idx
@@ -224,42 +219,6 @@ function Chooser:select_instrument_with_offset(x)
 end
 
 
---- ======================================================================================================
----
----                                                 [ PAGINATION ]
-
-function Chooser:page_update_knobs()
-    local instrument_count = table.getn(renoise.song().instruments)
-    if (self.inst_offset + 8 ) < instrument_count then
-        self.pad:set_top(self.page_inc_idx, self.color.page.active)
-    else
-        self.pad:set_top(self.page_inc_idx, self.color.page.inactive)
-    end
-    if self.inst_offset >  7 then
-        self.pad:set_top(self.page_dec_idx, self.color.page.active)
-    else
-        self.pad:set_top(self.page_dec_idx, self.color.page.inactive)
-    end
-end
-
-function Chooser:page_clear_knobs()
-    self.pad:set_top(self.page_dec_idx,Color.off)
-    self.pad:set_top(self.page_inc_idx,Color.off)
-end
-
-function Chooser:page_inc()
-    local instrument_count = table.getn(renoise.song().instruments)
-    if (self.inst_offset + 8) < instrument_count then
-        self.inst_offset = self.inst_offset + 8
-    end
-end
-
-function Chooser:page_dec()
-    if( self.inst_offset > 0 ) then
-        self.inst_offset = self.inst_offset - 8
-    end
-end
-
 
 
 
@@ -303,24 +262,4 @@ end
 
 
 
-function Chooser:column_update_knobs()
-    -- todo us the constante here ?
-    local track = self.it_selection:track_for_instrument(self.instrument_idx)
-    local visible = track.visible_note_columns + self.column_idx_start
-    for i = self.column_idx_start, self.column_idx_stop do
-        local color = self.color.column.invisible
-        if i == self.column_idx then
-            color = self.color.column.active
-        elseif i < visible then
-            color = self.color.column.inactive
-        end
-        self.pad:set_right(i,color)
-    end
-end
-
-function Chooser:column_clear_knobs()
-    for i = self.column_idx_start, self.column_idx_stop do
-        self.pad:set_right(i,Color.off)
-    end
-end
 

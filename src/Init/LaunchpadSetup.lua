@@ -152,7 +152,7 @@ function LaunchpadSetup:wire()
     self.it_selection:register_select_instrument(self.stepper.callback_set_instrument)
     self.it_selection:register_select_instrument(self.adjuster.callback_set_instrument)
     self.it_selection:register_select_instrument(self.effect:callback_set_instrument())
-    self.it_selection:register_select_instrument(self.chooser:callback_set_instrument())
+    self.it_selection:register_select_instrument(self.chooser.callback_set_instrument)
 
 end
 
