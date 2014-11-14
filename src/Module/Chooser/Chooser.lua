@@ -90,6 +90,7 @@ function Chooser:__create_callbacks()
     self:__create_instrument_notifier()
     self:__create_page_listener()
     self:__create_mode_listener()
+    self:__create_instrument_listener()
     self:__create_instrumnets_notifier_row()
 end
 
