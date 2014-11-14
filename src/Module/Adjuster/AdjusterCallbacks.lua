@@ -16,6 +16,7 @@ end
 
 function Adjuster:__create_paginator_update()
     self.pageinator_update_callback = function (msg)
+        print("adjuster : update paginator")
         self.page       = msg.page
         self.page_start = msg.page_start
         self.page_end   = msg.page_end

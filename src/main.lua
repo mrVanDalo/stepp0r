@@ -1,12 +1,4 @@
 require 'Init/LaunchpadSetup'
-require 'Layer/Launchpad'
-require 'Module/Module'
-require 'Module/Keyboard'
-require 'Module/Chooser'
-require 'Module/Stepper'
-require 'Module/Effect'
-require 'Data/Note'
-require 'Data/Color'
 require 'Init/MainUI'
 require 'Init/AboutUI'
 

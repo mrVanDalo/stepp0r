@@ -6,6 +6,8 @@
 
 class "Stepper" (Module)
 
+require "Module/Stepper/StepperRender"
+
 StepperData = {
     note = {
         off   = 120,
@@ -83,10 +85,12 @@ end
 
 function Stepper:__create_callbacks()
     self:__create_set_instrument_callback()
+    self:__create_paginator_update()
 end
 
 function Stepper:__create_paginator_update()
     self.pageinator_update_callback = function (msg)
+        print("stepper : update paginator")
         self.page       = msg.page
         self.page_start = msg.page_start
         self.page_end   = msg.page_end
@@ -103,7 +107,7 @@ function Stepper:__create_set_instrument_callback()
         self.track_column_idx = column_idx
         self.instrument_idx   = instrument_idx
         if self.is_active then
-            self:refresh_matrix()
+            self:_refresh_matrix()
         end
     end
 end
@@ -158,7 +162,7 @@ function Stepper:_activate()
         renoise.song().selected_pattern_index_observable:add_notifier(function (_)
             if self.is_not_active then return end
             self.pattern_idx = renoise.song().selected_pattern_index
-            self:refresh_matrix()
+            self:_refresh_matrix()
         end)
     end
 
@@ -203,7 +207,7 @@ function Stepper:_activate()
     end
 
     --- refresh the matrix
-    self:refresh_matrix()
+    self:_refresh_matrix()
 end
 
 function Stepper:register_playback_position_observer()
@@ -268,7 +272,7 @@ function Stepper:point_to_line(x,y)
     return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
 end
 
-function Stepper:refresh_matrix()
+function Stepper:_refresh_matrix()
     self:__matrix_clear()
     self:__matrix_update()
     self:__render_matrix()

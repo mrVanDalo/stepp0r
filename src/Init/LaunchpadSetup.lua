@@ -12,8 +12,6 @@ require 'Layer/IT_Selection'
 require 'Module/Module'
 require 'Module/Keyboard'
 require 'Module/Chooser'
-require 'Module/Stepper'
-require 'Module/Stepper_render'
 require 'Module/Effect'
 
 require 'Mode/Mode'
@@ -22,6 +20,7 @@ require 'Mode/StepperMode'
 require 'Module/Adjuster/Adjuster'
 require 'Module/Bank/Bank'
 require 'Module/Paginator/Paginator'
+require 'Module/Stepper/Stepper'
 
 --- ======================================================================================================
 ---
