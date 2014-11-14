@@ -100,12 +100,12 @@ function Launchpad:unregister_all()
 end
 function Launchpad:__unregister(list,handle)
     if list[handle] then
-        print("removed handle")
-        print(handle)
+--        print("removed handle")
+--        print(handle)
         list[handle] = nil
     else
-        print("not found")
-        print(handle)
+--        print("not found")
+--        print(handle)
     end
 end
 
