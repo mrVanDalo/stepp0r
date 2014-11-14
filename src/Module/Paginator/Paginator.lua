@@ -7,8 +7,22 @@
 
 class "Paginator" (Module)
 
+require "Module/Paginator/PaginatorLibrary"
+require "Module/Paginator/PaginatorPaging"
+require "Module/Paginator/PaginatorZooming"
+
 function Paginator:__init()
     Module:__init(self)
+    self.color = {
+        page = {
+            active   = Color.yellow,
+            inactive = Color.off,
+        },
+        zoom = {
+            active   = Color.yellow,
+            inactive = Color.off,
+        },
+    }
     -- pagination
     self.page         = 1 -- page of actual pattern
     self.page_inc_idx = 2
@@ -27,6 +41,7 @@ end
 function Paginator:_first_run()
     self:__create_pattern_idx_update_callback()
     self:__create_page_listener()
+    self:__create_zoom_listener()
 end
 
 function Paginator:wire_launchpad(pad)

@@ -16,7 +16,7 @@ function Paginator:__create_zoom_listener()
     end
 end
 
-function Adjuster:_zoom_out()
+function Paginator:_zoom_out()
     local pattern = self:_active_pattern()
     if (self.zoom < pattern.number_of_lines / 32) then
         -- update zoom
@@ -32,7 +32,7 @@ function Adjuster:_zoom_out()
     end
 end
 
-function Adjuster:_zoom_in()
+function Paginator:_zoom_in()
     if (self.zoom > 1) then
         -- update zoom
         self.zoom = self.zoom / 2
@@ -44,7 +44,7 @@ function Adjuster:_zoom_in()
     end
 end
 
-function Adjuster:__zoom_update_knobs()
+function Paginator:__zoom_update_knobs()
     if (self.zoom > 1) then
         self.pad:set_top(self.zoom_in_idx,self.color.zoom.active)
     else
@@ -58,7 +58,7 @@ function Adjuster:__zoom_update_knobs()
     end
 end
 
-function Adjuster:_zoom_clear_knobs()
+function Paginator:_zoom_clear_knobs()
     self.pad:set_top(self.zoom_in_idx,Color.off)
     self.pad:set_top(self.zoom_out_idx,Color.off)
 end

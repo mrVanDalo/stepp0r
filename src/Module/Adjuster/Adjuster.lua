@@ -10,9 +10,7 @@ require 'Module/Adjuster/AdjusterBank'
 require 'Module/Adjuster/AdjusterBoot'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
-require 'Module/Adjuster/AdjusterPagination'
 require 'Module/Adjuster/AdjusterPattern'
-require 'Module/Adjuster/AdjusterZoom'
 
 AdjusterData = {
     note = {
