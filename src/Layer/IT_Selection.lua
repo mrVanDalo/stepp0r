@@ -94,6 +94,12 @@ function IT_Selection:ensure_column_idx_exists()
     end
 end
 
+function IT_Selection:set_column(column_idx)
+    self.column_idx = column_idx
+    self:ensure_column_idx_exists()
+    self:__update_set_instrument_listeners()
+end
+
 
 --- updated the selected instrument
 -- don't call this on the selected_track_notifier

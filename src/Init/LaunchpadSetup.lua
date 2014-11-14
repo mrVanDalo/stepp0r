@@ -11,7 +11,6 @@ require 'Layer/IT_Selection'
 
 require 'Module/Module'
 require 'Module/Keyboard'
-require 'Module/Chooser'
 require 'Module/Effect'
 
 require 'Mode/Mode'
@@ -21,6 +20,7 @@ require 'Module/Adjuster/Adjuster'
 require 'Module/Bank/Bank'
 require 'Module/Paginator/Paginator'
 require 'Module/Stepper/Stepper'
+require 'Module/Chooser/Chooser'
 
 --- ======================================================================================================
 ---
@@ -112,17 +112,17 @@ function LaunchpadSetup:wire()
 
     self.effect = Effect()
     self.effect:wire_launchpad(self.pad)
-    self.effect:register_set_delay (self.stepper:callback_set_delay())
-    self.effect:register_set_volume(self.stepper:callback_set_volume())
-    self.effect:register_set_pan   (self.stepper:callback_set_pan())
---    self.effect:register_set_delay (self.adjuster:callback_set_delay())
---    self.effect:register_set_volume(self.adjusterstepper:callback_set_volume())
---    self.effect:register_set_pan   (self.adjusterstepper:callback_set_pan())
+    self.effect:register_set_delay (self.stepper.callback_set_delay)
+    self.effect:register_set_volume(self.stepper.callback_set_volume)
+    self.effect:register_set_pan   (self.stepper.callback_set_pan)
+    self.effect:register_set_delay (self.adjuster.callback_set_delay)
+    self.effect:register_set_volume(self.adjuster.callback_set_volume)
+    self.effect:register_set_pan   (self.adjuster.callback_set_pan)
 
     self.key = Keyboard()
     self.key:wire_launchpad(self.pad)
     self.key:wire_osc_client(self.osc_client)
-    self.key:register_set_note(self.stepper:callback_set_note())
+    self.key:register_set_note(self.stepper.callback_set_note)
 
     self.bank = Bank()
     self.bank:wire_launchpad(self.pad)
@@ -149,10 +149,10 @@ function LaunchpadSetup:wire()
 
     --- Layer callback registration
     self.it_selection:register_select_instrument(self.key:callback_set_instrument())
-    self.it_selection:register_select_instrument(self.stepper.set_instrument_callback)
-    self.it_selection:register_select_instrument(self.adjuster:callback_set_instrument())
+    self.it_selection:register_select_instrument(self.stepper.callback_set_instrument)
+    self.it_selection:register_select_instrument(self.adjuster.callback_set_instrument)
     self.it_selection:register_select_instrument(self.effect:callback_set_instrument())
-    self.it_selection:register_select_instrument(self.chooser:callback_set_instrument())
+    self.it_selection:register_select_instrument(self.chooser.callback_set_instrument)
 
 end
 
