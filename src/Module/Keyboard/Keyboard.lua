@@ -6,6 +6,9 @@
 
 class "Keyboard" (Module)
 
+require "Module/Keyboard/KeyboardCallbacks"
+
+
 --- this is a strange y -> x map for notes
 KeyboardData = {
     reverse_mapping = {
@@ -13,9 +16,6 @@ KeyboardData = {
         { Note.note.c  , Note.note.d  , Note.note.e  , Note.note.f  , Note.note.g  , Note.note.a  , Note.note.b  , Note.note.C  },
     }
 }
-
-
-
 
 
 --- ======================================================================================================
@@ -28,21 +28,6 @@ function Keyboard:register_set_note(callback)
     table.insert(self.callback_set_note, callback)
 end
 
-function Keyboard:callback_set_instrument()
-    return function (instrument_idx, track_idx, _)
-        if self.is_not_active then return end
-        -- save
-        self.instrument_backup[self.instrument_idx] = self:state()
-        -- switch
-        self.instrument_idx = instrument_idx
-        self.track_idx      = track_idx
-        -- load
-        local newState = self.instrument_backup[self.instrument_idx]
-        if newState then self:load_state(newState) end
-        -- refresh
-        self:matrix_refresh()
-    end
-end
 
 function Keyboard:wire_launchpad(pad)
     if self.is_active then return end
@@ -80,13 +65,14 @@ function Keyboard:__init()
     }
     -- callback
     self.callback_set_note = {}
+
+    self:__create_callbacks()
 end
 
-
-
-
-
-
+function Keyboard:__create_callbacks()
+    self:__create_callback_set_instrument()
+    self:__create_keyboard_listener()
+end
 
 
 --- ======================================================================================================
@@ -95,42 +81,12 @@ end
 
 function Keyboard:_activate()
     self:matrix_refresh()
-    if self.is_first_run then
-        self:setup_matrix_listener()
-    end
+    self.pad:register_matrix_listener(self.keyboard_listener)
 end
-
-function Keyboard:setup_matrix_listener()
-    self.pad:register_matrix_listener(function (_,msg)
-        -- precondition
-        if self.is_not_active        then return end
-        if msg.y <= self.offset      then return  end
-        if msg.y > (self.offset + 2) then return end
-        -- scale to the keyboard
-        local x = msg.x
-        local y = msg.y - self.offset
-        -- react on signal
-        if (msg.vel == Velocity.release) then
-            self:untrigger_note(x,y)
-        elseif (y == 2) then
-            -- second line notes only
-            self:set_note(x, y)
-            self:trigger_note(x,y)
-        elseif (x == 1) then
-            self:octave_down()
-        elseif (x == 8) then
-            self:octave_up()
-        else
-            self:set_note(x, y)
-            self:trigger_note(x,y)
-        end
-        self:matrix_update_keys()
-    end)
-end
-
 
 function Keyboard:_deactivate()
     self:matrix_clear()
+    self.pad:register_matrix_listener(self.keyboard_listener)
 end
 
 
