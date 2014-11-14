@@ -64,13 +64,9 @@ function Adjuster:__init()
 
     -- zoom
     self.zoom         = 1 -- influences grid size
-    self.zoom_out_idx = 7
-    self.zoom_in_idx  = 6
 
     -- pagination
     self.page         = 1 -- page of actual pattern
-    self.page_inc_idx = 2
-    self.page_dec_idx = 1
     self.page_start   = 0  -- line left before first pixel
     self.page_end     = 33 -- line right after last pixel
 
@@ -122,4 +118,5 @@ function Adjuster:wire_playback_position_observer(playback_position_observer)
     end
     self.playback_position_observer = playback_position_observer
 end
+
 
