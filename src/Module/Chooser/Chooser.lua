@@ -21,8 +21,8 @@ ChooserData =  {
 -- A class to choose the Instruments
 class "Chooser" (Module)
 
-requier "Module/Chooser/ChooserNoteColumn"
-requier "Module/Chooser/ChooserPagination"
+require "Module/Chooser/ChooserNoteColumn"
+require "Module/Chooser/ChooserPagination"
 
 
 
@@ -84,6 +84,7 @@ end
 
 function Chooser:__create_callbacks()
     self:__create_column_update()
+    self:__create_callback_set_instrument()
 end
 
 --- ======================================================================================================
@@ -161,8 +162,8 @@ function Chooser:_deactivate()
 end
 
 
-function Chooser:callback_set_instrument()
-    self.callback_set_instrument =  function(instrument_idx, track_idx, column_idx)
+function Chooser:__create_callback_set_instrument()
+    self.callback_set_instrument = function(instrument_idx, track_idx, column_idx)
         self.instrument_idx = instrument_idx
         self.track_idx      = track_idx
         self.column_idx     = column_idx

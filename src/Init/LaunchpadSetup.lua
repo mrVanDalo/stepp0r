@@ -11,7 +11,6 @@ require 'Layer/IT_Selection'
 
 require 'Module/Module'
 require 'Module/Keyboard'
-require 'Module/Chooser'
 require 'Module/Effect'
 
 require 'Mode/Mode'
@@ -21,6 +20,7 @@ require 'Module/Adjuster/Adjuster'
 require 'Module/Bank/Bank'
 require 'Module/Paginator/Paginator'
 require 'Module/Stepper/Stepper'
+require 'Module/Chooser/Chooser'
 
 --- ======================================================================================================
 ---

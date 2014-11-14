@@ -5,8 +5,9 @@ function Chooser:__create_column_update()
         if msg.x > self.column_idx_stop  then return end
         if msg.x < self.column_idx_start then return end
 
-        self.column_idx = msg.x
-        self.it_selection:ensure_column_idx_exists()
+        -- self.column_idx = msg.x
+        self.it_selection:set_column(msg.x)
+--        self.it_selection:ensure_column_idx_exists()
         self:column_update_knobs()
     end
 end
