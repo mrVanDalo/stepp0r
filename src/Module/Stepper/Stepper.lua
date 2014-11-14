@@ -78,24 +78,10 @@ end
 
 function Stepper:wire_playback_position_observer(playback_position_observer)
     if self.playback_position_observer then
-        self:unregister_playback_position_observer()
+        self:__unregister_playback_position_observer()
     end
     self.playback_position_observer = playback_position_observer
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 --- ======================================================================================================
@@ -103,81 +89,33 @@ end
 ---                                                 [ BooT ]
 
 function Stepper:_activate()
-
-    --- selected pattern changes
-    --
-    -- deprecated ?
+    print("called _activate of steppor")
     self.pattern_idx = renoise.song().selected_pattern_index
-    if self.is_first_run then
-        renoise.song().selected_pattern_index_observable:add_notifier(function (_)
-            if self.is_not_active then return end
-            self.pattern_idx = renoise.song().selected_pattern_index
-            self:_refresh_matrix()
-        end)
-    end
-
-    --- selected playback position
-    --
-    -- the green light that runs
-    --
-    self:register_playback_position_observer()
-
-
-    --- pad matrix listener
-    --
-    -- listens on click events on the launchpad matrix
-    if self.is_first_run then
-        self.pad:register_matrix_listener(function (_,msg)
-            if self.is_not_active          then return end
-            if msg.vel == Velocity.release then return end
-            if msg.y > 4                   then return end
-            local column           = self:calculate_track_position(msg.x,msg.y)
-            if not column then return end
-            if column.note_value == StepperData.note.empty then
-                column.note_value         = pitch(self.note,self.octave)
-                column.instrument_value   = (self.instrument_idx - 1)
-                column.delay_value        = self.delay
-                column.panning_value      = self.pan
-                column.volume_value       = self.volume
-                if column.note_value == StepperData.note.off then
-                    self.matrix[msg.x][msg.y] = self.color.note.off
-                else
-                    self.matrix[msg.x][msg.y] = self.color.note.on
-                end
-            else
-                column.note_value         = StepperData.note.empty
-                column.instrument_value   = StepperData.instrument.empty
-                column.delay_value        = StepperData.delay.empty
-                column.panning_value      = StepperData.panning.empty
-                column.volume_value       = StepperData.volume.empty
-                self.matrix[msg.x][msg.y] = self.color.note.empty
-            end
-            self.pad:set_matrix(msg.x,msg.y,self.matrix[msg.x][msg.y])
-        end)
-    end
-
-    --- refresh the matrix
+    add_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
+    self.pad:register_matrix_listener(self.pattern_matrix_listener)
+    self:__register_playback_position_observer()
     self:_refresh_matrix()
 end
 
-function Stepper:register_playback_position_observer()
+function Stepper:_deactivate()
+    self:__matrix_clear()
+    self:__render_matrix()
+    remove_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
+    self.pad:unregister_matrix_listener(self.pattern_matrix_listener)
+    self:__unregister_playback_position_observer()
+end
+
+function Stepper:__register_playback_position_observer()
     self.playback_position_observer:register('stepper', function (line)
         if self.is_not_active then return end
         self:callback_playback_position(line)
     end)
 end
 
-function Stepper:unregister_playback_position_observer()
+function Stepper:__unregister_playback_position_observer()
     self.playback_position_observer:unregister('stepper' )
 end
 
---- tear down
---
-function Stepper:_deactivate()
-    self:__matrix_clear()
-    self:__render_matrix()
-    self:unregister_playback_position_observer()
-end
 
 
 
