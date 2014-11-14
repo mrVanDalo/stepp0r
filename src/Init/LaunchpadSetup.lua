@@ -11,7 +11,6 @@ require 'Layer/IT_Selection'
 
 require 'Module/Module'
 require 'Module/Keyboard'
-require 'Module/Effect'
 
 require 'Mode/Mode'
 require 'Mode/StepperMode'
@@ -21,6 +20,7 @@ require 'Module/Bank/Bank'
 require 'Module/Paginator/Paginator'
 require 'Module/Stepper/Stepper'
 require 'Module/Chooser/Chooser'
+require 'Module/Effect/Effect'
 
 --- ======================================================================================================
 ---
@@ -151,7 +151,7 @@ function LaunchpadSetup:wire()
     self.it_selection:register_select_instrument(self.key:callback_set_instrument())
     self.it_selection:register_select_instrument(self.stepper.callback_set_instrument)
     self.it_selection:register_select_instrument(self.adjuster.callback_set_instrument)
-    self.it_selection:register_select_instrument(self.effect:callback_set_instrument())
+    self.it_selection:register_select_instrument(self.effect.callback_set_instrument)
     self.it_selection:register_select_instrument(self.chooser.callback_set_instrument)
 
 end
