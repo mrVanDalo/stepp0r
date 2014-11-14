@@ -57,6 +57,8 @@ function Paginator:_activate()
     add_notifier(renoise.song().selected_pattern_index_observable, self.pattern_idx_update_callback)
     self.pad:register_top_listener(self.page_listener)
     self.pad:register_top_listener(self.zoom_listener)
+    self:__zoom_update_knobs()
+    self:_page_update_knobs()
 end
 
 function Paginator:_deactivate()
