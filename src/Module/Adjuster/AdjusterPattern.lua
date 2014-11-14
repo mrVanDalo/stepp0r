@@ -63,7 +63,7 @@ end
 
 --- update pad by the given matrix
 --
-function Adjuster:_render_matrix_position(x,y)
+function Adjuster :_render_matrix_position(x,y)
     if(self.__pattern_matrix[x][y]) then
         self.pad:set_matrix(x,y,self.__pattern_matrix[x][y])
     else

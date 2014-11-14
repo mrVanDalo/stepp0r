@@ -57,12 +57,12 @@ function Adjuster:__create_matrix_listener()
         local column = self:calculate_track_position(msg.x,msg.y)
         if not column then return end
         if (self.mode == BankData.mode.copy) then
-            print("copy mode")
+--            print("copy mode")
             self:__update_selection(msg.x,msg.y)
             self:_update_bank_matrix_at_point(msg.x,msg.y)
             self:_render_matrix_position(msg.x, msg.y)
         else
-            print("paste mode")
+--            print("paste mode")
             self:__insert_selection(msg.x,msg.y)
             self:_refresh_matrix()
         end
@@ -74,10 +74,10 @@ end
 function Adjuster:__update_selection(x,y)
     local line = self:point_to_line(x,y)
     if self.bank.bank[line] then
-        print('clear bank : ' .. line .. ',' .. (line + self.zoom - 1))
+--        print('clear bank : ' .. line .. ',' .. (line + self.zoom - 1))
         self:_clear_bank_interval(line, (line + self.zoom - 1))
     else
-        print('set bank : ' .. line .. ',' .. (line + self.zoom - 1))
+--        print('set bank : ' .. line .. ',' .. (line + self.zoom - 1))
         self:_set_bank_interval(line, (line + self.zoom - 1))
     end
 end

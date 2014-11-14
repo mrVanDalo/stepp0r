@@ -22,7 +22,7 @@ function Adjuster:__insert_bank_line_at_line(target_line, bank_entry)
     -- check for position
     local position = self:_get_line(target_line)
     if not position then return end
-    print("update line " .. target_line)
+--    print("update line " .. target_line)
     -- update position
     position.note_value         = bank_entry[AdjusterData.bank.pitch]
     position.instrument_value   = (self.instrument_idx - 1)

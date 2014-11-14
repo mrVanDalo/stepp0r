@@ -76,7 +76,7 @@ function Adjuster:callback_playback_position(pos)
     if self.pattern_idx ~= pos.sequence then return end
     -- clean up old playback position
     if (self.removed_old_playback_position) then
-        self:__render_matrix_position(
+        self:_render_matrix_position(
             self.playback_position_last_x,
             self.playback_position_last_y
         )
