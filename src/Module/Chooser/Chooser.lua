@@ -23,6 +23,8 @@ class "Chooser" (Module)
 
 require "Module/Chooser/ChooserNoteColumn"
 require "Module/Chooser/ChooserPagination"
+require "Module/Chooser/ChooserMode"
+require "Module/Chooser/ChooserInstrumentRow"
 
 
 
@@ -85,6 +87,10 @@ end
 function Chooser:__create_callbacks()
     self:__create_column_update()
     self:__create_callback_set_instrument()
+    self:__create_instrument_notifier()
+    self:__create_page_listener()
+    self:__create_mode_listener()
+    self:__create_instrumnets_notifier_row()
 end
 
 --- ======================================================================================================
@@ -95,57 +101,17 @@ function Chooser:_activate()
 
     --- chooser line
     self:row_update()
-    if self.is_first_run then
-        self.pad:register_matrix_listener(function (_,msg)
-            if self.is_not_active          then return end
-            if msg.vel == Velocity.release then return end
-            if msg.y  ~= self.row          then return end
-            if self.mode == ChooserData.mode.choose then
-                self:select_instrument_with_offset(msg.x)
-            elseif self.mode == ChooserData.mode.mute then
-                self:mute_track(msg.x)
-            end
-            self:column_update_knobs()
-            self:row_update()
-        end)
-        renoise.song().instruments_observable:add_notifier(function (_)
-            self:row_update()
-        end)
-    end
+    self.pad:register_matrix_listener(self.instrument_listener)
+    add_notifier(renoise.song().instruments_observable, self.instruments_notifier_row)
 
     --- mode control
     self:mode_update_knobs()
-    if self.is_first_run then
-        self.pad:register_right_listener(function (_,msg)
-            if self.is_not_active          then return end
-            if msg.vel == Velocity.release then return end
-            if msg.x   ~= self.mode_idx    then return end
-            self:mode_next()
-            self:mode_update_knobs()
-        end)
-    end
+    self.pad:register_right_listener(self.mode_listener)
 
     --- page logic
     self:page_update_knobs()
-    if self.is_first_run then
-        self.pad:register_top_listener(function (_,msg)
-            if self.is_not_active         then return end
-            if msg.vel == 0               then return end
-            if msg.x == self.page_inc_idx then
-                self:page_inc()
-                self:page_update_knobs()
-                self:row_update()
-            elseif msg.x == self.page_dec_idx then
-                self:page_dec()
-                self:page_update_knobs()
-                self:row_update()
-            end
-        end)
-        renoise.song().instruments_observable:add_notifier(function (_)
-            if self.is_not_active then return end
-            self:page_update_knobs()
-        end)
-    end
+    self.pad:register_top_listener(self.page_listener)
+    add_notifier(renoise.song().instruments_observable, self.instruments_notifier)
 
     --- column logic
     self:column_update_knobs()
@@ -153,12 +119,19 @@ function Chooser:_activate()
 
 end
 
+
+
 function Chooser:_deactivate()
     self:column_clear_knobs()
-    self.pad:unregister_right_listener(self._column_listener)
     self:page_clear_knobs()
     self:mode_clear_knobs()
     self:row_clear()
+    self.pad:unregister_matrix_listener(self.instrument_listener)
+    self.pad:unregister_top_listener(self.page_listener)
+    self.pad:unregister_right_listener(self._column_listener)
+    self.pad:unregister_right_listener(self.mode_listener)
+    remove_notifier(renoise.song().instruments_observable, self.instruments_notifier_row)
+    remove_notifier(renoise.song().instruments_observable, self.instruments_notifier)
 end
 
 
