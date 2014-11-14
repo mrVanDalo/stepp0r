@@ -11,8 +11,8 @@ function Paginator:__create_page_listener()
         elseif msg.x == self.page_dec_idx then
             self:_page_dec()
         end
-        self:_page_update_knobs()
         self:_page_update_borders()
+        self:_page_update_knobs()
         self:_update_listeners()
     end
 end
@@ -51,6 +51,5 @@ end
 function Paginator:_page_update_borders()
     self.page_start = ((self.page - 1) * 32 * self.zoom)
     self.page_end   = self.page_start + 1 + 32 * self.zoom
-    -- print("update page borders", self.page, self.page_start, self.page_end)
 end
 
