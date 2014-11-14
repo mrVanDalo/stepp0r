@@ -11,6 +11,10 @@ function log(key, value)
 end
 
 function add_notifier(observable, handler)
+    if observable:has_notifier(handler) then
+        print ("allready registered handler")
+        return
+    end
     observable:add_notifier(handler)
 end
 

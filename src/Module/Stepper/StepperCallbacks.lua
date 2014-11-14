@@ -13,8 +13,9 @@ end
 function Stepper:__create_selected_pattern_index_notifier()
     self.selected_pattern_index_notifier = function (_)
         self.pattern_idx = renoise.song().selected_pattern_index
-        if self.is_not_active then return end
-        self:_refresh_matrix()
+        if self.is_active then
+            self:_refresh_matrix()
+        end
     end
 end
 

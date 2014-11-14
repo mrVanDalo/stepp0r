@@ -89,8 +89,9 @@ end
 ---                                                 [ BooT ]
 
 function Stepper:_activate()
+    print("called _activate of steppor")
     self.pattern_idx = renoise.song().selected_pattern_index
-    add_notifier(renoise.song().selected_pattern_index_observable,self.selected_pattern_index_notifier)
+    add_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
     self.pad:register_matrix_listener(self.pattern_matrix_listener)
     self:__register_playback_position_observer()
     self:_refresh_matrix()
@@ -99,7 +100,7 @@ end
 function Stepper:_deactivate()
     self:__matrix_clear()
     self:__render_matrix()
-    remove_notifier(renoise.song().selected_pattern_index_observable,self.selected_pattern_index_notifier)
+    remove_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
     self.pad:unregister_matrix_listener(self.pattern_matrix_listener)
     self:__unregister_playback_position_observer()
 end
