@@ -8,7 +8,7 @@
 class "Effect" (Module)
 
 require "Module/Effect/EffectDelay"
-require "Module/Effect/EffectVolumne"
+require "Module/Effect/EffectVolume"
 require "Module/Effect/EffectPanning"
 require "Module/Effect/EffectMode"
 
