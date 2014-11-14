@@ -1,13 +1,29 @@
 
 function Adjuster:_create_callbacks()
     self:__create_bank_update_handler()
+    self:__create_paginator_update()
 end
 
 function Adjuster:__create_bank_update_handler()
     self.bank_update_handler = function (bank, mode)
         self.bank     = bank
         self.mode     = mode
-        self:_refresh_matrix()
+        if self.is_active then
+            self:_refresh_matrix()
+        end
+    end
+end
+
+function Adjuster:__create_paginator_update()
+    self.pageinator_update_callback = function (msg)
+        print("adjuster : update paginator")
+        self.page       = msg.page
+        self.page_start = msg.page_start
+        self.page_end   = msg.page_end
+        self.zoom       = msg.zoom
+        if self.is_active then
+            self:_refresh_matrix()
+        end
     end
 end
 
@@ -53,7 +69,6 @@ end
 
 function Adjuster:callback_set_note()
     return function (note,octave)
-        if self.is_not_active then return end
         self.note   = note
         self.octave = octave
     end
@@ -61,32 +76,16 @@ end
 
 function Adjuster:callback_set_delay()
     return function() end
-    -- todo does nothing yet
-    --    return function (delay)
-    --        if self.is_not_active then return end
-    --        self.delay = delay
-    --    end
 end
 
 function Adjuster:callback_set_volume()
     return function() end
-    -- todo does nothing yet
-    --    return function (volume)
-    --        if self.is_not_active then return end
-    --        self.volume = volume
-    --    end
 end
 
 function Adjuster:callback_set_pan()
     return function() end
-    -- todo does nothing yet
-    --    return function (pan)
-    --        if self.is_not_active then return end
-    --        self.pan = pan
-    --    end
 end
 
 function Adjuster:callback_set_bank()
     return function () end
-    -- todo write me
 end

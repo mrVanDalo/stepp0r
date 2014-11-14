@@ -6,6 +6,8 @@
 
 class "Stepper" (Module)
 
+require "Module/Stepper/StepperRender"
+
 StepperData = {
     note = {
         off   = 120,
@@ -38,12 +40,8 @@ function Stepper:__init()
     -- ---
     -- zoom
     self.zoom         = 1 -- influences grid size
-    self.zoom_out_idx = 7
-    self.zoom_in_idx  = 6
     -- pagination
     self.page         = 1 -- page of actual pattern
-    self.page_inc_idx = 2
-    self.page_dec_idx = 1
     self.page_start   = 0  -- line left before first pixel
     self.page_end     = 33 -- line right after last pixel
     -- rest
@@ -70,6 +68,7 @@ function Stepper:__init()
     self.playback_position_observer = nil
     self.playback_position_last_x = 1
     self.playback_position_last_y = 1
+    self:__create_callbacks()
 end
 
 function Stepper:wire_launchpad(pad)
@@ -83,16 +82,37 @@ function Stepper:wire_playback_position_observer(playback_position_observer)
     self.playback_position_observer = playback_position_observer
 end
 
-function Stepper:callback_set_instrument()
-    return function (instrument_idx, track_idx, column_idx)
+
+function Stepper:__create_callbacks()
+    self:__create_set_instrument_callback()
+    self:__create_paginator_update()
+end
+
+function Stepper:__create_paginator_update()
+    self.pageinator_update_callback = function (msg)
+        print("stepper : update paginator")
+        self.page       = msg.page
+        self.page_start = msg.page_start
+        self.page_end   = msg.page_end
+        self.zoom       = msg.zoom
+        if self.is_active then
+            self:_refresh_matrix()
+        end
+    end
+end
+
+function Stepper:__create_set_instrument_callback()
+    self.set_instrument_callback = function (instrument_idx, track_idx, column_idx)
         self.track_idx        = track_idx
         self.track_column_idx = column_idx
         self.instrument_idx   = instrument_idx
         if self.is_active then
-            self:refresh_matrix()
+            self:_refresh_matrix()
         end
     end
 end
+
+
 
 function Stepper:callback_set_note()
     return function (note,octave)
@@ -136,12 +156,13 @@ function Stepper:_activate()
 
     --- selected pattern changes
     --
+    -- deprecated ?
     self.pattern_idx = renoise.song().selected_pattern_index
     if self.is_first_run then
         renoise.song().selected_pattern_index_observable:add_notifier(function (_)
             if self.is_not_active then return end
             self.pattern_idx = renoise.song().selected_pattern_index
-            self:refresh_matrix()
+            self:_refresh_matrix()
         end)
     end
 
@@ -185,42 +206,8 @@ function Stepper:_activate()
         end)
     end
 
-    --- zoom knobs listener
-    --
-    -- listens on click events to manipulate the zoom
-    --
-    self:zoom_update_knobs()
-    if self.is_first_run then
-        self.pad:register_top_listener(function (_,msg)
-            if self.is_not_active            then return end
-            if msg.vel == Velocity.release   then return end
-            if (msg.x == self.zoom_in_idx ) then
-                self:zoom_in()
-            elseif msg.x == self.zoom_out_idx then
-                self:zoom_out()
-            end
-        end)
-    end
-
-    --- pageination knobs listener
-    --
-    -- listens on click events to manipulate the pagination
-    --
-    self:page_update_knobs()
-    if self.is_first_run then
-        self.pad:register_top_listener(function (_,msg)
-            if self.is_not_active            then return end
-            if msg.vel == Velocity.release   then return end
-            if msg.x == self.page_inc_idx then
-                self:page_inc()
-            elseif msg.x == self.page_dec_idx then
-                self:page_dec()
-            end
-        end)
-    end
-
     --- refresh the matrix
-    self:refresh_matrix()
+    self:_refresh_matrix()
 end
 
 function Stepper:register_playback_position_observer()
@@ -237,8 +224,6 @@ end
 --- tear down
 --
 function Stepper:_deactivate()
-    self:page_clear_knobs()
-    self:zoom_clear_knobs()
     self:__matrix_clear()
     self:__render_matrix()
     self:unregister_playback_position_observer()
@@ -253,115 +238,7 @@ end
 
 
 
---- ======================================================================================================
----
----                                                 [ Pagination ]
 
-function Stepper:page_update_knobs()
-    if (self.page_start <= 0)  then
-        self.pad:set_top(self.page_dec_idx,self.color.page.inactive)
-    else
-        self.pad:set_top(self.page_dec_idx,self.color.page.active)
-    end
-    local pattern = self:active_pattern()
-    if (self.page_end >= pattern.number_of_lines)  then
-        self.pad:set_top(self.page_inc_idx,self.color.page.inactive)
-    else
-        self.pad:set_top(self.page_inc_idx,self.color.page.active)
-    end
-end
-
-function Stepper:page_clear_knobs()
-    self.pad:set_top(self.page_dec_idx,Color.off)
-    self.pad:set_top(self.page_inc_idx,Color.off)
-end
-
-function Stepper:page_inc()
-    local pattern = self:active_pattern()
-    if (self.page_end >= pattern.number_of_lines) then return end
-    self.page = self.page + 1
-    self:page_update_borders()
-    self:page_update_knobs()
-    self:refresh_matrix()
-end
-
-function Stepper:page_dec()
-    if(self.page_start <= 0 ) then return end
-    self.page = self.page - 1
-    self:page_update_borders()
-    self:page_update_knobs()
-    self:refresh_matrix()
-end
-
-function Stepper:page_update_borders()
-    self.page_start = ((self.page - 1) * 32 * self.zoom)
-    self.page_end   = self.page_start + 1 + 32 * self.zoom
-    -- print("update page borders", self.page, self.page_start, self.page_end)
-end
-
-
-
-
-
-
---- ======================================================================================================
----
----                                                 [ ZOOM ]
-
-function Stepper:zoom_out()
-    local pattern = self:active_pattern()
-    if (self.zoom < pattern.number_of_lines / 32) then
-        -- update zoom
-        self.zoom = self.zoom * 2
-        -- update page
-        self.page = (self.page * 2 ) - 1
-        self:page_update_borders()
-        -- correction
-        if (self.page_start >= pattern.number_of_lines) then
-            self.page = self.page - 2
-            self:page_update_borders()
-        end
-        -- refresh page
-        self:refresh_matrix()
-    end
-    self:page_update_knobs()
-    self:zoom_update_knobs()
-end
-
-function Stepper:zoom_in()
-    if (self.zoom > 1) then
-        -- update zoom
-        self.zoom = self.zoom / 2
-        -- update page
-        if (self.page > 1) then
-            self.page = math.floor(self.page / 2)
-        end
-        self:page_update_borders()
-        -- refresh martix
-        self:refresh_matrix()
-    end
-    self:page_update_knobs()
-    self:zoom_update_knobs()
-end
-
-function Stepper:zoom_update_knobs()
-    if (self.zoom > 1) then
-        self.pad:set_top(self.zoom_in_idx,self.color.zoom.active)
-    else
-        self.pad:set_top(self.zoom_in_idx,self.color.zoom.inactive)
-    end
-    local pattern = self:active_pattern()
-    if (self.zoom < (pattern.number_of_lines / 32)) then
-        self.pad:set_top(self.zoom_out_idx,self.color.zoom.active)
-    else
-        self.pad:set_top(self.zoom_out_idx,self.color.zoom.inactive)
-    end
-end
-
-function Stepper:zoom_clear_knobs()
-    self.pad:set_top(self.zoom_in_idx,Color.off)
-    self.pad:set_top(self.zoom_out_idx,Color.off)
-end
 
 --- ======================================================================================================
 ---
@@ -395,7 +272,7 @@ function Stepper:point_to_line(x,y)
     return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
 end
 
-function Stepper:refresh_matrix()
+function Stepper:_refresh_matrix()
     self:__matrix_clear()
     self:__matrix_update()
     self:__render_matrix()
