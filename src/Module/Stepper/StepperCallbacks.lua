@@ -22,7 +22,7 @@ function Stepper:__create_paginator_update()
 end
 
 function Stepper:__create_set_instrument_callback()
-    self.set_instrument_callback = function (instrument_idx, track_idx, column_idx)
+    self.callback_set_instrument = function (instrument_idx, track_idx, column_idx)
         self.track_idx        = track_idx
         self.track_column_idx = column_idx
         self.instrument_idx   = instrument_idx

@@ -115,9 +115,9 @@ function LaunchpadSetup:wire()
     self.effect:register_set_delay (self.stepper.callback_set_delay)
     self.effect:register_set_volume(self.stepper.callback_set_volume)
     self.effect:register_set_pan   (self.stepper.callback_set_pan)
---    self.effect:register_set_delay (self.adjus.er:callback_set_delay())
---    self.effect:register_set_volume(self.adjusterstepper:callback_set_volume())
---    self.effect:register_set_pan   (self.adjusterstepper:callback_set_pan())
+    self.effect:register_set_delay (self.adjuster.callback_set_delay)
+    self.effect:register_set_volume(self.adjuster.callback_set_volume)
+    self.effect:register_set_pan   (self.adjuster.callback_set_pan)
 
     self.key = Keyboard()
     self.key:wire_launchpad(self.pad)
@@ -149,8 +149,8 @@ function LaunchpadSetup:wire()
 
     --- Layer callback registration
     self.it_selection:register_select_instrument(self.key:callback_set_instrument())
-    self.it_selection:register_select_instrument(self.stepper.set_instrument_callback)
-    self.it_selection:register_select_instrument(self.adjuster:callback_set_instrument())
+    self.it_selection:register_select_instrument(self.stepper.callback_set_instrument)
+    self.it_selection:register_select_instrument(self.adjuster.callback_set_instrument)
     self.it_selection:register_select_instrument(self.effect:callback_set_instrument())
     self.it_selection:register_select_instrument(self.chooser:callback_set_instrument())
 
