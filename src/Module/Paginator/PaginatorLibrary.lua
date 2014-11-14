@@ -16,10 +16,10 @@ function Paginator:_update_listeners()
         page_end   = self.page_end,
         zoom       = self.zoom,
     }
-    print("page       ".. self.page)
-    print("page_start ".. self.page_start)
-    print("page_end   ".. self.page_end)
-    print("zoom       ".. self.zoom)
+--    print("page       ".. self.page)
+--    print("page_start ".. self.page_start)
+--    print("page_end   ".. self.page_end)
+--    print("zoom       ".. self.zoom)
     for _, callback in ipairs(self.update_callbacks) do
         callback(page)
     end
