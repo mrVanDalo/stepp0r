@@ -10,7 +10,7 @@ Version names by Estonian Marathon Champions
 
 * fixed various bugs, like the pollution of green dots, using a high LPB rate.
 * add adjust (aka copy paste) mode. You can copy paste patterns now.
-* add a nicer logo. Copyright is by [stylefusion](http://www.stylefusion.de/)
+* add a nicer logo. Copyright by [stylefusion.de](http://www.stylefusion.de/)
 * group tracks will be no longer selected by the instrument chooser (bug)
 * add about Page into Help -> About Stepp0r 
 * notification should be more stable now.
