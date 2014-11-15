@@ -1,0 +1,22 @@
+---
+layout: post
+title: "Released version 0.4"
+date:   2014-11-15 19:30:00
+categories: update documentation
+author: "Palo van Dalo"
+abstract: "I'm happy to announce the newest version 0.4.
+I ships with a copy paste mode called adjust mode."
+
+---
+
+Here is the Changelog for this release
+
+## 0.4 Villy Sudemäe
+
+* fixed various bugs, like the pollution of green dots, using a high LPB rate.
+* add adjust (aka copy paste) mode. You can copy paste patterns now.
+* add a nicer logo. Copyright is by [stylefusion](http://www.stylefusion.de/)
+* group tracks will be no longer selected by the instrument chooser (bug)
+* add about Page into Help -> About Stepp0r 
+* notification should be more stable now.
+
