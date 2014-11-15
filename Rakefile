@@ -20,11 +20,13 @@ def copy_task(src_glob, target_dir_suffix, task_symbol)
   end
 end
 
-copy_task 'src/*'       , export_folder , :export_main
-copy_task 'LICENSE.txt' , export_folder , :export_main
+copy_task 'src/*'        , export_folder , :export_main
+copy_task 'img/*'        , export_folder , :export_main
+copy_task 'LICENSE.txt'  , export_folder , :export_main
+copy_task 'manifest.xml' , export_folder , :export_main
 
-copy_task 'src/*'  , test_folder   , :test_main
-copy_task 'test/*' , test_folder   , :test_main
+#copy_task 'src/*'  , test_folder   , :test_main
+#copy_task 'test/*' , test_folder   , :test_main
 
 desc 'build the project'
 task :build => :export_main
