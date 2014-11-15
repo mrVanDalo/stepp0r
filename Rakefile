@@ -3,7 +3,7 @@
 require 'fileutils'
 
 BUILD_DIR='./build'
-version='0.3'
+version='0.4'
 project_title='Stepp0r'
 export_folder="#{project_title}-#{version}"
 test_folder="test-#{version}"
@@ -20,11 +20,13 @@ def copy_task(src_glob, target_dir_suffix, task_symbol)
   end
 end
 
-copy_task 'src/*'       , export_folder , :export_main
-copy_task 'LICENSE.txt' , export_folder , :export_main
+copy_task 'src/lua/*'        , export_folder , :export_main
+copy_task 'src/img/*'        , export_folder , :export_main
+copy_task 'src/resources/*'  , export_folder , :export_main
+copy_task 'LICENSE.txt'      , export_folder , :export_main
 
-copy_task 'src/*'  , test_folder   , :test_main
-copy_task 'test/*' , test_folder   , :test_main
+#copy_task 'src/*'  , test_folder   , :test_main
+#copy_task 'test/*' , test_folder   , :test_main
 
 desc 'build the project'
 task :build => :export_main
