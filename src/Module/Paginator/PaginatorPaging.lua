@@ -8,13 +8,18 @@ function Paginator:__create_page_listener()
         if msg.vel == Velocity.release   then return end
         if msg.x == self.page_inc_idx then
             self:_page_inc()
+            self:_after_page_change()
         elseif msg.x == self.page_dec_idx then
             self:_page_dec()
+            self:_after_page_change()
         end
-        self:_page_update_borders()
-        self:_page_update_knobs()
-        self:_update_listeners()
     end
+end
+
+function Paginator:_after_page_change()
+    self:_page_update_borders()
+    self:_page_update_knobs()
+    self:_update_listeners()
 end
 
 function Paginator:_page_inc()

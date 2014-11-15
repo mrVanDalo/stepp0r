@@ -7,13 +7,21 @@ function Paginator:__create_zoom_listener()
         if self.is_not_active            then return end
         if msg.vel == Velocity.release   then return end
         if (msg.x == self.zoom_in_idx ) then
+            -- todo optimize me, if nothing changed than don't trigger updates
             self:_zoom_in()
+            self:_after_zoom_change()
         elseif msg.x == self.zoom_out_idx then
+            -- todo optimize me, if nothing changed than don't trigger updates
             self:_zoom_out()
+            self:_after_zoom_change()
         end
-        self:_page_update_knobs()
-        self:__zoom_update_knobs()
     end
+end
+
+function Paginator:_after_zoom_change()
+    self:_page_update_knobs()
+    self:_zoom_update_knobs()
+    self:_update_listeners()
 end
 
 function Paginator:_zoom_out()
@@ -25,8 +33,16 @@ function Paginator:_zoom_out()
         self.page = (self.page * 2 ) - 1
         self:_page_update_borders()
         -- correction
+--        print("number of lines : " .. pattern.number_of_lines)
+--        print("self.page_start : " .. self.page_start)
         if (self.page_start >= pattern.number_of_lines) then
+--            print("lower half correction")
             self.page = self.page - 2
+            self:_page_update_borders()
+        end
+        while (self.page_start >= pattern.number_of_lines and self.page > 0) do
+--            print("last page correction")
+            self.page = self.page - 1
             self:_page_update_borders()
         end
     end
@@ -44,7 +60,7 @@ function Paginator:_zoom_in()
     end
 end
 
-function Paginator:__zoom_update_knobs()
+function Paginator:_zoom_update_knobs()
     if (self.zoom > 1) then
         self.pad:set_top(self.zoom_in_idx,self.color.zoom.active)
     else

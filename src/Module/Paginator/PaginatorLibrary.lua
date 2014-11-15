@@ -16,6 +16,8 @@ function Paginator:_update_listeners()
         page_end   = self.page_end,
         zoom       = self.zoom,
     }
+--    print("update listeners")
+--    print("----------------")
 --    print("page       ".. self.page)
 --    print("page_start ".. self.page_start)
 --    print("page_end   ".. self.page_end)
