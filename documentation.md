@@ -15,7 +15,10 @@ which already exists.
 > There is only one restriction : 
 > InstrumentX will always be on TrackX
 
-## Parts
+
+## Pattern Edit mode
+
+### Parts
 
 Here are the parts of the Stepp0r.
 
@@ -78,5 +81,9 @@ If you want to center the panning again, just press the panning again.
 #### Volume
 
 very obvious.
+
+
+
+## Adjustment Mode (aka Copy Paste mode)
 
 
