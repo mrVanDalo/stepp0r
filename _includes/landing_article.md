@@ -2,7 +2,7 @@
 
 Stepp0r is a Step-Sequencer for [Renoise](http://www.renoise.com/)
 on the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad)
-written by Palo van Dalo.
+written by Ingolf Wagner (aka [Palo van Dalo](https://soundcloud.com/palo-van-dalo)).
 Right now, it's working fine as a _"forget the computer"_ type control.
 You can punch in your sequences, or you can use the keyboard to record your melodies
 using the osc server of [Renoise](http://www.renoise.com/).
