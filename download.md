@@ -5,8 +5,14 @@ permalink: /downloads/
 ---
 
 
-[Actual Version]( {{site.baseurl }}/downloads/{{ site.actual_version }} )
+## Actual Version
 
+You can download the actual version [here]( {{site.baseurl }}/downloads/{{ site.actual_version }} )
+
+## Nightly Build
+
+I only post finished releases here. If you want to us the bloody Beta version you have go to the 
+[project page](https://github.com/mrVanDalo/stepp0r/tree/develop) and build it yourself.
 
 ## All versions
 
