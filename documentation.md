@@ -22,7 +22,7 @@ which already exists.
 
 Here are the parts of the Stepp0r.
 
-<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad.svg" alt="Launchpad Parts" />
+<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-PatternEditorMode.svg" alt="Launchpad Parts" />
 
 
 ### Keyboard
@@ -31,7 +31,7 @@ For Playing Tones.
 
 > You have to start an OSC Server on the port you configured to hear the tones.
 
-The last key you've pressed is blinking and will be used to edit the **Stepper-Area**.
+The last key you've pressed is blinking and will be used to edit the **Pattern Edit Area**.
 
 On the top left and right you can change the octave, which is displayed as an yellow button in the 
 second row.
@@ -39,7 +39,7 @@ second row.
 ### Instruments / Tracks
 
 You can choose the different Instruments here. 
-Choosing a new Instrument will update the **Stepper-Area**.
+Choosing a new Instrument will update the **Pattern Edit Area**.
 
 The **Instrument-Row** is paged. 
 
@@ -49,13 +49,13 @@ On the right you can toggle between **choose** and **mute**.
 
 > Changing the track in **Renoise** will also change the selection in **Stepp0r**.
 
-### Stepper
+### Pattern Edit Area
 
 The core view of **Stepp0r**. 
 When you hit play and you select the actual pattern in the **Pattern Matrix**, you will see a green light running 
 from left to right, which represents the current play position.
 
-You have **Pagination** and **Zooming** for the Stepper.
+You have **Pagination** and **Zooming** for this Area.
 
 Pressing keys will place or remove a note (using the **Keyboard** and **Effects**) at this specific place.
 
@@ -86,4 +86,26 @@ very obvious.
 
 ## Adjustment Mode (aka Copy Paste mode)
 
+
+<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-AdjustMode.svg" alt="Launchpad Adjust Mode Parts" />
+
+
+This mode lets you copy paste sections of you Pattern. 
+
+### Bank
+
+You have 8 Banks, where you can store selections.
+You can clear every Bank by using the red button below the selected bank.
+By pressing the flashing button in the bank (your selected bank) you can switch between copy and paste mode.
+The pattern you copy can be used across all other instruments.
+
+
+### Adjust Mode Area
+
+Here you can insert and select your patterns, according to the mode you've selected.
+
+
+### Effects
+
+Don't do anything right now.
 
