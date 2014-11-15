@@ -15,4 +15,4 @@ This product (the Renoise-Plugin Stepp0r) is Licensed under the [GPLv3](http://w
 
 ## Images
 
-The Stepp0r logos (on this page and in the program ) are copyrighted by [stylefusion](http://www.stylefusion.de/)
+The Stepp0r logos (on this page and in the program ) copyrights belong to [stylefusion](http://www.stylefusion.de/)
