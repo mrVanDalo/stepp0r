@@ -22,11 +22,11 @@ Everything from `main.lua` will call stuff from in here.
 ### Module
 
 A module is something that is used by other Modules. 
-Most of the time that is something that writes something to the Launchpad.
+Most of the time it's something that writes something to the Launchpad.
 
 ### Mode 
 
-Is some kind of abstract Module, to toggle other module on and off.
+Is some kind of abstract Module, to toggle other modules on and off.
 
 #### Module fields
 
@@ -44,3 +44,7 @@ Modules have them too, and the convention is `<ModuleName>Data`.
 It holds the Constant values for the module or this artifact (`Color` or `Note` for example).
 Its a dictionary (table).
 For more complex objects it has a access key (containing the indices to access parts of the complex object)
+
+# Contact
+
+You'll find me in the [official Renoise Channel](http://www.renoise.com/chat) by the name **palo**
