@@ -7,6 +7,8 @@ Right now, it's working fine as a _"forget the computer"_ type control.
 You can punch in your sequences, or you can use the keyboard to record your melodies
 using the osc server of [Renoise](http://www.renoise.com/).
 
+<iframe width="560" height="315" src="//www.youtube.com/embed/eiH6HfF6MQ8" frameborder="0" allowfullscreen></iframe>
+
 ## You want to start using it? 
 * Buy a launchpad (at ebay for example).
 * [Download]({{ site.baseurl }}/downloads/{{ site.actual_version }}) the plugin.
