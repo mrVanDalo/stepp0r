@@ -7,6 +7,7 @@ permalink: /about/
 ## Author
 
 Ingolf Wagner (aka [Palo van Dalo](https://soundcloud.com/palo-van-dalo))
+[@Twitter](https://twitter.com/mr_van_dalo).
 
 
 ## Software License
