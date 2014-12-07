@@ -129,31 +129,33 @@ function Launchpad:send(channel, number, value)
 end
 
 function Launchpad:set_matrix( a, b , color )
-    local x = a - 1
-    local y = b - 1
-    if ( x < 8 and x > -1 and y < 8 and y > -1) then
-        self:send(0x90 , y * 16 + x , color)
+    if (self.__rotation == LaunchpadData.rotation.right) then
+        self:set_matrix_right(a,b,color)
+    else
+        self:set_matrix_left(a,b,color)
     end
 end
 
 function Launchpad:set_top(a,color)
-    local x = a - 1
-    if ( x > -1 and x < 8 ) then
-        self:send( 0xB0, x + 0x68, color)
+    if (self.__rotation == LaunchpadData.rotation.right) then
+        self:set_top_right(a,color)
+    else
+        self:set_top_left(a,color)
     end
 end
 
 function Launchpad:set_side(a,color)
-    local x = a - 1
-    if ( x > -1 and x < 8 ) then
-        self:send( 0x90, 0x10 * x + 0x08, color)
+    if (self.__rotation == LaunchpadData.rotation.right) then
+        self:set_side_right(a,color)
+    else
+        self:set_side_left(a,color)
     end
 end
 
 function Launchpad:clear()
     self:clear_matrix()
     self:clear_top()
-    self:clear_right()
+    self:clear_side()
 end
 
 function Launchpad:clear_matrix()
@@ -163,23 +165,20 @@ function Launchpad:clear_matrix()
         end 
     end 
 end
-
-function Launchpad:clear_right()
-    for x=0,7,1 do 
-        self:set_top(x,Color.off)
-    end 
-end
-
-function Launchpad:clear_top()
+function Launchpad:clear_side()
     for x=0,7,1 do 
         self:set_side(x,Color.off)
+    end 
+end
+function Launchpad:clear_top()
+    for x=0,7,1 do 
+        self:set_top(x,Color.off)
     end 
 end
 
 function Launchpad:set_flash()
     self:send(0xB0,0x00,0x28)
 end
-
 function Launchpad:unset_flash()
     self:send(0xB0,0x00,0x32)
 end
