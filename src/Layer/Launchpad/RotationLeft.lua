@@ -55,7 +55,7 @@ function _is_matrix_left(msg)
             local y = bit.rshift(note,4)
             local x = bit.band(0x07,note)
             if ( x > -1 and x < 8 and y > -1  and y < 8 ) then
-                return { flag = true , y = (y + 1), x = 8 - x , vel = msg[3] }
+                return { flag = true , y = 8 - x , x = (y + 1), vel = msg[3] }
             end
         end
     end
