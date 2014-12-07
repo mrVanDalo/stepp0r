@@ -6,7 +6,6 @@
 
 class "Launchpad"
 
-
 LaunchpadData = {
     rotation = {
         left  = 1,
@@ -26,7 +25,8 @@ require 'Layer/Launchpad/RotationRight'
 function Launchpad:__init()
     self:unregister_all()
     -- self:_watch()
-    self.__rotation = LaunchpadData.rotation.right
+    -- self.__rotation = LaunchpadData.rotation.right
+    self.__rotation = LaunchpadData.rotation.left
 end
 
 function Launchpad:rotate_left()
@@ -75,7 +75,7 @@ function Launchpad:register_top_listener(handler)
     self:_register(self._top_listener,   handler)
 end
 function Launchpad:register_right_listener(handler)
-    self:_register(self._right_listener, handler)
+    self:_register(self._side_listener, handler)
 end
 function Launchpad:register_matrix_listener(handler)
     self:_register(self._matrix_listener,handler)
@@ -91,14 +91,14 @@ function Launchpad:unregister_top_listener(handler)
     self:__unregister(self._top_listener, handler)
 end
 function Launchpad:unregister_right_listener(handler)
-    self:__unregister(self._right_listener, handler)
+    self:__unregister(self._side_listener, handler)
 end
 function Launchpad:unregister_matrix_listener(handler)
     self:__unregister(self._matrix_listener, handler)
 end
 function Launchpad:unregister_all()
     self._top_listener = {}
-    self._right_listener = {}
+    self._side_listener = {}
     self._matrix_listener = {}
 end
 function Launchpad:__unregister(list,handle)

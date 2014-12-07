@@ -48,7 +48,7 @@ function _is_top_left(msg)
     end
     return LaunchpadData.no
 end
-function _is_matrix_right(msg)
+function _is_matrix_left(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
         if (bit.band(0x08,note) == 0) then
@@ -60,4 +60,31 @@ function _is_matrix_right(msg)
         end
     end
     return LaunchpadData.no
+end
+
+
+
+---
+-- Set parameters
+
+function Launchpad:set_matrix_left( a, b , color )
+    local y = a - 1
+    local x = 8 - b
+    if ( x < 8 and x > -1 and y < 8 and y > -1) then
+        self:send(0x90 , y * 16 + x , color)
+    end
+end
+
+function Launchpad:set_top_left(a,color)
+    local x = a - 1
+    if ( x > -1 and x < 8 ) then
+        self:send( 0xB0, x + 0x68, color)
+    end
+end
+
+function Launchpad:set_side_left(a,color)
+    local x = a - 1
+    if ( x > -1 and x < 8 ) then
+        self:send( 0x90, 0x10 * x + 0x08, color)
+    end
 end

@@ -3,7 +3,7 @@ require 'Data/Color'
 require 'Data/Note'
 require 'Data/Velocity'
 
-require 'Layer/Launchpad/Lanchpad'
+require 'Layer/Launchpad/Launchpad'
 require 'Layer/PlaybackPositionObserver'
 require 'Layer/OscClient'
 require 'Layer/Util'
