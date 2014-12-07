@@ -75,14 +75,14 @@ function Launchpad:set_matrix_left( a, b , color )
     end
 end
 
-function Launchpad:set_top_left(a,color)
-    local x = a - 1
+function Launchpad:set_side_left(a,color)
+    local x = 8 - a
     if ( x > -1 and x < 8 ) then
         self:send( 0xB0, x + 0x68, color)
     end
 end
 
-function Launchpad:set_side_left(a,color)
+function Launchpad:set_top_left(a,color)
     local x = a - 1
     if ( x > -1 and x < 8 ) then
         self:send( 0x90, 0x10 * x + 0x08, color)
