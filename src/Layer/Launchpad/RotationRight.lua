@@ -17,7 +17,7 @@ function Launchpad:right_callback(msg)
     --
     result = _is_side_right(msg)
     if (result.flag) then
-        for _, callback in pairs(self._right_listener) do
+        for _, callback in pairs(self._side_listener) do
             callback(self, result)
         end
         return

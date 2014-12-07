@@ -17,7 +17,7 @@ function Launchpad:left_callback(msg)
     --
     result = _is_side_left(msg)
     if (result.flag) then
-        for _, callback in pairs(self._right_listener) do
+        for _, callback in pairs(self._side_listener) do
             callback(self, result)
         end
         return
@@ -31,7 +31,7 @@ function _is_side_left(msg)
     if msg[1] == 0xB0 then
         local x = msg[2] - 0x68
         if (x > -1 and x < 8) then
-            return { flag = true,  x = 8 - x, vel = msg[3] }
+            return { flag = true,  x = (8 - x), vel = msg[3] }
         end
     end
     return LaunchpadData.no
