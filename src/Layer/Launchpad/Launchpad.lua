@@ -6,6 +6,14 @@
 
 class "Launchpad"
 
+
+LaunchpadData = {
+    rotation = {
+        left  = 1,
+        right = 2,
+    }
+}
+
 --- ======================================================================================================
 ---
 ---                                                 [ INIT ]
@@ -13,6 +21,14 @@ class "Launchpad"
 function Launchpad:__init()
     self:unregister_all()
     -- self:_watch()
+    self.__rotation = LaunchpadData.rotation.right
+end
+
+function Launchpad:rotate_left()
+    self.__rotation = LaunchpadData.rotation.left
+end
+function Launchpad:rotate_right()
+    self.__rotation = LaunchpadData.rotation.right
 end
 
 --- connect launchpad to a midi device
@@ -23,28 +39,54 @@ function Launchpad:connect(midi_device_name)
     --
     -- magic callback function
     local function main_callback(msg)
-        local result = _is_matrix(msg)
-        if (result.flag) then
-            for _, callback in pairs(self._matrix_listener) do
-                callback(self, result)
+        if (self.__rotation == LaunchpadData.rotation.right) then
+            local result = _is_matrix_right(msg)
+            if (result.flag) then
+                for _, callback in pairs(self._matrix_listener) do
+                    callback(self, result)
+                end
+                return
             end
-            return
-        end
-        --
-        result = _is_top(msg)
-        if (result.flag) then
-            for _, callback in pairs(self._top_listener) do
-                callback(self, result)
+            --
+            result = _is_top_right(msg)
+            if (result.flag) then
+                for _, callback in pairs(self._top_listener) do
+                    callback(self, result)
+                end
+                return
             end
-            return
-        end
-        --
-        result = _is_right(msg)
-        if (result.flag) then
-            for _, callback in pairs(self._right_listener) do
-                callback(self, result)
+            --
+            result = _is_side_right(msg)
+            if (result.flag) then
+                for _, callback in pairs(self._right_listener) do
+                    callback(self, result)
+                end
+                return
             end
-            return
+        else
+            local result = _is_matrix_left(msg)
+            if (result.flag) then
+                for _, callback in pairs(self._matrix_listener) do
+                    callback(self, result)
+                end
+                return
+            end
+            --
+            result = _is_top_left(msg)
+            if (result.flag) then
+                for _, callback in pairs(self._top_listener) do
+                    callback(self, result)
+                end
+                return
+            end
+            --
+            result = _is_side_left(msg)
+            if (result.flag) then
+                for _, callback in pairs(self._right_listener) do
+                    callback(self, result)
+                end
+                return
+            end
         end
     end
     self.midi_input  = renoise.Midi.create_input_device(midi_device_name, main_callback)
@@ -114,7 +156,7 @@ no = { flag = false }
 
 --- Test functions for the handler
 --
-function _is_top(msg)
+function _is_top_right(msg)
     if msg[1] == 0xB0 then
         local x = msg[2] - 0x68 
         if (x > -1 and x < 8) then
@@ -123,7 +165,7 @@ function _is_top(msg)
     end
     return no
 end
-function _is_right(msg)
+function _is_side_right(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
         if (bit.band(0x08,note) == 0x08) then
@@ -135,7 +177,7 @@ function _is_right(msg)
     end
     return no 
 end
-function _is_matrix(msg)
+function _is_matrix_right(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
         if (bit.band(0x08,note) == 0) then
@@ -223,95 +265,5 @@ end
 
 
 
-
-
---- ======================================================================================================
----
----                                                 [ Examples ]
-
---- example handler
---
-function echo_top(_,msg)
-    local x   = msg.x
-    local vel = msg.vel
-    --print(top)
-    print(("top    : (%X) = %X"):format(x,vel))
-end
-function echo_right(_,msg)
-    local x   = msg.x
-    local vel = msg.vel
-    --print(right)
-    print(("right  : (%X) = %X"):format(x,vel))
-end
-function echo_matrix(_,msg)
-    local x   = msg.x
-    local y   = msg.y
-    local vel = msg.vel
-    --print(matrix)
-    print(("matrix : (%X,%X) = %X"):format(x,y,vel))
-end
-
-
---- example functions
---
-function example_matrix(pad)
-    for y=0,7,1 do 
-        for x=0,7,1 do 
-            pad:set_matrix(x,y,x+(y*8))
-        end 
-    end 
-end
-function example_colors(pad)
-    -- send
-    -- configuration
-    pad:set_flash()
-
-    pad:set_matrix(i,1,Color.red)
-    pad:set_matrix(1,1,Color.yellow)
-    pad:set_matrix(2,1,Color.green)
-    pad:set_matrix(3,1,Color.orange)
-
-    pad:set_matrix(4,2,Color.flash.red)
-    pad:set_matrix(1,2,Color.flash.yellow)
-    pad:set_matrix(2,2,Color.flash.green)
-    pad:set_matrix(3,2,Color.flash.orange)
-   
-    pad:set_matrix(3,3,Color.full.red)
-    pad:set_matrix(1,3,Color.full.yellow)
-    pad:set_matrix(2,3,Color.full.green)
-
-    pad:set_matrix(3,4,Color.dim.red)
-    pad:set_matrix(1,4,Color.dim.yellow)
-    pad:set_matrix(2,4,Color.dim.green)
-
-    pad:set_top(1,Color.yellow)
-    pad:set_top(2,Color.green)
-    pad:set_top(3,Color.orange)
-    pad:set_top(4,Color.flash.red)
-    pad:set_top(5,Color.flash.yellow)
-    pad:set_top(6,Color.flash.green)
-    pad:set_top(7,Color.flash.orange)
-    pad:set_top(8,Color.red)
-
-    pad:set_right(8,Color.red)
-    pad:set_right(1,Color.yellow)
-    pad:set_right(2,Color.green)
-    pad:set_right(3,Color.orange)
-    pad:set_right(4,Color.flash.red)
-    pad:set_right(5,Color.flash.yellow)
-    pad:set_right(6,Color.flash.green)
-    pad:set_right(7,Color.flash.orange)
-
-    -- callbacks
-    pad:unregister_all()
-
-    pad:register_matrix_listener(echo_matrix)
-    pad:register_top_listener(echo_top)
-    pad:register_right_listener(echo_right)
-end
-function example(pad)
-    -- configuration
-    example_colors(pad)
-end
 
 
