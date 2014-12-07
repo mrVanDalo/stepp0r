@@ -11,8 +11,13 @@ LaunchpadData = {
     rotation = {
         left  = 1,
         right = 2,
-    }
+    },
+    --- callback convention always return an array first slot is true
+    no = { flag = false }
 }
+
+require 'Layer/Launchpad/RotationLeft'
+require 'Layer/Launchpad/RotationRight'
 
 --- ======================================================================================================
 ---
@@ -40,53 +45,9 @@ function Launchpad:connect(midi_device_name)
     -- magic callback function
     local function main_callback(msg)
         if (self.__rotation == LaunchpadData.rotation.right) then
-            local result = _is_matrix_right(msg)
-            if (result.flag) then
-                for _, callback in pairs(self._matrix_listener) do
-                    callback(self, result)
-                end
-                return
-            end
-            --
-            result = _is_top_right(msg)
-            if (result.flag) then
-                for _, callback in pairs(self._top_listener) do
-                    callback(self, result)
-                end
-                return
-            end
-            --
-            result = _is_side_right(msg)
-            if (result.flag) then
-                for _, callback in pairs(self._right_listener) do
-                    callback(self, result)
-                end
-                return
-            end
+            self:right_callback(msg)
         else
-            local result = _is_matrix_left(msg)
-            if (result.flag) then
-                for _, callback in pairs(self._matrix_listener) do
-                    callback(self, result)
-                end
-                return
-            end
-            --
-            result = _is_top_left(msg)
-            if (result.flag) then
-                for _, callback in pairs(self._top_listener) do
-                    callback(self, result)
-                end
-                return
-            end
-            --
-            result = _is_side_left(msg)
-            if (result.flag) then
-                for _, callback in pairs(self._right_listener) do
-                    callback(self, result)
-                end
-                return
-            end
+            self:left_callback(msg)
         end
     end
     self.midi_input  = renoise.Midi.create_input_device(midi_device_name, main_callback)
@@ -149,46 +110,6 @@ function Launchpad:__unregister(list,handle)
 --        print("not found")
 --        print(handle)
     end
-end
-
---- callback convention always return an array first slot is true
-no = { flag = false }
-
---- Test functions for the handler
---
-function _is_top_right(msg)
-    if msg[1] == 0xB0 then
-        local x = msg[2] - 0x68 
-        if (x > -1 and x < 8) then
-            return { flag = true,  x = (x + 1), vel = msg[3] }
-        end
-    end
-    return no
-end
-function _is_side_right(msg)
-    if msg[1] == 0x90 then
-        local note = msg[2]
-        if (bit.band(0x08,note) == 0x08) then
-            local x = bit.rshift(note,4)
-            if (x > -1 and x < 8) then 
-                return { flag = true,  x = (x + 1), vel = msg[3] }
-            end
-        end
-    end
-    return no 
-end
-function _is_matrix_right(msg)
-    if msg[1] == 0x90 then
-        local note = msg[2]
-        if (bit.band(0x08,note) == 0) then
-            local y = bit.rshift(note,4)
-            local x = bit.band(0x07,note)
-            if ( x > -1 and x < 8 and y > -1  and y < 8 ) then 
-                return { flag = true , x = (x + 1) , y = (y + 1), vel = msg[3] }
-            end
-        end
-    end
-    return no
 end
 
 
