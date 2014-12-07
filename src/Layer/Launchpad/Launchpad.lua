@@ -143,7 +143,7 @@ function Launchpad:set_top(a,color)
     end
 end
 
-function Launchpad:set_right(a,color)
+function Launchpad:set_side(a,color)
     local x = a - 1
     if ( x > -1 and x < 8 ) then
         self:send( 0x90, 0x10 * x + 0x08, color)
@@ -172,7 +172,7 @@ end
 
 function Launchpad:clear_top()
     for x=0,7,1 do 
-        self:set_right(x,Color.off)
+        self:set_side(x,Color.off)
     end 
 end
 

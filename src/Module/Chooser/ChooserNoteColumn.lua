@@ -22,12 +22,12 @@ function Chooser:column_update_knobs()
         elseif i < visible then
             color = self.color.column.inactive
         end
-        self.pad:set_right(i,color)
+        self.pad:set_side(i,color)
     end
 end
 
 function Chooser:column_clear_knobs()
     for i = self.column_idx_start, self.column_idx_stop do
-        self.pad:set_right(i,Color.off)
+        self.pad:set_side(i,Color.off)
     end
 end

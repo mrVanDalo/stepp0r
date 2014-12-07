@@ -92,7 +92,7 @@ end
 
 function Effect:_deactivate()
     self:matrix_clear()
-    self.pad:set_right(self.mode_knob_idx,Color.off)
+    self.pad:set_side(self.mode_knob_idx,Color.off)
     self.pad:unregister_matrix_listener(self.matrix_listener)
     self.pad:unregister_right_listener(self.mode_listener)
 end
