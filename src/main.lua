@@ -13,12 +13,14 @@ class "RenoiseScriptingTool" (renoise.Document.DocumentNode)
     renoise.Document.DocumentNode.__init(self) 
     self:add_property("Name", "Untitled Tool")
     self:add_property("Id", "Unknown Id")
+    self:add_property("Version", "Unknown Version")
   end
 
-local manifest    = RenoiseScriptingTool()
-local ok,err      = manifest:load_from("manifest.xml")
-local tool_name   = manifest:property("Name").value
-local tool_id     = manifest:property("Id").value
+local manifest     = RenoiseScriptingTool()
+local ok,err       = manifest:load_from("manifest.xml")
+local tool_name    = manifest:property("Name").value
+local tool_id      = manifest:property("Id").value
+local tool_version = manifest:property("Version").value
 
 
 -- Placeholder for the dialog
@@ -57,7 +59,7 @@ function create_main_UI()
             launchpad_setup:connect_osc_client(options.osc.host,options.osc.port)
         end
 
-        launchpad_setup:connect_launchpad(options.launchpad.name)
+        launchpad_setup:connect_launchpad(options.launchpad.name, options.rotation)
         launchpad_setup:connect_it_selection()
         launchpad_setup:activate()
     end)
@@ -92,7 +94,7 @@ local function show_about()
         about_ui = AboutUI()
         about_ui:create_ui()
     end
-    renoise.app():show_custom_dialog("About "..tool_name, about_ui.container)
+    renoise.app():show_custom_dialog("About ".. tool_name  .. " " .. tool_version, about_ui.container)
 end
 
 local function show_main_dialog()
@@ -113,7 +115,7 @@ local function show_main_dialog()
         create_main_UI()
     end
 
-    main_dialog = renoise.app():show_custom_dialog(tool_name, main_ui.container)
+    main_dialog = renoise.app():show_custom_dialog(tool_name .. " " .. tool_version, main_ui.container)
     update_main_UI_callbacks(main_dialog)
 
 end

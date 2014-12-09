@@ -14,7 +14,7 @@ function MainUI:__init()
     self.input_size  = 200
     self.command_button_size = 80
     self.is_running = false
-    self.default_osc_port = '8008'
+    self.default_osc_port = '8000'
     self:unregister_run_callback()
     self:unregister_quit_callback()
     self:unregister_stop_callback()
@@ -24,6 +24,7 @@ function MainUI:create_ui()
     self:create_logo()
     self:create_device_row()
     self:create_osc_row()
+    self:create_rotation_row()
     self:create_start_stop_button()
     self:create_quit_button()
     self:create_container()
@@ -46,6 +47,7 @@ function MainUI:create_container()
             margin = 4,
             self.osc_row,
             self.device_row,
+            self.rotation_row,
         },
         self.vb:row {
             margin = 4,
@@ -122,6 +124,39 @@ end
 
 
 
+
+--- ======================================================================================================
+---
+---                                                 [ Rotation Row ]
+
+function MainUI:create_rotation_row()
+    self.rotation_switch = self.vb:switch {
+        items = { "left", "right" },
+        width = self.input_size,
+    }
+    self.rotation_switch.value = 2
+    self.rotation_row = self.vb:row{
+        spacing = 3,
+        self.vb:text{
+            text = "",
+            width = self.button_size,
+        },
+        self.vb:text{
+            text = "Rotation",
+            width = self.text_size,
+        },
+        self.rotation_switch,
+    }
+end
+
+function MainUI:disable_rotation_row()
+    self.rotation_switch.active = false
+end
+
+function MainUI:enable_rotation_row()
+    self.rotation_switch.active = true
+end
+
 --- ======================================================================================================
 ---
 ---                                                 [ OSC Row ]
@@ -156,12 +191,14 @@ function MainUI:create_osc_row()
     }
 end
 
+
 function MainUI:disable_osc_row()
     self.osc_row_checkbox.active = false
     self.osc_row_text.text = self.osc_row_textfield.text
     self.osc_row_textfield.visible = false
     self.osc_row_text.visible = true
 end
+
 
 function MainUI:enable_osc_row()
     self.osc_row_checkbox.active = true
@@ -179,7 +216,7 @@ end
 ---
 ---                                                 [ Start Stop Buttons ]
 
-function MainUI: create_start_stop_button()
+function MainUI:create_start_stop_button()
     self.start_stop_button = self.vb:button {
         text = "Start",
         width = self.command_button_size,
@@ -214,6 +251,7 @@ function MainUI:run_properties()
         launchpad = {
             name = self:selected_device(),
         },
+        rotation = self.rotation_switch.value
     }
 end
 
@@ -230,6 +268,7 @@ function MainUI:run()
     self.start_stop_button.text = "Stop"
     self:disable_device_row()
     self:disable_osc_row()
+    self:disable_rotation_row()
     self.run_callback(self:run_properties())
 end
 
@@ -245,6 +284,7 @@ function MainUI:stop()
     self.is_running = false
     self.start_stop_button.text = "Start"
     self:enable_device_row()
+    self:enable_rotation_row()
     self:enable_osc_row()
     self.stop_callback()
 end
