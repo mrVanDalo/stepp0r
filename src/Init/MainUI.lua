@@ -14,7 +14,7 @@ function MainUI:__init()
     self.input_size  = 200
     self.command_button_size = 80
     self.is_running = false
-    self.default_osc_port = '8008'
+    self.default_osc_port = '8000'
     self:unregister_run_callback()
     self:unregister_quit_callback()
     self:unregister_stop_callback()
@@ -24,6 +24,7 @@ function MainUI:create_ui()
     self:create_logo()
     self:create_device_row()
     self:create_osc_row()
+    self:create_rotation_row()
     self:create_start_stop_button()
     self:create_quit_button()
     self:create_container()
@@ -46,6 +47,7 @@ function MainUI:create_container()
             margin = 4,
             self.osc_row,
             self.device_row,
+            self.rotation_row,
         },
         self.vb:row {
             margin = 4,
@@ -121,6 +123,29 @@ function MainUI:selected_device()
 end
 
 
+
+
+--- ======================================================================================================
+---
+---                                                 [ Rotation Row ]
+
+function MainUI:create_rotation_row()
+    self.rotation_row = self.vb:row{
+        spacing = 3,
+        self.vb:text{
+            text = "",
+            width = self.button_size,
+        },
+        self.vb:text{
+            text = "Rotation",
+            width = self.text_size,
+        },
+        self.vb:switch {
+            items = { "left", "right" },
+            width = self.input_size,
+        }
+    }
+end
 
 --- ======================================================================================================
 ---
