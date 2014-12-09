@@ -30,6 +30,13 @@ require 'Module/Keyboard/Keyboard'
 
 class "LaunchpadSetup"
 
+LaunchpadSetupData = {
+    rotation = {
+        left  = 1,
+        right = 2,
+    }
+}
+
 
 
 function LaunchpadSetup:__init()
@@ -74,8 +81,13 @@ function LaunchpadSetup:activate()
     self.it_selection:boot()
 end
 
-function LaunchpadSetup:connect_launchpad(pad_name)
+function LaunchpadSetup:connect_launchpad(pad_name,rotation)
     self.pad:disconnect()
+    if (rotation == LaunchpadSetupData.rotation.right) then
+        self.pad:rotate_right()
+    else
+        self.pad:rotate_left()
+    end
     self.pad:connect(pad_name)
 end
 

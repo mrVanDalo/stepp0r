@@ -59,7 +59,7 @@ function create_main_UI()
             launchpad_setup:connect_osc_client(options.osc.host,options.osc.port)
         end
 
-        launchpad_setup:connect_launchpad(options.launchpad.name)
+        launchpad_setup:connect_launchpad(options.launchpad.name, options.rotation)
         launchpad_setup:connect_it_selection()
         launchpad_setup:activate()
     end)

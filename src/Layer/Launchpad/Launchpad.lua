@@ -25,8 +25,8 @@ require 'Layer/Launchpad/RotationRight'
 function Launchpad:__init()
     self:unregister_all()
     -- self:_watch()
-    -- self.__rotation = LaunchpadData.rotation.right
-    self.__rotation = LaunchpadData.rotation.left
+    self.__rotation = LaunchpadData.rotation.right
+--    self.__rotation = LaunchpadData.rotation.left
 end
 
 function Launchpad:rotate_left()

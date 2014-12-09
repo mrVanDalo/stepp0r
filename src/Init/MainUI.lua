@@ -130,6 +130,11 @@ end
 ---                                                 [ Rotation Row ]
 
 function MainUI:create_rotation_row()
+    self.rotation_switch = self.vb:switch {
+        items = { "left", "right" },
+        width = self.input_size,
+    }
+    self.rotation_switch.value = 2
     self.rotation_row = self.vb:row{
         spacing = 3,
         self.vb:text{
@@ -140,10 +145,7 @@ function MainUI:create_rotation_row()
             text = "Rotation",
             width = self.text_size,
         },
-        self.vb:switch {
-            items = { "left", "right" },
-            width = self.input_size,
-        }
+        self.rotation_switch,
     }
 end
 
@@ -239,6 +241,7 @@ function MainUI:run_properties()
         launchpad = {
             name = self:selected_device(),
         },
+        rotation = self.rotation_switch.value
     }
 end
 
