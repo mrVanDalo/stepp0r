@@ -183,12 +183,21 @@ function MainUI:create_osc_row()
     }
 end
 
+function MainUI:disable_rotation_row()
+    self.rotation_switch.active = false
+end
+
+function MainUI:enable_rotation_row()
+    self.rotation_switch.active = true
+end
+
 function MainUI:disable_osc_row()
     self.osc_row_checkbox.active = false
     self.osc_row_text.text = self.osc_row_textfield.text
     self.osc_row_textfield.visible = false
     self.osc_row_text.visible = true
 end
+
 
 function MainUI:enable_osc_row()
     self.osc_row_checkbox.active = true
@@ -258,6 +267,7 @@ function MainUI:run()
     self.start_stop_button.text = "Stop"
     self:disable_device_row()
     self:disable_osc_row()
+    self:disable_rotation_row()
     self.run_callback(self:run_properties())
 end
 
@@ -273,6 +283,7 @@ function MainUI:stop()
     self.is_running = false
     self.start_stop_button.text = "Start"
     self:enable_device_row()
+    self:enable_rotation_row()
     self:enable_osc_row()
     self.stop_callback()
 end
