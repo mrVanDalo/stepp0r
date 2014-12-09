@@ -22,13 +22,22 @@ function Adjuster:__insert_bank_line_at_line(target_line, bank_entry)
     -- check for position
     local position = self:_get_line(target_line)
     if not position then return end
---    print("update line " .. target_line)
     -- update position
-    position.note_value         = bank_entry[AdjusterData.bank.pitch]
-    position.instrument_value   = (self.instrument_idx - 1)
-    position.delay_value        = bank_entry[AdjusterData.bank.delay]
-    position.panning_value      = bank_entry[AdjusterData.bank.pan]
-    position.volume_value       = bank_entry[AdjusterData.bank.vel]
+    local note_value = bank_entry[AdjusterData.bank.pitch]
+--    print("note value " .. target_line .. " : " .. note_value)
+    if note_value == Note.empty[Note.access.pitch] then
+        position.note_value       = note_value
+        position.instrument_value = Note.instrument.empty
+        position.delay_value      = Note.delay.empty
+        position.panning_value    = Note.panning.empty
+        position.volume_value     = Note.volume.empty
+    else
+        position.note_value       = note_value
+        position.instrument_value = (self.instrument_idx - 1)
+        position.delay_value      = bank_entry[AdjusterData.bank.delay]
+        position.panning_value    = bank_entry[AdjusterData.bank.pan]
+        position.volume_value     = bank_entry[AdjusterData.bank.vel]
+    end
 end
 
 -- todo rename it
