@@ -24,9 +24,8 @@ function Adjuster:__insert_bank_line_at_line(target_line, bank_entry)
     if not position then return end
     -- update position
     local note_value = bank_entry[AdjusterData.bank.pitch]
-    print("note value " .. target_line .. " : " .. note_value)
+--    print("note value " .. target_line .. " : " .. note_value)
     if note_value == Note.empty[Note.access.pitch] then
-        print("in empty")
         position.note_value       = note_value
         position.instrument_value = Note.instrument.empty
         position.delay_value      = Note.delay.empty
