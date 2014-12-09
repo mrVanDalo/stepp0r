@@ -149,6 +149,14 @@ function MainUI:create_rotation_row()
     }
 end
 
+function MainUI:disable_rotation_row()
+    self.rotation_switch.active = false
+end
+
+function MainUI:enable_rotation_row()
+    self.rotation_switch.active = true
+end
+
 --- ======================================================================================================
 ---
 ---                                                 [ OSC Row ]
@@ -183,13 +191,6 @@ function MainUI:create_osc_row()
     }
 end
 
-function MainUI:disable_rotation_row()
-    self.rotation_switch.active = false
-end
-
-function MainUI:enable_rotation_row()
-    self.rotation_switch.active = true
-end
 
 function MainUI:disable_osc_row()
     self.osc_row_checkbox.active = false
@@ -215,7 +216,7 @@ end
 ---
 ---                                                 [ Start Stop Buttons ]
 
-function MainUI: create_start_stop_button()
+function MainUI:create_start_stop_button()
     self.start_stop_button = self.vb:button {
         text = "Start",
         width = self.command_button_size,
