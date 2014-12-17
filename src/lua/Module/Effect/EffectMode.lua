@@ -11,7 +11,7 @@ function Effect:mode_color()
 end
 
 function Effect:right_refresh()
-    self.pad:set_right(self.mode_knob_idx,self:mode_color())
+    self.pad:set_side(self.mode_knob_idx,self:mode_color())
 end
 
 

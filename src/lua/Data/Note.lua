@@ -36,6 +36,10 @@ Note = {
         off = { 120 , "OFF" , 4, 1 },
     },
     empty =   { 121 , "---" , 0, 0 },  -- just for completeness
+    instrument = { empty = 255 },
+    delay      = { empty = 0 },
+    volume     = { empty = 255 },
+    panning    = { empty = 255 },
 }
 
 

@@ -26,9 +26,9 @@ end
 
 function Chooser:mode_update_knobs()
     -- print(self.mode)
-    self.pad:set_right(self.mode_idx, self.mode[ChooserData.access.color])
+    self.pad:set_side(self.mode_idx, self.mode[ChooserData.access.color])
 end
 function Chooser:mode_clear_knobs()
     -- print(self.mode)
-    self.pad:set_right(self.mode_idx, Color.off)
+    self.pad:set_side(self.mode_idx, Color.off)
 end
