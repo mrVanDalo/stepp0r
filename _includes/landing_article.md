@@ -7,7 +7,7 @@ Right now, it's working fine as a _"forget the computer"_ type control.
 You can punch in your sequences, or you can use the keyboard to record your melodies
 using the osc server of [Renoise](http://www.renoise.com/).
 
-<iframe width="560" height="315" src="//www.youtube.com/embed/eiH6HfF6MQ8" frameborder="0" allowfullscreen></iframe>
+<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='http://www.youtube.com/embed/eiH6HfF6MQ8' frameborder='0' allowfullscreen></iframe></div>
 
 ## You want to start using it? 
 * Buy a launchpad (at ebay for example).

@@ -1,0 +1,13 @@
+---
+layout: post
+title:  "Christmas Release 0.4.1"
+date:   2014-12-17 21:31:00
+categories: update
+author: "Palo van Dalo"
+abstract: "I released some minor changes. Rotation for example"
+---
+
+## 0.4.1 Santa Clause
+
+* fixed copy-paste bug (insertion of empty instruments)
+* add rotation of the pad (just left and right for now)

@@ -16,6 +16,7 @@ I only post finished releases here. If you want to us the bloody Beta version yo
 
 ## All versions
 
+* [0.4.1]( {{site.baseurl }}/downloads/Stepp0r-0.4.1.xrnx ) released 17.12.2014
 * [0.4]( {{site.baseurl }}/downloads/Stepp0r-0.4.xrnx ) released 15.11.2014
 * [0.3]( {{site.baseurl }}/downloads/Stepp0r-0.3.xrnx ) released 06.10.2014
 * [0.2]( {{site.baseurl }}/downloads/Stepp0r-0.2.xrnx ) released 29.07.2014

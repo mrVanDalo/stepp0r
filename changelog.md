@@ -6,6 +6,11 @@ permalink: /changelog/
 
 Version names by Estonian Marathon Champions
 
+## 0.4.1 Santa Clause
+
+* fixed copy-paste bug (insertion of empty instruments)
+* add rotation of the pad (just left and right for now)
+
 ## 0.4 Villy Sudemäe
 
 * fixed various bugs, like the pollution of green dots, using a high LPB rate.
