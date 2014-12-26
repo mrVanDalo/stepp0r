@@ -4,6 +4,11 @@ require 'Layer/Util'
 ---
 ---                                                 [ BooT ]
 
+function Adjuster:_create_boot_callbacks()
+    self:__create_matrix_listener()
+    self:__create_select_pattern_listener()
+end
+
 function Adjuster:_activate()
     -- playback position
     self:__register_playback_position_observer()
@@ -31,10 +36,6 @@ function Adjuster:_deactivate()
     self.pad:unregister_matrix_listener(self.__matrix_listener)
 end
 
-function Adjuster:_first_run()
-    self:__create_matrix_listener()
-    self:__create_select_pattern_listener()
-end
 
 
 --- selected pattern has changed listener

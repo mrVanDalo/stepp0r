@@ -102,7 +102,8 @@ function Adjuster:__init()
     self.playback_position_last_y = 1
 
     -- create listeners
-    self:_first_run()
+    self:_create_boot_callbacks()
+    self:_create_bank_callbacks()
     self:_create_callbacks()
 end
 

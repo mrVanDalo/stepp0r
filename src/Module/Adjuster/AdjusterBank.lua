@@ -2,6 +2,9 @@
 ---
 ---                                                 [ Bank of Selection ]
 
+function Adjuster:_create_bank_callbacks()
+    self:__create_bank_update_handler()
+end
 
 function Adjuster:_insert_bank_at(line)
     local counter = 0

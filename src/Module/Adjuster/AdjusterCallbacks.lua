@@ -1,6 +1,5 @@
 
 function Adjuster:_create_callbacks()
-    self:__create_bank_update_handler()
     self:__create_paginator_update()
 
     self:__create_callback_set_instrument()
