@@ -40,7 +40,7 @@ function Bank:__init()
 
     self.pad = nil
     self.bank_update_listeners = {}
-    self:_first_run() -- todo move me to Module class
+    self:_create_boot_callbacks()
 end
 
 

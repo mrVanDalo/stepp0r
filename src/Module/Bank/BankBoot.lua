@@ -1,5 +1,5 @@
 
-function Bank:_first_run()
+function Bank:_create_boot_callbacks()
     self:__create_matrix_listener()
     for x = 1, 8 do self.banks[x] = create_bank() end
 end
