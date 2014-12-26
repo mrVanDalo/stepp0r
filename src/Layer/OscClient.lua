@@ -20,9 +20,6 @@ function OscClient:connect(host, port)
     self.client = renoise.Socket.create_client(host , port, self.protocol)
 end
 
---- ======================================================================================================
----
----                                                 [ Boot ]
 
 function OscClient:disconnect()
     if not self.client then return end

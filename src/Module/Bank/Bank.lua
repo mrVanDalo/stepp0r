@@ -20,8 +20,9 @@ BankData = {
 
 function Bank:__init()
     Module:__init(self)
+
     self.offset = 6
-    -- default
+
     self.color = {
         toggle = {
             selected = {
@@ -32,6 +33,7 @@ function Bank:__init()
         },
         clear = Color.red,
     }
+
     self.banks    = {}
     self.bank_idx = 1 -- active bank right now
     self.mode     = BankData.mode.copy
