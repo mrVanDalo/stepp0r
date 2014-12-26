@@ -91,16 +91,14 @@ function LaunchpadSetup:connect_launchpad(pad_name,rotation)
     self.pad:connect(pad_name)
 end
 
+function LaunchpadSetup:connect_osc_client(host, port)
+    self.osc_client:disconnect()
+    self.osc_client:connect(host, port)
+end
+
 function LaunchpadSetup:connect_it_selection()
     self.it_selection:disconnect()
     self.it_selection:connect()
-end
-
-function LaunchpadSetup:connect_osc_client(host, port)
-    self.osc_client:disconnect()
-    self.osc_client:set_host(host)
-    self.osc_client:set_port(port)
-    self.osc_client:start()
 end
 
 

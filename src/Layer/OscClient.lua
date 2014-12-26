@@ -8,32 +8,21 @@ class "OscClient"
 
 function OscClient:__init()
     self.host = "localhost"
-    self.port = 8008
     self.protocol = renoise.Socket.PROTOCOL_UDP
     self.client = nil
 end
 
-function OscClient:set_host(host)
-    if not host then return end
-    self.host = host
-end
 
-function OscClient:set_port(port)
+function OscClient:connect(host, port)
+    if self.client then return end
     if not port then return end
-    self.port = port
+    if not host then return end
+    self.client = renoise.Socket.create_client(host , port, self.protocol)
 end
-
 
 --- ======================================================================================================
 ---
 ---                                                 [ Boot ]
-
-
-
-function OscClient:start()
-    if self.client then return end
-    self.client = renoise.Socket.create_client(self.host , self.port, self.protocol)
-end
 
 function OscClient:disconnect()
     if not self.client then return end
