@@ -2,8 +2,10 @@
 --- ======================================================================================================
 ---
 ---                                                 [ Pattern Matrix Sub-Module]
+---
 
---- selection on the pattern matrix space to select the knobs to copy (and where to paste them)
+--- this submodule is just for showing how the pattern looks like, and render it to the Launchpad
+
 
 --- ------------------------------------------------------------------------------------------------------
 ---

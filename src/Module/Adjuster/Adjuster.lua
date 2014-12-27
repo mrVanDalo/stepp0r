@@ -12,7 +12,7 @@ require 'Module/Adjuster/AdjusterSelectedPattern'
 require 'Module/Adjuster/AdjusterPagination'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
-require 'Module/Adjuster/AdjusterRender'
+require 'Module/Adjuster/AdjusterLaunchpadMatrix'
 require 'Module/Adjuster/AdjusterPattern'
 
 AdjusterData = {

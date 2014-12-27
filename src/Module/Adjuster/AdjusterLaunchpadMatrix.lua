@@ -24,6 +24,10 @@ function Adjuster:__deactivate_render()
     self:_render_matrix()
 end
 
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
+
 --- pad matrix listener
 --
 -- listens on click events on the launchpad matrix
@@ -50,13 +54,12 @@ function Adjuster:__paste_selection(x,y)
     self:_insert_bank_at_line(line)
 end
 
--- todo optimize me
 function Adjuster:__copy_selection(x,y)
     local line = self:point_to_line(x,y)
     if self.bank.bank[line] then
         self:_clear_bank_interval(line, (line + self.zoom - 1))
     else
-        self:_update_bank_matrix_interval(line, (line + self.zoom - 1))
+        self:_update_bank_interval(line, (line + self.zoom - 1))
     end
 end
 
@@ -69,12 +72,6 @@ function Adjuster:_refresh_matrix()
     self:_update_bank_matrix()
     self:_render_matrix()
 end
-
-
-
---- ======================================================================================================
----
----                                                 [ subroutines ]
 
 function Adjuster:_render_matrix()
     for x = 1, 8 do

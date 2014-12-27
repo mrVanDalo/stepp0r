@@ -37,6 +37,10 @@ function Adjuster:__create_bank_update_handler()
 end
 
 
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Bank Functions ]
+
 function Adjuster:_insert_bank_at_line(line)
     local counter = 0
     local start_to_insert = false
@@ -74,15 +78,15 @@ end
 
 
 
-function Adjuster:_update_bank_matrix_interval(line_start, line_stop)
+function Adjuster:_update_bank_interval(line_start, line_stop)
     local pattern_iter  = renoise.song().pattern_iterator
     for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track_idx) do
         if pos.line >= line_start and pos.line <= line_stop then
-            self:__update_bank_matrix_position(pos.line,line)
+            self:__update_bank_position(pos.line,line)
         end
     end
 end
-function Adjuster:__update_bank_matrix_position(pos, line)
+function Adjuster:__update_bank_position(pos, line)
     if table.is_empty(line.note_columns) then return end
     local note_column = line:note_column(self.track_column_idx)
     local pitch       = note_column.note_value
@@ -112,6 +116,11 @@ function Adjuster:_clear_bank_interval(line_start, line_stop)
     end
 end
 
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Bank Matrix ]
+
 --- updates the matrix (which will be rendered afterwards)
 function Adjuster:_update_bank_matrix()
     for line = self.page_start, (self.page_end - 1) do
@@ -133,11 +142,9 @@ function Adjuster:_update_bank_matrix()
         end
     end
 end
-
 function Adjuster:_update_bank_matrix_position(x,y)
     local line = self:point_to_line(x,y)
     if not line then return end
-
     local color
     local bank_entry = self.bank.bank[line]
     if not bank_entry then
