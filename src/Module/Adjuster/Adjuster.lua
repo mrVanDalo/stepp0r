@@ -7,13 +7,12 @@
 class "Adjuster" (Module)
 
 require 'Module/Adjuster/AdjusterBank'
-require 'Module/Adjuster/AdjusterBoot'
 require 'Module/Adjuster/AdjusterPlaybackPosition'
 require 'Module/Adjuster/AdjusterSelectedPattern'
 require 'Module/Adjuster/AdjusterPagination'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
-require 'Module/Adjuster/AdjusterMatrix'
+require 'Module/Adjuster/AdjusterRender'
 
 AdjusterData = {
     note = {
@@ -99,14 +98,33 @@ function Adjuster:__init()
     self:__init_bank()
     self:__init_selected_pattern()
     self:__init_pagination()
+    self:__init_render()
 
     -- create listeners
-    self:_create_boot_callbacks()
     self:_create_callbacks()
 end
 
 function Adjuster:wire_launchpad(pad)
     self.pad = pad
+end
+
+function Adjuster:_activate()
+    self:__activate_playback_position()
+    self:__activate_bank()
+    self:__activate_selected_pattern()
+    self:__activate_pagination()
+    self:__activate_render()
+end
+
+--- tear down
+--
+function Adjuster:_deactivate()
+    self:__deactivate_bank()
+    self:__deactivate_playback_position()
+    self:__deactivate_selected_pattern()
+    self:__deactivate_pagination()
+    self:__deactivate_render()
+
 end
 
 
