@@ -1,11 +1,25 @@
 
-
 --- ======================================================================================================
 ---
 ---                                                 [ Bank update Listeners ]
 --
 -- The update will give you a reference to the actual bank.
 -- so you your callbanks have to write stuff to the bank itself.
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+function Bank:__init_listeners()
+    self.bank_update_listeners = {}
+end
+function Bank:__activate_listeners()
+    self:_update_bank_listeners()
+end
+function Bank:__deactivate_listeners()
+end
+
+
 
 function Bank:register_bank_update(handler)
     self.bank_update_listeners[handler] = handler
