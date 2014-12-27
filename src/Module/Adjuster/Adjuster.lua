@@ -65,13 +65,7 @@ function Adjuster:__init()
     -- zoom
     self.zoom         = 1 -- influences grid size
 
-    -- pagination
-    self.page         = 1 -- page of actual pattern
-    self.page_start   = 0  -- line left before first pixel
-    self.page_end     = 33 -- line right after last pixel
-
     -- rendering
-    self.__pattern_matrix = {}
     self.color = {
         stepper = Color.green,
         page = {
@@ -99,20 +93,19 @@ function Adjuster:__init()
     self:__init_selected_pattern()
     self:__init_pagination()
     self:__init_render()
-
-    -- create listeners
-    self:_create_callbacks()
+    self:__init_callbacks()
+    self:__init_pattern()
 end
 
-function Adjuster:wire_launchpad(pad)
-    self.pad = pad
-end
 
 function Adjuster:_activate()
     self:__activate_playback_position()
     self:__activate_bank()
     self:__activate_selected_pattern()
     self:__activate_pagination()
+    self:__activate_callbacks()
+    self:__activate_pattern()
+    -- must be last
     self:__activate_render()
 end
 
@@ -123,9 +116,13 @@ function Adjuster:_deactivate()
     self:__deactivate_playback_position()
     self:__deactivate_selected_pattern()
     self:__deactivate_pagination()
+    self:__deactivate_callbacks()
+    self:__deactivate_pattern()
+    -- must be last
     self:__deactivate_render()
-
 end
 
 
-
+function Adjuster:wire_launchpad(pad)
+    self.pad = pad
+end

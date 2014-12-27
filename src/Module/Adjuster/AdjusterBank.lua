@@ -18,9 +18,7 @@ function Adjuster:__activate_bank()
 end
 
 function Adjuster:__deactivate_bank()
-    self:_matrix_clear()
     self:_clear_bank_matrix()
-    self:_render_matrix()
 end
 
 
@@ -28,6 +26,15 @@ end
 ---
 ---                                                 [ Lib ]
 
+function Adjuster:__create_bank_update_handler()
+    self.bank_update_handler = function (bank, mode)
+        self.bank     = bank
+        self.mode     = mode
+        if self.is_active then
+            self:_refresh_matrix()
+        end
+    end
+end
 
 
 function Adjuster:_insert_bank_at(line)
@@ -131,7 +138,7 @@ function Adjuster:_update_bank_matrix()
     end
 end
 
-function Adjuster:_update_bank_matrix_at_point(x,y)
+function Adjuster:_update_bank_matrix_position(x,y)
     local line = self:point_to_line(x,y)
     if not line then return end
 

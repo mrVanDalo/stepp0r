@@ -1,5 +1,14 @@
 
-function Adjuster:_create_callbacks()
+
+--- ======================================================================================================
+---
+---                                                 [ Callbacks Sub-Module]
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+function Adjuster:__init_callbacks()
     self:__create_callback_set_instrument()
     self:__create_callback_set_note()
     self:__create_callback_set_delay()
@@ -7,16 +16,11 @@ function Adjuster:_create_callbacks()
     self:__create_callback_set_pan()
     self:__create_callback_set_bank()
 end
-
-function Adjuster:__create_bank_update_handler()
-    self.bank_update_handler = function (bank, mode)
-        self.bank     = bank
-        self.mode     = mode
-        if self.is_active then
-            self:_refresh_matrix()
-        end
-    end
+function Adjuster:__activate_callbacks()
 end
+function Adjuster:__deactivate_callbacks()
+end
+
 
 function Adjuster:__create_callback_set_instrument()
     self.callback_set_instrument =  function (instrument_idx, track_idx, column_idx)
