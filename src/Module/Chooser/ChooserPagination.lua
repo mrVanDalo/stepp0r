@@ -32,11 +32,11 @@ function Chooser:__create_page_listener()
         if msg.x == self.page_inc_idx then
             self:page_inc()
             self:page_update_knobs()
-            self:row_update()
+            self:update_instrument_row()
         elseif msg.x == self.page_dec_idx then
             self:page_dec()
             self:page_update_knobs()
-            self:row_update()
+            self:update_instrument_row()
         end
     end
 end

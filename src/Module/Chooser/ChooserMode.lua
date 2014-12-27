@@ -1,8 +1,30 @@
-
-
 --- ======================================================================================================
 ---
 ---                                                 [ Mode Control ]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Chooser:__init_mode()
+    self.mode          = ChooserData.mode.choose
+    self.mode_idx      = self.row
+    self:__create_mode_listener()
+end
+function Chooser:__activate_mode()
+    self:mode_update_knobs()
+    self.pad:register_right_listener(self.mode_listener)
+end
+function Chooser:__deactivate_mode()
+    self:mode_clear_knobs()
+    self.pad:unregister_right_listener(self.mode_listener)
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
 
 function Chooser:__create_mode_listener()
     self.mode_listener = function (_,msg)

@@ -1,3 +1,59 @@
+--- ======================================================================================================
+---
+---                                                 [ Instrument Row ]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Chooser:__init_instrument_row()
+    -- instruments
+    self.inst_offset      = 0  -- which is the first instrument
+    -- column
+    self.column_idx       = 1 -- index of the column
+    self.column_idx_start = 1
+    self.column_idx_stop  = 4
+    -- create functions
+    self:__create_column_update()
+    self:__create_callback_set_instrument()
+    self:__create_instrument_notifier()
+    self:__create_instrument_listener()
+    self:__create_instrumnets_notifier_row()
+end
+function Chooser:__activate_instrument_row()
+    --- chooser line
+    self:update_instrument_row()
+    self.pad:register_matrix_listener(self.instrument_listener)
+    add_notifier(renoise.song().instruments_observable, self.instruments_notifier_row)
+    --- column logic
+    self:column_update_knobs()
+    self.pad:register_right_listener(self._column_listener)
+end
+function Chooser:__deactivate_instrument_row()
+    self:column_clear_knobs()
+    self:row_clear()
+    self.pad:unregister_matrix_listener(self.instrument_listener)
+    self.pad:unregister_right_listener(self._column_listener)
+    remove_notifier(renoise.song().instruments_observable, self.instruments_notifier_row)
+    remove_notifier(renoise.song().instruments_observable, self.instruments_notifier)
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
+
+function Chooser:__create_callback_set_instrument()
+    self.callback_set_instrument = function(instrument_idx, track_idx, column_idx)
+        self.instrument_idx = instrument_idx
+        self.track_idx      = track_idx
+        self.column_idx     = column_idx
+        self:update_instrument_row()
+        self:column_update_knobs()
+        self:page_update_knobs()
+    end
+end
 
 function Chooser:__create_instrument_listener()
     self.instrument_listener = function (_,msg)
@@ -10,17 +66,17 @@ function Chooser:__create_instrument_listener()
             self:mute_track(msg.x)
         end
         self:column_update_knobs()
-        self:row_update()
+        self:update_instrument_row()
     end
 end
 
 function Chooser:__create_instrumnets_notifier_row()
     self.instruments_notifier_row = function (_)
-        self:row_update()
+        self:update_instrument_row()
     end
 end
 
-function Chooser:row_update()
+function Chooser:update_instrument_row()
     -- todo using the mute state too
     self:row_clear()
     for nr, instrument in ipairs(renoise.song().instruments) do
