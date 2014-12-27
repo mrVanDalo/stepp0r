@@ -6,10 +6,19 @@
 ---
 ---                                                 [ Sub-Module Interface ]
 function Chooser:__init_pagination()
+    self.page         = 1
+    self.page_inc_idx = 4
+    self.page_dec_idx = 3
+    self:__create_page_listener()
 end
 function Chooser:__activate_pagination()
+    self:page_update_knobs()
+    self.pad:register_top_listener(self.page_listener)
+    add_notifier(renoise.song().instruments_observable, self.instruments_notifier)
 end
 function Chooser:__deactivate_pagination()
+    self:page_clear_knobs()
+    self.pad:unregister_top_listener(self.page_listener)
 end
 
 --- ------------------------------------------------------------------------------------------------------
