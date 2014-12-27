@@ -5,6 +5,9 @@
 -- the green light that runs on the matrix to show the playback position
 --
 
+
+--- wire to the main-module
+
 function Adjuster:__init_playback_position()
     -- playback position
     self.playback_position_observer = nil
@@ -20,6 +23,8 @@ function Adjuster:__deactivate_playback_position()
     self:__unregister_playback_position_observer()
 end
 
+--- public functions
+
 function Adjuster:wire_playback_position_observer(playback_position_observer)
     if self.playback_position_observer then
         self:__unregister_playback_position_observer()
@@ -27,10 +32,14 @@ function Adjuster:wire_playback_position_observer(playback_position_observer)
     self.playback_position_observer = playback_position_observer
 end
 
+
+
+--- logic
+
 function Adjuster:__register_playback_position_observer()
     self.playback_position_observer:register('adjuster', function (line)
         if self.is_not_active then return end
-        self:callback_playback_position(line)
+        self:__callback_playback_position(line)
     end)
 end
 
@@ -42,7 +51,7 @@ end
 --
 -- will be hooked in by the playback_position observable
 --
-function Adjuster:callback_playback_position(pos)
+function Adjuster:__callback_playback_position(pos)
     if self.pattern_idx ~= pos.sequence then return end
     -- clean up old playback position
     if (self.removed_old_playback_position) then
