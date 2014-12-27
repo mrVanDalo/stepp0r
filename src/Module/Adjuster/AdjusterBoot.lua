@@ -12,6 +12,7 @@ function Adjuster:_activate()
     self:__activate_playback_position()
     self:__activate_bank()
     self:__activate_selected_pattern()
+    self:__activate_pagination()
 
     -- main matrix
     self:_refresh_matrix()
@@ -24,6 +25,7 @@ function Adjuster:_deactivate()
     self:__deactivate_bank()
     self:__deactivate_playback_positioin()
     self:__deactivate_selected_pattern()
+    self:__deactivate_pagination()
 
     self.pad:unregister_matrix_listener(self.__matrix_listener)
 end

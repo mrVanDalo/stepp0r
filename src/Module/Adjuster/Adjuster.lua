@@ -10,6 +10,7 @@ require 'Module/Adjuster/AdjusterBank'
 require 'Module/Adjuster/AdjusterBoot'
 require 'Module/Adjuster/AdjusterPlaybackPosition'
 require 'Module/Adjuster/AdjusterSelectedPattern'
+require 'Module/Adjuster/AdjusterPagination'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
 require 'Module/Adjuster/AdjusterPattern'
@@ -97,6 +98,7 @@ function Adjuster:__init()
     self:__init_playback_position()
     self:__init_bank()
     self:__init_selected_pattern()
+    self:__init_pagination()
 
     -- create listeners
     self:_create_boot_callbacks()
