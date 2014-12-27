@@ -5,7 +5,7 @@
 
 class "Bank" (Module)
 
-require 'Module/Bank/BankCallbacks'
+require 'Module/Bank/BankListeners'
 require 'Module/Bank/BankLibrary'
 require 'Module/Bank/BankLaunchpadMatrix'
 
