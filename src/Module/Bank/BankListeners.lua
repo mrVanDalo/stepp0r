@@ -20,6 +20,9 @@ function Bank:__deactivate_listeners()
 end
 
 
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
 
 function Bank:register_bank_update(handler)
     self.bank_update_listeners[handler] = handler
