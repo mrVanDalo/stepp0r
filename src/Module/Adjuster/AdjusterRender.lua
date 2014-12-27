@@ -35,37 +35,30 @@ function Adjuster:__create_matrix_listener()
         local column = self:calculate_track_position(msg.x,msg.y)
         if not column then return end
         if (self.mode == BankData.mode.copy) then
-            self:__update_selection(msg.x,msg.y)
+            self:__copy_selection(msg.x,msg.y)
             self:_update_bank_matrix_position(msg.x,msg.y)
             self:_render_matrix_position(msg.x, msg.y)
         else
-            self:__insert_selection(msg.x,msg.y)
+            self:__paste_selection(msg.x,msg.y)
             self:_refresh_matrix()
         end
-        self:_log_bank()
     end
 end
 
+function Adjuster:__paste_selection(x,y)
+    local line = self:point_to_line(x,y)
+    self:_insert_bank_at_line(line)
+end
 
 -- todo optimize me
-function Adjuster:__update_selection(x,y)
+function Adjuster:__copy_selection(x,y)
     local line = self:point_to_line(x,y)
     if self.bank.bank[line] then
-        --        print('clear bank : ' .. line .. ',' .. (line + self.zoom - 1))
         self:_clear_bank_interval(line, (line + self.zoom - 1))
     else
-        --        print('set bank : ' .. line .. ',' .. (line + self.zoom - 1))
-        self:_set_bank_interval(line, (line + self.zoom - 1))
+        self:_update_bank_matrix_interval(line, (line + self.zoom - 1))
     end
 end
-
-
-function Adjuster:__insert_selection(x,y)
-    local line = self:point_to_line(x,y)
-    self:_insert_bank_at(line)
-end
-
-
 
 -- todo maybe this shouldn't be called while activate and should be called by the different activate functions
 -- todo maybe it is also a good idea to inline this function
