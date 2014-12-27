@@ -6,10 +6,11 @@
 --
 
 
---- wire to the main-module
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
 
 function Adjuster:__init_playback_position()
-    -- playback position
     self.playback_position_observer = nil
     self.playback_position_last_x = 1
     self.playback_position_last_y = 1
@@ -23,7 +24,9 @@ function Adjuster:__deactivate_playback_position()
     self:__unregister_playback_position_observer()
 end
 
---- public functions
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Public ]
 
 function Adjuster:wire_playback_position_observer(playback_position_observer)
     if self.playback_position_observer then
@@ -33,8 +36,9 @@ function Adjuster:wire_playback_position_observer(playback_position_observer)
 end
 
 
-
---- logic
+--- ======================================================================================================
+---
+---                                                 [ Lib ]
 
 function Adjuster:__register_playback_position_observer()
     self.playback_position_observer:register('adjuster', function (line)
