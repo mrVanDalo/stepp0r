@@ -9,6 +9,7 @@ class "Adjuster" (Module)
 require 'Module/Adjuster/AdjusterBank'
 require 'Module/Adjuster/AdjusterBoot'
 require 'Module/Adjuster/AdjusterPlaybackPosition'
+require 'Module/Adjuster/AdjusterSelectedPattern'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
 require 'Module/Adjuster/AdjusterPattern'
@@ -69,10 +70,6 @@ function Adjuster:__init()
     self.page_start   = 0  -- line left before first pixel
     self.page_end     = 33 -- line right after last pixel
 
-
-    self.bank_matrix = {}
-    self:_clear_bank()
-
     -- rendering
     self.__pattern_matrix = {}
     self.color = {
@@ -98,10 +95,11 @@ function Adjuster:__init()
     }
 
     self:__init_playback_position()
+    self:__init_bank()
+    self:__init_selected_pattern()
 
     -- create listeners
     self:_create_boot_callbacks()
-    self:_create_bank_callbacks()
     self:_create_callbacks()
 end
 

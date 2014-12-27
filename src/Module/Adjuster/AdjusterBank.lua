@@ -2,9 +2,33 @@
 ---
 ---                                                 [ Bank of Selection ]
 
-function Adjuster:_create_bank_callbacks()
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+function Adjuster:__init_bank()
+    self.bank_matrix = {}
+    self:_clear_bank()
     self:__create_bank_update_handler()
 end
+
+function Adjuster:__activate_bank()
+    self:_clear_bank_matrix()
+    self:_update_bank_matrix()
+end
+
+function Adjuster:__deactivate_bank()
+    self:_matrix_clear()
+    self:_clear_bank_matrix()
+    self:_render_matrix()
+end
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
+
+
 
 function Adjuster:_insert_bank_at(line)
     local counter = 0
