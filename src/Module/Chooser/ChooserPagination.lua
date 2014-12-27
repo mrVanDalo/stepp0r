@@ -2,6 +2,20 @@
 ---
 ---                                                 [ PAGINATION ]
 
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+function Chooser:__init_pagination()
+end
+function Chooser:__activate_pagination()
+end
+function Chooser:__deactivate_pagination()
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
+
 function Chooser:__create_page_listener()
     self.page_listener = function (_,msg)
         if self.is_not_active         then return end
