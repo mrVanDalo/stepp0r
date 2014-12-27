@@ -21,6 +21,10 @@ end
 function Adjuster:__deactivate_callbacks()
 end
 
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
+
 
 function Adjuster:__create_callback_set_instrument()
     self.callback_set_instrument =  function (instrument_idx, track_idx, column_idx)
