@@ -13,7 +13,7 @@ require 'Module/Adjuster/AdjusterSelectedPattern'
 require 'Module/Adjuster/AdjusterPagination'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
-require 'Module/Adjuster/AdjusterPattern'
+require 'Module/Adjuster/AdjusterMatrix'
 
 AdjusterData = {
     note = {

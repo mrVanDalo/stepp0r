@@ -23,7 +23,7 @@ end
 --
 function Adjuster:_deactivate()
     self:__deactivate_bank()
-    self:__deactivate_playback_positioin()
+    self:__deactivate_playback_position()
     self:__deactivate_selected_pattern()
     self:__deactivate_pagination()
 
