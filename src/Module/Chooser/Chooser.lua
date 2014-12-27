@@ -66,26 +66,11 @@ function Chooser:__init()
     self:__init_instrument_row()
 end
 
-function Chooser:wire_launchpad(pad)
-    self.pad = pad
-end
-
-function Chooser:wire_it_selection(selection)
-    self.it_selection = selection
-end
-
-
---- ======================================================================================================
----
----                                                 [ boot ]
-
 function Chooser:_activate()
     self:__activate_pagination()
     self:__activate_mode()
     self:__activate_instrument_row()
 end
-
-
 
 function Chooser:_deactivate()
     self:__deactivate_pagination()
@@ -93,5 +78,11 @@ function Chooser:_deactivate()
     self:__deactivate_instrument_row()
 end
 
+function Chooser:wire_launchpad(pad)
+    self.pad = pad
+end
 
+function Chooser:wire_it_selection(selection)
+    self.it_selection = selection
+end
 

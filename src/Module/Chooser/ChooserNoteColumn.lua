@@ -1,3 +1,25 @@
+--- ======================================================================================================
+---
+---                                                 [ Note Column Control ]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Chooser:__init_note_column()
+end
+function Chooser:__activate_note_column()
+end
+function Chooser:__deactivate_note_column()
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
+
+
 function Chooser:__create_column_update()
     self._column_listener = function (_,msg)
         if self.is_not_active            then return end
