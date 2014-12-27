@@ -10,8 +10,7 @@ function Adjuster:_create_boot_callbacks()
 end
 
 function Adjuster:_activate()
-    -- playback position
-    self:__register_playback_position_observer()
+    self:__activate_playback_position()
     -- selected pattern
     self.pattern_idx = renoise.song().selected_pattern_index
     add_notifier(renoise.song().selected_pattern_index_observable, self.__select_pattern_listener)
@@ -31,7 +30,7 @@ function Adjuster:_deactivate()
     self:_clear_bank_matrix()
     self:_render_matrix()
     -- unregister notifiers/listeners
-    self:unregister_playback_position_observer()
+    self:__deactivate_playback_positioin()
     remove_notifier(renoise.song().selected_pattern_index_observable, self.__select_pattern_listener)
     self.pad:unregister_matrix_listener(self.__matrix_listener)
 end
@@ -89,20 +88,4 @@ function Adjuster:__insert_selection(x,y)
     self:_insert_bank_at(line)
 end
 
-
---- selected playback position
---
--- the green light that runs
---
--- todo replace by standard renoise lua convention
-function Adjuster:__register_playback_position_observer()
-    self.playback_position_observer:register('adjuster', function (line)
-        if self.is_not_active then return end
-        self:callback_playback_position(line)
-    end)
-end
-
-function Adjuster:unregister_playback_position_observer()
-    self.playback_position_observer:unregister('stepper' )
-end
 

@@ -8,6 +8,7 @@ class "Adjuster" (Module)
 
 require 'Module/Adjuster/AdjusterBank'
 require 'Module/Adjuster/AdjusterBoot'
+require 'Module/Adjuster/AdjusterPlaybackPosition'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
 require 'Module/Adjuster/AdjusterPattern'
@@ -96,10 +97,7 @@ function Adjuster:__init()
         },
     }
 
-    -- playback position
-    self.playback_position_observer = nil
-    self.playback_position_last_x = 1
-    self.playback_position_last_y = 1
+    self:__init_playback_position()
 
     -- create listeners
     self:_create_boot_callbacks()
@@ -111,11 +109,5 @@ function Adjuster:wire_launchpad(pad)
     self.pad = pad
 end
 
-function Adjuster:wire_playback_position_observer(playback_position_observer)
-    if self.playback_position_observer then
-        self:unregister_playback_position_observer()
-    end
-    self.playback_position_observer = playback_position_observer
-end
 
 
