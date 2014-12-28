@@ -1,15 +1,15 @@
 --- ======================================================================================================
 ---
----                                                 [ Stepper Module ]
+---                                                 [ Editor Module ]
 ---
 --- stepp the pattern
 
-class "Stepper" (Module)
+class "Editor" (Module)
 
-require "Module/Stepper/StepperRender"
-require "Module/Stepper/StepperCallbacks"
+require "Module/Editor/EditorRender"
+require "Module/Editor/EditorCallbacks"
 
-StepperData = {
+EditorData = {
     note = {
         off   = 120,
         empty = 121,
@@ -27,15 +27,15 @@ StepperData = {
 ---
 ---                                                 [ INIT ]
 
-function Stepper:__init()
+function Editor:__init()
     Module:__init(self)
     self.track_idx       = 1
     self.instrument_idx  = 1
     self.note        = Note.note.c
     self.octave      = 4
     self.delay       = 0
-    self.volume      = StepperData.instrument.empty
-    self.pan         = StepperData.instrument.empty
+    self.volume      = EditorData.instrument.empty
+    self.pan         = EditorData.instrument.empty
     -- ---
     -- navigation
     -- ---
@@ -72,11 +72,11 @@ function Stepper:__init()
     self:__create_callbacks()
 end
 
-function Stepper:wire_launchpad(pad)
+function Editor:wire_launchpad(pad)
     self.pad = pad
 end
 
-function Stepper:wire_playback_position_observer(playback_position_observer)
+function Editor:wire_playback_position_observer(playback_position_observer)
     if self.playback_position_observer then
         self:__unregister_playback_position_observer()
     end
@@ -88,7 +88,7 @@ end
 ---
 ---                                                 [ BooT ]
 
-function Stepper:_activate()
+function Editor:_activate()
 --    print("called _activate of steppor")
     self.pattern_idx = renoise.song().selected_pattern_index
     add_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
@@ -97,7 +97,7 @@ function Stepper:_activate()
     self:_refresh_matrix()
 end
 
-function Stepper:_deactivate()
+function Editor:_deactivate()
     self:__matrix_clear()
     self:__render_matrix()
     remove_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
@@ -105,14 +105,14 @@ function Stepper:_deactivate()
     self:__unregister_playback_position_observer()
 end
 
-function Stepper:__register_playback_position_observer()
+function Editor:__register_playback_position_observer()
     self.playback_position_observer:register('stepper', function (line)
         if self.is_not_active then return end
         self:callback_playback_position(line)
     end)
 end
 
-function Stepper:__unregister_playback_position_observer()
+function Editor:__unregister_playback_position_observer()
     self.playback_position_observer:unregister('stepper' )
 end
 
@@ -136,7 +136,7 @@ end
 --
 -- nil for is not on the matrix
 --
-function Stepper:line_to_point(line)
+function Editor:line_to_point(line)
     -- page
     local l = line - self.page_start
     if l < 1 then return end
@@ -156,11 +156,11 @@ end
 --
 -- point_to_line(line_to_point(l)) == l should allways be true ?
 --
-function Stepper:point_to_line(x,y)
+function Editor:point_to_line(x,y)
     return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
 end
 
-function Stepper:_refresh_matrix()
+function Editor:_refresh_matrix()
     self:__matrix_clear()
     self:__matrix_update()
     self:__render_matrix()
@@ -170,7 +170,7 @@ end
 --
 -- self.pattern_idx will be kept up to date by an observable notifier
 --
-function Stepper:active_pattern()
+function Editor:active_pattern()
     return renoise.song().patterns[self.pattern_idx]
 end
 
@@ -182,7 +182,7 @@ end
 --
 -- @return nil if nothing found
 --
-function Stepper:calculate_track_position(x,y)
+function Editor:calculate_track_position(x,y)
     local line       = self:point_to_line(x,y)
     local pattern    = self:active_pattern()
     local found_line = pattern.tracks[self.track_idx].lines[line]
