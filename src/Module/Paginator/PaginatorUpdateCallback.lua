@@ -1,6 +1,6 @@
 --- ======================================================================================================
 ---
----                                                 [ Paginator ]
+---                                                 [ Paginator Update Callbacks ]
 
 
 --- ------------------------------------------------------------------------------------------------------
@@ -8,16 +8,31 @@
 ---                                                 [ Sub-Module Interface ]
 
 
---function Paginator:__init_paging()
---end
---function Paginator:__activate_paging()
---end
---function Paginator:__deactivate_paging()
---end
+function Paginator:__init_update_callback()
+    self.update_callbacks = {}
+    self:__create_pattern_idx_update_callback()
+end
+function Paginator:__activate_update_callback()
+    self.pattern_idx = renoise.song().selected_pattern_index
+    add_notifier(renoise.song().selected_pattern_index_observable, self.pattern_idx_update_callback)
+end
+function Paginator:__deactivate_update_callback()
+    remove_notifier(renoise.song().selected_pattern_index_observable, self.pattern_idx_update_callback)
+end
 
 --- ------------------------------------------------------------------------------------------------------
 ---
 ---                                                 [ Lib ]
+
+function Paginator:register_update_callback(callback)
+    table.insert(self.update_callbacks, callback)
+end
+
+function Paginator:__create_pattern_idx_update_callback()
+    self.pattern_idx_update_callback = function ()
+        self.pattern_idx = renoise.song().selected_pattern_index
+    end
+end
 
 --- get the active pattern object
 --
@@ -34,12 +49,6 @@ function Paginator:_update_listeners()
         page_end   = self.page_end,
         zoom       = self.zoom,
     }
---    print("update listeners")
---    print("----------------")
---    print("page       ".. self.page)
---    print("page_start ".. self.page_start)
---    print("page_end   ".. self.page_end)
---    print("zoom       ".. self.zoom)
     for _, callback in ipairs(self.update_callbacks) do
         callback(page)
     end

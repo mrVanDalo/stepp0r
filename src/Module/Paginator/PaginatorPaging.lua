@@ -9,11 +9,20 @@
 
 
 function Paginator:__init_paging()
+    self.page         = 1 -- page of actual pattern
+    self.page_inc_idx = 2
+    self.page_dec_idx = 1
+    self.page_start   = 0  -- line left before first pixel
+    self.page_end     = 33 -- line right after last pixel
     self:__create_page_listener()
 end
 function Paginator:__activate_paging()
+    self.pad:register_top_listener(self.page_listener)
+    self:_update_page_knobs()
 end
 function Paginator:__deactivate_paging()
+    self.pad:unregister_top_listener(self.page_listener)
+    self:__clear_page_knobs()
 end
 
 --- ------------------------------------------------------------------------------------------------------
@@ -35,8 +44,8 @@ function Paginator:__create_page_listener()
 end
 
 function Paginator:_after_page_change()
-    self:_page_update_borders()
-    self:_page_update_knobs()
+    self:_update_page_borders()
+    self:_update_page_knobs()
     self:_update_listeners()
 end
 
@@ -52,7 +61,7 @@ function Paginator:_page_dec()
 end
 
 
-function Paginator:_page_update_knobs()
+function Paginator:_update_page_knobs()
     if (self.page_start <= 0)  then
         self.pad:set_top(self.page_dec_idx,self.color.page.inactive)
     else
@@ -66,12 +75,12 @@ function Paginator:_page_update_knobs()
     end
 end
 
-function Paginator:_page_clear_knobs()
+function Paginator:__clear_page_knobs()
     self.pad:set_top(self.page_dec_idx,Color.off)
     self.pad:set_top(self.page_inc_idx,Color.off)
 end
 
-function Paginator:_page_update_borders()
+function Paginator:_update_page_borders()
     self.page_start = ((self.page - 1) * 32 * self.zoom)
     self.page_end   = self.page_start + 1 + 32 * self.zoom
 end
