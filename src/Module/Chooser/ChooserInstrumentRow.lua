@@ -42,7 +42,7 @@ function Chooser:__create_callback_set_instrument()
         self.track_idx      = track_idx
         self.column_idx     = column_idx
         self:_update_instrument_row()
-        self:_column_update_knobs()
+        self:_update_column_knobs()
         self:_update_page_knobs()
     end
 end
@@ -57,7 +57,7 @@ function Chooser:__create_instrument_listener()
         elseif self.mode == ChooserData.mode.mute then
             self:__mute_track(msg.x)
         end
-        self:_column_update_knobs()
+        self:_update_column_knobs()
         self:_update_instrument_row()
     end
 end
