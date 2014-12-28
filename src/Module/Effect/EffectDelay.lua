@@ -1,4 +1,25 @@
 
+--- ======================================================================================================
+---
+---                                                 [ Effect Delay]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Chooser:__init_effect_delay()
+end
+function Chooser:__activate_effect_delay()
+end
+function Chooser:__deactivate_effect_delay()
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
+
 --- transforms key number to percentage
 -- number must be 1-8
 

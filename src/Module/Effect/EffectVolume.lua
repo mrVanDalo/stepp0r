@@ -1,3 +1,23 @@
+--- ======================================================================================================
+---
+---                                                 [ Effect Volumne ]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Chooser:__init_effect_volume()
+end
+function Chooser:__activate_effect_volume()
+end
+function Chooser:__deactivate_effect_volume()
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
 --- transforms key number to volume
 -- number must be 1-8
 function xToVolume(number)

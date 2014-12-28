@@ -1,3 +1,23 @@
+--- ======================================================================================================
+---
+---                                                 [ Effect Panning ]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Chooser:__init_effect_panning()
+end
+function Chooser:__activate_effect_panning()
+end
+function Chooser:__deactivate_effect_panning()
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
 
 --- transforms key number to paning
 -- number must be 0-8

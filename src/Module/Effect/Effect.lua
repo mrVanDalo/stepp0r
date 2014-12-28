@@ -41,6 +41,12 @@ function Effect:__init()
         on  = Color.orange,
         off = Color.off,
     }
+
+    self:__init_effect_delay()
+    self:__init_effect_mode()
+    self:__init_effect_panning()
+    self:__init_effect_volume()
+
     self.callbacks_set_delay  = {}
     self.callbacks_set_pan    = {}
     self.callbacks_set_volume = {}
@@ -84,6 +90,11 @@ end
 ---                                                 [ boot ]
 
 function Effect:_activate()
+    self:__activate_effect_delay()
+    self:__activate_effect_mode()
+    self:__activate_effect_panning()
+    self:__activate_effect_volume()
+
     -- todo send default value to all registered listeners
     self:refresh()
     self.pad:register_matrix_listener(self.matrix_listener)
@@ -91,6 +102,11 @@ function Effect:_activate()
 end
 
 function Effect:_deactivate()
+    self:__deactivate_effect_delay()
+    self:__deactivate_effect_mode()
+    self:__deactivate_effect_panning()
+    self:__deactivate_effect_volume()
+
     self:matrix_clear()
     self.pad:set_side(self.mode_knob_idx,Color.off)
     self.pad:unregister_matrix_listener(self.matrix_listener)

@@ -1,3 +1,24 @@
+--- ======================================================================================================
+---
+---                                                 [ Effect mode ]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Chooser:__init_effect_mode()
+end
+function Chooser:__activate_effect_mode()
+end
+function Chooser:__deactivate_effect_mode()
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
+
 function Effect:next_mode()
     if     self.mode == EffectData.mode.DELAY then self.mode = EffectData.mode.PAN
     elseif self.mode == EffectData.mode.PAN   then self.mode = EffectData.mode.VOLUME
