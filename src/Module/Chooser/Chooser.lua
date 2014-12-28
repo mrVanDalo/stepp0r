@@ -36,9 +36,7 @@ require "Module/Chooser/ChooserInstrumentRow"
 
 function Chooser:__init()
     Module:__init(self)
-    self.instrument_idx = 1
-    self.track_idx      = 1
-    self.row            = 6
+
     self.color = {
         instrument = {
             active  = Color.flash.green,
@@ -58,9 +56,6 @@ function Chooser:__init()
             invisible = Color.off,
         },
     }
-    -- instruments
-    self.inst_offset      = 0  -- which is the first instrument
-
 
     self:__init_pagination()
     self:__init_mode()

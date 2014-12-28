@@ -9,6 +9,11 @@
 
 
 function Chooser:__init_instrument_row()
+    -- variables
+    self.inst_offset    = 0  -- which is the first instrument
+    self.instrument_idx = 1
+    self.track_idx      = 1
+    self.row            = 6
     -- callbacks
     self.callback_select_instrument = {}
     -- create functions
