@@ -27,7 +27,7 @@ function Chooser:__activate_instrument_row()
     add_notifier(renoise.song().instruments_observable, self.instruments_row_notifier)
 end
 function Chooser:__deactivate_instrument_row()
-    self:row_clear()
+    self:__clear_instrument_row()
     self.pad:unregister_matrix_listener(self.instrument_listener)
     remove_notifier(renoise.song().instruments_observable, self.instruments_row_notifier)
 end
@@ -43,7 +43,7 @@ function Chooser:__create_callback_set_instrument()
         self.column_idx     = column_idx
         self:update_instrument_row()
         self:column_update_knobs()
-        self:page_update_knobs()
+        self:_page_update_knobs()
     end
 end
 
@@ -53,9 +53,9 @@ function Chooser:__create_instrument_listener()
         if msg.vel == Velocity.release then return end
         if msg.y  ~= self.row          then return end
         if self.mode == ChooserData.mode.choose then
-            self:select_instrument_with_offset(msg.x)
+            self:__select_instrument_with_offset(msg.x)
         elseif self.mode == ChooserData.mode.mute then
-            self:mute_track(msg.x)
+            self:__mute_track(msg.x)
         end
         self:column_update_knobs()
         self:update_instrument_row()
@@ -72,7 +72,7 @@ function Chooser:__create_instruments_row_notifier()
 end
 
 function Chooser:update_instrument_row()
-    self:row_clear()
+    self:__clear_instrument_row()
     for nr, instrument in ipairs(renoise.song().instruments) do
         local scaled_index = nr - self.inst_offset
         if scaled_index > 8 then break end
@@ -96,13 +96,13 @@ function Chooser:update_instrument_row()
     end
 end
 
-function Chooser:row_clear()
+function Chooser:__clear_instrument_row()
     for x = 1, 8, 1 do
         self.pad:set_matrix(x,self.row, ChooserData.color.clear)
     end
 end
 
-function Chooser:mute_track(x)
+function Chooser:__mute_track(x)
     local active = self.inst_offset + x
     local track = self.it_selection:track_for_instrument(active)
     if track then
@@ -114,7 +114,7 @@ function Chooser:mute_track(x)
     end
 end
 
-function Chooser:select_instrument_with_offset(x)
+function Chooser:__select_instrument_with_offset(x)
     local active = self.inst_offset + x
     self.it_selection:select_instrument(active)
 end

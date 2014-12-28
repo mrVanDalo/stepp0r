@@ -13,12 +13,12 @@ function Chooser:__init_pagination()
     self:__create_instruments_page_notifier()
 end
 function Chooser:__activate_pagination()
-    self:page_update_knobs()
+    self:_page_update_knobs()
     self.pad:register_top_listener(self.page_listener)
     add_notifier(renoise.song().instruments_observable, self.instruments_page_notifier)
 end
 function Chooser:__deactivate_pagination()
-    self:page_clear_knobs()
+    self:__page_clear_knobs()
     self.pad:unregister_top_listener(self.page_listener)
     remove_notifier(renoise.song().instruments_observable, self.instruments_page_notifier)
 end
@@ -32,12 +32,12 @@ function Chooser:__create_page_listener()
         if self.is_not_active         then return end
         if msg.vel == 0               then return end
         if msg.x == self.page_inc_idx then
-            self:page_inc()
-            self:page_update_knobs()
+            self:__page_inc()
+            self:_page_update_knobs()
             self:update_instrument_row()
         elseif msg.x == self.page_dec_idx then
-            self:page_dec()
-            self:page_update_knobs()
+            self:__page_dec()
+            self:_page_update_knobs()
             self:update_instrument_row()
         end
     end
@@ -49,11 +49,11 @@ end
 function Chooser:__create_instruments_page_notifier()
     self.instruments_page_notifier = function (_)
         if self.is_not_active then return end
-        self:page_update_knobs()
+        self:_page_update_knobs()
     end
 end
 
-function Chooser:page_update_knobs()
+function Chooser:_page_update_knobs()
     local instrument_count = table.getn(renoise.song().instruments)
     if (self.inst_offset + 8 ) < instrument_count then
         self.pad:set_top(self.page_inc_idx, self.color.page.active)
@@ -67,19 +67,19 @@ function Chooser:page_update_knobs()
     end
 end
 
-function Chooser:page_clear_knobs()
+function Chooser:__page_clear_knobs()
     self.pad:set_top(self.page_dec_idx,Color.off)
     self.pad:set_top(self.page_inc_idx,Color.off)
 end
 
-function Chooser:page_inc()
+function Chooser:__page_inc()
     local instrument_count = table.getn(renoise.song().instruments)
     if (self.inst_offset + 8) < instrument_count then
         self.inst_offset = self.inst_offset + 8
     end
 end
 
-function Chooser:page_dec()
+function Chooser:__page_dec()
     if( self.inst_offset > 0 ) then
         self.inst_offset = self.inst_offset - 8
     end
