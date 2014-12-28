@@ -10,6 +10,7 @@
 
 
 function Keyboard:__init_keyboard_matrix()
+    self.octave     = 4
     self:__create_keyboard_listener()
 end
 function Keyboard:__activate_keyboard_matrix()
@@ -47,6 +48,20 @@ function Keyboard:__create_keyboard_listener()
             self:set_note(x, y)
             self:trigger_note(x,y)
         end
-        self:matrix_update_keys()
+        self:_update_matrix_keys()
     end
 end
+
+--- octave arithmetics
+--
+function Keyboard:octave_down()
+    if (self.octave > 1) then
+        self.octave = self.octave - 1
+    end
+end
+function Keyboard:octave_up()
+    if (self.octave < 8) then
+        self.octave = self.octave + 1
+    end
+end
+
