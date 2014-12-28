@@ -30,9 +30,9 @@ function Paginator:__init()
 end
 
 function Paginator:_activate()
-    self:__activate_paging()
-    self:__activate_zoom()
     self:__activate_update_callback()
+    self:__activate_zoom()
+    self:__activate_paging()
 end
 
 function Paginator:_deactivate()
