@@ -72,11 +72,13 @@ function Editor:__init()
     self:__create_callbacks()
 
     self:__init_launchpad_matrix()
+    self:__init_library()
     self:__init_playback_position()
 end
 
 function Editor:_activate()
     self:__activate_launchpad_matrix()
+    self:__activate_library()
     self:__activate_playback_position()
 
     self:_refresh_matrix()
@@ -84,6 +86,7 @@ end
 
 function Editor:_deactivate()
     self:__deactivate_launchpad_matrix()
+    self:__deactivate_library()
     self:__deactivate_playback_position()
 
     self:__matrix_clear()
@@ -107,33 +110,6 @@ end
 ---
 ---                                                 [ Library ]
 
---- calculate point (for matrix) of line
---
--- nil for is not on the matrix
---
-function Editor:line_to_point(line)
-    -- page
-    local l = line - self.page_start
-    if l < 1 then return end
-    -- zoom
-    local li = l
-    if (self.zoom > 1) then
-        if ((l - 1) % self.zoom) ~= 0 then return end
-        li = ((l - 1) / self.zoom) + 1
-    end
-    -- transformation
-    local x = ((li - 1) % 8) + 1
-    local y = math.floor((li - 1) / 8) + 1
-    return {x,y}
-end
-
---- calculate the line a point given by the actual matrix configuration
---
--- point_to_line(line_to_point(l)) == l should allways be true ?
---
-function Editor:point_to_line(x,y)
-    return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
-end
 
 function Editor:_refresh_matrix()
     self:__matrix_clear()
