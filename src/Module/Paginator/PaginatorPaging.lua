@@ -1,6 +1,24 @@
 --- ======================================================================================================
 ---
----                                                 [ Pagination ]
+---                                                 [ Paginator ]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Paginator:__init_paging()
+    self:__create_page_listener()
+end
+function Paginator:__activate_paging()
+end
+function Paginator:__deactivate_paging()
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
 
 function Paginator:__create_page_listener()
     self.page_listener = function (_,msg)

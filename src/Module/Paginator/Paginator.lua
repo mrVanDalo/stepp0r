@@ -38,20 +38,6 @@ function Paginator:__init()
     self:_first_run()
 end
 
-function Paginator:_first_run()
-    self:__create_pattern_idx_update_callback()
-    self:__create_page_listener()
-    self:__create_zoom_listener()
-end
-
-function Paginator:wire_launchpad(pad)
-    self.pad = pad
-end
-
-function Paginator:register_update_callback(callback)
-    table.insert(self.update_callbacks, callback)
-end
-
 function Paginator:_activate()
     self.pattern_idx = renoise.song().selected_pattern_index
     add_notifier(renoise.song().selected_pattern_index_observable, self.pattern_idx_update_callback)
@@ -68,6 +54,20 @@ function Paginator:_deactivate()
     self:_page_clear_knobs()
     self:_zoom_clear_knobs()
 end
+
+function Paginator:_first_run()
+    self:__create_pattern_idx_update_callback()
+    self:__create_zoom_listener()
+end
+
+function Paginator:wire_launchpad(pad)
+    self.pad = pad
+end
+
+function Paginator:register_update_callback(callback)
+    table.insert(self.update_callbacks, callback)
+end
+
 
 function Paginator:__create_pattern_idx_update_callback()
     self.pattern_idx_update_callback = function ()
