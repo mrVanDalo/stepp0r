@@ -24,14 +24,14 @@ function Bank:__create_matrix_listener()
         if Velocity.press == msg.vel then return end
         local y = msg.y - self.offset
         if y == 1 then
-            self:_toggle_mode(msg.x)
+            self:__toggle_mode(msg.x)
         elseif y == 2 then
             self:_clear_bank(msg.x)
         end
     end
 end
 
-function Bank:_toggle_mode(bank_idx)
+function Bank:__toggle_mode(bank_idx)
     if self.bank_idx ~= bank_idx then
         self.bank_idx = bank_idx
         self.mode = BankData.mode.copy
