@@ -9,6 +9,8 @@
 
 
 function Chooser:__init_effect_panning()
+    self.pan                  = 0 -- init values
+    self.callbacks_set_pan    = {}
 end
 function Chooser:__activate_effect_panning()
 end
@@ -30,11 +32,11 @@ function xToPan(number)
     end
 end
 
-function Effect:set_pan(pan)
+function Effect:_set_pan(pan)
     if self.pan == pan then self.pan = 0
     else self.pan = pan
     end
-    self:matrix_refresh()
+    self:_refresh_effect_row()
     -- trigger callbacks
     local percent = xToPan(self.pan)
     for _, callback in ipairs(self.callbacks_set_pan) do
@@ -42,7 +44,7 @@ function Effect:set_pan(pan)
     end
 end
 
-function Effect:matrix_update_pan()
+function Effect:_update_paning_row()
     if self.pan == 0 then return end
     local on  = self:mode_color()
     local off = self.color.off

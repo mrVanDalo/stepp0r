@@ -30,13 +30,9 @@ EffectData = {
 
 function Effect:__init()
     Module:__init(self)
-    self.mode   = EffectData.mode.DELAY
-    self.delay  = 1 -- init values
-    self.pan    = 0 -- init values
-    self.volume = 1 -- init values
-    -- configuration
+
     self.row           = 5
-    self.mode_knob_idx = self.row
+
     self.color = {
         on  = Color.orange,
         off = Color.off,
@@ -46,12 +42,27 @@ function Effect:__init()
     self:__init_effect_mode()
     self:__init_effect_panning()
     self:__init_effect_volume()
+    self:__init_effect_instrument()
+    -- (maybe) todo split this thing
+    self:__create_matrix_listener()
+end
 
-    self.callbacks_set_delay  = {}
-    self.callbacks_set_pan    = {}
-    self.callbacks_set_volume = {}
+function Effect:_activate()
+    self:__activate_effect_delay()
+    self:__activate_effect_mode()
+    self:__activate_effect_panning()
+    self:__activate_effect_volume()
+    self:__activate_effect_instrument()
+    self:refresh()
+end
 
-    self:__create_callbacks()
+function Effect:_deactivate()
+    self:__deactivate_effect_delay()
+    self:__deactivate_effect_mode()
+    self:__deactivate_effect_panning()
+    self:__deactivate_effect_volume()
+    self:__deactivate_effect_instrument()
+    self:matrix_clear()
 end
 
 function Effect:wire_launchpad(pad)
@@ -78,70 +89,19 @@ function Effect:register_set_volume(callback)
     table.insert(self.callbacks_set_volume,callback)
 end
 
-function Effect:__create_callbacks()
-    self:__create_callback_set_instrument()
-    self:__create_matrix_listener()
-    self:__create_mode_listener()
-end
-
-
---- ======================================================================================================
----
----                                                 [ boot ]
-
-function Effect:_activate()
-    self:__activate_effect_delay()
-    self:__activate_effect_mode()
-    self:__activate_effect_panning()
-    self:__activate_effect_volume()
-
-    -- todo send default value to all registered listeners
-    self:refresh()
-    self.pad:register_matrix_listener(self.matrix_listener)
-    self.pad:register_right_listener(self.mode_listener)
-end
-
-function Effect:_deactivate()
-    self:__deactivate_effect_delay()
-    self:__deactivate_effect_mode()
-    self:__deactivate_effect_panning()
-    self:__deactivate_effect_volume()
-
-    self:matrix_clear()
-    self.pad:set_side(self.mode_knob_idx,Color.off)
-    self.pad:unregister_matrix_listener(self.matrix_listener)
-    self.pad:unregister_right_listener(self.mode_listener)
-end
-
-function Effect:__create_mode_listener()
-    self.mode_listener = function (_,msg)
-        if self.is_not_active          then return end
-        if msg.vel == Velocity.release then return end
-        if msg.x ~= self.mode_knob_idx then return end
-        self:next_mode()
-    end
-end
-
 function Effect:__create_matrix_listener()
+    --- split in more than one listener and exit early
     self.matrix_listener = function (_,msg)
         if self.is_not_active          then return end
         if msg.vel == Velocity.release then return end
         if msg.y ~= self.row           then return end
-        if     self.mode == EffectData.mode.DELAY  then self:set_delay(msg.x)
-        elseif self.mode == EffectData.mode.VOLUME then self:set_volume(msg.x)
-        else                                            self:set_pan(msg.x)
+        if     self.mode == EffectData.mode.DELAY  then self:_set_delay(msg.x)
+        elseif self.mode == EffectData.mode.VOLUME then self:_set_volume(msg.x)
+        else                                            self:_set_pan(msg.x)
         end
     end
 end
 
-function Effect:__create_callback_set_instrument()
-    self.callback_set_instrument = function (_,_,_)
-        if self.is_not_active then return end
-        self:set_delay(1)
-        self:set_volume(1)
-        self:set_pan(0)
-    end
-end
 
 
 
@@ -156,19 +116,19 @@ function Effect:matrix_clear()
     end
 end
 
-function Effect:matrix_refresh()
+function Effect:_refresh_effect_row()
     self:matrix_clear()
     if self.mode == EffectData.mode.DELAY then
-        self:matrix_update_delay()
+        self:_update_delay_row()
     elseif self.mode == EffectData.mode.PAN then
-        self:matrix_update_pan()
+        self:_update_paning_row()
     else
-        self:matrix_update_volume()
+        self:_update_volume_row()
     end
 end
 
 function Effect:refresh()
-    self:matrix_refresh()
-    self:right_refresh()
+    self:_refresh_effect_row()
+    self:_refresh_mode_knob()
 end
 
