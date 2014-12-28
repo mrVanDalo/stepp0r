@@ -58,8 +58,9 @@ function Chooser:__init()
             invisible = Color.off,
         },
     }
-    -- callbacks
-    self.callback_select_instrument = {}
+    -- instruments
+    self.inst_offset      = 0  -- which is the first instrument
+
 
     self:__init_pagination()
     self:__init_mode()

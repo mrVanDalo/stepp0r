@@ -9,10 +9,19 @@
 
 
 function Chooser:__init_note_column()
+    self.column_idx       = 1 -- index of the column
+    self.column_idx_start = 1
+    self.column_idx_stop  = 4
+    self:__create_column_update()
 end
 function Chooser:__activate_note_column()
+    --- column logic
+    self:column_update_knobs()
+    self.pad:register_right_listener(self._column_listener)
 end
 function Chooser:__deactivate_note_column()
+    self:column_clear_knobs()
+    self.pad:unregister_right_listener(self._column_listener)
 end
 
 --- ------------------------------------------------------------------------------------------------------
