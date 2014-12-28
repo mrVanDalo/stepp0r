@@ -8,13 +8,13 @@
 ---                                                 [ Sub-Module Interface ]
 
 
-function Chooser:__init_effect_volume()
+function Effect:__init_effect_volume()
     self.volume               = 1 -- init values
     self.callbacks_set_volume = {}
 end
-function Chooser:__activate_effect_volume()
+function Effect:__activate_effect_volume()
 end
-function Chooser:__deactivate_effect_volume()
+function Effect:__deactivate_effect_volume()
 end
 
 --- ------------------------------------------------------------------------------------------------------

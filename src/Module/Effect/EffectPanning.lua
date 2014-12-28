@@ -8,13 +8,13 @@
 ---                                                 [ Sub-Module Interface ]
 
 
-function Chooser:__init_effect_panning()
+function Effect:__init_effect_panning()
     self.pan                  = 0 -- init values
     self.callbacks_set_pan    = {}
 end
-function Chooser:__activate_effect_panning()
+function Effect:__activate_effect_panning()
 end
-function Chooser:__deactivate_effect_panning()
+function Effect:__deactivate_effect_panning()
 end
 
 --- ------------------------------------------------------------------------------------------------------

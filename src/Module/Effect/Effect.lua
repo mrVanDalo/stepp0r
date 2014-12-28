@@ -8,6 +8,7 @@
 class "Effect" (Module)
 
 require "Module/Effect/EffectDelay"
+require "Module/Effect/EffectInstrumentCallback"
 require "Module/Effect/EffectVolume"
 require "Module/Effect/EffectPanning"
 require "Module/Effect/EffectMode"
@@ -43,6 +44,7 @@ function Effect:__init()
     self:__init_effect_panning()
     self:__init_effect_volume()
     self:__init_effect_instrument()
+
     -- (maybe) todo split this thing
     self:__create_matrix_listener()
 end

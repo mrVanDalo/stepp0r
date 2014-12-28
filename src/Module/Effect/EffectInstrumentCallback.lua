@@ -9,13 +9,13 @@
 ---                                                 [ Sub-Module Interface ]
 
 
-function Chooser:__init_effect_instrument()
+function Effect:__init_effect_instrument()
     self:__create_callback_set_instrument()
 end
-function Chooser:__activate_effect_instrument()
+function Effect:__activate_effect_instrument()
     self.pad:register_matrix_listener(self.matrix_listener)
 end
-function Chooser:__deactivate_effect_instrument()
+function Effect:__deactivate_effect_instrument()
     self.pad:unregister_matrix_listener(self.matrix_listener)
 end
 

@@ -9,13 +9,13 @@
 ---                                                 [ Sub-Module Interface ]
 
 
-function Chooser:__init_effect_delay()
+function Effect:__init_effect_delay()
     self.delay                = 1 -- init values
     self.callbacks_set_delay  = {}
 end
-function Chooser:__activate_effect_delay()
+function Effect:__activate_effect_delay()
 end
-function Chooser:__deactivate_effect_delay()
+function Effect:__deactivate_effect_delay()
 end
 
 --- ------------------------------------------------------------------------------------------------------
