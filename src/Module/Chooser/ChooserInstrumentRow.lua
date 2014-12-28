@@ -18,19 +18,18 @@ function Chooser:__init_instrument_row()
     self.callback_select_instrument = {}
     -- create functions
     self:__create_callback_set_instrument()
-    self:__create_instrument_notifier()
     self:__create_instrument_listener()
-    self:__create_instrumnets_notifier_row()
+    self:__create_instruments_row_notifier()
 end
 function Chooser:__activate_instrument_row()
     self:update_instrument_row()
     self.pad:register_matrix_listener(self.instrument_listener)
-    add_notifier(renoise.song().instruments_observable, self.instruments_notifier_row)
+    add_notifier(renoise.song().instruments_observable, self.instruments_row_notifier)
 end
 function Chooser:__deactivate_instrument_row()
     self:row_clear()
     self.pad:unregister_matrix_listener(self.instrument_listener)
-    remove_notifier(renoise.song().instruments_observable, self.instruments_notifier_row)
+    remove_notifier(renoise.song().instruments_observable, self.instruments_row_notifier)
 end
 
 --- ------------------------------------------------------------------------------------------------------
@@ -63,14 +62,16 @@ function Chooser:__create_instrument_listener()
     end
 end
 
-function Chooser:__create_instrumnets_notifier_row()
-    self.instruments_notifier_row = function (_)
+--- notifier for instrument changes
+--
+-- there is also another notifier wired to the same event for updating the page buttons
+function Chooser:__create_instruments_row_notifier()
+    self.instruments_row_notifier = function (_)
         self:update_instrument_row()
     end
 end
 
 function Chooser:update_instrument_row()
-    -- todo using the mute state too
     self:row_clear()
     for nr, instrument in ipairs(renoise.song().instruments) do
         local scaled_index = nr - self.inst_offset
@@ -78,7 +79,6 @@ function Chooser:update_instrument_row()
         if self.it_selection:instrument_exists_p(instrument) and scaled_index > 0 then
             local active_color  = self.color.instrument.active
             local passive_color = self.color.instrument.passive
-            -- todo speed me up, by a specific function for this case
             local track = self.it_selection:track_for_instrument(nr)
             if track then
                 if track.mute_state == TrackData.mute.off or track.mute_state == TrackData.mute.muted

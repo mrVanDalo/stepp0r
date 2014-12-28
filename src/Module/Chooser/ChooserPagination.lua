@@ -43,6 +43,9 @@ function Chooser:__create_page_listener()
     end
 end
 
+--- notifier for instrument changes
+--
+-- there is also another notifier wired to the same event for updating the instruments row
 function Chooser:__create_instruments_page_notifier()
     self.instruments_page_notifier = function (_)
         if self.is_not_active then return end
