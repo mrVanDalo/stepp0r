@@ -57,10 +57,10 @@ function Chooser:__init()
         },
     }
 
+    self:__init_instrument_row()
     self:__init_pagination()
     self:__init_mode()
     self:__init_note_column()
-    self:__init_instrument_row()
 end
 
 function Chooser:_activate()
