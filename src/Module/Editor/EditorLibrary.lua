@@ -4,6 +4,7 @@
 ---
 ---                                                 [ Editor Library Sub Module ]
 
+--- everything I don't know where to put else
 
 --- ------------------------------------------------------------------------------------------------------
 ---
@@ -47,4 +48,22 @@ end
 --
 function Editor:point_to_line(x,y)
     return ((x + (8 * (y - 1))) - 1) * self.zoom + 1 + self.page_start
+end
+
+--- calculates the position in track
+--
+-- the point should come from the launchpad.
+-- the note_column that is selected will be taken in account
+--
+-- @return nil if nothing found
+--
+function Editor:calculate_track_position(x,y)
+    local line       = self:point_to_line(x,y)
+    local pattern    = self:active_pattern()
+    local found_line = pattern.tracks[self.track_idx].lines[line]
+    if found_line then
+        return found_line.note_columns[self.track_column_idx]
+    else
+        return nil
+    end
 end

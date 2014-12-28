@@ -66,9 +66,6 @@ function Editor:__init()
             empty = Color.off,
         },
     }
-    self.playback_position_observer = nil
-    self.playback_position_last_x = 1
-    self.playback_position_last_y = 1
     self:__create_callbacks()
 
     self:__init_launchpad_matrix()
@@ -106,16 +103,6 @@ end
 
 
 
---- ======================================================================================================
----
----                                                 [ Library ]
-
-
-function Editor:_refresh_matrix()
-    self:__matrix_clear()
-    self:__matrix_update()
-    self:__render_matrix()
-end
 
 --- get the active pattern object
 --
@@ -126,21 +113,4 @@ function Editor:active_pattern()
 end
 
 
---- calculates the position in track
---
--- the point should come from the launchpad.
--- the note_column that is selected will be taken in account
---
--- @return nil if nothing found
---
-function Editor:calculate_track_position(x,y)
-    local line       = self:point_to_line(x,y)
-    local pattern    = self:active_pattern()
-    local found_line = pattern.tracks[self.track_idx].lines[line]
-    if found_line then
-        return found_line.note_columns[self.track_column_idx]
-    else
-        return nil
-    end
-end
 

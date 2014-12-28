@@ -1,37 +1,14 @@
 
 function Editor:__create_callbacks()
     self:__create_set_instrument_callback()
-    self:__create_paginator_update()
     self:__create_callback_set_note()
     self:__create_callback_set_delay()
     self:__create_callback_set_volume()
     self:__create_callback_set_pan()
-    self:__create_selected_pattern_index_notifier()
     self:__create_pattern_matrix_listener()
 end
 
-function Editor:__create_selected_pattern_index_notifier()
-    self.selected_pattern_index_notifier = function (_)
-        self.pattern_idx = renoise.song().selected_pattern_index
-        if self.is_active then
-            self:_refresh_matrix()
-        end
-    end
-end
 
-
-function Editor:__create_paginator_update()
-    self.pageinator_update_callback = function (msg)
-    --        print("stepper : update paginator")
-        self.page       = msg.page
-        self.page_start = msg.page_start
-        self.page_end   = msg.page_end
-        self.zoom       = msg.zoom
-        if self.is_active then
-            self:_refresh_matrix()
-        end
-    end
-end
 
 function Editor:__create_set_instrument_callback()
     self.callback_set_instrument = function (instrument_idx, track_idx, column_idx)
