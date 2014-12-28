@@ -22,7 +22,7 @@ function Chooser:__init_instrument_row()
     self:__create_instruments_row_notifier()
 end
 function Chooser:__activate_instrument_row()
-    self:update_instrument_row()
+    self:_update_instrument_row()
     self.pad:register_matrix_listener(self.instrument_listener)
     add_notifier(renoise.song().instruments_observable, self.instruments_row_notifier)
 end
@@ -41,9 +41,9 @@ function Chooser:__create_callback_set_instrument()
         self.instrument_idx = instrument_idx
         self.track_idx      = track_idx
         self.column_idx     = column_idx
-        self:update_instrument_row()
-        self:column_update_knobs()
-        self:_page_update_knobs()
+        self:_update_instrument_row()
+        self:_column_update_knobs()
+        self:_update_page_knobs()
     end
 end
 
@@ -57,8 +57,8 @@ function Chooser:__create_instrument_listener()
         elseif self.mode == ChooserData.mode.mute then
             self:__mute_track(msg.x)
         end
-        self:column_update_knobs()
-        self:update_instrument_row()
+        self:_column_update_knobs()
+        self:_update_instrument_row()
     end
 end
 
@@ -67,11 +67,11 @@ end
 -- there is also another notifier wired to the same event for updating the page buttons
 function Chooser:__create_instruments_row_notifier()
     self.instruments_row_notifier = function (_)
-        self:update_instrument_row()
+        self:_update_instrument_row()
     end
 end
 
-function Chooser:update_instrument_row()
+function Chooser:_update_instrument_row()
     self:__clear_instrument_row()
     for nr, instrument in ipairs(renoise.song().instruments) do
         local scaled_index = nr - self.inst_offset
