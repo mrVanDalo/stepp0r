@@ -10,15 +10,17 @@ function Chooser:__init_pagination()
     self.page_inc_idx = 4
     self.page_dec_idx = 3
     self:__create_page_listener()
+    self:__create_instruments_page_notifier()
 end
 function Chooser:__activate_pagination()
     self:page_update_knobs()
     self.pad:register_top_listener(self.page_listener)
-    add_notifier(renoise.song().instruments_observable, self.instruments_notifier)
+    add_notifier(renoise.song().instruments_observable, self.instruments_page_notifier)
 end
 function Chooser:__deactivate_pagination()
     self:page_clear_knobs()
     self.pad:unregister_top_listener(self.page_listener)
+    remove_notifier(renoise.song().instruments_observable, self.instruments_page_notifier)
 end
 
 --- ------------------------------------------------------------------------------------------------------
@@ -41,8 +43,8 @@ function Chooser:__create_page_listener()
     end
 end
 
-function Chooser:__create_instrument_notifier()
-    self.instruments_notifier = function (_)
+function Chooser:__create_instruments_page_notifier()
+    self.instruments_page_notifier = function (_)
         if self.is_not_active then return end
         self:page_update_knobs()
     end

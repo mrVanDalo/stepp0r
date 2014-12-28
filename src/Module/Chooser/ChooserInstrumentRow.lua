@@ -23,7 +23,6 @@ function Chooser:__init_instrument_row()
     self:__create_instrumnets_notifier_row()
 end
 function Chooser:__activate_instrument_row()
-    --- chooser line
     self:update_instrument_row()
     self.pad:register_matrix_listener(self.instrument_listener)
     add_notifier(renoise.song().instruments_observable, self.instruments_notifier_row)
@@ -32,7 +31,6 @@ function Chooser:__deactivate_instrument_row()
     self:row_clear()
     self.pad:unregister_matrix_listener(self.instrument_listener)
     remove_notifier(renoise.song().instruments_observable, self.instruments_notifier_row)
-    remove_notifier(renoise.song().instruments_observable, self.instruments_notifier)
 end
 
 --- ------------------------------------------------------------------------------------------------------
