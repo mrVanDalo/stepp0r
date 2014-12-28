@@ -6,7 +6,9 @@
 
 class "Keyboard" (Module)
 
-require "Module/Keyboard/KeyboardCallbacks"
+require "Module/Keyboard/KeyboardTrigger"
+require "Module/Keyboard/KeyboardLaunchpadMatrix"
+require "Module/Keyboard/KeyboardInstrumentCallback"
 
 
 --- this is a strange y -> x map for notes
@@ -59,42 +61,29 @@ function Keyboard:__init()
     self.track_idx      = 1
     self.instrument_backup = {}
     self.velocity   = 127
-    self.triggered_notes = {
-        {nil,nil, nil, nil, nil, nil, nil, nil },
-        {nil,nil, nil, nil, nil, nil, nil, nil }
-    }
+
+    self:__init_keyboard_trigger()
+    self:__init_keyboard_matrix()
+    self:__init_keyboard_instrument_callback()
+
     -- callback
     self.callback_set_note = {}
 
-    self:__create_callbacks()
 end
-
-function Keyboard:__create_callbacks()
-    self:__create_callback_set_instrument()
-    self:__create_keyboard_listener()
-end
-
-
---- ======================================================================================================
----
----                                                 [ BOOT ]
 
 function Keyboard:_activate()
+    self:__activate_keyboard_trigger()
+    self:__activate_keyboard_matrix()
+    self:__activate_keyboard_instrument_callback()
     self:matrix_refresh()
-    self.pad:register_matrix_listener(self.keyboard_listener)
 end
 
 function Keyboard:_deactivate()
+    self:__deactivate_keyboard_trigger()
+    self:__deactivate_keyboard_matrix()
+    self:__deactivate_keyboard_instrument_callback()
     self:matrix_clear()
-    self.pad:register_matrix_listener(self.keyboard_listener)
 end
-
-
-
-
-
-
-
 
 
 
@@ -142,24 +131,6 @@ function Keyboard:set_note(x,y)
     end
 end
 
-
---- ======================================================================================================
----
----                                                 [ OSC Client ]
-
-function Keyboard:trigger_note(x,y)
-    if is_not_off(self.note) then
-        local note = pitch(self.note,self.octave)
-        self.triggered_notes[y][x] = note
-        self.osc_client:trigger_note(self.instrument_idx, self.track_idx, note, self.velocity)
-    end
-end
-
-function Keyboard:untrigger_note(x,y)
-    local note = self.triggered_notes[y][x]
-    if not note then return end
-    self.osc_client:untrigger_note(self.instrument_idx, self.track_idx, note)
-end
 
 
 
