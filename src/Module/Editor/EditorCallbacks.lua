@@ -19,35 +19,6 @@ function Editor:__create_selected_pattern_index_notifier()
     end
 end
 
-function Editor:__create_pattern_matrix_listener()
-    self.pattern_matrix_listener = function (_,msg)
-        if self.is_not_active          then return end
-        if msg.vel == Velocity.release then return end
-        if msg.y > 4                   then return end
-        local column           = self:calculate_track_position(msg.x,msg.y)
-        if not column then return end
-        if column.note_value == EditorData.note.empty then
-            column.note_value         = pitch(self.note,self.octave)
-            column.instrument_value   = (self.instrument_idx - 1)
-            column.delay_value        = self.delay
-            column.panning_value      = self.pan
-            column.volume_value       = self.volume
-            if column.note_value == EditorData.note.off then
-                self.matrix[msg.x][msg.y] = self.color.note.off
-            else
-                self.matrix[msg.x][msg.y] = self.color.note.on
-            end
-        else
-            column.note_value         = EditorData.note.empty
-            column.instrument_value   = EditorData.instrument.empty
-            column.delay_value        = EditorData.delay.empty
-            column.panning_value      = EditorData.panning.empty
-            column.volume_value       = EditorData.volume.empty
-            self.matrix[msg.x][msg.y] = self.color.note.empty
-        end
-        self.pad:set_matrix(msg.x,msg.y,self.matrix[msg.x][msg.y])
-    end
-end
 
 function Editor:__create_paginator_update()
     self.pageinator_update_callback = function (msg)

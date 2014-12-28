@@ -70,7 +70,25 @@ function Editor:__init()
     self.playback_position_last_x = 1
     self.playback_position_last_y = 1
     self:__create_callbacks()
+
+    self:__init_launchpad_matrix()
+    self:__init_playback_position()
 end
+
+function Editor:_activate()
+    self:__activate_launchpad_matrix()
+    self:__activate_playback_position()
+
+    self:_refresh_matrix()
+end
+
+function Editor:_deactivate()
+    self:__deactivate_launchpad_matrix()
+    self:__deactivate_playback_position()
+
+    self:__matrix_clear()
+end
+
 
 function Editor:wire_launchpad(pad)
     self.pad = pad
@@ -82,49 +100,6 @@ function Editor:wire_playback_position_observer(playback_position_observer)
     end
     self.playback_position_observer = playback_position_observer
 end
-
-
---- ======================================================================================================
----
----                                                 [ BooT ]
-
-function Editor:_activate()
---    print("called _activate of steppor")
-    self.pattern_idx = renoise.song().selected_pattern_index
-    add_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
-    self.pad:register_matrix_listener(self.pattern_matrix_listener)
-    self:__register_playback_position_observer()
-    self:_refresh_matrix()
-end
-
-function Editor:_deactivate()
-    self:__matrix_clear()
-    self:__render_matrix()
-    remove_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
-    self.pad:unregister_matrix_listener(self.pattern_matrix_listener)
-    self:__unregister_playback_position_observer()
-end
-
-function Editor:__register_playback_position_observer()
-    self.playback_position_observer:register('stepper', function (line)
-        if self.is_not_active then return end
-        self:callback_playback_position(line)
-    end)
-end
-
-function Editor:__unregister_playback_position_observer()
-    self.playback_position_observer:unregister('stepper' )
-end
-
-
-
-
-
-
-
-
-
-
 
 
 
