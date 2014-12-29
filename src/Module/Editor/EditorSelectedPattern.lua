@@ -9,13 +9,13 @@
 ---                                                 [ Sub-Module Interface ]
 
 
-function Chooser:__init_selected_pattern()
+function Editor:__init_selected_pattern()
     self.pattern_idx      = 1 -- actual pattern
     self:__create_selected_pattern_index_notifier()
 end
-function Chooser:__activate_selected_pattern()
+function Editor:__activate_selected_pattern()
 end
-function Chooser:__deactivate_selected_pattern()
+function Editor:__deactivate_selected_pattern()
 end
 
 --- ------------------------------------------------------------------------------------------------------

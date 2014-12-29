@@ -10,15 +10,15 @@
 ---                                                 [ Sub-Module Interface ]
 
 
-function Chooser:__init_playback_position()
+function Editor:__init_playback_position()
     self.playback_position_observer = nil
     self.playback_position_last_x = 1
     self.playback_position_last_y = 1
 end
-function Chooser:__activate_playback_position()
+function Editor:__activate_playback_position()
     self:__register_playback_position_observer()
 end
-function Chooser:__deactivate_playback_position()
+function Editor:__deactivate_playback_position()
     self:__unregister_playback_position_observer()
 end
 

@@ -11,11 +11,11 @@
 ---                                                 [ Sub-Module Interface ]
 
 
-function Chooser:__init_library()
+function Editor:__init_library()
 end
-function Chooser:__activate_library()
+function Editor:__activate_library()
 end
-function Chooser:__deactivate_library()
+function Editor:__deactivate_library()
 end
 
 --- ------------------------------------------------------------------------------------------------------

@@ -11,15 +11,15 @@
 ---                                                 [ Sub-Module Interface ]
 
 
-function Chooser:__init_selected_note()
+function Editor:__init_selected_note()
     self.note        = Note.note.c
     self.octave      = 4
     -- callbacks
     self:__create_callback_set_note()
 end
-function Chooser:__activate_selected_note()
+function Editor:__activate_selected_note()
 end
-function Chooser:__deactivate_selected_note()
+function Editor:__deactivate_selected_note()
 end
 
 --- ------------------------------------------------------------------------------------------------------

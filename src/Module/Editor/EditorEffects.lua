@@ -9,7 +9,7 @@
 ---                                                 [ Sub-Module Interface ]
 
 
-function Chooser:__init_effects()
+function Editor:__init_effects()
     self.delay       = 0
     self.volume      = EditorData.instrument.empty
     self.pan         = EditorData.instrument.empty
@@ -18,9 +18,9 @@ function Chooser:__init_effects()
     self:__create_callback_set_volume()
     self:__create_callback_set_pan()
 end
-function Chooser:__activate_effects()
+function Editor:__activate_effects()
 end
-function Chooser:__deactivate_effects()
+function Editor:__deactivate_effects()
 end
 
 --- ------------------------------------------------------------------------------------------------------
