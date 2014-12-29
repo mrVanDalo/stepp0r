@@ -10,6 +10,7 @@
 
 
 function Chooser:__init_launchpad_matrix()
+    self:__create_pattern_matrix_listener()
 end
 function Chooser:__activate_launchpad_matrix()
     self.pattern_idx = renoise.song().selected_pattern_index

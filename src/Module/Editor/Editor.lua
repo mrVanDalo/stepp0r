@@ -71,12 +71,25 @@ function Editor:__init()
     self:__init_launchpad_matrix()
     self:__init_library()
     self:__init_playback_position()
+
+    self:__init_effects()
+    self:__init_pagination()
+    self:__init_pattern()
+    self:__init_selected_instrument()
+    self:__init_selected_note()
+    self:__init_selected_pattern()
 end
 
 function Editor:_activate()
     self:__activate_launchpad_matrix()
     self:__activate_library()
     self:__activate_playback_position()
+    self:__activate_effects()
+    self:__activate_pagination()
+    self:__activate_pattern()
+    self:__activate_selected_instrument()
+    self:__activate_selected_note()
+    self:__activate_selected_pattern()
 
     self:_refresh_matrix()
 end
@@ -85,6 +98,12 @@ function Editor:_deactivate()
     self:__deactivate_launchpad_matrix()
     self:__deactivate_library()
     self:__deactivate_playback_position()
+    self:__deactivate_effects()
+    self:__deactivate_pagination()
+    self:__deactivate_pattern()
+    self:__deactivate_selected_instrument()
+    self:__deactivate_selected_note()
+    self:__deactivate_selected_pattern()
 
     self:__matrix_clear()
 end
