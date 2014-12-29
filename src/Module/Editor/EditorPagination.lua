@@ -11,6 +11,10 @@
 
 
 function Chooser:__init_pagination()
+    self.zoom         = 1 -- influences grid size
+    self.page         = 1 -- page of actual pattern
+    self.page_start   = 0  -- line left before first pixel
+    self.page_end     = 33 -- line right after last pixel
     self:__create_paginator_update()
 end
 function Chooser:__activate_pagination()

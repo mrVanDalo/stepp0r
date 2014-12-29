@@ -10,17 +10,20 @@
 
 
 function Chooser:__init_launchpad_matrix()
+    self.matrix      = {}
     self:__create_pattern_matrix_listener()
 end
 function Chooser:__activate_launchpad_matrix()
     self.pattern_idx = renoise.song().selected_pattern_index
     add_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
     self.pad:register_matrix_listener(self.pattern_matrix_listener)
+    self:_refresh_matrix()
 end
 function Chooser:__deactivate_launchpad_matrix()
     self:__render_matrix()
     remove_notifier(renoise.song().selected_pattern_index_observable, self.selected_pattern_index_notifier)
     self.pad:unregister_matrix_listener(self.pattern_matrix_listener)
+    self:__matrix_clear()
 end
 
 --- ------------------------------------------------------------------------------------------------------

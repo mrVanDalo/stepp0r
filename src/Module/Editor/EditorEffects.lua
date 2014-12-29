@@ -10,6 +10,10 @@
 
 
 function Chooser:__init_effects()
+    self.delay       = 0
+    self.volume      = EditorData.instrument.empty
+    self.pan         = EditorData.instrument.empty
+    -- create callbacks
     self:__create_callback_set_delay()
     self:__create_callback_set_volume()
     self:__create_callback_set_pan()

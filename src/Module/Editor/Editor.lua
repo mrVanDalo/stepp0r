@@ -29,27 +29,6 @@ EditorData = {
 
 function Editor:__init()
     Module:__init(self)
-    self.track_idx       = 1
-    self.instrument_idx  = 1
-    self.note        = Note.note.c
-    self.octave      = 4
-    self.delay       = 0
-    self.volume      = EditorData.instrument.empty
-    self.pan         = EditorData.instrument.empty
-    -- ---
-    -- navigation
-    -- ---
-    -- zoom
-    self.zoom         = 1 -- influences grid size
-    -- pagination
-    self.page         = 1 -- page of actual pattern
-    self.page_start   = 0  -- line left before first pixel
-    self.page_end     = 33 -- line right after last pixel
-    -- rest
-    self.track_column_idx = 1 -- the column in the track
-    self.pattern_idx      = 1 -- actual pattern
-    -- rendering
-    self.matrix      = {}
     self.color       = {
         stepper = Color.green,
         page = {
@@ -66,12 +45,10 @@ function Editor:__init()
             empty = Color.off,
         },
     }
-    self:__create_callbacks()
-
+    -- init submodules
     self:__init_launchpad_matrix()
     self:__init_library()
     self:__init_playback_position()
-
     self:__init_effects()
     self:__init_pagination()
     self:__init_pattern()
@@ -90,12 +67,9 @@ function Editor:_activate()
     self:__activate_selected_instrument()
     self:__activate_selected_note()
     self:__activate_selected_pattern()
-
-    self:_refresh_matrix()
 end
 
 function Editor:_deactivate()
-    self:__deactivate_launchpad_matrix()
     self:__deactivate_library()
     self:__deactivate_playback_position()
     self:__deactivate_effects()
@@ -104,8 +78,7 @@ function Editor:_deactivate()
     self:__deactivate_selected_instrument()
     self:__deactivate_selected_note()
     self:__deactivate_selected_pattern()
-
-    self:__matrix_clear()
+    self:__deactivate_launchpad_matrix()
 end
 
 
@@ -119,17 +92,5 @@ function Editor:wire_playback_position_observer(playback_position_observer)
     end
     self.playback_position_observer = playback_position_observer
 end
-
-
-
-
---- get the active pattern object
---
--- self.pattern_idx will be kept up to date by an observable notifier
---
-function Editor:active_pattern()
-    return renoise.song().patterns[self.pattern_idx]
-end
-
 
 

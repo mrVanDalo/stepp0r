@@ -12,6 +12,9 @@
 
 
 function Chooser:__init_selected_note()
+    self.note        = Note.note.c
+    self.octave      = 4
+    -- callbacks
     self:__create_callback_set_note()
 end
 function Chooser:__activate_selected_note()

@@ -10,6 +10,9 @@
 
 
 function Chooser:__init_selected_instrument()
+    self.track_idx       = 1
+    self.instrument_idx  = 1
+    self.track_column_idx = 1 -- the column in the track
     self:__create_set_instrument_callback()
 end
 function Chooser:__activate_selected_instrument()
