@@ -1,4 +1,4 @@
-function Launchpad:right_callback(msg)
+function Launchpad:_right_callback(msg)
     local result = _is_matrix_right(msg)
     if (result.flag) then
         for _, callback in pairs(self._matrix_listener) do
@@ -68,7 +68,7 @@ end
 ---
 -- Set parameters
 
-function Launchpad:set_matrix_right( a, b , color )
+function Launchpad:_set_matrix_right( a, b , color )
     local x = a - 1
     local y = b - 1
     if ( x < 8 and x > -1 and y < 8 and y > -1) then
@@ -76,14 +76,14 @@ function Launchpad:set_matrix_right( a, b , color )
     end
 end
 
-function Launchpad:set_top_right(a,color)
+function Launchpad:_set_top_right(a,color)
     local x = a - 1
     if ( x > -1 and x < 8 ) then
         self:send( 0xB0, x + 0x68, color)
     end
 end
 
-function Launchpad:set_side_right(a,color)
+function Launchpad:_set_side_right(a,color)
     local x = a - 1
     if ( x > -1 and x < 8 ) then
         self:send( 0x90, 0x10 * x + 0x08, color)

@@ -5,6 +5,10 @@ using the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launch
 
 ## Structure
 
+### Files
+
+Every file should have a **__init_file_name** , **__activate_file_name**, **__deactivate_file_name function**
+
 ### Layer
 
 Layers should represent something that exists and you can talk to. 
@@ -21,7 +25,7 @@ Everything from `main.lua` will call stuff from in here.
 
 ### Module
 
-A module is something that is used by other Modules. 
+A module is something that is used by other Modules.
 Most of the time that is something that writes something to the Launchpad.
 
 ### Mode 

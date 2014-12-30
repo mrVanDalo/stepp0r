@@ -5,10 +5,7 @@
 ---                                                 [ About UI part ]
 
 
-
-
 class "AboutUI"
-
 
 function AboutUI:__init()
     self.vb = renoise.ViewBuilder()

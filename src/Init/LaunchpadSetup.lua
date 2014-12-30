@@ -17,7 +17,7 @@ require 'Mode/StepperMode'
 require 'Module/Adjuster/Adjuster'
 require 'Module/Bank/Bank'
 require 'Module/Paginator/Paginator'
-require 'Module/Stepper/Stepper'
+require 'Module/Editor/Editor'
 require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
 require 'Module/Keyboard/Keyboard'
@@ -46,7 +46,7 @@ function LaunchpadSetup:__init()
     self.osc_client          = nil
     self.it_selection        = nil
     -- modules
-    self.stepper             = nil
+    self.editor             = nil
     self.adjuster            = nil
     self.effect              = nil
     self.key                 = nil
@@ -91,16 +91,14 @@ function LaunchpadSetup:connect_launchpad(pad_name,rotation)
     self.pad:connect(pad_name)
 end
 
+function LaunchpadSetup:connect_osc_client(host, port)
+    self.osc_client:disconnect()
+    self.osc_client:connect(host, port)
+end
+
 function LaunchpadSetup:connect_it_selection()
     self.it_selection:disconnect()
     self.it_selection:connect()
-end
-
-function LaunchpadSetup:connect_osc_client(host, port)
-    self.osc_client:disconnect()
-    self.osc_client:set_host(host)
-    self.osc_client:set_port(port)
-    self.osc_client:start()
 end
 
 
@@ -114,9 +112,9 @@ function LaunchpadSetup:wire()
     self.osc_client = OscClient()
     self.it_selection = IT_Selection()
 
-    self.stepper = Stepper()
-    self.stepper:wire_launchpad(self.pad)
-    self.stepper:wire_playback_position_observer(self.playback_position_observer)
+    self.editor = Editor()
+    self.editor:wire_launchpad(self.pad)
+    self.editor:wire_playback_position_observer(self.playback_position_observer)
 
     self.adjuster = Adjuster()
     self.adjuster:wire_launchpad(self.pad)
@@ -124,9 +122,9 @@ function LaunchpadSetup:wire()
 
     self.effect = Effect()
     self.effect:wire_launchpad(self.pad)
-    self.effect:register_set_delay (self.stepper.callback_set_delay)
-    self.effect:register_set_volume(self.stepper.callback_set_volume)
-    self.effect:register_set_pan   (self.stepper.callback_set_pan)
+    self.effect:register_set_delay (self.editor.callback_set_delay)
+    self.effect:register_set_volume(self.editor.callback_set_volume)
+    self.effect:register_set_pan   (self.editor.callback_set_pan)
     self.effect:register_set_delay (self.adjuster.callback_set_delay)
     self.effect:register_set_volume(self.adjuster.callback_set_volume)
     self.effect:register_set_pan   (self.adjuster.callback_set_pan)
@@ -134,7 +132,7 @@ function LaunchpadSetup:wire()
     self.key = Keyboard()
     self.key:wire_launchpad(self.pad)
     self.key:wire_osc_client(self.osc_client)
-    self.key:register_set_note(self.stepper.callback_set_note)
+    self.key:register_set_note(self.editor.callback_set_note)
 
     self.bank = Bank()
     self.bank:wire_launchpad(self.pad)
@@ -147,12 +145,12 @@ function LaunchpadSetup:wire()
     self.paginator = Paginator()
     self.paginator:wire_launchpad(self.pad)
     self.paginator:register_update_callback(self.adjuster.pageinator_update_callback)
-    self.paginator:register_update_callback(self.stepper.pageinator_update_callback)
+    self.paginator:register_update_callback(self.editor.pageinator_update_callback)
 
     --- Stepper Mode
     self.stepper_mode = Mode()
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.key)
-    self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.stepper)
+    self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.editor)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.bank)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.adjuster)
     self.stepper_mode_module = StepperMode()
@@ -161,7 +159,7 @@ function LaunchpadSetup:wire()
 
     --- Layer callback registration
     self.it_selection:register_select_instrument(self.key.callback_set_instrument)
-    self.it_selection:register_select_instrument(self.stepper.callback_set_instrument)
+    self.it_selection:register_select_instrument(self.editor.callback_set_instrument)
     self.it_selection:register_select_instrument(self.adjuster.callback_set_instrument)
     self.it_selection:register_select_instrument(self.effect.callback_set_instrument)
     self.it_selection:register_select_instrument(self.chooser.callback_set_instrument)

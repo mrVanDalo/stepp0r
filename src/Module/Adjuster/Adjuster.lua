@@ -7,9 +7,12 @@
 class "Adjuster" (Module)
 
 require 'Module/Adjuster/AdjusterBank'
-require 'Module/Adjuster/AdjusterBoot'
+require 'Module/Adjuster/AdjusterPlaybackPosition'
+require 'Module/Adjuster/AdjusterSelectedPattern'
+require 'Module/Adjuster/AdjusterPagination'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
+require 'Module/Adjuster/AdjusterLaunchpadMatrix'
 require 'Module/Adjuster/AdjusterPattern'
 
 AdjusterData = {
@@ -63,17 +66,7 @@ function Adjuster:__init()
     -- zoom
     self.zoom         = 1 -- influences grid size
 
-    -- pagination
-    self.page         = 1 -- page of actual pattern
-    self.page_start   = 0  -- line left before first pixel
-    self.page_end     = 33 -- line right after last pixel
-
-
-    self.bank_matrix = {}
-    self:_clear_bank()
-
     -- rendering
-    self.__pattern_matrix = {}
     self.color = {
         stepper = Color.green,
         page = {
@@ -96,25 +89,41 @@ function Adjuster:__init()
         },
     }
 
-    -- playback position
-    self.playback_position_observer = nil
-    self.playback_position_last_x = 1
-    self.playback_position_last_y = 1
-
-    -- create listeners
-    self:_first_run()
-    self:_create_callbacks()
+    self:__init_playback_position()
+    self:__init_bank()
+    self:__init_selected_pattern()
+    self:__init_pagination()
+    self:__init_render()
+    self:__init_callbacks()
+    self:__init_pattern()
 end
+
+
+function Adjuster:_activate()
+    self:__activate_playback_position()
+    self:__activate_bank()
+    self:__activate_selected_pattern()
+    self:__activate_pagination()
+    self:__activate_callbacks()
+    self:__activate_pattern()
+    -- must be last
+    self:__activate_render()
+end
+
+--- tear down
+--
+function Adjuster:_deactivate()
+    self:__deactivate_bank()
+    self:__deactivate_playback_position()
+    self:__deactivate_selected_pattern()
+    self:__deactivate_pagination()
+    self:__deactivate_callbacks()
+    self:__deactivate_pattern()
+    -- must be last
+    self:__deactivate_render()
+end
+
 
 function Adjuster:wire_launchpad(pad)
     self.pad = pad
 end
-
-function Adjuster:wire_playback_position_observer(playback_position_observer)
-    if self.playback_position_observer then
-        self:unregister_playback_position_observer()
-    end
-    self.playback_position_observer = playback_position_observer
-end
-
-

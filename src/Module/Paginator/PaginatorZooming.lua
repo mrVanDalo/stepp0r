@@ -1,5 +1,33 @@
 --- ======================================================================================================
 ---
+---                                                 [ Paginator Zoom Submodule ]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Paginator:__init_zoom()
+    self.zoom         = 1 -- influences grid size
+    self.zoom_out_idx = 7
+    self.zoom_in_idx  = 6
+    self:__create_zoom_listener()
+end
+function Paginator:__activate_zoom()
+    self.pad:register_top_listener(self.zoom_listener)
+    self:_update_zoom_knobs()
+end
+function Paginator:__deactivate_zoom()
+    self.pad:unregister_top_listener(self.zoom_listener)
+    self:_clear_zoom_knobs()
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
+--- ======================================================================================================
+---
 ---                                                 [ ZOOM ]
 
 function Paginator:__create_zoom_listener()
@@ -19,8 +47,8 @@ function Paginator:__create_zoom_listener()
 end
 
 function Paginator:_after_zoom_change()
-    self:_page_update_knobs()
-    self:_zoom_update_knobs()
+    self:_update_page_knobs()
+    self:_update_zoom_knobs()
     self:_update_listeners()
 end
 
@@ -31,19 +59,19 @@ function Paginator:_zoom_out()
         self.zoom = self.zoom * 2
         -- update page
         self.page = (self.page * 2 ) - 1
-        self:_page_update_borders()
+        self:_update_page_borders()
         -- correction
 --        print("number of lines : " .. pattern.number_of_lines)
 --        print("self.page_start : " .. self.page_start)
         if (self.page_start >= pattern.number_of_lines) then
 --            print("lower half correction")
             self.page = self.page - 2
-            self:_page_update_borders()
+            self:_update_page_borders()
         end
         while (self.page_start >= pattern.number_of_lines and self.page > 0) do
 --            print("last page correction")
             self.page = self.page - 1
-            self:_page_update_borders()
+            self:_update_page_borders()
         end
     end
 end
@@ -56,11 +84,11 @@ function Paginator:_zoom_in()
         if (self.page > 1) then
             self.page = math.floor(self.page / 2)
         end
-        self:_page_update_borders()
+        self:_update_page_borders()
     end
 end
 
-function Paginator:_zoom_update_knobs()
+function Paginator:_update_zoom_knobs()
     if (self.zoom > 1) then
         self.pad:set_top(self.zoom_in_idx,self.color.zoom.active)
     else
@@ -74,7 +102,7 @@ function Paginator:_zoom_update_knobs()
     end
 end
 
-function Paginator:_zoom_clear_knobs()
+function Paginator:_clear_zoom_knobs()
     self.pad:set_top(self.zoom_in_idx,Color.off)
     self.pad:set_top(self.zoom_out_idx,Color.off)
 end
