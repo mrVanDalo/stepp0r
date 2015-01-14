@@ -46,7 +46,7 @@ function LaunchpadSetup:__init()
     self.osc_client          = nil
     self.it_selection        = nil
     -- modules
-    self.editor             = nil
+    self.editor              = nil
     self.adjuster            = nil
     self.effect              = nil
     self.key                 = nil
@@ -111,15 +111,18 @@ function LaunchpadSetup:wire()
     self.playback_position_observer = PlaybackPositionObserver()
     self.osc_client = OscClient()
     self.it_selection = IT_Selection()
-
+    --- Modules are the things you can see on the launchpad
+    -- or route informations between modules
+    -- or toggle modules on and off
+    --
     self.editor = Editor()
     self.editor:wire_launchpad(self.pad)
     self.editor:wire_playback_position_observer(self.playback_position_observer)
-
+    --
     self.adjuster = Adjuster()
     self.adjuster:wire_launchpad(self.pad)
     self.adjuster:wire_playback_position_observer(self.playback_position_observer)
-
+    --
     self.effect = Effect()
     self.effect:wire_launchpad(self.pad)
     self.effect:register_set_delay (self.editor.callback_set_delay)
@@ -128,26 +131,27 @@ function LaunchpadSetup:wire()
     self.effect:register_set_delay (self.adjuster.callback_set_delay)
     self.effect:register_set_volume(self.adjuster.callback_set_volume)
     self.effect:register_set_pan   (self.adjuster.callback_set_pan)
-
+    --
     self.key = Keyboard()
     self.key:wire_launchpad(self.pad)
     self.key:wire_osc_client(self.osc_client)
     self.key:register_set_note(self.editor.callback_set_note)
-
+    --
     self.bank = Bank()
     self.bank:wire_launchpad(self.pad)
     self.bank:register_bank_update(self.adjuster.bank_update_handler)
-
+    --
     self.chooser = Chooser()
     self.chooser:wire_launchpad(self.pad)
     self.chooser:wire_it_selection(self.it_selection)
-
+    --
     self.paginator = Paginator()
     self.paginator:wire_launchpad(self.pad)
     self.paginator:register_update_callback(self.adjuster.pageinator_update_callback)
     self.paginator:register_update_callback(self.editor.pageinator_update_callback)
-
+    --
     --- Stepper Mode
+    -- is the mode that toggels the Editor and Keyboard Kombo with the Adjuster and Bank Kombo
     self.stepper_mode = Mode()
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.key)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.editor)
@@ -156,7 +160,6 @@ function LaunchpadSetup:wire()
     self.stepper_mode_module = StepperMode()
     self.stepper_mode_module:wire_launchpad(self.pad)
     self.stepper_mode_module:register_mode_update_callback(self.stepper_mode.mode_update_callback)
-
     --- Layer callback registration
     self.it_selection:register_select_instrument(self.key.callback_set_instrument)
     self.it_selection:register_select_instrument(self.editor.callback_set_instrument)

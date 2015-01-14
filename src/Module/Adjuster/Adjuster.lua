@@ -93,7 +93,7 @@ function Adjuster:__init()
     self:__init_bank()
     self:__init_selected_pattern()
     self:__init_pagination()
-    self:__init_render()
+    self:__init_launchpad_matrix()
     self:__init_callbacks()
     self:__init_pattern()
 end
@@ -107,7 +107,7 @@ function Adjuster:_activate()
     self:__activate_callbacks()
     self:__activate_pattern()
     -- must be last
-    self:__activate_render()
+    self:__activate_launchpad_matrix()
 end
 
 --- tear down
@@ -120,7 +120,7 @@ function Adjuster:_deactivate()
     self:__deactivate_callbacks()
     self:__deactivate_pattern()
     -- must be last
-    self:__deactivate_render()
+    self:__deactivate_launchpad_matrix()
 end
 
 

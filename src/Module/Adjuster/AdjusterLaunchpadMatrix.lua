@@ -1,7 +1,7 @@
 
 --- ======================================================================================================
 ---
----                                                 [ Render Sub-Modul ]
+---                                                 [ Launchpad Matrix Sub-Modul ]
 ---
 --- will do the rendering of the matrix and all
 
@@ -10,16 +10,16 @@
 ---
 ---                                                 [ Sub-Module Interface ]
 
-function Adjuster:__init_render()
+function Adjuster:__init_launchpad_matrix()
     self:__create_matrix_listener()
 end
 
-function Adjuster:__activate_render()
+function Adjuster:__activate_launchpad_matrix()
     self:_refresh_matrix()
     self.pad:register_matrix_listener(self.__matrix_listener)
 end
 
-function Adjuster:__deactivate_render()
+function Adjuster:__deactivate_launchpad_matrix()
     self.pad:unregister_matrix_listener(self.__matrix_listener)
     self:_render_matrix()
 end
