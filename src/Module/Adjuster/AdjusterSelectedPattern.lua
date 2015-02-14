@@ -9,6 +9,7 @@ end
 
 function Adjuster:__activate_selected_pattern()
     self.pattern_idx = renoise.song().selected_pattern_index
+    -- todo move this to the IT_Selection
     add_notifier(renoise.song().selected_pattern_index_observable, self.__select_pattern_listener)
 end
 

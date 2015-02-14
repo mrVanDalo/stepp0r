@@ -2,8 +2,16 @@
 function IT_Selection:_init_track()
     -- callbacks
     self.track_idx      = 1
-
     self:__create_selected_track_listener()
+end
+
+
+function IT_Selection:_connect_track()
+    add_notifier(renoise.song().selected_track_index_observable, self.selected_track_listener)
+end
+
+function IT_Selection:_disconnect_track()
+    remove_notifier(renoise.song().selected_track_index_observable, self.selected_track_listener)
 end
 
 function IT_Selection:__create_selected_track_listener()
@@ -14,12 +22,24 @@ function IT_Selection:__create_selected_track_listener()
     end
 end
 
+
 --- register callback
 --
 -- the callback gets the `index of instrument` and `the active note column`
 function IT_Selection:register_select_instrument(callback)
     table.insert(self.callback_select_instrument, callback)
 end
+
+--- just update that the selected instrument was updated.
+-- this is called by the selected_track_notifier
+function IT_Selection:__update_track_index(track_index)
+    self.track_idx      = track_index
+    self.column_idx     = 1
+    self.instrument_idx = self:__instrument_index_for_track(self.track_idx)
+    -- trigger callbacks
+    self:__update_set_instrument_listeners()
+end
+
 
 --- boot the layer (basically trigger all listeners)
 function IT_Selection:boot()
@@ -39,16 +59,6 @@ function IT_Selection:__rename_track_index(index, name)
     if track then
         track.name = name
     end
-end
-
---- just update that the selected instrument was updated.
--- this is called by the selected_track_notifier
-function IT_Selection:__update_track_index(track_index)
-    self.track_idx      = track_index
-    self.column_idx     = 1
-    self.instrument_idx = self:__instrument_index_for_track(self.track_idx)
-    -- trigger callbacks
-    self:__update_set_instrument_listeners()
 end
 
 --- return insturument index coresponding to the `track_index`

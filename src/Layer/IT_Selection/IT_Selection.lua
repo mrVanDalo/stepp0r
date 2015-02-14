@@ -54,11 +54,11 @@ end
 ---                                                 [ boot ]
 
 function IT_Selection:connect()
-    add_notifier(renoise.song().selected_track_index_observable, self.selected_track_listener)
+    self:_connect_track()
 end
 
 function IT_Selection:disconnect()
-    remove_notifier(renoise.song().selected_track_index_observable, self.selected_track_listener)
+    self:_disconnect_track()
 end
 
 

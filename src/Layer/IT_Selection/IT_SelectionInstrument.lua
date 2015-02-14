@@ -11,6 +11,16 @@ function IT_Selection:register_select_instrument(callback)
     table.insert(self.callback_select_instrument, callback)
 end
 
+-- function :callback_set_instrument() return function(instrument_idx, track_idx, column_idx) end end
+function IT_Selection:__update_set_instrument_listeners()
+    --    log("instrument_idx", self.instrument_idx)
+    --    log("track_idx", self.track_idx)
+    --    log("column_idx", self.column_idx)
+    for _, callback in ipairs(self.callback_select_instrument) do
+        callback(self.instrument_idx, self.track_idx, self.column_idx)
+    end
+end
+
 
 --- only instruments with names are instruments
 function IT_Selection:__instrument_name(instrument)
@@ -52,19 +62,6 @@ function IT_Selection:track_index_for_instrument(instrument_number)
 end
 
 
-
-
-
-
--- function :callback_set_instrument() return function(instrument_idx, track_idx, column_idx) end end
-function IT_Selection:__update_set_instrument_listeners()
-    log("instrument_idx", self.instrument_idx)
-    log("track_idx", self.track_idx)
-    log("column_idx", self.column_idx)
-    for _, callback in ipairs(self.callback_select_instrument) do
-        callback(self.instrument_idx, self.track_idx, self.column_idx)
-    end
-end
 
 --- updated the selected instrument
 -- don't call this on the selected_track_notifier
