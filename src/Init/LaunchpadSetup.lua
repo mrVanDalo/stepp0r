@@ -7,7 +7,7 @@ require 'Layer/Launchpad/Launchpad'
 require 'Layer/PlaybackPositionObserver'
 require 'Layer/OscClient'
 require 'Layer/Util'
-require 'Layer/IT_Selection'
+require 'Layer/IT_Selection/IT_Selection'
 
 require 'Module/Module'
 
