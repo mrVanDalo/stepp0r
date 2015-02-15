@@ -40,6 +40,7 @@ function IT_Selection:__update_track_index(track_index)
     self.column_idx     = 1
     self.instrument_idx = self:__instrument_index_for_track(self.track_idx)
     -- trigger callbacks
+    self:_update_alias_listener(self.track_idx, self.pattern_idx)
     self:__update_set_instrument_listeners()
 end
 
