@@ -14,6 +14,7 @@ require "Module/Editor/EditorPlaybackPosition"
 require "Module/Editor/EditorSelectedInstrument"
 require "Module/Editor/EditorSelectedNote"
 require "Module/Editor/EditorSelectedPattern"
+require "Module/Editor/EditorIdle"
 
 EditorData = {
     note = {
@@ -60,6 +61,7 @@ function Editor:__init()
     self:__init_selected_instrument()
     self:__init_selected_note()
     self:__init_selected_pattern()
+    self:__init_idle()
 end
 
 function Editor:_activate()
@@ -71,6 +73,7 @@ function Editor:_activate()
     self:__activate_selected_instrument()
     self:__activate_selected_note()
     self:__activate_selected_pattern()
+    self:__activate_idle()
 end
 
 function Editor:_deactivate()
@@ -82,6 +85,7 @@ function Editor:_deactivate()
     self:__deactivate_selected_note()
     self:__deactivate_selected_pattern()
     self:__deactivate_launchpad_matrix()
+    self:__deactivate_idle()
 end
 
 

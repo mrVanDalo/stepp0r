@@ -7,7 +7,7 @@ require 'Layer/Launchpad/Launchpad'
 require 'Layer/PlaybackPositionObserver'
 require 'Layer/OscClient'
 require 'Layer/Util'
-require 'Layer/IT_Selection'
+require 'Layer/IT_Selection/IT_Selection'
 
 require 'Module/Module'
 
@@ -68,17 +68,18 @@ function LaunchpadSetup:deactivate()
     -- layers
     self.osc_client:disconnect()
     self.pad:disconnect()
+    self.it_selection:disconnect()
 end
 
 function LaunchpadSetup:activate()
+    -- boot
+    self.it_selection:boot()
     -- modules
     self.stepper_mode_module:activate()
     self.stepper_mode:activate()
     self.chooser:activate()
     self.paginator:activate()
     self.effect:activate()
-    -- boot
-    self.it_selection:boot()
 end
 
 function LaunchpadSetup:connect_launchpad(pad_name,rotation)
@@ -166,6 +167,13 @@ function LaunchpadSetup:wire()
     self.it_selection:register_select_instrument(self.adjuster.callback_set_instrument)
     self.it_selection:register_select_instrument(self.effect.callback_set_instrument)
     self.it_selection:register_select_instrument(self.chooser.callback_set_instrument)
+    --
+    self.it_selection:register_select_pattern(self.editor.callback_set_pattern)
+    self.it_selection:register_select_pattern(self.adjuster.callback_set_pattern)
+    self.it_selection:register_select_pattern(self.paginator.callback_set_pattern)
+    --
+    self.it_selection:register_idle(self.editor.idle_callback)
+    self.it_selection:register_idle(self.adjuster.idle_callback)
 
 end
 

@@ -14,6 +14,7 @@ require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
 require 'Module/Adjuster/AdjusterLaunchpadMatrix'
 require 'Module/Adjuster/AdjusterPattern'
+require 'Module/Adjuster/AdjusterIdle'
 
 AdjusterData = {
     note = {
@@ -96,6 +97,7 @@ function Adjuster:__init()
     self:__init_launchpad_matrix()
     self:__init_callbacks()
     self:__init_pattern()
+    self:__init_idle()
 end
 
 
@@ -106,6 +108,7 @@ function Adjuster:_activate()
     self:__activate_pagination()
     self:__activate_callbacks()
     self:__activate_pattern()
+    self:__activate_idle()
     -- must be last
     self:__activate_launchpad_matrix()
 end
@@ -119,6 +122,7 @@ function Adjuster:_deactivate()
     self:__deactivate_pagination()
     self:__deactivate_callbacks()
     self:__deactivate_pattern()
+    self:__deactivate_idle()
     -- must be last
     self:__deactivate_launchpad_matrix()
 end
