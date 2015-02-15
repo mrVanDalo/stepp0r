@@ -26,6 +26,7 @@ require 'Layer/IT_Selection/IT_SelectionTrack'
 require 'Layer/IT_Selection/IT_SelectionInstrument'
 require 'Layer/IT_Selection/IT_SelectionColumn'
 require 'Layer/IT_Selection/IT_SelectionPattern'
+require 'Layer/IT_Selection/IT_SelectionIdle'
 
 
 --- ======================================================================================================
@@ -38,6 +39,7 @@ function IT_Selection:__init()
     self:_init_instrument()
     self:_init_column()
     self:_init_pattern()
+    self:_init_idle()
 end
 
 
@@ -46,6 +48,7 @@ end
 function IT_Selection:boot()
     self:_boot_track()
     self:_boot_pattern()
+    self:_boot_idle()
 end
 
 
@@ -59,11 +62,13 @@ end
 function IT_Selection:connect()
     self:_connect_track()
     self:_connect_pattern()
+    self:_connect_idle()
 end
 
 function IT_Selection:disconnect()
     self:_disconnect_track()
     self:_disconnect_pattern()
+    self:_disconnect_idle()
 end
 
 

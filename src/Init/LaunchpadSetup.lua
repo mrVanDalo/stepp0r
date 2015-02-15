@@ -171,6 +171,8 @@ function LaunchpadSetup:wire()
     self.it_selection:register_select_pattern(self.editor.callback_set_pattern)
     self.it_selection:register_select_pattern(self.adjuster.callback_set_pattern)
     self.it_selection:register_select_pattern(self.paginator.callback_set_pattern)
+    --
+    self.it_selection:register_idle(self.editor.idle_callback)
 
 end
 
