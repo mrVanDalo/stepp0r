@@ -38,15 +38,14 @@ function IT_Selection:_update_alias_listener(new_track_idx, new_pattern_idx)
         renoise.song().patterns[self.last_alias_pattern_idx].tracks[self.last_alias_track_idx].alias_pattern_index_observable,
         self.__alias_pattern_listener
     )
-    print("switch track_idx", self.last_alias_track_idx, new_track_idx)
-    print("switch pattern_idx", self.last_alias_pattern_idx, new_pattern_idx)
+    print("remove alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
     self.last_alias_track_idx = new_track_idx
     self.last_alias_pattern_idx = new_pattern_idx
     add_notifier(
         renoise.song().patterns[self.last_alias_pattern_idx].tracks[self.last_alias_track_idx].alias_pattern_index_observable,
---        renoise.song().selected_track.alias_pattern_index_observable,
         self.__alias_pattern_listener
     )
+    print("add alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
 end
 
 function IT_Selection:__remove_alias_listener()
@@ -54,6 +53,7 @@ function IT_Selection:__remove_alias_listener()
         renoise.song().patterns[self.last_alias_pattern_idx].tracks[self.last_alias_track_idx].alias_pattern_index_observable,
         self.__alias_pattern_listener
     )
+    print("remove alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
 end
 
 function IT_Selection:__create_alias_pattern_listener()

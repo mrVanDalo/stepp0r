@@ -68,6 +68,7 @@ function LaunchpadSetup:deactivate()
     -- layers
     self.osc_client:disconnect()
     self.pad:disconnect()
+    self.it_selection:disconnect()
 end
 
 function LaunchpadSetup:activate()
@@ -170,7 +171,6 @@ function LaunchpadSetup:wire()
     self.it_selection:register_select_pattern(self.editor.callback_set_pattern)
     self.it_selection:register_select_pattern(self.adjuster.callback_set_pattern)
     self.it_selection:register_select_pattern(self.paginator.callback_set_pattern)
-
 
 end
 
