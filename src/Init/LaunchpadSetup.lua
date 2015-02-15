@@ -71,14 +71,14 @@ function LaunchpadSetup:deactivate()
 end
 
 function LaunchpadSetup:activate()
+    -- boot
+    self.it_selection:boot()
     -- modules
     self.stepper_mode_module:activate()
     self.stepper_mode:activate()
     self.chooser:activate()
     self.paginator:activate()
     self.effect:activate()
-    -- boot
-    self.it_selection:boot()
 end
 
 function LaunchpadSetup:connect_launchpad(pad_name,rotation)
@@ -166,6 +166,11 @@ function LaunchpadSetup:wire()
     self.it_selection:register_select_instrument(self.adjuster.callback_set_instrument)
     self.it_selection:register_select_instrument(self.effect.callback_set_instrument)
     self.it_selection:register_select_instrument(self.chooser.callback_set_instrument)
+    --
+    self.it_selection:register_select_pattern(self.editor.callback_set_pattern)
+    self.it_selection:register_select_pattern(self.adjuster.callback_set_pattern)
+    self.it_selection:register_select_pattern(self.paginator.callback_set_pattern)
+
 
 end
 

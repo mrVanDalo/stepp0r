@@ -5,6 +5,9 @@ function IT_Selection:_init_track()
     self:__create_selected_track_listener()
 end
 
+function IT_Selection:_boot_track()
+    self.selected_track_listener()
+end
 
 function IT_Selection:_connect_track()
     add_notifier(renoise.song().selected_track_index_observable, self.selected_track_listener)

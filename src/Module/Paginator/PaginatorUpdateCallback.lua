@@ -10,14 +10,12 @@
 
 function Paginator:__init_update_callback()
     self.update_callbacks = {}
-    self:__create_pattern_idx_update_callback()
+    self:__create_callback_set_pattern()
 end
+
 function Paginator:__activate_update_callback()
-    self.pattern_idx = renoise.song().selected_pattern_index
-    add_notifier(renoise.song().selected_pattern_index_observable, self.pattern_idx_update_callback)
 end
 function Paginator:__deactivate_update_callback()
-    remove_notifier(renoise.song().selected_pattern_index_observable, self.pattern_idx_update_callback)
 end
 
 --- ------------------------------------------------------------------------------------------------------
@@ -28,9 +26,9 @@ function Paginator:register_update_callback(callback)
     table.insert(self.update_callbacks, callback)
 end
 
-function Paginator:__create_pattern_idx_update_callback()
-    self.pattern_idx_update_callback = function ()
-        self.pattern_idx = renoise.song().selected_pattern_index
+function Paginator:__create_callback_set_pattern()
+    self.callback_set_pattern = function (index)
+        self.pattern_idx = index
     end
 end
 

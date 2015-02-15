@@ -25,6 +25,7 @@ class "IT_Selection"
 require 'Layer/IT_Selection/IT_SelectionTrack'
 require 'Layer/IT_Selection/IT_SelectionInstrument'
 require 'Layer/IT_Selection/IT_SelectionColumn'
+require 'Layer/IT_Selection/IT_SelectionPattern'
 
 
 --- ======================================================================================================
@@ -36,13 +37,15 @@ function IT_Selection:__init()
     self:_init_track()
     self:_init_instrument()
     self:_init_column()
+    self:_init_pattern()
 end
 
 
 
 --- boot the layer (basically trigger all listeners)
 function IT_Selection:boot()
-    self.selected_track_listener()
+    self:_boot_track()
+    self:_boot_pattern()
 end
 
 
@@ -55,10 +58,12 @@ end
 
 function IT_Selection:connect()
     self:_connect_track()
+    self:_connect_pattern()
 end
 
 function IT_Selection:disconnect()
     self:_disconnect_track()
+    self:_disconnect_pattern()
 end
 
 

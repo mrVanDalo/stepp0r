@@ -11,7 +11,7 @@
 
 function Editor:__init_selected_pattern()
     self.pattern_idx      = 1 -- actual pattern
-    self:__create_selected_pattern_index_notifier()
+    self:__create_callback_set_pattern()
 end
 function Editor:__activate_selected_pattern()
 end
@@ -22,9 +22,9 @@ end
 ---
 ---                                                 [ Lib ]
 
-function Editor:__create_selected_pattern_index_notifier()
-    self.selected_pattern_index_notifier = function (_)
-        self.pattern_idx = renoise.song().selected_pattern_index
+function Editor:__create_callback_set_pattern()
+    self.callback_set_pattern = function (index)
+        self.pattern_idx = index
         if self.is_active then
             self:_refresh_matrix()
         end
