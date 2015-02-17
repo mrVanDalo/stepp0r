@@ -19,11 +19,9 @@ function IT_Selection:_disconnect_track()
 end
 
 function IT_Selection:set_follow_track_instrument()
-    print("set follow instrument")
     self.follow_track_instrument = 1
 end
 function IT_Selection:unset_follow_track_instrument()
-    print("unset follow instrument")
     self.follow_track_instrument = nil
 end
 
