@@ -170,7 +170,7 @@ end
 function MainUI:create_follow_track_instrument_row()
     self.follow_track_instrument_checkbox = self.vb:checkbox{
         visible = true,
-        value   = false,
+        value   = true,
         width   = self.button_size,
         tooltip = "change instrument according to active track"
     }
