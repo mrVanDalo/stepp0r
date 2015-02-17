@@ -65,6 +65,12 @@ function create_main_UI()
             launchpad_setup:unset_follow_mute()
         end
 
+        if options.follow_track_instrument then
+            launchpad_setup:set_follow_track_instrument()
+        else
+            launchpad_setup:unset_follow_track_instrument()
+        end
+
         launchpad_setup:connect_launchpad(options.launchpad.name, options.rotation)
         launchpad_setup:connect_it_selection()
         launchpad_setup:activate()

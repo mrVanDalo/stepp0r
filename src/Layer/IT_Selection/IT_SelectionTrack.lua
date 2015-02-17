@@ -1,5 +1,6 @@
 
 function IT_Selection:_init_track()
+    self.follow_track_instrument = nil
     -- callbacks
     self.track_idx      = 1
     self:__create_selected_track_listener()
@@ -15,6 +16,13 @@ end
 
 function IT_Selection:_disconnect_track()
     remove_notifier(renoise.song().selected_track_index_observable, self.selected_track_listener)
+end
+
+function IT_Selection:set_follow_track_instrument()
+    self.follow_track_instrument = 1
+end
+function IT_Selection:unset_follow_track_instrument()
+    self.follow_track_instrument = nil
 end
 
 function IT_Selection:__create_selected_track_listener()
@@ -33,12 +41,13 @@ function IT_Selection:register_select_instrument(callback)
     table.insert(self.callback_select_instrument, callback)
 end
 
+
 --- just update that the selected instrument was updated.
 -- this is called by the selected_track_notifier
 function IT_Selection:__update_track_index(track_index)
-    self.track_idx      = track_index
-    self.column_idx     = 1
-    self.instrument_idx = self:__instrument_index_for_track(self.track_idx)
+    self.track_idx       = track_index
+    self.column_idx      = 1
+    self:_update_instrument_index(self:__instrument_index_for_track(self.track_idx))
     -- trigger callbacks
     self:_update_alias_listener(self.track_idx, self.pattern_idx)
     self:__update_set_instrument_listeners()
@@ -66,7 +75,7 @@ function IT_Selection:__rename_track_index(index, name)
 end
 
 --- return insturument index coresponding to the `track_index`
--- todo fixme (what about not existing instrument indexes?)
+-- returns nil for not found
 function IT_Selection:__instrument_index_for_track(track_index)
     local counter = 0
     for index, track in pairs( renoise.song().tracks ) do
@@ -78,6 +87,7 @@ function IT_Selection:__instrument_index_for_track(track_index)
             return counter
         end
     end
+    return nil
 end
 
 
