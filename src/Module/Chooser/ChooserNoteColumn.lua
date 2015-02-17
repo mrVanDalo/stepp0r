@@ -43,7 +43,7 @@ function Chooser:__create_column_update_listener()
 end
 
 function Chooser:_update_column_knobs()
-    -- todo us the constante here ?
+    -- todo us the constant here ?
     local track = self.it_selection:track_for_instrument(self.instrument_idx)
     local visible = track.visible_note_columns + self.column_idx_start
     for i = self.column_idx_start, self.column_idx_stop do

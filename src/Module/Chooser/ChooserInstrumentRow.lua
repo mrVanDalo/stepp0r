@@ -14,6 +14,8 @@ function Chooser:__init_instrument_row()
     self.instrument_idx = 1
     self.track_idx      = 1
     self.row            = 6
+    -- changeable
+    self.follow_mute    = nil
     -- callbacks
     self.callback_select_instrument = {}
     -- create functions
@@ -30,6 +32,13 @@ function Chooser:__deactivate_instrument_row()
     self:__clear_instrument_row()
     self.pad:unregister_matrix_listener(self.instrument_listener)
     remove_notifier(renoise.song().instruments_observable, self.instruments_row_notifier)
+end
+
+function Chooser:set_follow_mute()
+    self.follow_mute = 1
+end
+function Chooser:unset_follow_mute()
+    self.follow_mute = nil
 end
 
 --- ------------------------------------------------------------------------------------------------------
@@ -56,6 +65,9 @@ function Chooser:__create_instrument_listener()
             self:__select_instrument_with_offset(msg.x)
         elseif self.mode == ChooserData.mode.mute then
             self:__mute_track(msg.x)
+            if (self.follow_mute) then
+                self:__select_instrument_with_offset(msg.x)
+            end
         end
         self:_update_column_knobs()
         self:_update_instrument_row()

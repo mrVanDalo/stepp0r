@@ -102,6 +102,14 @@ function LaunchpadSetup:connect_it_selection()
     self.it_selection:connect()
 end
 
+function LaunchpadSetup:set_follow_mute()
+    self.chooser:set_follow_mute()
+end
+
+function LaunchpadSetup:unset_follow_mute()
+    self.chooser:unset_follow_mute()
+end
+
 
 function LaunchpadSetup:wire()
     --- layers are the basic connection
