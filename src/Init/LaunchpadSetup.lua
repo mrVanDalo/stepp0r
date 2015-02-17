@@ -110,6 +110,14 @@ function LaunchpadSetup:unset_follow_mute()
     self.chooser:unset_follow_mute()
 end
 
+function LaunchpadSetup:set_follow_track_instrument()
+    self.it_selection:set_follow_track_instrument()
+end
+
+function LaunchpadSetup:unset_follow_track_instrument()
+    self.it_selection:unset_follow_track_instrument()
+end
+
 
 function LaunchpadSetup:wire()
     --- layers are the basic connection
