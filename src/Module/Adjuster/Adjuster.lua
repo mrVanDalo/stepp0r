@@ -4,16 +4,12 @@
 ---
 --- Adjustment module (copy/paste after editing)
 
-class "Adjuster" (Module)
+class "Adjuster" (PatternEditorModule)
 
 require 'Module/Adjuster/AdjusterBank'
-require 'Module/Adjuster/AdjusterPlaybackPosition'
-require 'Module/Adjuster/AdjusterSelectedPattern'
-require 'Module/Adjuster/AdjusterPagination'
-require 'Module/Adjuster/AdjusterCallbacks'
+require 'Module/Adjuster/AdjusterEffects'
 require 'Module/Adjuster/AdjusterLibrary'
 require 'Module/Adjuster/AdjusterLaunchpadMatrix'
-require 'Module/Adjuster/AdjusterPattern'
 require 'Module/Adjuster/AdjusterIdle'
 
 AdjusterData = {
@@ -43,31 +39,14 @@ AdjusterData = {
 ---                                                 [ INIT ]
 
 function Adjuster:__init()
-    Module:__init(self)
-
-    -- position
-    self.track_idx        = 1
-    self.instrument_idx   = 1
-    self.track_column_idx = 1 -- the column in the track
-    self.pattern_idx      = 1 -- actual pattern
-
-    self.note        = Note.note.c
-    self.octave      = 4
-
+    PatternEditorModule:__init(self)
+    --
     self.delay       = 0
     self.volume      = AdjusterData.instrument.empty
     self.pan         = AdjusterData.instrument.empty
-
+    --
     self.mode        = BankData.mode.copy
-
-    -- ---
-    -- navigation
-    -- ---
-
-    -- zoom
-    self.zoom         = 1 -- influences grid size
-
-    -- rendering
+    --
     self.color = {
         stepper = Color.green,
         page = {
@@ -89,14 +68,11 @@ function Adjuster:__init()
             }
         },
     }
-
+    --
     self:__init_playback_position()
     self:__init_bank()
-    self:__init_selected_pattern()
-    self:__init_pagination()
     self:__init_launchpad_matrix()
-    self:__init_callbacks()
-    self:__init_pattern()
+    self:__init_effects()
     self:__init_idle()
 end
 
@@ -104,10 +80,7 @@ end
 function Adjuster:_activate()
     self:__activate_playback_position()
     self:__activate_bank()
-    self:__activate_selected_pattern()
-    self:__activate_pagination()
-    self:__activate_callbacks()
-    self:__activate_pattern()
+    self:__activate_effects()
     self:__activate_idle()
     -- must be last
     self:__activate_launchpad_matrix()
@@ -118,10 +91,7 @@ end
 function Adjuster:_deactivate()
     self:__deactivate_bank()
     self:__deactivate_playback_position()
-    self:__deactivate_selected_pattern()
-    self:__deactivate_pagination()
-    self:__deactivate_callbacks()
-    self:__deactivate_pattern()
+    self:__deactivate_effects()
     self:__deactivate_idle()
     -- must be last
     self:__deactivate_launchpad_matrix()

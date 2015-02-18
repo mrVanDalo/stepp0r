@@ -21,7 +21,7 @@ end
 
 function Adjuster:__deactivate_launchpad_matrix()
     self.pad:unregister_matrix_listener(self.__matrix_listener)
-    self:_render_matrix()
+    self:__render_matrix()
 end
 
 --- ------------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ function Adjuster:__create_matrix_listener()
         if (self.mode == BankData.mode.copy) then
             self:__copy_selection(msg.x,msg.y)
             self:_update_bank_matrix_position(msg.x,msg.y)
-            self:_render_matrix_position(msg.x, msg.y)
+            self:__render_matrix_position(msg.x, msg.y)
         else
             self:__paste_selection(msg.x,msg.y)
             self:_refresh_matrix()
@@ -63,32 +63,26 @@ function Adjuster:__copy_selection(x,y)
     end
 end
 
--- todo maybe this shouldn't be called while activate and should be called by the different activate functions
--- todo maybe it is also a good idea to inline this function
 function Adjuster:_refresh_matrix()
-    self:_clear_pattern_matrix()
-    self:_update_pattern_matrix()
+    self:__clear_pattern_matrix()
+    self:__update_pattern_matrix()
     self:_clear_bank_matrix()
     self:_update_bank_matrix()
-    self:_render_matrix()
+    self:__render_matrix()
 end
 
-function Adjuster:_render_matrix()
-    for x = 1, 8 do
-        for y = 1, 4 do
-            self:_render_matrix_position(x,y)
-        end
-    end
-end
 
 --- update pad by the given matrix
 --
-function Adjuster :_render_matrix_position(x,y)
-    if(self.__pattern_matrix[x][y]) then
-        self.pad:set_matrix(x,y,self.__pattern_matrix[x][y])
+function Adjuster:__render_matrix_position(x,y)
+    if     (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.on) then
+        self.pad:set_matrix(x,y,self.color.note.on)
+    elseif (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.off) then
+        self.pad:set_matrix(x,y,self.color.note.off)
     else
-        self.pad:set_matrix(x,y,AdjusterData.color.clear)
+        self.pad:set_matrix(x,y,self.color.note.empty)
     end
+    -- bank_matrix has color already in it
     if(self.bank_matrix[x][y]) then
         self.pad:set_matrix(x, y, self.bank_matrix[x][y])
     end
