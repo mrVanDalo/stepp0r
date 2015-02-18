@@ -8,7 +8,6 @@ class "Editor" (PatternEditorModule)
 
 require "Module/Editor/EditorEffects"
 require "Module/Editor/EditorLaunchpadMatrix"
-require "Module/Editor/EditorLibrary"
 require "Module/Editor/EditorPagination"
 require "Module/Editor/EditorPlaybackPosition"
 require "Module/Editor/EditorSelectedInstrument"
@@ -53,7 +52,6 @@ function Editor:__init()
     }
     -- init submodules
     self:__init_launchpad_matrix()
-    self:__init_library()
     self:__init_playback_position()
     self:__init_effects()
     self:__init_pagination()
@@ -64,7 +62,6 @@ end
 
 function Editor:_activate()
     self:__activate_launchpad_matrix()
-    self:__activate_library()
     self:__activate_playback_position()
     self:__activate_effects()
     self:__activate_pagination()
@@ -74,7 +71,6 @@ function Editor:_activate()
 end
 
 function Editor:_deactivate()
-    self:__deactivate_library()
     self:__deactivate_playback_position()
     self:__deactivate_effects()
     self:__deactivate_pagination()
