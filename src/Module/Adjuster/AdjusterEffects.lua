@@ -8,15 +8,14 @@
 ---
 ---                                                 [ Sub-Module Interface ]
 
-function Adjuster:__init_callbacks()
+function Adjuster:__init_effects()
     self:__create_callback_set_delay()
     self:__create_callback_set_volume()
     self:__create_callback_set_pan()
-    self:__create_callback_set_bank()
 end
-function Adjuster:__activate_callbacks()
+function Adjuster:__activate_effects()
 end
-function Adjuster:__deactivate_callbacks()
+function Adjuster:__deactivate_effects()
 end
 
 --- ------------------------------------------------------------------------------------------------------
@@ -35,7 +34,4 @@ function Adjuster:__create_callback_set_pan()
     self.callback_set_pan = function() end
 end
 
-function Adjuster:__create_callback_set_bank()
-    self.callback_set_bank = function () end
-end
 
