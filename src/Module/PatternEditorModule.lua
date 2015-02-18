@@ -70,3 +70,14 @@ function PatternEditorModule:__update_pattern_matrix_position(pos,line)
     end
 end
 
+-- todo optimize me (together with __update_pattern_matrix_position
+function PatternEditorModule:__set_pattern_matrix(x,y,value)
+    if     value == PatternEditorModuleData.note.off then
+        self.__pattern_matrix[x][y] = value
+    elseif value == PatternEditorModuleData.note.empty then
+        self.__pattern_matrix[x][y] = value
+    else
+        self.__pattern_matrix[x][y] = PatternEditorModuleData.note.on
+    end
+end
+
