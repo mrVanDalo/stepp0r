@@ -21,7 +21,7 @@ end
 function Editor:__deactivate_launchpad_matrix()
     self:__render_matrix()
     self.pad:unregister_matrix_listener(self.pattern_matrix_listener)
-    self:__matrix_clear()
+    self:__clear_pattern_matrix()
 end
 
 --- ------------------------------------------------------------------------------------------------------
@@ -31,8 +31,6 @@ end
 function Editor:_refresh_matrix()
     self:__clear_pattern_matrix()
     self:__update_pattern_matrix()
---    self:__matrix_clear()
---    self:__matrix_update()
     self:__render_matrix()
 end
 
@@ -61,55 +59,13 @@ function Editor:__create_pattern_matrix_listener()
     end
 end
 
-
-
---- update pad by the given matrix
---
-
---- update memory-matrix by the current selected pattern
---
---function Editor:__matrix_update()
---    local pattern_iter  = renoise.song().pattern_iterator
---    for pos,line in pattern_iter:lines_in_pattern_track(self.pattern_idx, self.track_idx) do
---        if not table.is_empty(line.note_columns) then
---            local note_column = line:note_column(self.track_column_idx)
---            if(note_column.note_value ~= EditorData.note.empty) then
---                local xy = self:line_to_point(pos.line)
---                if xy then
---                    local x = xy[1]
---                    local y = xy[2]
---                    if (y < 5 and y > 0) then
---                        if (note_column.note_value == EditorData.note.off) then
---                            self.matrix[x][y] = self.color.note.off
---                        else
---                            self.matrix[x][y] = self.color.note.on
---                        end
---                    end
---                end
---            end
---        end
---    end
---end
-
---function Editor:__matrix_clear()
---    self.matrix = {}
---    for x = 1, 8 do self.matrix[x] = {} end
---end
-
---function Editor:__render_matrix()
---    for x = 1, 8 do
---        for y = 1, 4 do
---            self:__render_matrix_position(x,y)
---        end
---    end
---end
-
 function Editor:__render_matrix_position(x,y)
+    print("render", self.__pattern_matrix[x][y])
     if     (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.on) then
-        self.pad:set_matrix(x,y,EditorData.color.on)
+        self.pad:set_matrix(x,y,self.color.note.on)
     elseif (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.off) then
-        self.pad:set_matrix(x,y,EditorData.color.off)
+        self.pad:set_matrix(x,y,self.color.note.off)
     else
-        self.pad:set_matrix(x,y,EditorData.color.clear)
+        self.pad:set_matrix(x,y,self.color.note.empty)
     end
 end
