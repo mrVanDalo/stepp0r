@@ -38,6 +38,28 @@ function PatternEditorModule:__init(self)
     self.instrument_idx   = 1
     self.track_column_idx = 1 -- the column in the track
     self:__create_callback_set_instrument()
+    --
+    self.zoom         = 1 -- influences grid size
+    self.page         = 1 -- page of actual pattern
+    self.page_start   = 0  -- line left before first pixel
+    self.page_end     = 33 -- line right after last pixel
+    self:__create_paginator_update()
+end
+
+
+-------- zoom page pagination
+
+
+function PatternEditorModule:__create_paginator_update()
+    self.pageinator_update_callback = function (msg)
+        self.page       = msg.page
+        self.page_start = msg.page_start
+        self.page_end   = msg.page_end
+        self.zoom       = msg.zoom
+        if self.is_active then
+            self:_refresh_matrix()
+        end
+    end
 end
 
 ----- instrument / track
