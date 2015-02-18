@@ -43,30 +43,13 @@ AdjusterData = {
 
 function Adjuster:__init()
     PatternEditorModule:__init(self)
-
-    -- position
-    self.track_idx        = 1
-    self.instrument_idx   = 1
-    self.track_column_idx = 1 -- the column in the track
-    self.pattern_idx      = 1 -- actual pattern
-
-    self.note        = Note.note.c
-    self.octave      = 4
-
+    --
     self.delay       = 0
     self.volume      = AdjusterData.instrument.empty
     self.pan         = AdjusterData.instrument.empty
-
+    --
     self.mode        = BankData.mode.copy
-
-    -- ---
-    -- navigation
-    -- ---
-
-    -- zoom
-    self.zoom         = 1 -- influences grid size
-
-    -- rendering
+    --
     self.color = {
         stepper = Color.green,
         page = {
@@ -88,7 +71,7 @@ function Adjuster:__init()
             }
         },
     }
-
+    --
     self:__init_playback_position()
     self:__init_bank()
     self:__init_pagination()
