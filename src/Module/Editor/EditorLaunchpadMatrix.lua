@@ -10,18 +10,16 @@
 
 
 function Editor:__init_launchpad_matrix()
-    self.matrix      = {}
     self:__create_pattern_matrix_listener()
 end
 function Editor:__activate_launchpad_matrix()
-    self.pattern_idx = renoise.song().selected_pattern_index
-    self.pad:register_matrix_listener(self.pattern_matrix_listener)
+    self.pad:register_matrix_listener(self.__pattern_matrix_listener)
     self:_refresh_matrix()
 end
 function Editor:__deactivate_launchpad_matrix()
-    self:__render_matrix()
-    self.pad:unregister_matrix_listener(self.pattern_matrix_listener)
+    self.pad:unregister_matrix_listener(self.__pattern_matrix_listener)
     self:__clear_pattern_matrix()
+    self:__render_matrix()
 end
 
 --- ------------------------------------------------------------------------------------------------------
@@ -35,7 +33,7 @@ function Editor:_refresh_matrix()
 end
 
 function Editor:__create_pattern_matrix_listener()
-    self.pattern_matrix_listener = function (_,msg)
+    self.__pattern_matrix_listener = function (_,msg)
         if self.is_not_active          then return end
         if msg.vel == Velocity.release then return end
         if msg.y > 4                   then return end
@@ -60,7 +58,6 @@ function Editor:__create_pattern_matrix_listener()
 end
 
 function Editor:__render_matrix_position(x,y)
-    print("render", self.__pattern_matrix[x][y])
     if     (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.on) then
         self.pad:set_matrix(x,y,self.color.note.on)
     elseif (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.off) then
