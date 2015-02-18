@@ -10,7 +10,7 @@ require 'Layer/Util'
 require 'Layer/IT_Selection/IT_Selection'
 
 require 'Module/Module'
-require 'Module/PatternEditorModule'
+require 'Module/PatternEditorModule/PatternEditorModule'
 
 require 'Mode/Mode'
 require 'Mode/StepperMode'

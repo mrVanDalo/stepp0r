@@ -17,6 +17,8 @@
 
 class "PatternEditorModule" (Module)
 
+require "Module/PatternEditorModule/PatternEditorModulePlaybackPosition"
+
 PatternEditorModuleData = {
     --- used in __pattern_matrix
     note = {
@@ -44,6 +46,8 @@ function PatternEditorModule:__init(self)
     self.page_start   = 0  -- line left before first pixel
     self.page_end     = 33 -- line right after last pixel
     self:__create_paginator_update()
+    --
+    self:__init_playback_position()
 end
 
 

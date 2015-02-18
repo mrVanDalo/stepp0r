@@ -77,11 +77,3 @@ function Editor:wire_launchpad(pad)
     self.pad = pad
 end
 
-function Editor:wire_playback_position_observer(playback_position_observer)
-    if self.playback_position_observer then
-        self:__unregister_playback_position_observer()
-    end
-    self.playback_position_observer = playback_position_observer
-end
-
-

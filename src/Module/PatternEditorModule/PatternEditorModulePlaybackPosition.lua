@@ -1,6 +1,6 @@
 --- ======================================================================================================
 ---
----                                                 [ Adjuster Playback Position Module ]
+---                                                 [ PatternEditorModule ]
 ---
 -- the green light that runs on the matrix to show the playback position
 --
@@ -10,17 +10,17 @@
 ---
 ---                                                 [ Sub-Module Interface ]
 
-function Adjuster:__init_playback_position()
+function PatternEditorModule:__init_playback_position()
     self.playback_position_observer = nil
     self.playback_position_last_x = 1
     self.playback_position_last_y = 1
 end
 
-function Adjuster:__activate_playback_position()
+function PatternEditorModule:__activate_playback_position()
     self:__register_playback_position_observer()
 end
 
-function Adjuster:__deactivate_playback_position()
+function PatternEditorModule:__deactivate_playback_position()
     self:__unregister_playback_position_observer()
 end
 
@@ -28,7 +28,7 @@ end
 ---
 ---                                                 [ Public ]
 
-function Adjuster:wire_playback_position_observer(playback_position_observer)
+function PatternEditorModule:wire_playback_position_observer(playback_position_observer)
     if self.playback_position_observer then
         self:__unregister_playback_position_observer()
     end
@@ -40,14 +40,14 @@ end
 ---
 ---                                                 [ Lib ]
 
-function Adjuster:__register_playback_position_observer()
+function PatternEditorModule:__register_playback_position_observer()
     self.playback_position_observer:register('adjuster', function (line)
         if self.is_not_active then return end
         self:__callback_playback_position(line)
     end)
 end
 
-function Adjuster:__unregister_playback_position_observer()
+function PatternEditorModule:__unregister_playback_position_observer()
     self.playback_position_observer:unregister('stepper' )
 end
 
@@ -55,7 +55,7 @@ end
 --
 -- will be hooked in by the playback_position observable
 --
-function Adjuster:__callback_playback_position(pos)
+function PatternEditorModule:__callback_playback_position(pos)
     if self.pattern_idx ~= pos.sequence then return end
     -- clean up old playback position
     if (self.removed_old_playback_position) then
