@@ -9,7 +9,6 @@ class "Editor" (PatternEditorModule)
 require "Module/Editor/EditorEffects"
 require "Module/Editor/EditorLaunchpadMatrix"
 require "Module/Editor/EditorPlaybackPosition"
-require "Module/Editor/EditorSelectedInstrument"
 require "Module/Editor/EditorSelectedNote"
 require "Module/Editor/EditorIdle"
 
@@ -53,7 +52,6 @@ function Editor:__init()
     self:__init_launchpad_matrix()
     self:__init_playback_position()
     self:__init_effects()
-    self:__init_selected_instrument()
     self:__init_selected_note()
     self:__init_idle()
 end
@@ -62,7 +60,6 @@ function Editor:_activate()
     self:__activate_launchpad_matrix()
     self:__activate_playback_position()
     self:__activate_effects()
-    self:__activate_selected_instrument()
     self:__activate_selected_note()
     self:__activate_idle()
 end
@@ -70,7 +67,6 @@ end
 function Editor:_deactivate()
     self:__deactivate_playback_position()
     self:__deactivate_effects()
-    self:__deactivate_selected_instrument()
     self:__deactivate_selected_note()
     self:__deactivate_launchpad_matrix()
     self:__deactivate_idle()
