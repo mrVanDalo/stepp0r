@@ -8,7 +8,6 @@ class "Editor" (PatternEditorModule)
 
 require "Module/Editor/EditorEffects"
 require "Module/Editor/EditorLaunchpadMatrix"
-require "Module/Editor/EditorPlaybackPosition"
 require "Module/Editor/EditorSelectedNote"
 require "Module/Editor/EditorIdle"
 

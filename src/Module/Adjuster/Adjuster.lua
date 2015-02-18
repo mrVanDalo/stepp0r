@@ -7,7 +7,6 @@
 class "Adjuster" (PatternEditorModule)
 
 require 'Module/Adjuster/AdjusterBank'
-require 'Module/Adjuster/AdjusterPlaybackPosition'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
 require 'Module/Adjuster/AdjusterLaunchpadMatrix'
