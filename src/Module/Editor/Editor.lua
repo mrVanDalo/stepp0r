@@ -13,7 +13,6 @@ require "Module/Editor/EditorPagination"
 require "Module/Editor/EditorPlaybackPosition"
 require "Module/Editor/EditorSelectedInstrument"
 require "Module/Editor/EditorSelectedNote"
-require "Module/Editor/EditorSelectedPattern"
 require "Module/Editor/EditorIdle"
 
 EditorData = {

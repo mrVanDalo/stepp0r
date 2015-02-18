@@ -8,7 +8,6 @@ class "Adjuster" (PatternEditorModule)
 
 require 'Module/Adjuster/AdjusterBank'
 require 'Module/Adjuster/AdjusterPlaybackPosition'
-require 'Module/Adjuster/AdjusterSelectedPattern'
 require 'Module/Adjuster/AdjusterPagination'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
