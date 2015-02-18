@@ -4,7 +4,7 @@
 ---
 --- stepp the pattern
 
-class "Editor" (Module)
+class "Editor" (PatternEditorModule)
 
 require "Module/Editor/EditorEffects"
 require "Module/Editor/EditorLaunchpadMatrix"
@@ -35,7 +35,7 @@ EditorData = {
 ---                                                 [ INIT ]
 
 function Editor:__init()
-    Module:__init(self)
+    PatternEditorModule:__init(self)
     self.color       = {
         stepper = Color.green,
         page = {

@@ -52,7 +52,7 @@ function Adjuster:__update_pattern_matrix_position(pos,line)
     end
 end
 
-function Adjuster:_clear_pattern_matrix()
-    self.__pattern_matrix = {}
-    for x = 1, 8 do self.__pattern_matrix[x] = {} end
-end
+--function Adjuster:_clear_pattern_matrix()
+--    self.__pattern_matrix = {}
+--    for x = 1, 8 do self.__pattern_matrix[x] = {} end
+--end

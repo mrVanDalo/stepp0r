@@ -4,7 +4,7 @@
 ---
 --- Adjustment module (copy/paste after editing)
 
-class "Adjuster" (Module)
+class "Adjuster" (PatternEditorModule)
 
 require 'Module/Adjuster/AdjusterBank'
 require 'Module/Adjuster/AdjusterPlaybackPosition'
@@ -43,7 +43,7 @@ AdjusterData = {
 ---                                                 [ INIT ]
 
 function Adjuster:__init()
-    Module:__init(self)
+    PatternEditorModule:__init(self)
 
     -- position
     self.track_idx        = 1
