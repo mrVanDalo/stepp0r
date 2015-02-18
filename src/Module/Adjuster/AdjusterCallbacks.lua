@@ -24,15 +24,15 @@ end
 ---                                                 [ Lib ]
 
 function Adjuster:__create_callback_set_delay()
-    self.callback_set_delay =  function() end
+    self.callback_set_delay = function() end
 end
 
 function Adjuster:__create_callback_set_volume()
-    self.callback_set_volume =  function() end
+    self.callback_set_volume = function() end
 end
 
 function Adjuster:__create_callback_set_pan()
-    self.callback_set_pan =  function() end
+    self.callback_set_pan = function() end
 end
 
 function Adjuster:__create_callback_set_bank()

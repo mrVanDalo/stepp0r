@@ -63,8 +63,6 @@ function Adjuster:__copy_selection(x,y)
     end
 end
 
--- todo maybe this shouldn't be called while activate and should be called by the different activate functions
--- todo maybe it is also a good idea to inline this function
 function Adjuster:_refresh_matrix()
     self:__clear_pattern_matrix()
     self:__update_pattern_matrix()

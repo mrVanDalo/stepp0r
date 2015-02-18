@@ -8,7 +8,6 @@ class "Adjuster" (PatternEditorModule)
 
 require 'Module/Adjuster/AdjusterBank'
 require 'Module/Adjuster/AdjusterPlaybackPosition'
-require 'Module/Adjuster/AdjusterPagination'
 require 'Module/Adjuster/AdjusterCallbacks'
 require 'Module/Adjuster/AdjusterLibrary'
 require 'Module/Adjuster/AdjusterLaunchpadMatrix'
@@ -74,7 +73,6 @@ function Adjuster:__init()
     --
     self:__init_playback_position()
     self:__init_bank()
-    self:__init_pagination()
     self:__init_launchpad_matrix()
     self:__init_callbacks()
     self:__init_pattern()
@@ -85,7 +83,6 @@ end
 function Adjuster:_activate()
     self:__activate_playback_position()
     self:__activate_bank()
-    self:__activate_pagination()
     self:__activate_callbacks()
     self:__activate_pattern()
     self:__activate_idle()
@@ -98,7 +95,6 @@ end
 function Adjuster:_deactivate()
     self:__deactivate_bank()
     self:__deactivate_playback_position()
-    self:__deactivate_pagination()
     self:__deactivate_callbacks()
     self:__deactivate_pattern()
     self:__deactivate_idle()
