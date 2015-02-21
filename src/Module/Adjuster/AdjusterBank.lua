@@ -5,6 +5,10 @@
 --- ------------------------------------------------------------------------------------------------------
 ---
 ---                                                 [ Sub-Module Interface ]
+---
+--- the bank min max borders will only be updated for inserting. but not for deleting, because the work will not
+--- amorise while pasting. (multiple times stepping an array to optimze maybe one or two steps through the array
+--- is not efficient.
 
 function Adjuster:__init_bank()
     self.bank_matrix = {}
@@ -104,17 +108,14 @@ function Adjuster:_clear_bank()
     self.bank = create_bank()
 end
 
+-- todo update this algorithm
 function Adjuster:_clear_bank_interval(line_start, line_stop)
     for line = line_start, line_stop do
         self.bank.bank[line] = nil
     end
-    if self.bank.max <= line_stop and self.bank.max >= line_start then
-        self.bank.max = line_start
-    end
-    if self.bank.min <= line_stop and self.bank.min >= line_start then
-        self.bank.min = line_stop
-    end
+    --  we don't clear the borders, because it is to muche work, with will not amorise.
 end
+
 
 
 --- ------------------------------------------------------------------------------------------------------

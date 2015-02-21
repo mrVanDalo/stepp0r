@@ -61,6 +61,7 @@ function Adjuster:__copy_selection(x,y)
     else
         self:_update_bank_interval(line, (line + self.zoom - 1))
     end
+    -- print("updated min ", self.bank.min, ", max ", self.bank.max )
 end
 
 function Adjuster:_refresh_matrix()
