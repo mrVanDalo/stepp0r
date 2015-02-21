@@ -27,7 +27,7 @@ end
 function IT_Selection:__create_select_pattern_listener()
     self.__select_pattern_listener = function (_)
         self.pattern_idx = renoise.song().selected_pattern_index
-        print("changed pattern index", self.pattern_idx)
+--        print("changed pattern index", self.pattern_idx)
         self:_update_alias_listener(self.track_idx, self.pattern_idx)
         self:__update_set_pattern_listeners()
     end
@@ -38,14 +38,14 @@ function IT_Selection:_update_alias_listener(new_track_idx, new_pattern_idx)
         renoise.song().patterns[self.last_alias_pattern_idx].tracks[self.last_alias_track_idx].alias_pattern_index_observable,
         self.__alias_pattern_listener
     )
-    print("remove alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
+--    print("remove alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
     self.last_alias_track_idx = new_track_idx
     self.last_alias_pattern_idx = new_pattern_idx
     add_notifier(
         renoise.song().patterns[self.last_alias_pattern_idx].tracks[self.last_alias_track_idx].alias_pattern_index_observable,
         self.__alias_pattern_listener
     )
-    print("add alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
+--    print("add alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
 end
 
 function IT_Selection:__remove_alias_listener()
@@ -53,13 +53,13 @@ function IT_Selection:__remove_alias_listener()
         renoise.song().patterns[self.last_alias_pattern_idx].tracks[self.last_alias_track_idx].alias_pattern_index_observable,
         self.__alias_pattern_listener
     )
-    print("remove alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
+--    print("remove alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
 end
 
 function IT_Selection:__create_alias_pattern_listener()
     self.__alias_pattern_listener = function (_)
         self.pattern_idx = renoise.song().selected_pattern_index
-        print("changed alias pattern index", self.pattern_idx)
+--        print("changed alias pattern index", self.pattern_idx)
         self:__update_set_pattern_listeners()
     end
 end

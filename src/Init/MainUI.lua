@@ -371,5 +371,5 @@ end
 
 function MainUI:quit()
     self.quit_callback()
-    print("quit")
+--    print("quit")
 end
