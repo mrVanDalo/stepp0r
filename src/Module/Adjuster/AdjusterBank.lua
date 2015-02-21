@@ -104,16 +104,35 @@ function Adjuster:_clear_bank()
     self.bank = create_bank()
 end
 
+-- todo update this algorithm
 function Adjuster:_clear_bank_interval(line_start, line_stop)
     for line = line_start, line_stop do
         self.bank.bank[line] = nil
     end
-    if self.bank.max <= line_stop and self.bank.max >= line_start then
-        self.bank.max = line_start
-    end
-    if self.bank.min <= line_stop and self.bank.min >= line_start then
+    -- covers situation 1
+--    if self.bank.max <= line_stop and self.bank.max >= line_start then
+--        self.bank.max = line_start
+--    end
+--    if self.bank.min <= line_stop and self.bank.min >= line_start then
+--        self.bank.min = line_stop
+--    end
+    -- we assume line_start is > self.bank.min
+    -- we assume line_stop is < self.bank.max
+    if self:__is_interval_empty(self.bank.min, line_start) then
         self.bank.min = line_stop
     end
+    if self:__is_interval_empty(line_stop, self.bank.max) then
+        self.bank.max = line_start
+    end
+    print("updated min ", self.bank.min, ", max ", self.bank.max )
+end
+
+-- @return nil if not empty, otherwise 1
+function Adjuster:__is_interval_empty(interval_start, interval_stop)
+    for line = interval_start, interval_stop do
+        if self.bank.bank[line] then return nil end
+    end
+    return 1
 end
 
 
