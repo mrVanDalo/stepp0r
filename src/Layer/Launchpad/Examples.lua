@@ -8,20 +8,20 @@ function echo_top(_,msg)
     local x   = msg.x
     local vel = msg.vel
     --print(top)
-    print(("top    : (%X) = %X"):format(x,vel))
+--    print(("top    : (%X) = %X"):format(x,vel))
 end
 function echo_right(_,msg)
     local x   = msg.x
     local vel = msg.vel
     --print(right)
-    print(("right  : (%X) = %X"):format(x,vel))
+--    print(("right  : (%X) = %X"):format(x,vel))
 end
 function echo_matrix(_,msg)
     local x   = msg.x
     local y   = msg.y
     local vel = msg.vel
     --print(matrix)
-    print(("matrix : (%X,%X) = %X"):format(x,y,vel))
+--    print(("matrix : (%X,%X) = %X"):format(x,y,vel))
 end
 
 

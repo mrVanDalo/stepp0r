@@ -65,7 +65,7 @@ function is_not_off(note) return note[Note.access.pitch] ~= Note.note.off[Note.a
 function is_off(note)     return note[Note.access.pitch] == Note.note.off[Note.access.pitch] end
 
 function print_tone(note,octave)
-    print(("note : %s%s"):format(note[Note.access.label],octave))
+--    print(("note : %s%s"):format(note[Note.access.label],octave))
 end
 
 
