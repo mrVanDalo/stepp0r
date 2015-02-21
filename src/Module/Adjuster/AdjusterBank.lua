@@ -124,11 +124,12 @@ function Adjuster:_clear_bank_interval(line_start, line_stop)
     if self:__is_interval_empty(line_stop, self.bank.max) then
         self.bank.max = line_start
     end
-    print("updated min ", self.bank.min, ", max ", self.bank.max )
+    print("clear line start ", line_start, " line_stop ", line_stop)
 end
 
 -- @return nil if not empty, otherwise 1
 function Adjuster:__is_interval_empty(interval_start, interval_stop)
+    print("check interval [", interval_start, ", ", interval_stop, "]")
     for line = interval_start, interval_stop do
         if self.bank.bank[line] then return nil end
     end
