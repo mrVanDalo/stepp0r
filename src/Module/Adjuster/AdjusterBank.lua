@@ -5,6 +5,10 @@
 --- ------------------------------------------------------------------------------------------------------
 ---
 ---                                                 [ Sub-Module Interface ]
+---
+--- the bank min max borders will only be updated for inserting. but not for deleting, because the work will not
+--- amorise while pasting. (multiple times stepping an array to optimze maybe one or two steps through the array
+--- is not efficient.
 
 function Adjuster:__init_bank()
     self.bank_matrix = {}
