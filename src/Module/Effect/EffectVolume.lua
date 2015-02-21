@@ -1,3 +1,25 @@
+--- ======================================================================================================
+---
+---                                                 [ Effect Volumne ]
+
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Sub-Module Interface ]
+
+
+function Effect:__init_effect_volume()
+    self.volume               = 1 -- init values
+    self.callbacks_set_volume = {}
+end
+function Effect:__activate_effect_volume()
+end
+function Effect:__deactivate_effect_volume()
+end
+
+--- ------------------------------------------------------------------------------------------------------
+---
+---                                                 [ Lib ]
 --- transforms key number to volume
 -- number must be 1-8
 function xToVolume(number)
@@ -5,9 +27,9 @@ function xToVolume(number)
     return 16 * (9 - number ) - 1
 end
 
-function Effect:set_volume(volume)
+function Effect:_set_volume(volume)
     self.volume = volume
-    self:matrix_refresh()
+    self:_refresh_effect_row()
     -- trigger callbacks
     local percent = xToVolume(self.volume)
     for _, callback in ipairs(self.callbacks_set_volume) do
@@ -15,7 +37,7 @@ function Effect:set_volume(volume)
     end
 end
 
-function Effect:matrix_update_volume()
+function Effect:_update_volume_row()
     local on  = self:mode_color()
     local off = self.color.off
     for i = 1, 8 do

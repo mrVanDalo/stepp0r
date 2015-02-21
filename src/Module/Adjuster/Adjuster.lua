@@ -4,13 +4,13 @@
 ---
 --- Adjustment module (copy/paste after editing)
 
-class "Adjuster" (Module)
+class "Adjuster" (PatternEditorModule)
 
 require 'Module/Adjuster/AdjusterBank'
-require 'Module/Adjuster/AdjusterBoot'
-require 'Module/Adjuster/AdjusterCallbacks'
+require 'Module/Adjuster/AdjusterEffects'
 require 'Module/Adjuster/AdjusterLibrary'
-require 'Module/Adjuster/AdjusterPattern'
+require 'Module/Adjuster/AdjusterLaunchpadMatrix'
+require 'Module/Adjuster/AdjusterIdle'
 
 AdjusterData = {
     note = {
@@ -39,41 +39,14 @@ AdjusterData = {
 ---                                                 [ INIT ]
 
 function Adjuster:__init()
-    Module:__init(self)
-
-    -- position
-    self.track_idx        = 1
-    self.instrument_idx   = 1
-    self.track_column_idx = 1 -- the column in the track
-    self.pattern_idx      = 1 -- actual pattern
-
-    self.note        = Note.note.c
-    self.octave      = 4
-
+    PatternEditorModule:__init(self)
+    --
     self.delay       = 0
     self.volume      = AdjusterData.instrument.empty
     self.pan         = AdjusterData.instrument.empty
-
+    --
     self.mode        = BankData.mode.copy
-
-    -- ---
-    -- navigation
-    -- ---
-
-    -- zoom
-    self.zoom         = 1 -- influences grid size
-
-    -- pagination
-    self.page         = 1 -- page of actual pattern
-    self.page_start   = 0  -- line left before first pixel
-    self.page_end     = 33 -- line right after last pixel
-
-
-    self.bank_matrix = {}
-    self:_clear_bank()
-
-    -- rendering
-    self.__pattern_matrix = {}
+    --
     self.color = {
         stepper = Color.green,
         page = {
@@ -95,26 +68,36 @@ function Adjuster:__init()
             }
         },
     }
-
-    -- playback position
-    self.playback_position_observer = nil
-    self.playback_position_last_x = 1
-    self.playback_position_last_y = 1
-
-    -- create listeners
-    self:_first_run()
-    self:_create_callbacks()
+    --
+    self:__init_playback_position()
+    self:__init_bank()
+    self:__init_launchpad_matrix()
+    self:__init_effects()
+    self:__init_idle()
 end
+
+
+function Adjuster:_activate()
+    self:__activate_playback_position()
+    self:__activate_bank()
+    self:__activate_effects()
+    self:__activate_idle()
+    -- must be last
+    self:__activate_launchpad_matrix()
+end
+
+--- tear down
+--
+function Adjuster:_deactivate()
+    self:__deactivate_bank()
+    self:__deactivate_playback_position()
+    self:__deactivate_effects()
+    self:__deactivate_idle()
+    -- must be last
+    self:__deactivate_launchpad_matrix()
+end
+
 
 function Adjuster:wire_launchpad(pad)
     self.pad = pad
 end
-
-function Adjuster:wire_playback_position_observer(playback_position_observer)
-    if self.playback_position_observer then
-        self:unregister_playback_position_observer()
-    end
-    self.playback_position_observer = playback_position_observer
-end
-
-

@@ -59,12 +59,24 @@ function create_main_UI()
             launchpad_setup:connect_osc_client(options.osc.host,options.osc.port)
         end
 
+        if options.follow_mute then
+            launchpad_setup:set_follow_mute()
+        else
+            launchpad_setup:unset_follow_mute()
+        end
+
+        if options.follow_track_instrument then
+            launchpad_setup:set_follow_track_instrument()
+        else
+            launchpad_setup:unset_follow_track_instrument()
+        end
+
         launchpad_setup:connect_launchpad(options.launchpad.name, options.rotation)
         launchpad_setup:connect_it_selection()
         launchpad_setup:activate()
     end)
     main_ui:register_stop_callback(function ()
-        print("stop")
+--        print("stop")
         launchpad_setup:deactivate()
     end)
     main_ui:register_device_update_callback(function ()

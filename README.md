@@ -3,6 +3,22 @@
 This will be a step sequencer for [Renoise](http://www.renoise.com/) 
 using the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad).
 
+* [Download newest version](http://mrvandalo.github.io/stepp0r/)
+* [Download at renoise.com](http://www.renoise.com/tools/stepp0r)
+
+## How to release new version
+
+> git flow release start <version>
+
+* remove all print functions (comment them out)
+* update version in `manifest.xml` and `Rakefile`
+
+> rake package
+
+* copy xrnx to renoise
+
+> git flow release finish <version>
+
 ## Structure
 
 ### Layer
@@ -21,8 +37,15 @@ Everything from `main.lua` will call stuff from in here.
 
 ### Module
 
-A module is something that is used by other Modules. 
+A module is something that is used by other Modules.
 Most of the time that is something that writes something to the Launchpad.
+
+### Sub-Module
+
+Sub-Modules are no real data-type. Because Modules become hard to manage over time, I split them up in multiple files.
+The folder always has a file-named like the folder `require`-ing all the other sub-module.
+Every Sub-Module should have a `__init_SUBMODULE` `__activate_SUBMODULE` and `__deactivate_SUBMODULE` function, even if
+they are empty. These functions will be called in the Modules `init` `_activate` and `_deactivate` function.
 
 ### Mode 
 

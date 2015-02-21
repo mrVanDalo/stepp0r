@@ -3,7 +3,7 @@
 require 'fileutils'
 
 BUILD_DIR='./build'
-version='0.41'
+version='0.50'
 project_title='Stepp0r'
 export_folder="#{project_title}-#{version}"
 test_folder="test-#{version}"

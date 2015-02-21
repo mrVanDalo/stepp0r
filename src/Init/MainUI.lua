@@ -25,6 +25,8 @@ function MainUI:create_ui()
     self:create_device_row()
     self:create_osc_row()
     self:create_rotation_row()
+    self:create_follow_mute_row()
+    self:create_follow_track_instrument_row()
     self:create_start_stop_button()
     self:create_quit_button()
     self:create_container()
@@ -48,6 +50,8 @@ function MainUI:create_container()
             self.osc_row,
             self.device_row,
             self.rotation_row,
+            self.follow_mute_row,
+            self.follow_track_instrument_row
         },
         self.vb:row {
             margin = 4,
@@ -157,6 +161,68 @@ function MainUI:enable_rotation_row()
     self.rotation_switch.active = true
 end
 
+
+--- ======================================================================================================
+---
+---                                                 [ Follow Track Instrument Row ]
+
+
+function MainUI:create_follow_track_instrument_row()
+    self.follow_track_instrument_checkbox = self.vb:checkbox{
+        visible = true,
+        value   = true,
+        width   = self.button_size,
+        tooltip = "change instrument according to active track"
+    }
+    self.follow_track_instrument_row = self.vb:row{
+        spacing = 3,
+        self.follow_track_instrument_checkbox,
+        self.vb:text{
+            text = "Follow Track Instrument",
+            width = self.text_size,
+        },
+    }
+end
+
+function MainUI:disable_follow_track_instrument_row()
+    self.follow_track_instrument_checkbox.active = false
+end
+
+
+function MainUI:enable_follow_track_instrument_row()
+    self.follow_track_instrument_checkbox.active = true
+end
+--- ======================================================================================================
+---
+---                                                 [ Follow Mute Row ]
+
+
+function MainUI:create_follow_mute_row()
+    self.follow_mute_checkbox = self.vb:checkbox{
+        visible = true,
+        value   = false,
+        width   = self.button_size,
+        tooltip = "focus the track when muting it using Stepp0r"
+    }
+    self.follow_mute_row = self.vb:row{
+        spacing = 3,
+        self.follow_mute_checkbox,
+        self.vb:text{
+            text = "Follow Mute",
+            width = self.text_size,
+        },
+    }
+end
+
+function MainUI:disable_follow_mute_row()
+    self.follow_mute_checkbox.active = false
+end
+
+
+function MainUI:enable_follow_mute_row()
+    self.follow_mute_checkbox.active = true
+end
+
 --- ======================================================================================================
 ---
 ---                                                 [ OSC Row ]
@@ -251,7 +317,9 @@ function MainUI:run_properties()
         launchpad = {
             name = self:selected_device(),
         },
-        rotation = self.rotation_switch.value
+        rotation = self.rotation_switch.value,
+        follow_mute = self.follow_mute_checkbox.value,
+        follow_track_instrument = self.follow_track_instrument_checkbox.value
     }
 end
 
@@ -269,6 +337,8 @@ function MainUI:run()
     self:disable_device_row()
     self:disable_osc_row()
     self:disable_rotation_row()
+    self:disable_follow_mute_row()
+    self:disable_follow_track_instrument_row()
     self.run_callback(self:run_properties())
 end
 
@@ -285,6 +355,8 @@ function MainUI:stop()
     self.start_stop_button.text = "Start"
     self:enable_device_row()
     self:enable_rotation_row()
+    self:enable_follow_mute_row()
+    self:enable_follow_track_instrument_row()
     self:enable_osc_row()
     self.stop_callback()
 end
@@ -299,5 +371,5 @@ end
 
 function MainUI:quit()
     self.quit_callback()
-    print("quit")
+--    print("quit")
 end

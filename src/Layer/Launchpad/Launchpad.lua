@@ -26,7 +26,8 @@ function Launchpad:__init()
     self:unregister_all()
     -- self:_watch()
     self.__rotation = LaunchpadData.rotation.right
---    self.__rotation = LaunchpadData.rotation.left
+--    self.__rotatio__create_midi_input_callbackn = LaunchpadData.rotation.left
+    self:__create_midi_input_callback()
 end
 
 function Launchpad:rotate_left()
@@ -39,18 +40,8 @@ end
 --- connect launchpad to a midi device
 --
 function Launchpad:connect(midi_device_name)
-    log("connect : ", midi_device_name)
     self.midi_out    = renoise.Midi.create_output_device(midi_device_name)
-    --
-    -- magic callback function
-    local function main_callback(msg)
-        if (self.__rotation == LaunchpadData.rotation.right) then
-            self:right_callback(msg)
-        else
-            self:left_callback(msg)
-        end
-    end
-    self.midi_input  = renoise.Midi.create_input_device(midi_device_name, main_callback)
+    self.midi_input  = renoise.Midi.create_input_device(midi_device_name, self.__midi_input_callback)
 end
 
 function Launchpad:disconnect()
@@ -63,6 +54,17 @@ function Launchpad:disconnect()
         self.midi_out = nil
     end
 end
+
+function Launchpad:__create_midi_input_callback()
+    self.__midi_input_callback = function (msg)
+        if (self.__rotation == LaunchpadData.rotation.right) then
+            self:_right_callback(msg)
+        else
+            self:_left_callback(msg)
+        end
+    end
+end
+
 
 
 --- ======================================================================================================
@@ -81,7 +83,6 @@ function Launchpad:register_matrix_listener(handler)
     self:_register(self._matrix_listener,handler)
 end
 function Launchpad:_register(list,handle)
-    -- print("register")
     list[handle] = handle
 end
 
@@ -103,12 +104,7 @@ function Launchpad:unregister_all()
 end
 function Launchpad:__unregister(list,handle)
     if list[handle] then
---        print("removed handle")
---        print(handle)
         list[handle] = nil
-    else
---        print("not found")
---        print(handle)
     end
 end
 
@@ -120,7 +116,6 @@ end
 
 function Launchpad:send(channel, number, value)
     if (not self.midi_out or not self.midi_out.is_open) then
-    --    print("midi is not open")
         return
     end
     local message = {channel, number, value}
@@ -130,25 +125,25 @@ end
 
 function Launchpad:set_matrix( a, b , color )
     if (self.__rotation == LaunchpadData.rotation.right) then
-        self:set_matrix_right(a,b,color)
+        self:_set_matrix_right(a,b,color)
     else
-        self:set_matrix_left(a,b,color)
+        self:_set_matrix_left(a,b,color)
     end
 end
 
 function Launchpad:set_top(a,color)
     if (self.__rotation == LaunchpadData.rotation.right) then
-        self:set_top_right(a,color)
+        self:_set_top_right(a,color)
     else
-        self:set_top_left(a,color)
+        self:_set_top_left(a,color)
     end
 end
 
 function Launchpad:set_side(a,color)
     if (self.__rotation == LaunchpadData.rotation.right) then
-        self:set_side_right(a,color)
+        self:_set_side_right(a,color)
     else
-        self:set_side_left(a,color)
+        self:_set_side_left(a,color)
     end
 end
 
