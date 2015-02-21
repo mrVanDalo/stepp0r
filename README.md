@@ -3,6 +3,19 @@
 This will be a step sequencer for [Renoise](http://www.renoise.com/) 
 using the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad).
 
+## How to release new version
+
+> git flow release start <version>
+
+* remove all print functions (comment them out)
+* update version in `manifest.xml` and `Rakefile`
+
+> rake package
+
+* copy xrnx to renoise
+
+> git flow release finish <version>
+
 ## Structure
 
 ### Layer
