@@ -6,7 +6,7 @@ keywords: "Renoise, Launchpad, Steppor, Step-Sequencer"
 baseurl: "/stepp0r"
 url: "http://mrvandalo.github.io"
 
-actual_version: "Stepp0r-0.4.1.xrnx"
+actual_version: "Stepp0r-0.50.xrnx"
 
 # Build settings
 markdown: kramdown

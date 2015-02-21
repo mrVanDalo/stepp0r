@@ -1,0 +1,22 @@
+---
+layout: post
+title:  "Release 0.50"
+date:   2015-02-21 21:31:00
+categories: update
+author: "Palo van Dalo"
+abstract: "Released the new version 0.50 of Stepp0r (yey!)"
+---
+
+You can download it here [here](http://www.renoise.com/tools/stepp0r) or use the renoise updater tool.
+
+## 0.50 Kalev Urbanik (Changelog)
+
+* fix master branch  bug
+* optimize bank_max and bank_min arithmetics  `tech-enhancement`
+* extract duplicated logic from Adjuster and Stepper  `bug` `enhancement` `tech-enhancement`
+* All wiring, listener registration and so on should be done in the setup class  `tech-enhancement`
+* enforce private and public naming convention  enhancement `tech-enhancement`
+* select instrument in renoise when select instrument on launchpad  `enhancement` `question`
+* select instrument when muting it  `enhancement`
+* update stepper matrix when changing pattern link on active pattern  `enhancement`
+

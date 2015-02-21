@@ -6,6 +6,18 @@ permalink: /changelog/
 
 Version names by Estonian Marathon Champions
 
+
+## 0.50 Kalev Urbanik
+
+* fix master branch  bug
+* optimize bank_max and bank_min arithmetics  `tech-enhancement`
+* extract duplicated logic from Adjuster and Stepper  `bug` `enhancement` `tech-enhancement`
+* All wiring, listener registration and so on should be done in the setup class  `tech-enhancement`
+* enforce private and public naming convention  enhancement `tech-enhancement`
+* select instrument in renoise when select instrument on launchpad  `enhancement` `question`
+* select instrument when muting it  `enhancement`
+* update stepper matrix when changing pattern link on active pattern  `enhancement`
+
 ## 0.4.1 Santa Clause
 
 * fixed copy-paste bug (insertion of empty instruments)
