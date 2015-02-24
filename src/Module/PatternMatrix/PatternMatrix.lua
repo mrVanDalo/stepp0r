@@ -7,7 +7,8 @@ class "PatternMatrix" (Module)
 
 PatternMatrixData = {
     row = {
-        prefix = "__stepp0r_mix_"
+        mix_1 = "__stepp0r_mix_1",
+        mix_2 = "__stepp0r_mix_2"
     }
 }
 
@@ -29,3 +30,17 @@ function PatternMatrix:wire_launchpad(pad)
     self.pad = pad
 end
 
+
+
+---
+
+function PatternMatrix:find_mix_row()
+    local pattern_size = table.size(renoise.song().patterns)
+    for pattern_idx = 1, pattern_size do
+        local pattern = renoise.song().patterns[pattern_idx]
+        if pattern.name == PatternMatrixData.row.mix_1 then
+            return pattern
+        end
+    end
+    return nil
+end
