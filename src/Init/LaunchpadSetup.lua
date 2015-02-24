@@ -23,6 +23,9 @@ require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
 require 'Module/Keyboard/Keyboard'
 
+require 'Module/PatternMatrix/PatternMatrix'
+
+
 --- ======================================================================================================
 ---
 ---                                                 [ Launchpad Setup ]
@@ -54,6 +57,7 @@ function LaunchpadSetup:__init()
     self.bank                = nil
     self.chooser             = nil
     self.paginator           = nil
+    self.pattern_matrix      = nil
     -- modes
     self.stepper_mode_module = nil
     self.stepper_mode        = nil
@@ -66,6 +70,7 @@ function LaunchpadSetup:deactivate()
     self.chooser:deactivate()
     self.paginator:deactivate()
     self.effect:deactivate()
+    self.pattern_matrix:deactivate()
     -- layers
     self.osc_client:disconnect()
     self.pad:disconnect()
@@ -81,6 +86,7 @@ function LaunchpadSetup:activate()
     self.chooser:activate()
     self.paginator:activate()
     self.effect:activate()
+    self.pattern_matrix:activate()
 end
 
 function LaunchpadSetup:connect_launchpad(pad_name,rotation)
@@ -168,13 +174,15 @@ function LaunchpadSetup:wire()
     self.paginator:register_update_callback(self.adjuster.pageinator_update_callback)
     self.paginator:register_update_callback(self.editor.pageinator_update_callback)
     --
+    self.pattern_matrix = PatternMatrix()
     --- Stepper Mode
     -- is the mode that toggels the Editor and Keyboard Kombo with the Adjuster and Bank Kombo
     self.stepper_mode = Mode()
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.key)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.editor)
-    self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.bank)
-    self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.adjuster)
+--    self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.bank)
+--    self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.adjuster)
+    self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.pattern_matrix)
     self.stepper_mode_module = StepperMode()
     self.stepper_mode_module:wire_launchpad(self.pad)
     self.stepper_mode_module:register_mode_update_callback(self.stepper_mode.mode_update_callback)
