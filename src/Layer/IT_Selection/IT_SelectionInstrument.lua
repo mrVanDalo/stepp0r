@@ -6,7 +6,7 @@ end
 
 --- register callback
 --
--- the callback gets the `index of instrument` and `the active note column`
+-- the callback gets the `index of instrument` `index of track` and `the active note column`
 function IT_Selection:register_select_instrument(callback)
     table.insert(self.callback_select_instrument, callback)
 end

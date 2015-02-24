@@ -7,6 +7,7 @@ class "PatternMatrix" (Module)
 
 require 'Module/PatternMatrix/PatternMatrixLaunchpadMatrix'
 require 'Module/PatternMatrix/PatternMatrixPatterns'
+require 'Module/PatternMatrix/PatternMatrixPaginator'
 
 PatternMatrixData = {
     row = {
@@ -19,10 +20,15 @@ function PatternMatrix:__init()
     Module:__init(self)
     --
     self:__init_launchpad()
+    self:__init_paginator()
+    self:__init_patterns()
 end
+
 
 function PatternMatrix:_activate()
     self:__activate_launchpad()
+    self:__activate_paginator()
+    self:__activate_patterns()
 --    self:set_mix_to_pattern(2, 3)
 --    self:set_mix_to_pattern(3, 4)
 --    self:set_mix_to_pattern(4, 3)
@@ -31,6 +37,8 @@ end
 
 function PatternMatrix:_deactivate()
     self:__deactivate_launchpad()
+    self:__deactivate_paginator()
+    self:__deactivate_patterns()
 end
 
 function PatternMatrix:wire_launchpad(pad)

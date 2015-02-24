@@ -1,3 +1,14 @@
+function PatternMatrix:__init_patterns()
+
+end
+
+function PatternMatrix:__activate_patterns()
+
+end
+
+function PatternMatrix:__deactivate_patterns()
+
+end
 
 function PatternMatrix:find_mix_row()
     local pattern_size = table.getn(renoise.song().patterns)

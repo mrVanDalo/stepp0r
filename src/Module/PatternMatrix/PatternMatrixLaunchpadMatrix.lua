@@ -11,3 +11,7 @@ end
 function PatternMatrix:__deactivate_launchpad()
 
 end
+
+function PatternMatrix:_refresh_matrix()
+    print("write refresh matrix")
+end
