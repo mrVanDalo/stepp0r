@@ -11,8 +11,7 @@ function PatternMatrix:__deactivate_patterns()
 end
 
 function PatternMatrix:find_mix_row()
-    local pattern_size = table.getn(renoise.song().patterns)
-    for pattern_idx = 1, pattern_size do
+    for _,pattern_idx in pairs(renoise.song().sequencer.pattern_sequence) do
         local pattern = renoise.song().patterns[pattern_idx]
         if pattern.name == PatternMatrixData.row.mix_1 then
             return pattern
