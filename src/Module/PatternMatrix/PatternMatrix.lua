@@ -32,10 +32,6 @@ function PatternMatrix:_activate()
     self:__activate_paginator()
     self:__activate_patterns()
     self:__activate_track()
---    self:set_mix_to_pattern(2, 3)
---    self:set_mix_to_pattern(3, 4)
---    self:set_mix_to_pattern(4, 3)
---    self:set_mix_to_pattern(5, 4)
 end
 
 function PatternMatrix:_deactivate()
