@@ -19,6 +19,20 @@ end
 
 -- @returns the mix row which should be used to alias the next pattern in.
 function PatternMatrix:_next_mix_row()
+    if (self.pattern_mix_1 and self.pattern_mix_2) then
+        if self.active_mix_row == self.pattern_mix_2 then
+            return self.pattern_mix_1
+        else
+            return self.pattern_mix_2
+        end
+    end
+    -- there is only one pattern mix available
+    if self.pattern_mix_1 then
+        return self.pattern_mix_1
+    end
+    if self.pattern_mix_2 then
+        return self.pattern_mix_2
+    end
 end
 
 function PatternMatrix:_active_mix_row()
@@ -29,6 +43,7 @@ function PatternMatrix:_active_mix_row()
             return self.pattern_mix_1
         end
     end
+    -- there is only one pattern mix available
     if self.pattern_mix_1 then
         return self.pattern_mix_1
     end
