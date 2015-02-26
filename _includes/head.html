@@ -25,7 +25,9 @@
     {% if page.url %}
     <meta content="{{ site.url }}{{ site.baseurl }}{{ page.url }}" property="og:url">
     {% endif %}
+
     <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/assets/Stepp0r_og.png" />
+
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 
     <!-- Custom bootstrap -->
