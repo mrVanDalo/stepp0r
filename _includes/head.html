@@ -17,7 +17,7 @@
     <meta content="website" property="og:type">
     {% endif %}
 
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@stepp0r">
     <meta name="twitter:creator" content="@mr_van_dalo">
 
@@ -34,10 +34,11 @@
     <meta name="keywords" content="{{ site.keywords }}">
     {% if page.url %}
     <meta content="{{ site.url }}{{ site.baseurl }}{{ page.url }}" property="og:url">
+    <meta content="{{ site.url }}{{ site.baseurl }}{{ page.url }}" property="twitter:url">
     {% endif %}
 
     <meta content="{{ site.url }}{{ site.baseurl }}/assets/Stepp0r_og.png" property="og:image" >
-    <meta content="{{ site.url }}{{ site.baseurl }}/assets/Stepp0r_og.png" property="twitter:image:src" >
+    <meta content="{{ site.url }}{{ site.baseurl }}/assets/Stepp0r_og.png" property="twitter:image" >
 
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 
