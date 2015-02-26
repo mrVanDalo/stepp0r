@@ -7,10 +7,12 @@
     <title>{{ site.title }} {{ page.title }}</title>
     <meta title="{{ page.title }}">
     <meta content="{{ page.title }}" property="og:title"/>
+    <meta content="article" property="og:type">
     {% else %}
     <title>{{ site.title }}</title>
     <meta title="{{ site.title }}">
     <meta content="{{ site.title }}" property="og:title"/>
+    <meta content="website" property="og:type">
     {% endif %}
 
     {% if page.description %}
