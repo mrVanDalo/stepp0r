@@ -1,11 +1,31 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+
+    <meta content="{{ site.title }}" property="og:site_name" >
+    {% if page.title %}
+    <title>{{ site.title }} {{ page.title }}</title>
+    <meta title="{{ page.title }}">
+    <meta content="{{ page.title }}" property="og:title"/>
+    {% else %}
+    <title>{{ site.title }}</title>
     <meta title="{{ site.title }}">
+    <meta content="{{ site.title }}" property="og:title"/>
+    {% endif %}
+
+    {% if page.description %}
+    <meta content="{{ page.description }}" property="og:description">
+    <meta content="{{ page.description }}" name="description">
+    {% else %}
+    <meta content="{{ site.description }}" property="og:description">
+    <meta content="{{ site.description }}" name="description">
+    {% endif %}
     <meta name="viewport" content="width=device-width">
-    <meta name="description" content="{{ site.description }}">
     <meta name="keywords" content="{{ site.keywords }}">
+    {% if page.url %}
+    <meta content="{{ site.url }}{{ site.baseurl }}{{ page.url }}" property="og:url">
+    {% endif %}
+    <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/assets/Stepp0r.svg" />
 
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 
