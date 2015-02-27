@@ -19,11 +19,13 @@ function PatternMatrix:__set_mix_patterns()
     if tupel then
         self.pattern_mix_1 = tupel[2]
         self.pattern_mix_1_sequence_idx = tupel[1]
+--        print("found pattern_mix_1 at : ", self.pattern_mix_1_sequence_idx)
     end
-    tupel = self:__find_mix_pattern(PatternMatrixData.row.mix_2)
-    if tupel then
-        self.pattern_mix_2 = tupel[2]
-        self.pattern_mix_2_sequence_idx = tupel[1]
+    local tupel_2 = self:__find_mix_pattern(PatternMatrixData.row.mix_2)
+    if tupel_2 then
+        self.pattern_mix_2 = tupel_2[2]
+        self.pattern_mix_2_sequence_idx = tupel_2[1]
+--        print("found pattern_mix_2 at : ", self.pattern_mix_2_sequence_idx)
     end
 end
 
@@ -63,10 +65,10 @@ function PatternMatrix:_active_mix_pattern()
     return nil
 end
 
-function PatternMatrix:__find_mix_pattern()
+function PatternMatrix:__find_mix_pattern(key)
     for sequence_idx,pattern_idx in pairs(renoise.song().sequencer.pattern_sequence) do
         local pattern = renoise.song().patterns[pattern_idx]
-        if pattern.name == PatternMatrixData.row.mix_1 then
+        if pattern.name == key then
             return {sequence_idx, pattern}
         end
     end

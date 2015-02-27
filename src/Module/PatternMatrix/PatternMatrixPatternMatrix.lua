@@ -30,11 +30,14 @@ function PatternMatrix:__update_matrix_column(x)
     if self.pattern_mix_2_sequence_idx <= y_start then
         y_start = y_start + 1
     end
-    for y = y_start, y_start + 8 do
-        if self.pattern_mix_1_sequence_idx ~= y and
-                self.pattern_mix_2_sequence_idx ~= y
+    local y = 0
+    for y_raw = y_start, y_start + 10 do
+        if self.pattern_mix_1_sequence_idx ~= y_raw and
+           self.pattern_mix_2_sequence_idx ~= y_raw
         then
-            local pattern_idx = renoise.song().sequencer.pattern_sequence[y]
+            y = y + 1
+            if y > 8 then return end
+            local pattern_idx = renoise.song().sequencer.pattern_sequence[y_raw]
             if pattern_idx then
                 local pattern = renoise.song().patterns[pattern_idx]
                 if pattern then
