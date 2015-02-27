@@ -9,7 +9,7 @@ function PatternMatrix:__activate_launchpad()
 end
 
 function PatternMatrix:__deactivate_launchpad()
-
+    self:_clear_launchpad()
 end
 
 function PatternMatrix:wire_launchpad(pad)
@@ -27,8 +27,8 @@ function PatternMatrix:_render_matrix()
         for y = 1, 8 do
             local p = self.pattern_matrix[x][y]
             if p then
-                local state = p[PatternMatrixData.matrix.access.state]
                 local color = self.color.full
+                local state = p[PatternMatrixData.matrix.access.state]
                 if state == PatternMatrixData.matrix.state.empty then
                    color = self.color.empty
                 end
@@ -38,5 +38,12 @@ function PatternMatrix:_render_matrix()
     end
 end
 
+function PatternMatrix:_clear_launchpad()
+    for x = 1, 8 do
+        for y = 1, 8 do
+            self.pad:set_matrix(x,y,Color.off)
+        end
+    end
+end
 
 

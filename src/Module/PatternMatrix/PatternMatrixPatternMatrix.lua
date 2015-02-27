@@ -38,11 +38,14 @@ function PatternMatrix:__update_matrix_column(x)
             if pattern_idx then
                 local pattern = renoise.song().patterns[pattern_idx]
                 if pattern then
-                    local matrix_type = PatternMatrixData.matrix.state.full
-                    if pattern.is_empty then
-                        matrix_type = PatternMatrixData.matrix.state.empty
+                    local track = pattern.tracks[x]
+                    if track then
+                        local matrix_type = PatternMatrixData.matrix.state.full
+                        if track.is_empty then
+                            matrix_type = PatternMatrixData.matrix.state.empty
+                        end
+                        self.pattern_matrix[x][y] = {matrix_type, pattern_idx }
                     end
-                    self.pattern_matrix[x][y] = {matrix_type, pattern_idx}
                 end
             end
         end
