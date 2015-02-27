@@ -1,26 +1,36 @@
 function PatternMatrix:__init_patterns()
-    self.pattern_mix_1 = nil
-    self.pattern_mix_2 = nil
-    self.active_mix_row = nil
+    self.pattern_mix_1              = nil
+    self.pattern_mix_1_sequence_idx = nil
+    self.pattern_mix_2              = nil
+    self.pattern_mix_2_sequence_idx = nil
+    self.active_mix_pattern         = nil
 end
 
 function PatternMatrix:__activate_patterns()
-    self:__set_mix_rows()
+    self:__set_mix_patterns()
 end
 
 function PatternMatrix:__deactivate_patterns()
 
 end
 
-function PatternMatrix:__set_mix_rows()
-    self.pattern_mix_1 = self:__find_mix_row(PatternMatrixData.row.mix_1)
-    self.pattern_mix_2 = self:__find_mix_row(PatternMatrixData.row.mix_2)
+function PatternMatrix:__set_mix_patterns()
+    local tupel = self:__find_mix_pattern(PatternMatrixData.row.mix_1)
+    if tupel then
+        self.pattern_mix_1 = tupel[2]
+        self.pattern_mix_1_sequence_idx = tupel[1]
+    end
+    tupel = self:__find_mix_pattern(PatternMatrixData.row.mix_2)
+    if tupel then
+        self.pattern_mix_2 = tupel[2]
+        self.pattern_mix_2_sequence_idx = tupel[1]
+    end
 end
 
--- @returns the mix row which should be used to alias the next pattern in.
-function PatternMatrix:_next_mix_row()
+-- @returns the mix pattern which should be used to alias the next pattern in.
+function PatternMatrix:_next_mix_pattern()
     if (self.pattern_mix_1 and self.pattern_mix_2) then
-        if self.active_mix_row == self.pattern_mix_2 then
+        if self.active_mix_pattern == self.pattern_mix_2 then
             return self.pattern_mix_1
         else
             return self.pattern_mix_2
@@ -35,9 +45,9 @@ function PatternMatrix:_next_mix_row()
     end
 end
 
-function PatternMatrix:_active_mix_row()
+function PatternMatrix:_active_mix_pattern()
     if (self.pattern_mix_1 and self.pattern_mix_2) then
-        if self.active_mix_row == self.pattern_mix_2 then
+        if self.active_mix_pattern == self.pattern_mix_2 then
             return self.pattern_mix_2
         else
             return self.pattern_mix_1
@@ -53,11 +63,11 @@ function PatternMatrix:_active_mix_row()
     return nil
 end
 
-function PatternMatrix:__find_mix_row()
-    for _,pattern_idx in pairs(renoise.song().sequencer.pattern_sequence) do
+function PatternMatrix:__find_mix_pattern()
+    for sequence_idx,pattern_idx in pairs(renoise.song().sequencer.pattern_sequence) do
         local pattern = renoise.song().patterns[pattern_idx]
         if pattern.name == PatternMatrixData.row.mix_1 then
-            return pattern
+            return {sequence_idx, pattern}
         end
     end
     return nil
@@ -65,7 +75,7 @@ end
 
 function PatternMatrix:set_mix_to_pattern(track_idx, pattern_idx)
     -- get pattern
-    local mix_pattern = self:__find_mix_row()
+    local mix_pattern = self:_next_mix_pattern()
     if not mix_pattern then return end
     -- get track
     local track = mix_pattern.tracks[track_idx]

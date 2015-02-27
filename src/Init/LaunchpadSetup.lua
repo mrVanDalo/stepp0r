@@ -175,6 +175,7 @@ function LaunchpadSetup:wire()
     self.paginator:register_update_callback(self.editor.pageinator_update_callback)
     --
     self.pattern_matrix = PatternMatrix()
+    self.pattern_matrix:wire_launchpad(self.pad)
     --- Stepper Mode
     -- is the mode that toggels the Editor and Keyboard Kombo with the Adjuster and Bank Kombo
     self.stepper_mode = Mode()
