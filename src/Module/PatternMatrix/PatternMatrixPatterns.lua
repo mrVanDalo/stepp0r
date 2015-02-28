@@ -15,6 +15,14 @@ function PatternMatrix:__deactivate_patterns()
 
 end
 
+function PatternMatrix:_get_pattern_alias_idx(pattern)
+    if pattern and pattern.tracks[x] and pattern.tracks[x].is_alias then
+        return pattern.tracks[x].alias_pattern_index
+    else
+        return -1
+    end
+end
+
 function PatternMatrix:__set_mix_patterns()
     local tupel = self:__find_mix_pattern(PatternMatrixData.row.mix_1)
     if tupel then

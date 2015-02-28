@@ -31,20 +31,8 @@ function PatternMatrix:_render_matrix()
             track_activation = PatternMatrixData.matrix.state.active
         end
         --
-        local active_pattern_idx = -1
-        if self.active_mix_pattern
-                and self.active_mix_pattern.tracks[x]
-                and self.active_mix_pattern.tracks[x].is_alias
-        then
-            active_pattern_idx = self.active_mix_pattern.tracks[x].alias_pattern_index
-        end
-        local next_pattern_idx = -1
-        if self.next_mix_pattern
-                and self.next_mix_pattern.tracks[x]
-                and self.next_mix_pattern.tracks[x].is_alias
-        then
-            next_pattern_idx = self.next_mix_pattern.tracks[x].alias_pattern_index
-        end
+        local active_pattern_idx = self:_get_pattern_alias_idx(self.active_mix_pattern)
+        local next_pattern_idx   = self:_get_pattern_alias_idx(self.next_mix_pattern)
         --
         for y = 1, 8 do
             local p = self.pattern_matrix[x][y]
