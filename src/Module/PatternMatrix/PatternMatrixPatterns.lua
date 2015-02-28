@@ -16,13 +16,13 @@ function PatternMatrix:__activate_patterns()
 end
 
 function PatternMatrix:__deactivate_patterns()
-    remove_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
+    -- todo find a way to remove_notifier, but not in mode change, because this is when you want to edit the pattern.
 end
 
 function PatternMatrix:__create_selected_pattern_idx_listener()
     self.__selected_pattern_idx_listener = function ()
-        if self.is_not_active then return end
         self:__set_active_and_next_patterns()
+        if self.is_not_active then return end
         self:__adjuster_next_patterns()
         self:_clear_launchpad()
         self:_render_matrix()
@@ -122,6 +122,8 @@ function PatternMatrix:_set_mix_to_pattern(track_idx, pattern_idx)
     local track = mix_pattern.tracks[track_idx]
     if not track then return end
     --
-    track.alias_pattern_index = pattern_idx
+    if pattern_idx ~= -1 then
+        track.alias_pattern_index = pattern_idx
+    end
 end
 
