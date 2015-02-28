@@ -22,19 +22,31 @@ PatternMatrixData = {
             pattern_idx = 2,
         },
         state = {
-            empty = 1,
-            full  = 2
+            empty    = 0,
+            full     = 1,
+            set      = 2,
+            next     = 3,
+            active   = 10,
+            inactive = 20
         },
     },
-
 }
 
+function PatternMatrix:__create_color_map()
+    self.color = {}
+    self.color[ PatternMatrixData.matrix.state.empty + PatternMatrixData.matrix.state.active   ] = Color.empty
+    self.color[ PatternMatrixData.matrix.state.empty + PatternMatrixData.matrix.state.inactive ] = Color.empty
+    self.color[ PatternMatrixData.matrix.state.full  + PatternMatrixData.matrix.state.active   ] = Color.yellow
+    self.color[ PatternMatrixData.matrix.state.full  + PatternMatrixData.matrix.state.inactive ] = Color.yellow
+    self.color[ PatternMatrixData.matrix.state.set   + PatternMatrixData.matrix.state.active   ] = Color.green
+    self.color[ PatternMatrixData.matrix.state.set   + PatternMatrixData.matrix.state.inactive ] = Color.flash.green
+    self.color[ PatternMatrixData.matrix.state.next  + PatternMatrixData.matrix.state.active   ] = Color.orange
+    self.color[ PatternMatrixData.matrix.state.next  + PatternMatrixData.matrix.state.inactive ] = Color.flash.orange
+end
 function PatternMatrix:__init()
     Module:__init(self)
-    self.color = {
-        full  = Color.green,
-        empty = Color.off
-    }
+    --
+    self:__create_color_map()
     --
     self:__init_paginator()
     self:__init_patterns()
