@@ -70,7 +70,6 @@ function LaunchpadSetup:deactivate()
     self.chooser:deactivate()
     self.paginator:deactivate()
     self.effect:deactivate()
-    self.pattern_matrix:deactivate()
     -- layers
     self.osc_client:disconnect()
     self.pad:disconnect()
@@ -86,7 +85,6 @@ function LaunchpadSetup:activate()
     self.chooser:activate()
     self.paginator:activate()
     self.effect:activate()
-    self.pattern_matrix:activate()
 end
 
 function LaunchpadSetup:connect_launchpad(pad_name,rotation)

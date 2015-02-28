@@ -1,19 +1,32 @@
 
 
 function PatternMatrix:__init_launchpad()
-
+    self:__create_matrix_listener()
 end
 
 function PatternMatrix:__activate_launchpad()
     self:_refresh_matrix()
+    self.pad:register_matrix_listener(self.__matrix_listener)
 end
 
 function PatternMatrix:__deactivate_launchpad()
     self:_clear_launchpad()
+    self.pad:unregister_matrix_listener(self.__matrix_listener)
 end
 
 function PatternMatrix:wire_launchpad(pad)
     self.pad = pad
+end
+
+function PatternMatrix:__create_matrix_listener()
+    self.__matrix_listener = function (_, msg)
+        if self.is_not_active then return end
+        local x = self:_get_track_idx(msg.x)
+        local y = self:_get_pattern_idx(msg.x, msg.y)
+        self:_set_mix_to_pattern(x, y)
+        self:_clear_launchpad()
+        self:_render_matrix()
+    end
 end
 
 function PatternMatrix:_refresh_matrix()
@@ -31,8 +44,8 @@ function PatternMatrix:_render_matrix()
             track_activation = PatternMatrixData.matrix.state.active
         end
         --
-        local active_pattern_idx = self:_get_pattern_alias_idx(self.active_mix_pattern)
-        local next_pattern_idx   = self:_get_pattern_alias_idx(self.next_mix_pattern)
+        local active_pattern_idx = self:_get_pattern_alias_idx(self.active_mix_pattern,x)
+        local next_pattern_idx   = self:_get_pattern_alias_idx(self.next_mix_pattern,x)
         --
         for y = 1, 8 do
             local p = self.pattern_matrix[x][y]

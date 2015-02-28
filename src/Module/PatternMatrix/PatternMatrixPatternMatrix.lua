@@ -18,7 +18,7 @@ end
 
 function PatternMatrix:_update_matrix()
     for x = 1, 8 do
-        self:__update_matrix_column((self.__track_page - 1) * 8 + x, x)
+        self:__update_matrix_column(self:_get_track_idx(x), x)
     end
 end
 
@@ -53,6 +53,12 @@ function PatternMatrix:__update_matrix_column(track_idx,x)
             end
         end
     end
+end
+
+-- @param x on the pattern_matrix
+-- @param y on the pattern_matrix
+function PatternMatrix:_get_pattern_idx(x,y)
+    return self.pattern_matrix[x][y][PatternMatrixData.matrix.access.pattern_idx]
 end
 
 

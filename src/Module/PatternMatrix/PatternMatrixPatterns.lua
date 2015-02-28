@@ -15,7 +15,7 @@ function PatternMatrix:__deactivate_patterns()
 
 end
 
-function PatternMatrix:_get_pattern_alias_idx(pattern)
+function PatternMatrix:_get_pattern_alias_idx(pattern,x)
     if pattern and pattern.tracks[x] and pattern.tracks[x].is_alias then
         return pattern.tracks[x].alias_pattern_index
     else
@@ -88,7 +88,7 @@ function PatternMatrix:__find_mix_pattern(key)
     return nil
 end
 
-function PatternMatrix:set_mix_to_pattern(track_idx, pattern_idx)
+function PatternMatrix:_set_mix_to_pattern(track_idx, pattern_idx)
     -- get pattern
     local mix_pattern = self.next_mix_pattern
     if not mix_pattern then return end
