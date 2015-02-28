@@ -18,11 +18,11 @@ end
 
 function PatternMatrix:_update_matrix()
     for x = 1, 8 do
-        self:__update_matrix_column(x)
+        self:__update_matrix_column((self.__track_page - 1) * 8 + x, x)
     end
 end
 
-function PatternMatrix:__update_matrix_column(x)
+function PatternMatrix:__update_matrix_column(track_idx,x)
     local y_start = (self.__pattern_page - 1) * 8 + 1
     if self.pattern_mix_1_sequence_idx <= y_start then
         y_start = y_start + 1
@@ -41,7 +41,7 @@ function PatternMatrix:__update_matrix_column(x)
             if pattern_idx then
                 local pattern = renoise.song().patterns[pattern_idx]
                 if pattern then
-                    local track = pattern.tracks[x]
+                    local track = pattern.tracks[track_idx]
                     if track then
                         local matrix_type = PatternMatrixData.matrix.state.full
                         if track.is_empty then
