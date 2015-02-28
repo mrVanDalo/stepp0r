@@ -4,6 +4,7 @@ function PatternMatrix:__init_patterns()
     self.pattern_mix_2              = nil
     self.pattern_mix_2_sequence_idx = nil
     self.active_mix_pattern         = nil
+    self.next_mix_pattern           = nil
 end
 
 function PatternMatrix:__activate_patterns()
@@ -27,6 +28,8 @@ function PatternMatrix:__set_mix_patterns()
         self.pattern_mix_2_sequence_idx = tupel_2[1]
 --        print("found pattern_mix_2 at : ", self.pattern_mix_2_sequence_idx)
     end
+    self.active_mix_pattern = self:_active_mix_pattern()
+    self.next_mix_pattern   = self:_next_mix_pattern()
 end
 
 -- @returns the mix pattern which should be used to alias the next pattern in.
@@ -77,7 +80,7 @@ end
 
 function PatternMatrix:set_mix_to_pattern(track_idx, pattern_idx)
     -- get pattern
-    local mix_pattern = self:_next_mix_pattern()
+    local mix_pattern = self.next_mix_pattern
     if not mix_pattern then return end
     -- get track
     local track = mix_pattern.tracks[track_idx]
