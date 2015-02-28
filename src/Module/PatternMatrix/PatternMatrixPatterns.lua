@@ -23,10 +23,12 @@ function PatternMatrix:__create_selected_pattern_idx_listener()
     self.__selected_pattern_idx_listener = function ()
         if self.is_not_active then return end
         self:__set_active_and_next_patterns()
+        self:__adjuster_next_patterns()
         self:_clear_launchpad()
         self:_render_matrix()
     end
 end
+
 
 function PatternMatrix:_get_pattern_alias_idx(pattern,x)
     if pattern and pattern.tracks[x] and pattern.tracks[x].is_alias then
@@ -102,6 +104,14 @@ function PatternMatrix:__find_mix_pattern(key)
         end
     end
     return nil
+end
+
+function PatternMatrix:__adjuster_next_patterns()
+    for x = 1, 8 do
+        local track_idx   = self:_get_track_idx(x)
+        local pattern_idx = self:_get_pattern_alias_idx(self.active_mix_pattern, x)
+        self:_set_mix_to_pattern(track_idx, pattern_idx)
+    end
 end
 
 function PatternMatrix:_set_mix_to_pattern(track_idx, pattern_idx)
