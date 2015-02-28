@@ -21,9 +21,10 @@ end
 function PatternMatrix:__create_matrix_listener()
     self.__matrix_listener = function (_, msg)
         if self.is_not_active then return end
-        local x = self:_get_track_idx(msg.x)
-        local y = self:_get_pattern_idx(msg.x, msg.y)
-        self:_set_mix_to_pattern(x, y)
+        local track_idx = self:_get_track_idx(msg.x)
+        local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
+        renoise.song().selected_track_index  = track_idx
+        self:_set_mix_to_pattern(track_idx, pattern_idx)
         self:_clear_launchpad()
         self:_render_matrix()
     end
