@@ -50,6 +50,7 @@ function Chooser:__create_callback_set_instrument()
         self.instrument_idx = instrument_idx
         self.track_idx      = track_idx
         self.column_idx     = column_idx
+        if self.is_not_active then return end
         self:_update_instrument_row()
         self:_update_column_knobs()
         self:_update_page_knobs()
@@ -79,6 +80,7 @@ end
 -- there is also another notifier wired to the same event for updating the page buttons
 function Chooser:__create_instruments_row_notifier()
     self.instruments_row_notifier = function (_)
+        if self.is_not_active then return end
         self:_update_instrument_row()
     end
 end
