@@ -40,8 +40,8 @@ function PatternMatrix:__create_color_map()
     self.color[ PatternMatrixData.matrix.state.full  + PatternMatrixData.matrix.state.inactive ] = Color.yellow
     self.color[ PatternMatrixData.matrix.state.set   + PatternMatrixData.matrix.state.active   ] = Color.flash.green
     self.color[ PatternMatrixData.matrix.state.set   + PatternMatrixData.matrix.state.inactive ] = Color.green
-    self.color[ PatternMatrixData.matrix.state.next  + PatternMatrixData.matrix.state.active   ] = Color.flash.red
-    self.color[ PatternMatrixData.matrix.state.next  + PatternMatrixData.matrix.state.inactive ] = Color.red
+    self.color[ PatternMatrixData.matrix.state.next  + PatternMatrixData.matrix.state.active   ] = Color.flash.orange
+    self.color[ PatternMatrixData.matrix.state.next  + PatternMatrixData.matrix.state.inactive ] = Color.orange
 end
 function PatternMatrix:__init()
     Module:__init(self)

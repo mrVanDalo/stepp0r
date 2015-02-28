@@ -43,7 +43,7 @@ function PatternMatrix:_render_matrix()
                 and self.next_mix_pattern.tracks[x]
                 and self.next_mix_pattern.tracks[x].is_alias
         then
-            next_pattern_idx = self.active_mix_pattern.tracks[x].alias_pattern_index
+            next_pattern_idx = self.next_mix_pattern.tracks[x].alias_pattern_index
         end
         --
         for y = 1, 8 do
