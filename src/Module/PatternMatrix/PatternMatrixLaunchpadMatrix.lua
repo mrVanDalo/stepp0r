@@ -34,6 +34,9 @@ end
 function PatternMatrix:__clear_pattern(msg)
     local track_idx   = self:_get_track_idx(msg.x)
     local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
+    renoise.song().patterns[pattern_idx].tracks[track_idx]:clear()
+    self.pattern_matrix[msg.x][msg.y] = nil
+    self:_render_matrix()
 end
 function PatternMatrix:__copy_pattern(msg)
     local track_idx   = self:_get_track_idx(msg.x)
@@ -45,18 +48,17 @@ function PatternMatrix:__set_mix_to_next_pattern(msg)
     -- todo if the selected track is already the next track, just switch the track.
 --    renoise.song().selected_track_index  = track_idx
     self:_set_mix_to_pattern(track_idx, pattern_idx)
-    self:_clear_launchpad()
     self:_render_matrix()
 end
 
 function PatternMatrix:_refresh_matrix()
     self:_clear_matrix()
     self:_update_matrix()
-    self:_clear_launchpad()
     self:_render_matrix()
 end
 
 function PatternMatrix:_render_matrix()
+    self:_clear_launchpad()
     for x = 1, 8 do
         --
         local track_activation = PatternMatrixData.matrix.state.inactive

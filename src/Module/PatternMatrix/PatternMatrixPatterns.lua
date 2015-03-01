@@ -24,7 +24,6 @@ function PatternMatrix:__create_selected_pattern_idx_listener()
         self:__set_active_and_next_patterns()
         if self.is_not_active then return end
         self:__adjuster_next_patterns()
-        self:_clear_launchpad()
         self:_render_matrix()
     end
 end
