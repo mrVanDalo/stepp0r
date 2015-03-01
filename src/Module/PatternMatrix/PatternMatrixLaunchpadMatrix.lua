@@ -47,9 +47,12 @@ end
 function PatternMatrix:__set_mix_to_next_pattern(msg)
     local track_idx   = self:_get_track_idx(msg.x)
     local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
-    -- todo if the selected track is already the next track, just switch the track.
---    renoise.song().selected_track_index  = track_idx
-    self:_set_mix_to_pattern(track_idx, pattern_idx)
+    local alias_idx = self:_get_pattern_alias_idx(self.next_mix_pattern,track_idx)
+    if alias_idx ~= -1 and pattern_idx == alias_idx then
+        renoise.song().selected_track_index  = track_idx
+    else
+        self:_set_mix_to_pattern(track_idx, pattern_idx)
+    end
     self:_render_matrix()
 end
 

@@ -29,9 +29,9 @@ function PatternMatrix:__create_selected_pattern_idx_listener()
 end
 
 
-function PatternMatrix:_get_pattern_alias_idx(pattern,x)
-    if pattern and pattern.tracks[x] and pattern.tracks[x].is_alias then
-        return pattern.tracks[x].alias_pattern_index
+function PatternMatrix:_get_pattern_alias_idx(pattern, track_idx)
+    if pattern and pattern.tracks[track_idx] and pattern.tracks[track_idx].is_alias then
+        return pattern.tracks[track_idx].alias_pattern_index
     else
         return -1
     end
