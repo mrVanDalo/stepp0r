@@ -55,6 +55,10 @@ function PatternMatrix:__update_matrix_column(track_idx,x)
     end
 end
 
+function PatternMatrix:__set_empty_to_matrix(x,y)
+    self.pattern_matrix[x][y] = {PatternMatrixData.matrix.state.empty, -1}
+end
+
 -- @param x on the pattern_matrix
 -- @param y on the pattern_matrix
 function PatternMatrix:_get_pattern_idx(x,y)

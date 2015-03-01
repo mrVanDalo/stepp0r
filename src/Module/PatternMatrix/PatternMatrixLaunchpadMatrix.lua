@@ -21,6 +21,7 @@ end
 function PatternMatrix:__create_matrix_listener()
     self.__matrix_listener = function (_, msg)
         if self.is_not_active then return end
+        if msg.vel ~= Velocity.release then return end
         if self.mode == PatternMatrixData.mode.mix then
             self:__set_mix_to_next_pattern(msg)
         elseif self.mode == PatternMatrixData.mode.copy then
@@ -34,8 +35,9 @@ end
 function PatternMatrix:__clear_pattern(msg)
     local track_idx   = self:_get_track_idx(msg.x)
     local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
+    print("clear pattern ", pattern_idx, " track ", track_idx)
     renoise.song().patterns[pattern_idx].tracks[track_idx]:clear()
-    self.pattern_matrix[msg.x][msg.y] = nil
+    self:__set_empty_to_matrix(msg.x,msg.y)
     self:_render_matrix()
 end
 function PatternMatrix:__copy_pattern(msg)
