@@ -21,13 +21,32 @@ end
 function PatternMatrix:__create_matrix_listener()
     self.__matrix_listener = function (_, msg)
         if self.is_not_active then return end
-        local track_idx = self:_get_track_idx(msg.x)
-        local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
-        renoise.song().selected_track_index  = track_idx
-        self:_set_mix_to_pattern(track_idx, pattern_idx)
-        self:_clear_launchpad()
-        self:_render_matrix()
+        if self.mode == PatternMatrixData.mode.mix then
+            self:__set_mix_to_next_pattern(msg)
+        elseif self.mode == PatternMatrixData.mode.copy then
+            self:__copy_pattern(msg)
+        else
+            self:__clear_pattern(msg)
+        end
     end
+end
+
+function PatternMatrix:__clear_pattern(msg)
+    local track_idx   = self:_get_track_idx(msg.x)
+    local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
+end
+function PatternMatrix:__copy_pattern(msg)
+    local track_idx   = self:_get_track_idx(msg.x)
+    local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
+end
+function PatternMatrix:__set_mix_to_next_pattern(msg)
+    local track_idx   = self:_get_track_idx(msg.x)
+    local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
+    -- todo if the selected track is already the next track, just switch the track.
+--    renoise.song().selected_track_index  = track_idx
+    self:_set_mix_to_pattern(track_idx, pattern_idx)
+    self:_clear_launchpad()
+    self:_render_matrix()
 end
 
 function PatternMatrix:_refresh_matrix()
