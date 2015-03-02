@@ -59,6 +59,7 @@ function PatternMatrix:__set_row_to_next_pattern(x)
     for track_idx = 1, table.getn(renoise.song().tracks) do
         self:_set_mix_to_pattern(track_idx, pattern_idx)
     end
+    self:_refresh_matrix()
 end
 function PatternMatrix:__copy_row(x)
 end
