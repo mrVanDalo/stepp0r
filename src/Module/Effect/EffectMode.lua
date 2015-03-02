@@ -14,11 +14,11 @@ function Effect:__init_effect_mode()
     self:__create_mode_listener()
 end
 function Effect:__activate_effect_mode()
-    self.pad:register_right_listener(self.mode_listener)
+    self.pad:register_side_listener(self.mode_listener)
 end
 function Effect:__deactivate_effect_mode()
     self.pad:set_side(self.mode_knob_idx,Color.off)
-    self.pad:unregister_right_listener(self.mode_listener)
+    self.pad:unregister_side_listener(self.mode_listener)
 end
 
 --- ------------------------------------------------------------------------------------------------------

@@ -47,10 +47,13 @@ function PatternMatrix:__get_sequence_interval_visible()
     end
     return store
 end
+function PatternMatrix:_get_sequence_for(x)
+    return self:__get_sequence_interval_visible()[x]
+end
 
 function PatternMatrix:__update_matrix_column(track_idx,x)
-    for y, y_raw in pairs(self:__get_sequence_interval_visible()) do
-        local pattern_idx = renoise.song().sequencer.pattern_sequence[y_raw]
+    for matrix_y, sequencer_idx in pairs(self:__get_sequence_interval_visible()) do
+        local pattern_idx = renoise.song().sequencer.pattern_sequence[sequencer_idx]
         if pattern_idx then
             local pattern = renoise.song().patterns[pattern_idx]
             if pattern then
@@ -60,7 +63,7 @@ function PatternMatrix:__update_matrix_column(track_idx,x)
                     if track.is_empty then
                         matrix_type = PatternMatrixData.matrix.state.empty
                     end
-                    self.pattern_matrix[x][y] = {matrix_type, pattern_idx }
+                    self.pattern_matrix[x][matrix_y] = {matrix_type, pattern_idx }
                 end
             end
         end

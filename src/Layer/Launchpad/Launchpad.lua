@@ -76,7 +76,7 @@ end
 function Launchpad:register_top_listener(handler)
     self:_register(self._top_listener,   handler)
 end
-function Launchpad:register_right_listener(handler)
+function Launchpad:register_side_listener(handler)
     self:_register(self._side_listener, handler)
 end
 function Launchpad:register_matrix_listener(handler)
@@ -91,7 +91,7 @@ end
 function Launchpad:unregister_top_listener(handler)
     self:__unregister(self._top_listener, handler)
 end
-function Launchpad:unregister_right_listener(handler)
+function Launchpad:unregister_side_listener(handler)
     self:__unregister(self._side_listener, handler)
 end
 function Launchpad:unregister_matrix_listener(handler)
