@@ -23,25 +23,47 @@ function PatternMatrix:__create_matrix_listener()
         if self.is_not_active then return end
         if msg.vel ~= Velocity.release then return end
         if self.mode == PatternMatrixData.mode.mix then
-            self:__set_mix_to_next_pattern(msg)
+            self:__set_mix_to_next_pattern(msg.x,msg.y)
         elseif self.mode == PatternMatrixData.mode.copy then
-            self:__copy_pattern(msg)
+            self:__copy_pattern(msg.x,msg.y)
         else
-            self:__clear_pattern(msg)
+            self:__clear_pattern(msg.x, msg.y)
         end
     end
 end
 
-function PatternMatrix:__clear_pattern(msg)
-    local track_idx   = self:_get_track_idx(msg.x)
-    local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
+function PatternMatrix:__create_side_listener()
+    self.__side_listener = function (_, msg)
+        if self.is_not_active then return end
+        if msg.vel ~= Velocity.release then return end
+        if self.mode == PatternMatrixData.mode.mix then
+            self:__set_row_to_next_pattern(msg.x)
+        elseif self.mode == PatternMatrixData.mode.copy then
+            self:__copy_row(msg.x)
+        else
+            self:__clear_row(msg.x)
+        end
+    end
+
+end
+
+function PatternMatrix:__set_row_to_next_pattern(x)
+end
+function PatternMatrix:__copy_row(x)
+end
+function PatternMatrix:__clear_row(x)
+end
+
+function PatternMatrix:__clear_pattern(x,y)
+    local track_idx   = self:_get_track_idx(x)
+    local pattern_idx = self:_get_pattern_idx(x, y)
     print("clear pattern ", pattern_idx, " track ", track_idx)
     renoise.song().patterns[pattern_idx].tracks[track_idx]:clear()
     self:_refresh_matrix()
 end
-function PatternMatrix:__copy_pattern(msg)
-    local track_idx   = self:_get_track_idx(msg.x)
-    local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
+function PatternMatrix:__copy_pattern(x,y)
+    local track_idx   = self:_get_track_idx(x)
+    local pattern_idx = self:_get_pattern_idx(x, y)
     local alias_idx   = self:_get_pattern_alias_idx(self.active_mix_pattern, track_idx)
     if alias_idx ~= -1 then
         local source_pattern_track = renoise.song().patterns[alias_idx].tracks[track_idx]
@@ -50,9 +72,9 @@ function PatternMatrix:__copy_pattern(msg)
         self:_refresh_matrix()
     end
 end
-function PatternMatrix:__set_mix_to_next_pattern(msg)
-    local track_idx   = self:_get_track_idx(msg.x)
-    local pattern_idx = self:_get_pattern_idx(msg.x, msg.y)
+function PatternMatrix:__set_mix_to_next_pattern(x,y)
+    local track_idx   = self:_get_track_idx(x)
+    local pattern_idx = self:_get_pattern_idx(x, y)
     local alias_idx = self:_get_pattern_alias_idx(self.next_mix_pattern,track_idx)
     if alias_idx ~= -1 and pattern_idx == alias_idx then
         renoise.song().selected_track_index  = track_idx

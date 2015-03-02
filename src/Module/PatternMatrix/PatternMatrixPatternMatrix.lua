@@ -22,7 +22,7 @@ function PatternMatrix:_update_matrix()
     end
 end
 
-function PatternMatrix:__update_matrix_column(track_idx,x)
+function PatternMatrix:__get_sequencer_start()
     local y_start = (self.__pattern_page - 1) * 8 + 1
     if self.pattern_mix_1_sequence_idx <= y_start then
         y_start = y_start + 1
@@ -30,25 +30,37 @@ function PatternMatrix:__update_matrix_column(track_idx,x)
     if self.pattern_mix_2_sequence_idx <= y_start then
         y_start = y_start + 1
     end
+    return y_start
+end
+function PatternMatrix:__get_sequence_interval_visible()
+    local y_start = self:__get_sequencer_start()
     local y = 0
-    for y_raw = y_start, y_start + 10 do
+    local store = {}
+    for y_raw = y_start, y_start + 11 do
         if self.pattern_mix_1_sequence_idx ~= y_raw and
            self.pattern_mix_2_sequence_idx ~= y_raw
         then
             y = y + 1
-            if y > 8 then return end
-            local pattern_idx = renoise.song().sequencer.pattern_sequence[y_raw]
-            if pattern_idx then
-                local pattern = renoise.song().patterns[pattern_idx]
-                if pattern then
-                    local track = pattern.tracks[track_idx]
-                    if track then
-                        local matrix_type = PatternMatrixData.matrix.state.full
-                        if track.is_empty then
-                            matrix_type = PatternMatrixData.matrix.state.empty
-                        end
-                        self.pattern_matrix[x][y] = {matrix_type, pattern_idx }
+            store[y] = y_raw
+            if y > 8 then return store end
+        end
+    end
+    return store
+end
+
+function PatternMatrix:__update_matrix_column(track_idx,x)
+    for y, y_raw in pairs(self:__get_sequence_interval_visible()) do
+        local pattern_idx = renoise.song().sequencer.pattern_sequence[y_raw]
+        if pattern_idx then
+            local pattern = renoise.song().patterns[pattern_idx]
+            if pattern then
+                local track = pattern.tracks[track_idx]
+                if track then
+                    local matrix_type = PatternMatrixData.matrix.state.full
+                    if track.is_empty then
+                        matrix_type = PatternMatrixData.matrix.state.empty
                     end
+                    self.pattern_matrix[x][y] = {matrix_type, pattern_idx }
                 end
             end
         end

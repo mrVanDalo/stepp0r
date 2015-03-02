@@ -18,9 +18,11 @@ function PatternMatrix:__deactivate_paginator()
 
 end
 
+-- @return hen number
 function PatternMatrix:_get_track_idx(x)
     return (( self.__track_page - 1 ) * 8 + x)
 end
+
 
 function PatternMatrix:__inc_track_page()
     -- todo check if possible
