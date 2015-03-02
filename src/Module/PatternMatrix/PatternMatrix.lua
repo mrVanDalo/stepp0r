@@ -53,7 +53,7 @@ function PatternMatrix:__create_color_map()
 
     self.color[empty + set    + active   ] = Color.dim.green
     self.color[empty + set    + inactive ] = Color.empty
-    self.color[empty + next   + active   ] = Color.dim.green
+    self.color[empty + next   + active   ] = Color.dim.red
     self.color[empty + next   + inactive ] = Color.empty
     self.color[empty + no_mix + active   ] = Color.empty
     self.color[empty + no_mix + inactive ] = Color.empty
