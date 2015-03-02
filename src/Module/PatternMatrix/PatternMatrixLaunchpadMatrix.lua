@@ -117,14 +117,14 @@ function PatternMatrix:_render_matrix()
         for y = 1, 8 do
             local p = self.pattern_matrix[x][y]
             if p then
+                local state       = p[PatternMatrixData.matrix.access.state]
                 local pattern_idx = p[PatternMatrixData.matrix.access.pattern_idx]
                 if active_pattern_idx == pattern_idx then
-                    self.pad:set_matrix(x,y, self.color[PatternMatrixData.matrix.state.set  + track_activation])
+                    self.pad:set_matrix(x,y, self.color[PatternMatrixData.matrix.state.set    + state + track_activation])
                 elseif next_pattern_idx == pattern_idx then
-                    self.pad:set_matrix(x,y, self.color[PatternMatrixData.matrix.state.next + track_activation])
+                    self.pad:set_matrix(x,y, self.color[PatternMatrixData.matrix.state.next   + state + track_activation])
                 else
-                    local state       = p[PatternMatrixData.matrix.access.state]
-                    self.pad:set_matrix(x,y, self.color[state + track_activation])
+                    self.pad:set_matrix(x,y, self.color[PatternMatrixData.matrix.state.no_mix + state + track_activation])
                 end
             end
         end

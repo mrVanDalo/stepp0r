@@ -25,10 +25,11 @@ PatternMatrixData = {
         state = {
             empty    = 0,
             full     = 1,
-            set      = 2,
-            next     = 3,
-            active   = 10,
-            inactive = 20
+            set      = 10,
+            next     = 20,
+            no_mix   = 30,
+            active   = 100,
+            inactive = 200
         },
     },
     mode = {
@@ -41,14 +42,28 @@ PatternMatrixData = {
 
 function PatternMatrix:__create_color_map()
     self.color = {}
-    self.color[ PatternMatrixData.matrix.state.empty + PatternMatrixData.matrix.state.active   ] = Color.empty
-    self.color[ PatternMatrixData.matrix.state.empty + PatternMatrixData.matrix.state.inactive ] = Color.empty
-    self.color[ PatternMatrixData.matrix.state.full  + PatternMatrixData.matrix.state.active   ] = Color.yellow
-    self.color[ PatternMatrixData.matrix.state.full  + PatternMatrixData.matrix.state.inactive ] = Color.yellow
-    self.color[ PatternMatrixData.matrix.state.set   + PatternMatrixData.matrix.state.active   ] = Color.flash.green
-    self.color[ PatternMatrixData.matrix.state.set   + PatternMatrixData.matrix.state.inactive ] = Color.green
-    self.color[ PatternMatrixData.matrix.state.next  + PatternMatrixData.matrix.state.active   ] = Color.flash.orange
-    self.color[ PatternMatrixData.matrix.state.next  + PatternMatrixData.matrix.state.inactive ] = Color.orange
+
+    local empty    = PatternMatrixData.matrix.state.empty
+    local full     = PatternMatrixData.matrix.state.full
+    local set      = PatternMatrixData.matrix.state.set
+    local next     = PatternMatrixData.matrix.state.next
+    local no_mix   = PatternMatrixData.matrix.state.no_mix
+    local active   = PatternMatrixData.matrix.state.active
+    local inactive = PatternMatrixData.matrix.state.inactive
+
+    self.color[empty + set    + active   ] = Color.dim.green
+    self.color[empty + set    + inactive ] = Color.empty
+    self.color[empty + next   + active   ] = Color.dim.green
+    self.color[empty + next   + inactive ] = Color.empty
+    self.color[empty + no_mix + active   ] = Color.empty
+    self.color[empty + no_mix + inactive ] = Color.empty
+    self.color[full  + set    + active   ] = Color.flash.green
+    self.color[full  + set    + inactive ] = Color.green
+    self.color[full  + next   + active   ] = Color.flash.red
+    self.color[full  + next   + inactive ] = Color.red
+    self.color[full  + no_mix + active   ] = Color.yellow
+    self.color[full  + no_mix + inactive ] = Color.yellow
+
 end
 function PatternMatrix:__init()
     Module:__init(self)

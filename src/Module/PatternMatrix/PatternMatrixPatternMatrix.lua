@@ -59,11 +59,11 @@ function PatternMatrix:__update_matrix_column(track_idx,x)
             if pattern then
                 local track = pattern.tracks[track_idx]
                 if track then
-                    local matrix_type = PatternMatrixData.matrix.state.full
                     if track.is_empty then
-                        matrix_type = PatternMatrixData.matrix.state.empty
+                        self.pattern_matrix[x][matrix_y] = { PatternMatrixData.matrix.state.empty , pattern_idx }
+                    else
+                        self.pattern_matrix[x][matrix_y] = { PatternMatrixData.matrix.state.full , pattern_idx }
                     end
-                    self.pattern_matrix[x][matrix_y] = {matrix_type, pattern_idx }
                 end
             end
         end
