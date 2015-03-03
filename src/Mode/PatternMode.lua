@@ -1,43 +1,43 @@
 --- ======================================================================================================
 ---
----                                                 [ Stepper Mode ]
+---                                                 [ Pattern Mode ]
 ---
---- to toggle between Adjuster and Stepper
+--- to toggle between Pattern Edit and Pattern Matrix mode
 --- must be connected by a Mode.
 
-class "StepperMode" (Module)
+class "PatternMode" (Module)
 
-StepperModeData = {
+PatternModeData = {
     mode = {
-        edit       = 1,
-        copy_paste = 2
+        edit_mode   = 1,
+        matrix_mode = 2
     },
 }
 
-function StepperMode:__init()
+function PatternMode:__init()
     Module:__init(self)
     self.color = {
         mode = {},
         off = Color.off
     }
-    self.knob_idx = 5
-    self.color.mode[StepperModeData.mode.copy_paste] = NewColor[3][0]
-    self.color.mode[StepperModeData.mode.edit]       = NewColor[3][3]
+    self.knob_idx = 8
+    self.color.mode[PatternModeData.mode.matrix_mode] = NewColor[1][3]
+    self.color.mode[PatternModeData.mode.edit_mode]   = NewColor[3][1]
 
-    self.mode = StepperModeData.mode.edit
+    self.mode = PatternModeData.mode.edit_mode
     self.callbacks = {}
     self:__create_top_listener()
 end
 
-function StepperMode:wire_launchpad(pad)
+function PatternMode:wire_launchpad(pad)
     self.pad = pad
 end
 
-function StepperMode:register_mode_update_callback(callback)
+function PatternMode:register_mode_update_callback(callback)
     table.insert(self.callbacks, callback)
 end
 
-function StepperMode:__create_top_listener()
+function PatternMode:__create_top_listener()
     self.top_listener = function (_,msg)
         if (msg.vel == Velocity.press) then return end
         if (msg.x ~= self.knob_idx) then return end
@@ -47,35 +47,35 @@ function StepperMode:__create_top_listener()
     end
 end
 
-function StepperMode:__render_knob()
+function PatternMode:__render_knob()
     self.pad:set_top(self.knob_idx, self.color.mode[self.mode])
 end
 
-function StepperMode:__clear_knob()
+function PatternMode:__clear_knob()
     self.pad:set_top(self.knob_idx, self.color.off)
 end
 
-function StepperMode:__toggle_mode()
-    if (self.mode == StepperModeData.mode.edit ) then
-        self.mode = StepperModeData.mode.copy_paste
+function PatternMode:__toggle_mode()
+    if (self.mode == PatternModeData.mode.edit_mode ) then
+        self.mode = PatternModeData.mode.matrix_mode
     else
-        self.mode = StepperModeData.mode.edit
+        self.mode = PatternModeData.mode.edit_mode
     end
 end
 
-function StepperMode:__update_mode()
+function PatternMode:__update_mode()
     for _, callback in ipairs(self.callbacks) do
         callback(self.mode)
     end
 end
 
-function StepperMode:_activate()
+function PatternMode:_activate()
     self.pad:register_top_listener(self.top_listener)
     self:__update_mode()
     self:__render_knob()
 end
 
-function StepperMode:_deactivate()
+function PatternMode:_deactivate()
     self.pad:unregister_top_listener(self.top_listener)
     self:__clear_knob()
 end
