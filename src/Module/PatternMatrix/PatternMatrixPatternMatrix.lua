@@ -23,7 +23,8 @@ function PatternMatrix:_update_matrix()
 end
 
 function PatternMatrix:__get_sequencer_start()
-    local y_start = (self.__pattern_page - 1) * 8 + 1
+--    local y_start = (self.__pattern_page - 1) * 8 + 1
+    local y_start = self.__pattern_offset + 1
     if self.pattern_mix_1_sequence_idx <= y_start then
         y_start = y_start + 1
     end
