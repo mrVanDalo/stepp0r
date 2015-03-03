@@ -24,8 +24,10 @@ require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
 require 'Module/Keyboard/Keyboard'
 
+
 require 'Module/PatternMatrix/PatternMatrix'
 
+require 'Module/ColorModule'
 
 --- ======================================================================================================
 ---
@@ -185,7 +187,12 @@ function LaunchpadSetup:wire()
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.paginator)
 --    self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.bank)
 --    self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.adjuster)
+    -- Pattern matrix
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.pattern_matrix)
+    -- Color
+--    self.color = ColorModule()
+--    self.color:wire_launchpad(self.pad)
+--    self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.color)
     --
     self.stepper_mode_module = StepperMode()
     self.stepper_mode_module:wire_launchpad(self.pad)

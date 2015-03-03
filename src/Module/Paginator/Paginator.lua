@@ -15,12 +15,12 @@ function Paginator:__init()
     Module:__init(self)
     self.color = {
         page = {
-            active   = NewColor[0][3],
-            inactive = NewColor[0][0],
+            active   = NewColor[3][2],
+            inactive = NewColor[1][1],
         },
         zoom = {
-            active   = NewColor[3][0],
-            inactive = NewColor[3][3],
+            active   = NewColor[2][3],
+            inactive = NewColor[0][1],
         },
     }
 
