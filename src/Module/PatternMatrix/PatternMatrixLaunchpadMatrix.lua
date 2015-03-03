@@ -2,19 +2,16 @@
 
 function PatternMatrix:__init_launchpad()
     self:__create_matrix_listener()
-    self:__create_side_listener()
 end
 
 function PatternMatrix:__activate_launchpad()
     self:_refresh_matrix()
     self.pad:register_matrix_listener(self.__matrix_listener)
-    self.pad:register_side_listener(self.__side_listener)
 end
 
 function PatternMatrix:__deactivate_launchpad()
     self:_clear_launchpad()
     self.pad:unregister_matrix_listener(self.__matrix_listener)
-    self.pad:unregister_side_listener(self.__side_listener)
 end
 
 function PatternMatrix:wire_launchpad(pad)
@@ -35,41 +32,13 @@ function PatternMatrix:__create_matrix_listener()
     end
 end
 
-function PatternMatrix:__create_side_listener()
-    self.__side_listener = function (_, msg)
-        if self.is_not_active then return end
-        if msg.vel ~= Velocity.release then return end
-        if self.mode == PatternMatrixData.mode.mix then
-            self:__set_row_to_next_pattern(msg.x)
-        elseif self.mode == PatternMatrixData.mode.copy then
-            self:__copy_row(msg.x)
-        else
-            self:__clear_row(msg.x)
-        end
-    end
-
-end
 function PatternMatrix:_ensure_sequence_idx_exist(sequence_idx)
 end
 
-function PatternMatrix:__set_row_to_next_pattern(x)
-    local sequence_idx = self:_get_sequence_for(x)
-    self:_ensure_sequence_idx_exist(sequence_idx)
-    local pattern_idx  = renoise.song().sequencer.pattern_sequence[sequence_idx]
-    for track_idx = 1, table.getn(renoise.song().tracks) do
-        self:_set_mix_to_pattern(track_idx, pattern_idx)
-    end
-    self:_refresh_matrix()
-end
-function PatternMatrix:__copy_row(x)
-end
-function PatternMatrix:__clear_row(x)
-end
 
 function PatternMatrix:__clear_pattern(x,y)
     local track_idx   = self:_get_track_idx(x)
     local pattern_idx = self:_get_pattern_idx(x, y)
-    print("clear pattern ", pattern_idx, " track ", track_idx)
     renoise.song().patterns[pattern_idx].tracks[track_idx]:clear()
     self:_refresh_matrix()
 end
@@ -87,9 +56,9 @@ end
 function PatternMatrix:__set_mix_to_next_pattern(x,y)
     local track_idx   = self:_get_track_idx(x)
     local pattern_idx = self:_get_pattern_idx(x, y)
-    local alias_idx = self:_get_pattern_alias_idx(self.next_mix_pattern,track_idx)
+    local alias_idx   = self:_get_pattern_alias_idx(self.next_mix_pattern,track_idx)
     if alias_idx ~= -1 and pattern_idx == alias_idx then
-        renoise.song().selected_track_index  = track_idx
+        renoise.song().selected_track_index = track_idx
     else
         self:_set_mix_to_pattern(track_idx, pattern_idx)
     end

@@ -1,5 +1,6 @@
 
 require 'Data/Color'
+require 'Data/NewColor'
 require 'Data/Note'
 require 'Data/Velocity'
 

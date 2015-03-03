@@ -11,6 +11,7 @@ require 'Module/PatternMatrix/PatternMatrixPatternMatrix'
 require 'Module/PatternMatrix/PatternMatrixPaginator'
 require 'Module/PatternMatrix/PatternMatrixModes'
 require 'Module/PatternMatrix/PatternMatrixTrack'
+require 'Module/PatternMatrix/PatternMatrixSideRow'
 
 PatternMatrixData = {
     row = {
@@ -71,7 +72,7 @@ function PatternMatrix:__init()
     self:__create_color_map()
     self.mode_color = {
         clear = Color.red,
-        copy  = Color.flash.red,
+        copy  = Color.orange,
         mix   = Color.green,
     }
     --
@@ -81,7 +82,9 @@ function PatternMatrix:__init()
     self:__init_pattern_matrix()
     self:__init_launchpad()
     self:__init_modes()
+    self:__init_side_row()
 end
+
 
 
 function PatternMatrix:_activate()
@@ -91,6 +94,7 @@ function PatternMatrix:_activate()
     self:__activate_pattern_matrix()
     self:__activate_launchpad()
     self:__activate_modes()
+    self:__activate_side_row()
 end
 
 function PatternMatrix:_deactivate()
@@ -100,6 +104,7 @@ function PatternMatrix:_deactivate()
     self:__deactivate_track()
     self:__deactivate_pattern_matrix()
     self:__deactivate_modes()
+    self:__deactivate_side_row()
 end
 
 

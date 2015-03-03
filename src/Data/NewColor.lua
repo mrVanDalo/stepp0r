@@ -1,0 +1,45 @@
+
+
+NewColor = {}
+NewColor[0] = {}
+NewColor[1] = {}
+NewColor[2] = {}
+NewColor[3] = {}
+NewColor[0][0] = 12
+NewColor[0][1] = 28
+NewColor[0][2] = 44
+NewColor[0][3] = 60
+NewColor[1][0] = 13
+NewColor[1][1] = 29
+NewColor[1][2] = 45
+NewColor[1][3] = 61
+NewColor[2][0] = 14
+NewColor[2][1] = 30
+NewColor[2][2] = 46
+NewColor[2][3] = 62
+NewColor[3][0] = 15
+NewColor[3][1] = 31
+NewColor[3][2] = 47
+NewColor[3][3] = 63
+
+BlinkColor = {}
+BlinkColor[0] = {}
+BlinkColor[1] = {}
+BlinkColor[2] = {}
+BlinkColor[3] = {}
+BlinkColor[0][0] = 0
+BlinkColor[0][1] = 16
+BlinkColor[0][2] = 32
+BlinkColor[0][3] = 48
+BlinkColor[1][0] = 1
+BlinkColor[1][1] = 17
+BlinkColor[1][2] = 33
+BlinkColor[1][3] = 49
+BlinkColor[2][0] = 2
+BlinkColor[2][1] = 18
+BlinkColor[2][2] = 34
+BlinkColor[2][3] = 50
+BlinkColor[3][0] = 3
+BlinkColor[3][1] = 19
+BlinkColor[3][2] = 35
+BlinkColor[3][3] = 51

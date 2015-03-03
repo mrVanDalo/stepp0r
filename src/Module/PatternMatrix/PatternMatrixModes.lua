@@ -31,6 +31,7 @@ function PatternMatrix:__toggle_mode()
     else
         self.mode = PatternMatrixData.mode.mix
     end
+    self:_render_row()
 end
 
 function PatternMatrix:__render_mode_knobs()
