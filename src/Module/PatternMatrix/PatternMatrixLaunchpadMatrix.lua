@@ -20,6 +20,7 @@ end
 
 function PatternMatrix:__create_matrix_listener()
     self.__matrix_listener = function (_, msg)
+        print("press ", msg.x, ", ", msg.y)
         if self.is_not_active then return end
         if msg.vel ~= Velocity.release then return end
         if self.mode == PatternMatrixData.mode.mix then
@@ -57,6 +58,7 @@ function PatternMatrix:__set_mix_to_next_pattern(x,y)
     local track_idx   = self:_get_track_idx(x)
     local pattern_idx = self:_get_pattern_idx(x, y)
     local alias_idx   = self:_get_pattern_alias_idx(self.next_mix_pattern,track_idx)
+    print("track_idx ", track_idx, " pattern_idx ", pattern_idx, " alias_idx ", alias_idx)
     if alias_idx ~= -1 and pattern_idx == alias_idx then
         renoise.song().selected_track_index = track_idx
     else

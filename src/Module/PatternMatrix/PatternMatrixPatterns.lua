@@ -20,6 +20,11 @@ end
 
 
 function PatternMatrix:_get_pattern_alias_idx(pattern, track_idx)
+    if pattern and pattern.tracks[track_idx] and pattern.tracks[track_idx].is_alias then
+        return pattern.tracks[track_idx].alias_pattern_index
+    else
+        return -1
+    end
 end
 
 function PatternMatrix:__set_mix_patterns()
@@ -61,5 +66,7 @@ function PatternMatrix:__create_pattern_mix_update_callback()
         self.next_mix_pattern           = update.next
         self.pattern_mix_1_sequence_idx = update.mix_1_idx
         self.pattern_mix_2_sequence_idx = update.mix_2_idx
+        if self.is_not_active then return end
+        self:_refresh_matrix()
     end
 end
