@@ -25,10 +25,13 @@ function PatternMix:__init()
     --
     self.__update_callbacks         = {}
     --
+    self.number_of_mix_patterns     = 2 -- value should be 1 or 2
+    --
     self:__create_selected_pattern_idx_listener()
 end
 
 function PatternMix:_activate()
+    self:__ensure_mix_patterns_exist()
     self:__set_mix_patterns()
     self:__set_active_and_next_patterns()
     add_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
@@ -36,8 +39,10 @@ function PatternMix:_activate()
 end
 
 function PatternMix:_deactivate()
+    self:__remove_mix_patterns()
     remove_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
 end
+
 
 function PatternMix:__create_selected_pattern_idx_listener()
     self.__selected_pattern_idx_listener = function ()
@@ -63,13 +68,40 @@ function PatternMix:__set_mix_patterns()
     if tupel then
         self.pattern_mix_1              = tupel[2]
         self.pattern_mix_1_sequence_idx = tupel[1]
-        print("found pattern_mix_1 at : ", self.pattern_mix_1_sequence_idx)
+        print("found mix_1 sequence : ", self.pattern_mix_1_sequence_idx)
+    else
+        self.pattern_mix_1              = nil
+        self.pattern_mix_1_sequence_idx = nil
     end
     local tupel_2 = self:__find_mix_pattern(PatternMixData.row.mix_2)
     if tupel_2 then
         self.pattern_mix_2              = tupel_2[2]
         self.pattern_mix_2_sequence_idx = tupel_2[1]
-        print("found pattern_mix_2 at : ", self.pattern_mix_2_sequence_idx)
+        print("found mix_2 sequence : ", self.pattern_mix_2_sequence_idx)
+    else
+        self.pattern_mix_2              = nil
+        self.pattern_mix_2_sequence_idx = nil
+    end
+end
+
+function PatternMix:__ensure_mix_patterns_exist()
+    self:__set_mix_patterns()
+    self:__remove_mix_patterns()
+    -- todo add patterns
+    renoise.song().sequencer:insert_new_pattern_at(1)
+    local idx_2 = renoise.song().sequencer:pattern(1)
+    renoise.song().patterns[idx_2].name =  PatternMixData.row.mix_2
+    renoise.song().sequencer:insert_new_pattern_at(1)
+    local idx_1 = renoise.song().sequencer:pattern(1)
+    renoise.song().patterns[idx_1].name =  PatternMixData.row.mix_1
+end
+function PatternMix:__remove_mix_patterns()
+    -- todo check for order
+    if self.pattern_mix_2_sequence_idx then
+        renoise.song().sequencer:delete_sequence_at(self.pattern_mix_2_sequence_idx)
+    end
+    if self.pattern_mix_1_sequence_idx then
+        renoise.song().sequencer:delete_sequence_at(self.pattern_mix_1_sequence_idx)
     end
 end
 
