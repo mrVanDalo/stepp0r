@@ -125,6 +125,7 @@ end
 
 function LaunchpadSetup:set_pattern_matrix_number(number)
     if number == 0 then
+        self.pattern_mix:set_number_of_mix_patterns(number)
         self.use_pattern_matrix = false
     else
         self.pattern_mix:set_number_of_mix_patterns(number)

@@ -78,6 +78,7 @@ function PatternMix:__set_mix_patterns()
     else
         self.pattern_mix_1              = nil
         self.pattern_mix_1_sequence_idx = nil
+        print("could not find mix_1 sequence")
     end
     local tupel_2 = self:__find_mix_pattern(PatternMixData.row.mix_2)
     if tupel_2 then
@@ -87,11 +88,11 @@ function PatternMix:__set_mix_patterns()
     else
         self.pattern_mix_2              = nil
         self.pattern_mix_2_sequence_idx = nil
+        print("could not find mix_2 sequence")
     end
 end
 
 function PatternMix:__ensure_mix_patterns_exist()
-    self:__set_mix_patterns()
     self:__remove_mix_patterns()
     if self.number_of_mix_patterns == 2 then
         renoise.song().sequencer:insert_new_pattern_at(1)
@@ -113,13 +114,16 @@ function PatternMix:__ensure_mix_patterns_exist()
     end
     renoise.song().sequencer:set_sequence_section_name(1, self.mix_pattern_title)
     renoise.song().sequencer:set_sequence_is_start_of_section(1,true)
+    renoise.song().selected_sequence_index = 1
 end
 function PatternMix:__remove_mix_patterns()
-    -- todo check for order
+    self:__set_mix_patterns()
     if self.pattern_mix_2_sequence_idx then
+        print("remove mix 2 ", self.pattern_mix_2_sequence_idx)
         renoise.song().sequencer:delete_sequence_at(self.pattern_mix_2_sequence_idx)
     end
     if self.pattern_mix_1_sequence_idx then
+        print("remove mix 1 ", self.pattern_mix_1_sequence_idx)
         renoise.song().sequencer:delete_sequence_at(self.pattern_mix_1_sequence_idx)
     end
     renoise.song().sequencer:set_sequence_is_start_of_section(1,false)
