@@ -27,6 +27,7 @@ function MainUI:create_ui()
     self:create_rotation_row()
     self:create_follow_mute_row()
     self:create_follow_track_instrument_row()
+    self:create_pattern_matrix_row()
     self:create_start_stop_button()
     self:create_quit_button()
     self:create_container()
@@ -51,7 +52,8 @@ function MainUI:create_container()
             self.device_row,
             self.rotation_row,
             self.follow_mute_row,
-            self.follow_track_instrument_row
+            self.follow_track_instrument_row,
+            self.pattern_matrix_row,
         },
         self.vb:row {
             margin = 4,
@@ -159,6 +161,41 @@ end
 
 function MainUI:enable_rotation_row()
     self.rotation_switch.active = true
+end
+
+--- ======================================================================================================
+---
+---                                                 [ Pattern Matrix Row ]
+
+
+function MainUI:create_pattern_matrix_row()
+    self.pattern_matrix_switch = self.vb:switch{
+        visible = true,
+        items   = {"disable", "one", "two"},
+        width   = self.input_size,
+        tooltip = "to enable pattern matrix controll"
+    }
+    self.pattern_matrix_row = self.vb:row{
+        spacing = 3,
+        self.vb:text{
+            text = "",
+            width = self.button_size
+        },
+        self.vb:text{
+            text = "Pattern Mix",
+            width = self.text_size,
+        },
+        self.pattern_matrix_switch,
+    }
+end
+
+function MainUI:disable_pattern_matrix_row()
+    self.pattern_matrix_switch.active = false
+end
+
+
+function MainUI:enable_pattern_matrix_row()
+    self.pattern_matrix_switch.active = true
 end
 
 
@@ -339,6 +376,7 @@ function MainUI:run()
     self:disable_rotation_row()
     self:disable_follow_mute_row()
     self:disable_follow_track_instrument_row()
+    self:disable_pattern_matrix_row()
     self.run_callback(self:run_properties())
 end
 
@@ -357,6 +395,7 @@ function MainUI:stop()
     self:enable_rotation_row()
     self:enable_follow_mute_row()
     self:enable_follow_track_instrument_row()
+    self:enable_pattern_matrix_row()
     self:enable_osc_row()
     self.stop_callback()
 end
