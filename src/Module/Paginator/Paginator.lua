@@ -2,7 +2,7 @@
 ---
 ---                                                 [ Pagination  ]
 ---
---- takes car of pagination
+--- takes care of pagination
 
 
 class "Paginator" (Module)
