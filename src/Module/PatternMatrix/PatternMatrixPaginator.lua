@@ -13,8 +13,8 @@ function PatternMatrix:__init_paginator()
 
     self.color_pagination = {
         pattern = {
-            active   = NewColor[3][2],
-            inactive = NewColor[1][1],
+            active   = NewColor[2][3],
+            inactive = NewColor[0][1],
         },
     }
     self:__create_top_listener()
