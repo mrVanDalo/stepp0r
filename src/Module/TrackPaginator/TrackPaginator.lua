@@ -9,6 +9,11 @@
 
 class "TrackPaginator" (Module)
 
+
+require "Module/TrackPaginator/TrackPaginatorLaunchpadTop"
+require "Module/TrackPaginator/TrackPaginatorLib"
+require "Module/TrackPaginator/TrackPaginatorUpdateCallbacks"
+
 function TrackPaginator:__init()
     Module:__init(self)
     self.color = {

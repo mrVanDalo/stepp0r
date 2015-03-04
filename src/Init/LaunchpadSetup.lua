@@ -20,6 +20,7 @@ require 'Mode/PatternMode'
 require 'Module/Adjuster/Adjuster'
 require 'Module/Bank/Bank'
 require 'Module/Paginator/Paginator'
+require 'Module/TrackPaginator/TrackPaginator'
 require 'Module/Editor/Editor'
 require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
@@ -61,6 +62,7 @@ function LaunchpadSetup:__init()
     self.bank                = nil
     self.chooser             = nil
     self.paginator           = nil
+    self.track_paginator  = nil
     self.pattern_matrix      = nil
     -- modes
     self.stepper_mode_module = nil
@@ -76,6 +78,7 @@ function LaunchpadSetup:deactivate()
     self.pattern_mode:deactivate()
     self.chooser:deactivate()
     self.paginator:deactivate()
+    self.track_paginator:deactivate()
     self.effect:deactivate()
     -- layers
     self.osc_client:disconnect()
@@ -93,6 +96,7 @@ function LaunchpadSetup:activate()
     self.pattern_mode:activate()
     self.chooser:activate()
     self.paginator:activate()
+    self.track_paginator:activate()
     self.effect:activate()
 end
 
@@ -180,6 +184,10 @@ function LaunchpadSetup:wire()
     self.paginator:wire_launchpad(self.pad)
     self.paginator:register_update_callback(self.adjuster.pageinator_update_callback)
     self.paginator:register_update_callback(self.editor.pageinator_update_callback)
+    --
+    self.track_paginator = TrackPaginator()
+    self.track_paginator:wire_launchpad(self.pad)
+    self.track_paginator:register_update_callback(self.chooser.track_paginat_update_callback)
     --- ------------------------------------
     --- Stepper Mode
     -- is the mode that toggels the Editor and Keyboard Kombo with the Adjuster and Bank Kombo
