@@ -27,6 +27,9 @@ function PatternMix:__init()
     --
     self.number_of_mix_patterns     = 2 -- value should be 1 or 2
     --
+    self.mix_pattern_title          = "Stepp0r Mix"
+    self.pattern_list_title         = "Patterns"
+    --
     self:__create_selected_pattern_idx_listener()
 end
 
@@ -87,13 +90,22 @@ end
 function PatternMix:__ensure_mix_patterns_exist()
     self:__set_mix_patterns()
     self:__remove_mix_patterns()
-    -- todo add patterns
-    renoise.song().sequencer:insert_new_pattern_at(1)
-    local idx_2 = renoise.song().sequencer:pattern(1)
-    renoise.song().patterns[idx_2].name =  PatternMixData.row.mix_2
-    renoise.song().sequencer:insert_new_pattern_at(1)
-    local idx_1 = renoise.song().sequencer:pattern(1)
-    renoise.song().patterns[idx_1].name =  PatternMixData.row.mix_1
+    if self.number_of_mix_patterns == 2 then
+        renoise.song().sequencer:insert_new_pattern_at(1)
+        local idx_2 = renoise.song().sequencer:pattern(1)
+        renoise.song().patterns[idx_2].name =  PatternMixData.row.mix_2
+        renoise.song().sequencer:insert_new_pattern_at(1)
+        local idx_1 = renoise.song().sequencer:pattern(1)
+        renoise.song().patterns[idx_1].name =  PatternMixData.row.mix_1
+    elseif self.number_of_mix_patterns == 1 then
+        renoise.song().sequencer:insert_new_pattern_at(1)
+        local idx_1 = renoise.song().sequencer:pattern(1)
+        renoise.song().patterns[idx_1].name =  PatternMixData.row.mix_1
+    end
+    renoise.song().sequencer:set_sequence_section_name(1, self.mix_pattern_title)
+    renoise.song().sequencer:set_sequence_is_start_of_section(1,true)
+    renoise.song().sequencer:set_sequence_section_name(3, self.pattern_list_title)
+    renoise.song().sequencer:set_sequence_is_start_of_section(3,true)
 end
 function PatternMix:__remove_mix_patterns()
     -- todo check for order
@@ -103,6 +115,7 @@ function PatternMix:__remove_mix_patterns()
     if self.pattern_mix_1_sequence_idx then
         renoise.song().sequencer:delete_sequence_at(self.pattern_mix_1_sequence_idx)
     end
+    renoise.song().sequencer:set_sequence_is_start_of_section(1,false)
 end
 
 function PatternMix:__set_active_and_next_patterns()
