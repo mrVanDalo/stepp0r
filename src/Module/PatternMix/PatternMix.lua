@@ -158,11 +158,17 @@ function PatternMix:register_update_callback(callback)
     table.insert(self.__update_callbacks, callback)
 end
 function PatternMix:_update_callbacks()
+    local sequence_idx_blacklist = {}
+    if self.pattern_mix_1_sequence_idx then
+        table.insert(sequence_idx_blacklist, self.pattern_mix_1_sequence_idx)
+    end
+    if self.pattern_mix_2_sequence_idx then
+        table.insert(sequence_idx_blacklist, self.pattern_mix_2_sequence_idx)
+    end
     local update = {
-        active    = self.active_mix_pattern,
-        next      = self.next_mix_pattern,
-        mix_1_idx = self.pattern_mix_1_sequence_idx,
-        mix_2_idx = self.pattern_mix_2_sequence_idx
+        active                 = self.active_mix_pattern,
+        next                   = self.next_mix_pattern,
+        sequence_idx_blacklist = sequence_idx_blacklist
     }
     for _, callback in ipairs(self.__update_callbacks) do
         callback(update)

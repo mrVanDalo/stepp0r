@@ -23,24 +23,30 @@ function PatternMatrix:_update_matrix()
 end
 
 function PatternMatrix:__get_sequencer_start()
---    local y_start = (self.__pattern_page - 1) * 8 + 1
     local y_start = self.__pattern_offset + 1
-    if self.pattern_mix_1_sequence_idx <= y_start then
-        y_start = y_start + 1
-    end
-    if self.pattern_mix_2_sequence_idx <= y_start then
-        y_start = y_start + 1
+    for _,idx in pairs(self._sequence_idx_blacklist) do
+        if idx <= y_start then
+            y_start = y_start + 1
+        end
     end
     return y_start
 end
+
+function PatternMatrix:__is_sequence_idx_blacklisted(idx)
+    for _,blacklisted_idx in pairs(self._sequence_idx_blacklist) do
+        if idx == blacklisted_idx then
+            return true
+        end
+    end
+    return false
+end
+
 function PatternMatrix:__get_sequence_interval_visible()
     local y_start = self:__get_sequencer_start()
     local y = 0
     local store = {}
-    for y_raw = y_start, y_start + 11 do
-        if self.pattern_mix_1_sequence_idx ~= y_raw and
-           self.pattern_mix_2_sequence_idx ~= y_raw
-        then
+    for y_raw = y_start, y_start + 9 + table.getn(self._sequence_idx_blacklist) do
+        if not self:__is_sequence_idx_blacklisted(y_raw) then
             y = y + 1
             store[y] = y_raw
             if y > 8 then return store end
