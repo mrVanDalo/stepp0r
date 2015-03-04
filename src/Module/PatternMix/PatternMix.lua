@@ -104,6 +104,7 @@ function PatternMix:__ensure_mix_patterns_exist()
         renoise.song().transport.loop_sequence_range = {1,2}
         renoise.song().sequencer:set_sequence_section_name(3, self.pattern_list_title)
         renoise.song().sequencer:set_sequence_is_start_of_section(3,true)
+        renoise.song().transport.follow_player = true
     elseif self.number_of_mix_patterns == 1 then
         renoise.song().sequencer:insert_new_pattern_at(1)
         local idx_1 = renoise.song().sequencer:pattern(1)
@@ -111,6 +112,7 @@ function PatternMix:__ensure_mix_patterns_exist()
         renoise.song().transport.loop_sequence_range = {1,1}
         renoise.song().sequencer:set_sequence_section_name(2, self.pattern_list_title)
         renoise.song().sequencer:set_sequence_is_start_of_section(2,true)
+        renoise.song().transport.follow_player = true
     end
     renoise.song().sequencer:set_sequence_section_name(1, self.mix_pattern_title)
     renoise.song().sequencer:set_sequence_is_start_of_section(1,true)
