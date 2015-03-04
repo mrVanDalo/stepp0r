@@ -26,7 +26,7 @@ require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
 require 'Module/Keyboard/Keyboard'
 
-
+require 'Module/PatternMix/PatternMix'
 require 'Module/PatternMatrix/PatternMatrix'
 
 require 'Module/ColorModule'
@@ -62,8 +62,9 @@ function LaunchpadSetup:__init()
     self.bank                = nil
     self.chooser             = nil
     self.paginator           = nil
-    self.track_paginator  = nil
+    self.track_paginator     = nil
     self.pattern_matrix      = nil
+    self.pattern_mix         = nil
     -- modes
     self.stepper_mode_module = nil
     self.stepper_mode        = nil
@@ -72,12 +73,11 @@ end
 
 function LaunchpadSetup:deactivate()
     -- modules
---    self.stepper_mode_module:deactivate()
---    self.stepper_mode:deactivate()
     self.pattern_mode_module:deactivate()
     self.pattern_mode:deactivate()
     self.chooser:deactivate()
     self.paginator:deactivate()
+    self.pattern_mix:deactivate()
     self.track_paginator:deactivate()
     self.effect:deactivate()
     -- layers
@@ -90,8 +90,7 @@ function LaunchpadSetup:activate()
     -- boot
     self.it_selection:boot()
     -- modules
---    self.stepper_mode_module:activate()
---    self.stepper_mode:activate()
+    self.pattern_mix:activate()
     self.pattern_mode_module:activate()
     self.pattern_mode:activate()
     self.chooser:activate()
@@ -217,6 +216,9 @@ function LaunchpadSetup:wire()
     self.pattern_mode_module = PatternMode()
     self.pattern_mode_module:wire_launchpad(self.pad)
     self.pattern_mode_module:register_mode_update_callback(self.pattern_mode.mode_update_callback)
+    --
+    self.pattern_mix = PatternMix()
+    self.pattern_mix:register_update_callback(self.pattern_matrix.pattern_mix_update_callback)
     --
     self.track_paginator = TrackPaginator()
     self.track_paginator:wire_launchpad(self.pad)
