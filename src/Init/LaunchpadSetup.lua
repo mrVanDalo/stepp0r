@@ -69,6 +69,8 @@ function LaunchpadSetup:__init()
     self.stepper_mode_module = nil
     self.stepper_mode        = nil
     self.pattern_mode        = nil
+    -- flags
+    self.use_pattern_matrix  = true
 end
 
 function LaunchpadSetup:deactivate()
@@ -90,9 +92,11 @@ function LaunchpadSetup:activate()
     -- boot
     self.it_selection:boot()
     -- modules
-    self.pattern_mix:activate()
-    self.pattern_mode_module:activate()
-    self.pattern_mode:activate()
+    if self.use_pattern_matrix then
+        self.pattern_mix:activate()
+        self.pattern_mode_module:activate()
+        self.pattern_mode:activate()
+    end
     self.chooser:activate()
     self.paginator:activate()
     self.track_paginator:activate()
@@ -117,6 +121,15 @@ end
 function LaunchpadSetup:connect_it_selection()
     self.it_selection:disconnect()
     self.it_selection:connect()
+end
+
+function LaunchpadSetup:set_pattern_matrix_number(number)
+    if number == 0 then
+        self.use_pattern_matrix = false
+    else
+        self.pattern_mix:set_number_of_mix_patterns(number)
+        self.use_pattern_matrix = true
+    end
 end
 
 function LaunchpadSetup:set_follow_mute()

@@ -356,7 +356,8 @@ function MainUI:run_properties()
         },
         rotation = self.rotation_switch.value,
         follow_mute = self.follow_mute_checkbox.value,
-        follow_track_instrument = self.follow_track_instrument_checkbox.value
+        follow_track_instrument = self.follow_track_instrument_checkbox.value,
+        pattern_matrix = self.pattern_matrix_switch.value - 1,
     }
 end
 

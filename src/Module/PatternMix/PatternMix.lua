@@ -46,6 +46,9 @@ function PatternMix:_deactivate()
     remove_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
 end
 
+function PatternMix:set_number_of_mix_patterns(number)
+    self.number_of_mix_patterns = number
+end
 
 function PatternMix:__create_selected_pattern_idx_listener()
     self.__selected_pattern_idx_listener = function ()
