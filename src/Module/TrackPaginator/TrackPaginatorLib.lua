@@ -1,7 +1,7 @@
 
 
 function TrackPaginator:__init_lib()
-    self._page_offset = 0
+    self._page_offset         = 0
     self.__page_offset_factor = 1
 end
 function TrackPaginator:__activate_lib()

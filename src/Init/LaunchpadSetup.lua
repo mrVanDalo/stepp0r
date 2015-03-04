@@ -187,7 +187,7 @@ function LaunchpadSetup:wire()
     --
     self.track_paginator = TrackPaginator()
     self.track_paginator:wire_launchpad(self.pad)
-    self.track_paginator:register_update_callback(self.chooser.track_paginat_update_callback)
+    self.track_paginator:register_update_callback(self.chooser.track_paginator_update_callback)
     --- ------------------------------------
     --- Stepper Mode
     -- is the mode that toggels the Editor and Keyboard Kombo with the Adjuster and Bank Kombo
