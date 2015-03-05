@@ -96,11 +96,15 @@ function LaunchpadSetup:activate()
         self.pattern_mix:activate()
         self.pattern_mode_module:activate()
         self.pattern_mode:activate()
+    else
+        -- everything on one mode (copy paste is bad)
+        self.stepper_mode:activate()
+        self.stepper_mode_module:activate()
+        self.chooser:activate()
+        self.effect:activate()
+        self.paginator:activate()
     end
-    self.chooser:activate()
-    self.paginator:activate()
     self.track_paginator:activate()
-    self.effect:activate()
 end
 
 function LaunchpadSetup:connect_launchpad(pad_name,rotation)
