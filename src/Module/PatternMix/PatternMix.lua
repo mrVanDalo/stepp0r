@@ -37,6 +37,7 @@ function PatternMix:_activate()
     self:__ensure_mix_patterns_exist()
     self:__set_mix_patterns()
     self:__set_active_and_next_patterns()
+    self:__init_active_pattern(self.number_of_mix_patterns + 1)
     add_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
     self:_update_callbacks()
 end
@@ -54,7 +55,7 @@ function PatternMix:__create_selected_pattern_idx_listener()
     self.__selected_pattern_idx_listener = function ()
         self:__set_active_and_next_patterns()
         if self.is_not_active then return end
-        self:__adjuster_next_patterns()
+        self:__adjuster_next_pattern()
         self:_update_callbacks()
     end
 end
@@ -189,11 +190,21 @@ function PatternMix:__all_tracks()
     local result = {}
     for track_idx = 1, table.getn(renoise.song().tracks) do
         result[track_idx] = track_idx
+--        print("track_idx ", track_idx)
     end
     return result
 end
 
-function PatternMix:__adjuster_next_patterns()
+function PatternMix:__init_active_pattern(sequence_idx)
+    local pattern_idx = renoise.song().sequencer:pattern(sequence_idx)
+--    print("sequence_idx ", sequence_idx)
+--    print("pattern_idx ", pattern_idx)
+    for _,track_idx in pairs(self:__all_tracks()) do
+        self:_set_mix_to_pattern(track_idx, pattern_idx)
+    end
+end
+
+function PatternMix:__adjuster_next_pattern()
     for _,track_idx in pairs(self:__all_tracks()) do
         local pattern_idx = self:_get_pattern_alias_idx(self.active_mix_pattern, track_idx)
         self:_set_mix_to_pattern(track_idx, pattern_idx)
