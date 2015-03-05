@@ -52,7 +52,7 @@ function PatternMode:__render_knob()
 end
 
 function PatternMode:__clear_knob()
-    self.pad:set_top(self.knob_idx, self.color.off)
+    self.pad:set_top(self.knob_idx, Color.off)
 end
 
 function PatternMode:__toggle_mode()
@@ -76,6 +76,6 @@ function PatternMode:_activate()
 end
 
 function PatternMode:_deactivate()
-    self.pad:unregister_top_listener(self.top_listener)
     self:__clear_knob()
+    self.pad:unregister_top_listener(self.top_listener)
 end
