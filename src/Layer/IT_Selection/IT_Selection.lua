@@ -33,7 +33,6 @@ require 'Layer/IT_Selection/IT_SelectionIdle'
 ---
 ---                                                 [ INIT ]
 
-
 function IT_Selection:__init()
     self:_init_track()
     self:_init_instrument()
@@ -41,8 +40,6 @@ function IT_Selection:__init()
     self:_init_pattern()
     self:_init_idle()
 end
-
-
 
 --- boot the layer (basically trigger all listeners)
 function IT_Selection:boot()

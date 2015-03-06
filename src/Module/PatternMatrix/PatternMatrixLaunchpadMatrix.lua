@@ -61,6 +61,7 @@ function PatternMatrix:__set_mix_to_next_pattern(x,y)
     local alias_idx   = self:_get_pattern_alias_idx(self.next_mix_pattern,track_idx)
     print("track_idx ", track_idx, " pattern_idx ", pattern_idx, " alias_idx ", alias_idx)
     if alias_idx ~= -1 and pattern_idx == alias_idx then
+        -- use it_selection
         renoise.song().selected_track_index = track_idx
     else
         self:_set_mix_to_pattern(track_idx, pattern_idx)
