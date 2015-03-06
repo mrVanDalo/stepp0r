@@ -6,23 +6,6 @@ class 'TrackObject'
 
 function TrackObject:__init() end
 
---- todo maybe this don't belong here
---- @return track of given instrument index
-function TrackObject:sequencer_track_for_instrument_index(instrument_number)
-    local number = self:sequencer_track_index_for_instrument_index(instrument_number)
-    return renoise.song().tracks[number]
-end
-
---- todo maybe this don't belong here
---- @return track number of given instrument index
-function TrackObject:sequencer_track_index_for_instrument_index(instrument_number)
-    local sequencer_track_sequence = self:sequencer_track_sequence()
-    return sequencer_track_sequence[instrument_number]
-end
-
-
-
-
 function TrackObject:ensure_sequencer_track_idx_exist(track_idx)
     local nr_of_tracks    = self:track_sequence_size()
     local how_many_to_add = track_idx -  nr_of_tracks
@@ -35,7 +18,6 @@ function TrackObject:ensure_sequencer_track_idx_exist(track_idx)
         end
     end
 end
-
 
 --- sequence of all tracks
 -- excluding send tracks and groups

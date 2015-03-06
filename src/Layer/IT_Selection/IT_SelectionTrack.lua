@@ -67,13 +67,6 @@ function IT_Selection:selected_track_index()
     return renoise.song().selected_track_index
 end
 
-function IT_Selection:__rename_track_index(index, name)
-    local track = renoise.song().tracks[index]
-    if track then
-        track.name = name
-    end
-end
-
 --- return insturument index coresponding to the `track_index`
 -- returns nil for not found
 function IT_Selection:__instrument_index_for_track(track_index)

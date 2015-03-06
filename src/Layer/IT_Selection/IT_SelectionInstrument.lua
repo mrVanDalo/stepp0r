@@ -41,24 +41,14 @@ end
 
 --- return sequencer track of given instrument
 function IT_Selection:track_for_instrument(instrument_number)
-    local number = self:track_index_for_instrument(instrument_number)
-    return renoise.song().tracks[number]
+    local track_idx = self:track_index_for_instrument(instrument_number)
+    return renoise.song().tracks[track_idx]
 end
 
 --- return sequencer track number of given instrument
 function IT_Selection:track_index_for_instrument(instrument_number)
-    self:__ensure_track_exist(instrument_number)
-    -- calculate the correct track
-    local counter = 0
-    for index, track in pairs( renoise.song().tracks ) do
-        if track.type == TrackData.type.sequencer and track.type ~= TrackData.type.group then
-            counter = counter + 1
-        end
-        if counter == instrument_number then
-            -- log('return track_number', counter)
-            return index
-        end
-    end
+    Renoise.track:ensure_sequencer_track_idx_exist(instrument_number)
+    return Renoise.track:sequencer_track_sequence()[instrument_number]
 end
 
 
@@ -81,7 +71,7 @@ function IT_Selection:select_instrument(instrument_idx)
     self.track_idx          = self:track_index_for_instrument(self.instrument_idx)
     self.column_idx         = 1
     self:select_track_index(self.track_idx)
-    self:__rename_track_index(self.track_idx, name)
+    Renoise.track.rename_track_idx(self.track_idx, name)
     -- trigger callbacks
     self:__update_set_instrument_listeners()
 end
