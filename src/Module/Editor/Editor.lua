@@ -31,6 +31,9 @@ EditorData = {
 
 function Editor:__init()
     PatternEditorModule:__init(self)
+    --
+    self.playback_key = 'editor'
+    --
     self.color       = {
         stepper = Color.green,
         page = {

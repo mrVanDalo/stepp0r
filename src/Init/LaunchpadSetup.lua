@@ -140,6 +140,11 @@ function LaunchpadSetup:set_pattern_matrix_number(number)
     end
 end
 
+function LaunchpadSetup:set_only_current_playback_position(only_current)
+    self.editor:set_selected_pattern_playback_position(only_current)
+    self.adjuster:set_selected_pattern_playback_position(only_current)
+end
+
 function LaunchpadSetup:set_follow_mute()
     self.chooser:set_follow_mute()
 end

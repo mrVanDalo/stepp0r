@@ -27,6 +27,7 @@ function MainUI:create_ui()
     self:create_rotation_row()
     self:create_follow_mute_row()
     self:create_follow_track_instrument_row()
+    self:create_current_playback_position_row()
     self:create_pattern_matrix_row()
     self:create_start_stop_button()
     self:create_quit_button()
@@ -53,6 +54,7 @@ function MainUI:create_container()
             self.rotation_row,
             self.follow_mute_row,
             self.follow_track_instrument_row,
+            self.current_playback_position_row,
             self.pattern_matrix_row,
         },
         self.vb:row {
@@ -173,7 +175,8 @@ function MainUI:create_pattern_matrix_row()
         visible = true,
         items   = {"disable", "one", "two"},
         width   = self.input_size,
-        tooltip = "to enable pattern matrix controll"
+        tooltip = "to enable pattern matrix controll",
+        value   = 3
     }
     self.pattern_matrix_row = self.vb:row{
         spacing = 3,
@@ -258,6 +261,37 @@ end
 
 function MainUI:enable_follow_mute_row()
     self.follow_mute_checkbox.active = true
+end
+
+--- ======================================================================================================
+---
+---                                                 [ Only current playback position Row ]
+
+
+function MainUI:create_current_playback_position_row()
+    self.current_playback_position_checkbox = self.vb:checkbox{
+        visible = true,
+        value   = false,
+        width   = self.button_size,
+        tooltip = "show playback position only for selected pattern"
+    }
+    self.current_playback_position_row = self.vb:row{
+        spacing = 3,
+        self.current_playback_position_checkbox,
+        self.vb:text{
+            text = "Only current Playbackpositon",
+            width = self.text_size,
+        },
+    }
+end
+
+function MainUI:disable_current_playback_position_row()
+    self.current_playback_position_checkbox.active = false
+end
+
+
+function MainUI:enable_current_playback_position_row()
+    self.current_playback_position_checkbox.active = true
 end
 
 --- ======================================================================================================
@@ -356,7 +390,8 @@ function MainUI:run_properties()
         },
         rotation = self.rotation_switch.value,
         follow_mute = self.follow_mute_checkbox.value,
-        follow_track_instrument = self.follow_track_instrument_checkbox.value,
+        follow_track_instrument        = self.follow_track_instrument_checkbox.value,
+        only_current_playback_position = self.current_playback_position_checkbox.value,
         pattern_matrix = self.pattern_matrix_switch.value - 1,
     }
 end
@@ -377,6 +412,7 @@ function MainUI:run()
     self:disable_rotation_row()
     self:disable_follow_mute_row()
     self:disable_follow_track_instrument_row()
+    self:disable_current_playback_position_row()
     self:disable_pattern_matrix_row()
     self.run_callback(self:run_properties())
 end
@@ -396,6 +432,7 @@ function MainUI:stop()
     self:enable_rotation_row()
     self:enable_follow_mute_row()
     self:enable_follow_track_instrument_row()
+    self:enable_current_playback_position_row()
     self:enable_pattern_matrix_row()
     self:enable_osc_row()
     self.stop_callback()

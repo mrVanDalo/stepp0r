@@ -14,6 +14,10 @@ function PatternEditorModule:__init_playback_position()
     self.playback_position_observer = nil
     self.playback_position_last_x = 1
     self.playback_position_last_y = 1
+    --
+    self.only_selected_pattern_playback_position = false
+    --
+    self:__create_callback_playback_positions()
 end
 
 function PatternEditorModule:__activate_playback_position()
@@ -41,22 +45,36 @@ end
 ---                                                 [ Lib ]
 
 function PatternEditorModule:__register_playback_position_observer()
-    self.playback_position_observer:register('adjuster', function (line)
-        if self.is_not_active then return end
-        self:__callback_playback_position(line)
-    end)
+    if self.only_selected_pattern_playback_position then
+        self.playback_position_observer:register( self.playback_key , self.callback_playback_position_current_sequence )
+    else
+        self.playback_position_observer:register( self.playback_key , self.callback_playback_position_ignore_sequence )
+    end
+end
+function PatternEditorModule:set_selected_pattern_playback_position(only_current)
+    print("only current ", only_current)
+    print("self.only current ", self.only_selected_pattern_playback_position)
+    self.only_selected_pattern_playback_position = only_current
 end
 
 function PatternEditorModule:__unregister_playback_position_observer()
-    self.playback_position_observer:unregister('stepper' )
+    self.playback_position_observer:unregister( self.playback_key )
 end
 
---- updates the point that should blink on the launchpad
---
--- will be hooked in by the playback_position observable
---
-function PatternEditorModule:__callback_playback_position(pos)
-    if self.pattern_idx ~= pos.sequence then return end
+function PatternEditorModule:__create_callback_playback_positions()
+    self.callback_playback_position_current_sequence = function (pos)
+        if self.is_not_active then return end
+        local current_pattern_idx = renoise.song().sequencer:pattern(pos.sequence)
+        if self.pattern_idx ~= current_pattern_idx then return end
+        self:__render_playback_position(pos.line)
+    end
+    self.callback_playback_position_ignore_sequence = function (pos)
+        if self.is_not_active then return end
+        self:__render_playback_position(pos.line)
+    end
+end
+
+function PatternEditorModule:__render_playback_position(line)
     -- clean up old playback position
     if (self.removed_old_playback_position) then
         self:__render_matrix_position(
@@ -66,7 +84,6 @@ function PatternEditorModule:__callback_playback_position(pos)
         self.removed_old_playback_position = nil
     end
     -- update position
-    local line = pos.line
     if (line <= self.page_start) then return end
     if (line >= self.page_end)   then return end
     local xy = self:line_to_point(line)
@@ -79,3 +96,4 @@ function PatternEditorModule:__callback_playback_position(pos)
     self.playback_position_last_y = y
     self.removed_old_playback_position = true
 end
+
