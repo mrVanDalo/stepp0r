@@ -49,7 +49,7 @@ function PatternMatrix:__get_sequence_interval_visible()
         if not self:__is_sequence_idx_blacklisted(y_raw) then
             y = y + 1
             store[y] = y_raw
-            if y > 8 then return store end
+            if y > 7 then return store end
         end
     end
     return store

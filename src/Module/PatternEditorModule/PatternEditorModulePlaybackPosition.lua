@@ -52,8 +52,8 @@ function PatternEditorModule:__register_playback_position_observer()
     end
 end
 function PatternEditorModule:set_selected_pattern_playback_position(only_current)
-    print("only current ", only_current)
-    print("self.only current ", self.only_selected_pattern_playback_position)
+--    print("only current ", only_current)
+--    print("self.only current ", self.only_selected_pattern_playback_position)
     self.only_selected_pattern_playback_position = only_current
 end
 

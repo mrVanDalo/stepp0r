@@ -37,7 +37,6 @@ function PatternMatrix:__create_pattern_mix_update_callback()
     self.pattern_mix_update_callback = function (update)
         self.active_mix_pattern         = update.active
         self.next_mix_pattern           = update.next
-        -- todo remove this and replace by table of black-listed sequencer_idx
         self._sequence_idx_blacklist    = update.sequence_idx_blacklist
         self.pattern_mix_2_sequence_idx = update.mix_2_idx
         if self.is_not_active then return end

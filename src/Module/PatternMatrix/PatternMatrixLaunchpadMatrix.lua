@@ -34,6 +34,7 @@ function PatternMatrix:__create_matrix_listener()
 end
 
 function PatternMatrix:_ensure_sequence_idx_exist(sequence_idx)
+    Renoise.pattern_matrix:create_patterns_up_to_sequence_index(sequence_idx)
 end
 
 

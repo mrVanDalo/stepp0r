@@ -31,6 +31,8 @@ require 'Module/PatternMatrix/PatternMatrix'
 
 require 'Module/ColorModule'
 
+require 'Objects/Pool'
+
 --- ======================================================================================================
 ---
 ---                                                 [ Launchpad Setup ]
