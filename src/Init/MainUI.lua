@@ -52,10 +52,10 @@ function MainUI:create_container()
             self.osc_row,
             self.device_row,
             self.rotation_row,
+            self.pattern_matrix_row,
             self.follow_mute_row,
             self.follow_track_instrument_row,
             self.current_playback_position_row,
-            self.pattern_matrix_row,
         },
         self.vb:row {
             margin = 4,
