@@ -6,16 +6,16 @@ end
 
 --- register callback
 --
--- the callback gets the `index of instrument` and `the active note column`
+-- the callback gets the `index of instrument` `index of track` and `the active note column`
 function IT_Selection:register_select_instrument(callback)
     table.insert(self.callback_select_instrument, callback)
 end
 
 -- function :callback_set_instrument() return function(instrument_idx, track_idx, column_idx) end end
 function IT_Selection:__update_set_instrument_listeners()
-    --    log("instrument_idx", self.instrument_idx)
-    --    log("track_idx", self.track_idx)
-    --    log("column_idx", self.column_idx)
+    print("instrument_idx", self.instrument_idx)
+    print("track_idx", self.track_idx)
+    print("column_idx", self.column_idx)
     for _, callback in ipairs(self.callback_select_instrument) do
         callback(self.instrument_idx, self.track_idx, self.column_idx)
     end

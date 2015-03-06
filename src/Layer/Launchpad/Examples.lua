@@ -80,7 +80,7 @@ function example_colors(pad)
 
     pad:register_matrix_listener(echo_matrix)
     pad:register_top_listener(echo_top)
-    pad:register_right_listener(echo_right)
+    pad:register_side_listener(echo_right)
 end
 function example(pad)
     -- configuration

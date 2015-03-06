@@ -28,7 +28,6 @@ end
 
 function Keyboard:__create_callback_set_instrument()
     self.callback_set_instrument =  function (instrument_idx, track_idx, _)
-        if self.is_not_active then return end
         -- save
         self.instrument_backup[self.instrument_idx] = self:state()
         -- switch
@@ -37,6 +36,7 @@ function Keyboard:__create_callback_set_instrument()
         -- load
         local newState = self.instrument_backup[self.instrument_idx]
         if newState then self:load_state(newState) end
+        if self.is_not_active then return end
         -- refresh
         self:matrix_refresh()
     end

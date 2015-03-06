@@ -41,6 +41,8 @@ AdjusterData = {
 function Adjuster:__init()
     PatternEditorModule:__init(self)
     --
+    self.playback_key = 'adjuster'
+    --
     self.delay       = 0
     self.volume      = AdjusterData.instrument.empty
     self.pan         = AdjusterData.instrument.empty

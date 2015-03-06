@@ -47,8 +47,8 @@ function Chooser:__init()
             passive = Color.red,
         },
         page = {
-            active   = Color.yellow,
-            inactive = Color.off,
+            active   = Color.green,
+            inactive = Color.dim.green,
         },
         column = {
             active    = Color.yellow,

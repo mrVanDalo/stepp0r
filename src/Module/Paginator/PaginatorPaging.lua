@@ -1,6 +1,8 @@
 --- ======================================================================================================
 ---
 ---                                                 [ Paginator ]
+---
+--- paginator for pattern editing (not for pattern matrix)
 
 
 --- ------------------------------------------------------------------------------------------------------
@@ -62,6 +64,7 @@ end
 
 
 function Paginator:_update_page_knobs()
+    self:__clear_page_knobs()
     if (self.page_start <= 0)  then
         self.pad:set_top(self.page_dec_idx,self.color.page.inactive)
     else

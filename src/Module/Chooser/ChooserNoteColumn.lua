@@ -17,11 +17,11 @@ function Chooser:__init_note_column()
 end
 function Chooser:__activate_note_column()
     self:_update_column_knobs()
-    self.pad:register_right_listener(self.__column_listener)
+    self.pad:register_side_listener(self.__column_listener)
 end
 function Chooser:__deactivate_note_column()
     self:__clear_column_knobs()
-    self.pad:unregister_right_listener(self.__column_listener)
+    self.pad:unregister_side_listener(self.__column_listener)
 end
 
 --- ------------------------------------------------------------------------------------------------------

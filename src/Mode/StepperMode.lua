@@ -20,8 +20,9 @@ function StepperMode:__init()
         mode = {},
         off = Color.off
     }
-    self.color.mode[StepperModeData.mode.copy_paste] = Color.red
-    self.color.mode[StepperModeData.mode.edit]       = Color.green
+    self.knob_idx = 5
+    self.color.mode[StepperModeData.mode.copy_paste] = NewColor[3][0]
+    self.color.mode[StepperModeData.mode.edit]       = NewColor[3][3]
 
     self.mode = StepperModeData.mode.edit
     self.callbacks = {}
@@ -39,7 +40,7 @@ end
 function StepperMode:__create_top_listener()
     self.top_listener = function (_,msg)
         if (msg.vel == Velocity.press) then return end
-        if (msg.x ~= 8) then return end
+        if (msg.x ~= self.knob_idx) then return end
         self:__toggle_mode()
         self:__update_mode()
         self:__render_knob()
@@ -47,11 +48,11 @@ function StepperMode:__create_top_listener()
 end
 
 function StepperMode:__render_knob()
-    self.pad:set_top(8, self.color.mode[self.mode])
+    self.pad:set_top(self.knob_idx, self.color.mode[self.mode])
 end
 
 function StepperMode:__clear_knob()
-    self.pad:set_top(8, self.color.off)
+    self.pad:set_top(self.knob_idx, self.color.off)
 end
 
 function StepperMode:__toggle_mode()

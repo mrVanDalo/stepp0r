@@ -1,5 +1,6 @@
 
 require 'Data/Color'
+require 'Data/NewColor'
 require 'Data/Note'
 require 'Data/Velocity'
 
@@ -14,14 +15,23 @@ require 'Module/PatternEditorModule/PatternEditorModule'
 
 require 'Mode/Mode'
 require 'Mode/StepperMode'
+require 'Mode/PatternMode'
 
 require 'Module/Adjuster/Adjuster'
 require 'Module/Bank/Bank'
 require 'Module/Paginator/Paginator'
+require 'Module/TrackPaginator/TrackPaginator'
 require 'Module/Editor/Editor'
 require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
 require 'Module/Keyboard/Keyboard'
+
+require 'Module/PatternMix/PatternMix'
+require 'Module/PatternMatrix/PatternMatrix'
+
+require 'Module/ColorModule'
+
+require 'Objects/Renoise'
 
 --- ======================================================================================================
 ---
@@ -54,18 +64,29 @@ function LaunchpadSetup:__init()
     self.bank                = nil
     self.chooser             = nil
     self.paginator           = nil
+    self.track_paginator     = nil
+    self.pattern_matrix      = nil
+    self.pattern_mix         = nil
     -- modes
     self.stepper_mode_module = nil
     self.stepper_mode        = nil
+    self.pattern_mode        = nil
+    -- flags
+    self.use_pattern_matrix  = true
 end
 
 function LaunchpadSetup:deactivate()
     -- modules
-    self.stepper_mode_module:deactivate()
+    self.pattern_mode_module:deactivate()
+    self.pattern_mode:deactivate()
+    self.pattern_mix:deactivate()
     self.stepper_mode:deactivate()
+    self.stepper_mode_module:deactivate()
+    self.effect:deactivate()
+    self.paginator:deactivate()
     self.chooser:deactivate()
     self.paginator:deactivate()
-    self.effect:deactivate()
+    self.track_paginator:deactivate()
     -- layers
     self.osc_client:disconnect()
     self.pad:disconnect()
@@ -76,11 +97,19 @@ function LaunchpadSetup:activate()
     -- boot
     self.it_selection:boot()
     -- modules
-    self.stepper_mode_module:activate()
-    self.stepper_mode:activate()
-    self.chooser:activate()
-    self.paginator:activate()
-    self.effect:activate()
+    if self.use_pattern_matrix then
+        self.pattern_mix:activate()
+        self.pattern_mode_module:activate()
+        self.pattern_mode:activate()
+    else
+        -- everything on one mode (copy paste is bad)
+        self.stepper_mode:activate()
+        self.stepper_mode_module:activate()
+        self.chooser:activate()
+        self.effect:activate()
+        self.paginator:activate()
+    end
+    self.track_paginator:activate()
 end
 
 function LaunchpadSetup:connect_launchpad(pad_name,rotation)
@@ -101,6 +130,21 @@ end
 function LaunchpadSetup:connect_it_selection()
     self.it_selection:disconnect()
     self.it_selection:connect()
+end
+
+function LaunchpadSetup:set_pattern_matrix_number(number)
+    if number == 0 then
+        self.pattern_mix:set_number_of_mix_patterns(number)
+        self.use_pattern_matrix = false
+    else
+        self.pattern_mix:set_number_of_mix_patterns(number)
+        self.use_pattern_matrix = true
+    end
+end
+
+function LaunchpadSetup:set_only_current_playback_position(only_current)
+    self.editor:set_selected_pattern_playback_position(only_current)
+    self.adjuster:set_selected_pattern_playback_position(only_current)
 end
 
 function LaunchpadSetup:set_follow_mute()
@@ -167,7 +211,7 @@ function LaunchpadSetup:wire()
     self.paginator:wire_launchpad(self.pad)
     self.paginator:register_update_callback(self.adjuster.pageinator_update_callback)
     self.paginator:register_update_callback(self.editor.pageinator_update_callback)
-    --
+    --- ------------------------------------
     --- Stepper Mode
     -- is the mode that toggels the Editor and Keyboard Kombo with the Adjuster and Bank Kombo
     self.stepper_mode = Mode()
@@ -175,15 +219,47 @@ function LaunchpadSetup:wire()
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.editor)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.bank)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.adjuster)
+    --
     self.stepper_mode_module = StepperMode()
     self.stepper_mode_module:wire_launchpad(self.pad)
     self.stepper_mode_module:register_mode_update_callback(self.stepper_mode.mode_update_callback)
+    --
+    self.pattern_matrix = PatternMatrix()
+    self.pattern_matrix:wire_launchpad(self.pad)
+    --- ------------------------------------
+    --- Pattern Mode
+    --
+    self.pattern_mode = Mode()
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.stepper_mode)
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.stepper_mode_module)
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.chooser)
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.effect)
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.paginator)
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.pattern_matrix)
+    -- Color
+--    self.color = ColorModule()
+--    self.color:wire_launchpad(self.pad)
+--    self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.color)
+    --
+    self.pattern_mode_module = PatternMode()
+    self.pattern_mode_module:wire_launchpad(self.pad)
+    self.pattern_mode_module:register_mode_update_callback(self.pattern_mode.mode_update_callback)
+    --
+    self.pattern_mix = PatternMix()
+    self.pattern_mix:register_update_callback(self.pattern_matrix.pattern_mix_update_callback)
+    --
+    self.track_paginator = TrackPaginator()
+    self.track_paginator:wire_launchpad(self.pad)
+    self.track_paginator:register_update_callback(self.chooser.track_paginator_update_callback)
+    self.track_paginator:register_update_callback(self.pattern_matrix.track_paginator_update_callback)
+    --- ------------------------------------
     --- Layer callback registration
     self.it_selection:register_select_instrument(self.key.callback_set_instrument)
     self.it_selection:register_select_instrument(self.editor.callback_set_instrument)
     self.it_selection:register_select_instrument(self.adjuster.callback_set_instrument)
     self.it_selection:register_select_instrument(self.effect.callback_set_instrument)
     self.it_selection:register_select_instrument(self.chooser.callback_set_instrument)
+    self.it_selection:register_select_instrument(self.pattern_matrix.callback_set_instrument)
     --
     self.it_selection:register_select_pattern(self.editor.callback_set_pattern)
     self.it_selection:register_select_pattern(self.adjuster.callback_set_pattern)
