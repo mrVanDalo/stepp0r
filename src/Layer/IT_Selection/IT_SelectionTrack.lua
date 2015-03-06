@@ -1,8 +1,8 @@
 
 function IT_Selection:_init_track()
     self.follow_track_instrument = nil
+    self.track_idx = 1
     -- callbacks
-    self.track_idx      = 1
     self:__create_selected_track_listener()
 end
 
@@ -53,6 +53,12 @@ function IT_Selection:__update_track_index(track_index)
     self:__update_set_instrument_listeners()
 end
 
+--- return insturument index coresponding to the `track_index`
+-- returns nil for not found
+function IT_Selection:__instrument_index_for_track(track_index)
+    return table.find(Renoise.track:sequencer_track_sequence(), track_index)
+end
+
 
 
 function IT_Selection:select_track_index(index)
@@ -63,9 +69,4 @@ function IT_Selection:selected_track_index()
     return renoise.song().selected_track_index
 end
 
---- return insturument index coresponding to the `track_index`
--- returns nil for not found
-function IT_Selection:__instrument_index_for_track(track_index)
-    return table.find(Renoise.track:sequencer_track_sequence(), track_index)
-end
 
