@@ -54,9 +54,6 @@ function PatternMatrix:__get_sequence_interval_visible()
     end
     return store
 end
-function PatternMatrix:_get_sequence_for(x)
-    return self:__get_sequence_interval_visible()[x]
-end
 
 function PatternMatrix:__update_matrix_column(track_idx,x)
     for matrix_y, sequencer_idx in pairs(self:__get_sequence_interval_visible()) do
@@ -83,8 +80,13 @@ end
 
 -- @param x on the pattern_matrix
 -- @param y on the pattern_matrix
-function PatternMatrix:_get_pattern_idx(x,y)
-    return self.pattern_matrix[x][y][PatternMatrixData.matrix.access.pattern_idx]
+function PatternMatrix:_get_pattern_idx(y)
+    local sequence_idx = self:_get_sequence_for(y)
+    self:_ensure_sequence_idx_exist(sequence_idx)
+    return renoise.song().sequencer:pattern(sequence_idx)
 end
 
+function PatternMatrix:_get_sequence_for(x)
+    return self:__get_sequence_interval_visible()[x]
+end
 
