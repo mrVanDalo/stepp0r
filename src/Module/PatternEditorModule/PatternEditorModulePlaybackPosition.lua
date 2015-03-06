@@ -64,9 +64,9 @@ end
 function PatternEditorModule:__create_callback_playback_positions()
     self.callback_playback_position_current_sequence = function (pos)
         if self.is_not_active then return end
-        local current_pattern_idx = renoise.song().sequencer:pattern(pos.sequence)
-        if self.pattern_idx ~= current_pattern_idx then return end
-        self:__render_playback_position(pos.line)
+        if Renoise.pattern_editor:is_selected_pattern_played() then
+            self:__render_playback_position(pos.line)
+        end
     end
     self.callback_playback_position_ignore_sequence = function (pos)
         if self.is_not_active then return end
