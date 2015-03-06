@@ -4,6 +4,7 @@ class 'PatternEditorObject'
 
 function PatternEditorObject:__init() end
 
+-- maybe this should be moved to an object called pattern
 function PatternEditorObject:is_selected_pattern_played()
     local pos = renoise.song().transport.playback_pos
     local playback_pattern_idx = renoise.song().sequencer:pattern(pos.sequence)
@@ -11,6 +12,7 @@ function PatternEditorObject:is_selected_pattern_played()
     return playback_pattern_idx == selected_pattern
 end
 
+-- maybe this should be moved to an object called sequence
 function PatternEditorObject:is_selected_sequence_played()
     local pos = renoise.song().transport.playback_pos
     local playback_sequence_idx = pos.sequence
