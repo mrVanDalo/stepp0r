@@ -7,7 +7,7 @@ class 'TrackObject'
 function TrackObject:__init() end
 
 function TrackObject:ensure_sequencer_track_idx_exist(track_idx)
-    local nr_of_tracks    = self:track_sequence_size()
+    local nr_of_tracks    = self:sequencer_track_count()
     local how_many_to_add = track_idx -  nr_of_tracks
     if (how_many_to_add > 0) then
         -- put missings tracks on last possion
