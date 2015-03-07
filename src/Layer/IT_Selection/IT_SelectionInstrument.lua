@@ -46,13 +46,13 @@ end
 --- updated the selected instrument
 -- don't call this on the selected_track_notifier
 function IT_Selection:select_instrument(instrument_idx)
-    local  name = Renoise.instrument.name(instrument_idx)
+    local  name = Renoise.instrument:name_for_index(instrument_idx)
     if not name then return end
     self:_update_instrument_index(instrument_idx)
     self.track_idx          = self:track_index_for_instrument(self.instrument_idx)
     self.column_idx         = 1
     self:select_track_index(self.track_idx)
-    Renoise.track.rename_track_index(self.track_idx, name)
+    Renoise.track:rename_track_index(self.track_idx, name)
     -- trigger callbacks
     self:__update_set_instrument_listeners()
 end
