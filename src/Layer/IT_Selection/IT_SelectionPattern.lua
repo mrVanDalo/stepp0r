@@ -27,7 +27,6 @@ end
 function IT_Selection:__create_select_pattern_listener()
     self.__select_pattern_listener = function (_)
         self.pattern_idx = renoise.song().selected_pattern_index
---        print("changed pattern index", self.pattern_idx)
         self:_update_alias_listener(self.track_idx, self.pattern_idx)
         self:__update_set_pattern_listeners()
     end

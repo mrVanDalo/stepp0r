@@ -21,24 +21,6 @@ function IT_Selection:__update_set_instrument_listeners()
     end
 end
 
-
---- only instruments with names are instruments
-function IT_Selection:__instrument_name(instrument)
-    if not instrument then return nil end
-    if not instrument.name then return nil end
-    if instrument.name ~= "" then
-        return instrument.name
-    end
-    if not instrument.midi_output_properties then
-        return nil
-    end
-    if instrument.midi_output_properties.device_name == "" then
-        return nil
-    else
-        return instrument.midi_output_properties.device_name
-    end
-end
-
 --- return sequencer track of given instrument
 function IT_Selection:track_for_instrument(instrument_number)
     local track_idx = self:track_index_for_instrument(instrument_number)
@@ -64,8 +46,7 @@ end
 --- updated the selected instrument
 -- don't call this on the selected_track_notifier
 function IT_Selection:select_instrument(instrument_idx)
-    local found = renoise.song().instruments[instrument_idx]
-    local  name = self:__instrument_name(found)
+    local  name = Renoise.instrument.name(instrument_idx)
     if not name then return end
     self:_update_instrument_index(instrument_idx)
     self.track_idx          = self:track_index_for_instrument(self.instrument_idx)
@@ -76,10 +57,3 @@ function IT_Selection:select_instrument(instrument_idx)
     self:__update_set_instrument_listeners()
 end
 
-function IT_Selection:instrument_exists_p(instrument)
-    if (self:__instrument_name(instrument)) then
-        return true
-    else
-        return false
-    end
-end

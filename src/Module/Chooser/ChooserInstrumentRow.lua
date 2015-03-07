@@ -90,7 +90,7 @@ function Chooser:_update_instrument_row()
     for nr, instrument in ipairs(renoise.song().instruments) do
         local scaled_index = nr - self.inst_offset
         if scaled_index > 8 then break end
-        if self.it_selection:instrument_exists_p(instrument) and scaled_index > 0 then
+        if Renoise.instrument.exist(instrument) and scaled_index > 0 then
             local active_color  = self.color.instrument.active
             local passive_color = self.color.instrument.passive
             local track = self.it_selection:track_for_instrument(nr)

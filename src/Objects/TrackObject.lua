@@ -38,7 +38,6 @@ function TrackObject:sequencer_track_count()
     return renoise.song().sequencer_track_count
 end
 
-
 function TrackObject:rename_track_index(index, name)
     local track = renoise.song().tracks[index]
     if track then
