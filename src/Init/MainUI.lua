@@ -416,6 +416,12 @@ end
 
 --- returns an object of all configurations
 function MainUI:run_properties()
+    -- pagination factor
+    local page_factor = self.pagination_factor_switch.value
+    if (page_factor== 3) then
+        page_factor = 4
+    end
+    -- return
     return {
         osc = {
             host   = "localhost"  ,
@@ -430,6 +436,7 @@ function MainUI:run_properties()
         follow_track_instrument        = self.follow_track_instrument_checkbox.value,
         only_current_playback_position = self.current_playback_position_checkbox.value,
         pattern_matrix = self.pattern_matrix_switch.value - 1,
+        pagination_factor = page_factor,
     }
 end
 
