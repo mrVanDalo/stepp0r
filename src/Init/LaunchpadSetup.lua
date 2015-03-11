@@ -142,6 +142,11 @@ function LaunchpadSetup:set_pattern_matrix_number(number)
     end
 end
 
+function LaunchpadSetup:set_pagination_factor(factor)
+    self.track_paginator:set_page_offset_factor(factor)
+    self.pattern_matrix:set_pattern_offset_factor(factor)
+end
+
 function LaunchpadSetup:set_only_current_playback_position(only_current)
     self.editor:set_selected_pattern_playback_position(only_current)
     self.adjuster:set_selected_pattern_playback_position(only_current)

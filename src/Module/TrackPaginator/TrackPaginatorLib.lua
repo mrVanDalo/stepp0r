@@ -9,10 +9,12 @@ end
 function TrackPaginator:__deactivate_lib()
 end
 
+function TrackPaginator:set_page_offset_factor(factor)
+    self.__page_offset_factor = factor
+end
 function TrackPaginator:_page_inc()
     self._page_offset = self._page_offset  +  self.__page_offset_factor
 end
-
 function TrackPaginator:_page_dec()
     self._page_offset = self._page_offset  -  self.__page_offset_factor
     if( self._page_offset < 0 ) then
