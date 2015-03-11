@@ -31,6 +31,10 @@ function PatternMatrix:__deactivate_paginator()
     self:__clear_pagination()
 end
 
+function PatternMatrix:set_pattern_offset_factor(factor)
+    self.__pattern_offset_factor = factor
+end
+
 function PatternMatrix:__create_track_paginator_update_callback()
     self.track_paginator_update_callback = function (page)
         self.__track_offset = page.page_offset

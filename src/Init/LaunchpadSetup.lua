@@ -143,8 +143,8 @@ function LaunchpadSetup:set_pattern_matrix_number(number)
 end
 
 function LaunchpadSetup:set_pagination_factor(factor)
-    print("set pagination ", factor)
     self.track_paginator:set_page_offset_factor(factor)
+    self.pattern_matrix:set_pattern_offset_factor(factor)
 end
 
 function LaunchpadSetup:set_only_current_playback_position(only_current)
