@@ -75,14 +75,20 @@ end
 
 --- update pad by the given matrix
 --
-function Adjuster:__render_matrix_position(x,y)
-    if     (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.on) then
-        self.pad:set_matrix(x,y,self.color.note.on)
-    elseif (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.off) then
-        self.pad:set_matrix(x,y,self.color.note.off)
+function Adjuster:__render_position_value(map, x,y)
+    if     (map[x][y] == PatternEditorModuleData.note.on) then
+        return AdjusterData.color_map.on
+    elseif (map[x][y] == PatternEditorModuleData.note.off) then
+        return AdjusterData.color_map.off
     else
-        self.pad:set_matrix(x,y,self.color.note.empty)
+        return AdjusterData.color_map.empty
     end
+end
+function Adjuster:__render_matrix_position(x,y)
+    local active_value   =  self:__render_position_value(self.__pattern_matrix,          x, y)
+    local inactive_value =  self:__render_position_value(self.__pattern_matrix_inactive, x, y)
+    local color = self.color.map[ AdjusterData.color_map.active_column * active_value + AdjusterData.color_map.inactive_column * inactive_value ]
+    self.pad:set_matrix(x,y,color)
     -- bank_matrix has color already in it
     if(self.bank_matrix[x][y]) then
         self.pad:set_matrix(x, y, self.bank_matrix[x][y])

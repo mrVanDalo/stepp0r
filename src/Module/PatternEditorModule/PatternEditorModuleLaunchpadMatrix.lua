@@ -12,7 +12,8 @@ function PatternEditorModule:__render_matrix()
 end
 
 function PatternEditorModule:__clear_pattern_matrix()
-    self.__pattern_matrix = {}
+    self.__pattern_matrix          = {}
+    self.__pattern_matrix_inactive = {}
     for x = 1, 8 do
         self.__pattern_matrix[x] = {
             PatternEditorModuleData.note.empty,
@@ -70,15 +71,10 @@ function PatternEditorModule:__update_pattern_matrix_position(pos,line)
             local note_column = line:note_column(index)
             if (note_column.note_value == PatternEditorModuleData.note.empty)
             then
-                if  self.__pattern_matrix_inactive[x][y] ~= PatternEditorModuleData.note.on
-                        and self.__pattern_matrix_inactive[x][y] ~= PatternEditorModuleData.note.off
-                then
-                    self.__pattern_matrix_inactive[x][y] = PatternEditorModuleData.note.off
-                end
-                self.__pattern_matrix_inactive[x][y] = PatternEditorModuleData.note.empty
+                -- nothing
             elseif (note_column.note_value == PatternEditorModuleData.note.off)
             then
-                if self.__pattern_matrix_inactive[x][y] ~= PatternEditorModuleData.note.on
+                if self.__pattern_matrix_inactive[x][y] == PatternEditorModuleData.note.empty
                 then
                     self.__pattern_matrix_inactive[x][y] = PatternEditorModuleData.note.off
                 end

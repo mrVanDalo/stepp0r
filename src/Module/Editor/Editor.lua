@@ -24,7 +24,7 @@ EditorData = {
         clear = Color.off
     },
     color_map = {
-        active_column   = 0,
+        active_column   = 1,
         inactive_column = 10,
         on    = 1,
         off   = 2,
@@ -81,7 +81,6 @@ function Editor:wire_launchpad(pad)
 end
 
 
-
 function Editor:__get_color_map()
     local active_column   = EditorData.color_map.active_column
     local inactive_column = EditorData.color_map.inactive_column
@@ -105,28 +104,28 @@ function Editor:__get_color_map()
     -- create map
     --
     local map = {}
-    map[ active_column + on    + inactive_column + empty ] = active_column_and_on
-    map[ active_column + off   + inactive_column + empty ] = active_column_and_off
-    map[ active_column + empty + inactive_column + empty ] = active_column_and_empty
+    map[ active_column * on    + inactive_column * empty ] = active_column_and_on
+    map[ active_column * off   + inactive_column * empty ] = active_column_and_off
+    map[ active_column * empty + inactive_column * empty ] = active_column_and_empty
     --
-    map[ active_column + on    + inactive_column + on    ] = active_column_and_on
-    map[ active_column + off   + inactive_column + on    ] = active_column_and_off
-    map[ active_column + empty + inactive_column + on    ] = inactive_column_and_on
+    map[ active_column * on    + inactive_column * on    ] = active_column_and_on
+    map[ active_column * off   + inactive_column * on    ] = active_column_and_off
+    map[ active_column * empty + inactive_column * on    ] = inactive_column_and_on
     --
-    map[ active_column + on    + inactive_column + off   ] = active_column_and_on
-    map[ active_column + off   + inactive_column + off   ] = active_column_and_off
-    map[ active_column + empty + inactive_column + off   ] = inactive_column_and_off
+    map[ active_column * on    + inactive_column * off   ] = active_column_and_on
+    map[ active_column * off   + inactive_column * off   ] = active_column_and_off
+    map[ active_column * empty + inactive_column * off   ] = inactive_column_and_off
     --
-    map[ active_column + on    + inactive_column + empty + steppor ] = active_column_and_on_step
-    map[ active_column + off   + inactive_column + empty + steppor ] = active_column_and_off_step
-    map[ active_column + empty + inactive_column + empty + steppor ] = active_column_and_empty_step
+    map[ active_column * on    + inactive_column * empty + steppor ] = active_column_and_on_step
+    map[ active_column * off   + inactive_column * empty + steppor ] = active_column_and_off_step
+    map[ active_column * empty + inactive_column * empty + steppor ] = active_column_and_empty_step
     --
-    map[ active_column + on    + inactive_column + on    + steppor ] = active_column_and_on_step
-    map[ active_column + off   + inactive_column + on    + steppor ] = active_column_and_off_step
-    map[ active_column + empty + inactive_column + on    + steppor ] = inactive_column_and_on_step
+    map[ active_column * on    + inactive_column * on    + steppor ] = active_column_and_on_step
+    map[ active_column * off   + inactive_column * on    + steppor ] = active_column_and_off_step
+    map[ active_column * empty + inactive_column * on    + steppor ] = inactive_column_and_on_step
     --
-    map[ active_column + on    + inactive_column + off   + steppor ] = active_column_and_on_step
-    map[ active_column + off   + inactive_column + off   + steppor ] = active_column_and_off_step
-    map[ active_column + empty + inactive_column + off   + steppor ] = inactive_column_and_off_step
+    map[ active_column * on    + inactive_column * off   + steppor ] = active_column_and_on_step
+    map[ active_column * off   + inactive_column * off   + steppor ] = active_column_and_off_step
+    map[ active_column * empty + inactive_column * off   + steppor ] = inactive_column_and_off_step
     return map
 end
