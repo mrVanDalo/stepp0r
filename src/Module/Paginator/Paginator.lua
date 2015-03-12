@@ -2,7 +2,7 @@
 ---
 ---                                                 [ Pagination  ]
 ---
---- takes car of pagination
+--- takes care of pagination
 
 
 class "Paginator" (Module)
@@ -15,12 +15,12 @@ function Paginator:__init()
     Module:__init(self)
     self.color = {
         page = {
-            active   = Color.yellow,
-            inactive = Color.off,
+            active   = NewColor[2][3],
+            inactive = NewColor[0][1],
         },
         zoom = {
-            active   = Color.yellow,
-            inactive = Color.off,
+            active   = NewColor[2][3],
+            inactive = NewColor[0][1],
         },
     }
 

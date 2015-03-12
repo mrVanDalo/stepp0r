@@ -15,11 +15,11 @@ function Chooser:__init_mode()
 end
 function Chooser:__activate_mode()
     self:__update_mode_knobs()
-    self.pad:register_right_listener(self.__mode_listener)
+    self.pad:register_side_listener(self.__mode_listener)
 end
 function Chooser:__deactivate_mode()
     self:__clear_mode_knobs()
-    self.pad:unregister_right_listener(self.__mode_listener)
+    self.pad:unregister_side_listener(self.__mode_listener)
 end
 
 --- ------------------------------------------------------------------------------------------------------

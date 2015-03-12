@@ -1,8 +1,8 @@
 
 function IT_Selection:_init_track()
     self.follow_track_instrument = nil
+    self.track_idx = 1
     -- callbacks
-    self.track_idx      = 1
     self:__create_selected_track_listener()
 end
 
@@ -53,11 +53,13 @@ function IT_Selection:__update_track_index(track_index)
     self:__update_set_instrument_listeners()
 end
 
-
---- boot the layer (basically trigger all listeners)
-function IT_Selection:boot()
-    self.selected_track_listener()
+--- return insturument index coresponding to the `track_index`
+-- returns nil for not found
+function IT_Selection:__instrument_index_for_track(track_index)
+    return table.find(Renoise.track:sequencer_track_sequence(), track_index)
 end
+
+
 
 function IT_Selection:select_track_index(index)
     renoise.song().selected_track_index = index
@@ -67,61 +69,4 @@ function IT_Selection:selected_track_index()
     return renoise.song().selected_track_index
 end
 
-function IT_Selection:__rename_track_index(index, name)
-    local track = renoise.song().tracks[index]
-    if track then
-        track.name = name
-    end
-end
 
---- return insturument index coresponding to the `track_index`
--- returns nil for not found
-function IT_Selection:__instrument_index_for_track(track_index)
-    local counter = 0
-    for index, track in pairs( renoise.song().tracks ) do
-        if track.type == TrackData.type.sequencer then
-            counter = counter + 1
-        end
-        if index == track_index then
-            -- log('return instrument index ', counter)
-            return counter
-        end
-    end
-    return nil
-end
-
-
---- number of sequencer tracks
-function IT_Selection:__number_of_sequencer_tracks()
-    local counter = 0
-    for _, track in pairs( renoise.song().tracks ) do
-        if track.type == TrackData.type.sequencer then
-            counter = counter + 1
-        end
-    end
-    return counter
-end
-
---- last track befor the master track
-function IT_Selection:__last_of_tracks()
-    return renoise.song().sequencer_track_count
-end
-
---- ensure the `track_nr` exist, if not create enought tracks
--- to make it exist.
--- sequencer tracks a meant by track
--- but the given `track_nr` must be the _absolute_ track number
-function IT_Selection:__ensure_track_exist(track_nr)
-    --    log("ensure track number exists", track_nr)
-    local nr_of_tracks = self:__number_of_sequencer_tracks()
-    --    log("nr_of_tracks", nr_of_tracks)
-    if (nr_of_tracks < track_nr) then
-        -- put missings tracks on last possion
-        -- untill we reach the track
-        local how_many_to_add = track_nr -  nr_of_tracks
-        local last_of_tracks = self:__last_of_tracks()
-        for _ = 1, how_many_to_add do
-            renoise.song():insert_track_at(last_of_tracks + 1)
-        end
-    end
-end

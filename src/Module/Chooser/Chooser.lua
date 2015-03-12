@@ -10,7 +10,7 @@ ChooserData =  {
         color = 2,
     },
     mode = {
-        choose = {1, Color.yellow},
+        choose = {1, NewColor[3][2]},
         mute   = {2, Color.red},
     },
     color = {
@@ -39,17 +39,18 @@ function Chooser:__init()
 
     self.color = {
         instrument = {
-            active  = Color.flash.green,
-            passive = Color.green,
+            active   = BlinkColor[3][2],
+            passive  = NewColor[3][2],
         },
         mute = {
             active  = Color.flash.red,
             passive = Color.red,
         },
         page = {
-            active   = Color.yellow,
-            inactive = Color.off,
+            active   = Color.green,
+            inactive = Color.dim.green,
         },
+        -- deprecated?
         column = {
             active    = Color.yellow,
             inactive  = Color.dim.green,

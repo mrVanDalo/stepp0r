@@ -1,5 +1,6 @@
 function PatternEditorModule:__init_launchpad_matrix()
-    self.__pattern_matrix = {} -- call _clear_pattern_matrix to use it
+    self.__pattern_matrix          = {} -- call _clear_pattern_matrix to use it
+    self.__pattern_matrix_inactive = {} -- call _clear_pattern_matrix to use it
 end
 
 function PatternEditorModule:__render_matrix()
@@ -11,8 +12,30 @@ function PatternEditorModule:__render_matrix()
 end
 
 function PatternEditorModule:__clear_pattern_matrix()
-    self.__pattern_matrix = {}
-    for x = 1, 8 do self.__pattern_matrix[x] = {} end
+    self.__pattern_matrix          = {}
+    self.__pattern_matrix_inactive = {}
+    for x = 1, 8 do
+        self.__pattern_matrix[x] = {
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+        }
+        self.__pattern_matrix_inactive[x] = {
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+            PatternEditorModuleData.note.empty,
+        }
+    end
 end
 
 function PatternEditorModule:__update_pattern_matrix()
@@ -23,20 +46,42 @@ function PatternEditorModule:__update_pattern_matrix()
 end
 function PatternEditorModule:__update_pattern_matrix_position(pos,line)
     if table.is_empty(line.note_columns) then return end
-    -- get note at position
-    local note_column = line:note_column(self.track_column_idx)
-    if (note_column.note_value == PatternEditorModuleData.note.empty) then return end
     -- calculate (x,y)
-    local xy = self:line_to_point(pos.line) -- todo missing
+    local xy = self:line_to_point(pos.line)
     if not xy then return end
     local x = xy[1]
     local y = xy[2]
     if (y > 4 or y < 1) then return end
     -- update pattern matrix
-    if (note_column.note_value == PatternEditorModuleData.note.off) then
-        self.__pattern_matrix[x][y] = PatternEditorModuleData.note.off
-    else
-        self.__pattern_matrix[x][y] = PatternEditorModuleData.note.on
+    for index = 1, 4 do
+        if index == self.track_column_idx then
+            -- update : patter_matrix
+            local note_column = line:note_column(index)
+            if (note_column.note_value == PatternEditorModuleData.note.empty)
+            then
+                self.__pattern_matrix[x][y] = PatternEditorModuleData.note.empty
+            elseif (note_column.note_value == PatternEditorModuleData.note.off)
+            then
+                self.__pattern_matrix[x][y] = PatternEditorModuleData.note.off
+            else
+                self.__pattern_matrix[x][y] = PatternEditorModuleData.note.on
+            end
+        else
+            -- update : patter_matrix_inactive
+            local note_column = line:note_column(index)
+            if (note_column.note_value == PatternEditorModuleData.note.empty)
+            then
+                -- nothing
+            elseif (note_column.note_value == PatternEditorModuleData.note.off)
+            then
+                if self.__pattern_matrix_inactive[x][y] == PatternEditorModuleData.note.empty
+                then
+                    self.__pattern_matrix_inactive[x][y] = PatternEditorModuleData.note.off
+                end
+            else
+                self.__pattern_matrix_inactive[x][y] = PatternEditorModuleData.note.on
+            end
+        end
     end
 end
 

@@ -57,12 +57,18 @@ function Editor:__create_pattern_matrix_listener()
     end
 end
 
-function Editor:__render_matrix_position(x,y)
-    if     (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.on) then
-        self.pad:set_matrix(x,y,self.color.note.on)
-    elseif (self.__pattern_matrix[x][y] == PatternEditorModuleData.note.off) then
-        self.pad:set_matrix(x,y,self.color.note.off)
+function Editor:__render_position_value(map, x,y)
+    if     (map[x][y] == PatternEditorModuleData.note.on) then
+        return EditorData.color_map.on
+    elseif (map[x][y] == PatternEditorModuleData.note.off) then
+        return EditorData.color_map.off
     else
-        self.pad:set_matrix(x,y,self.color.note.empty)
+        return EditorData.color_map.empty
     end
+end
+function Editor:__render_matrix_position(x,y)
+    local active_value   =  self:__render_position_value(self.__pattern_matrix, x, y)
+    local inactive_value =  self:__render_position_value(self.__pattern_matrix_inactive, x, y)
+    local color = self.color.map[ EditorData.color_map.active_column * active_value + EditorData.color_map.inactive_column * inactive_value ]
+    self.pad:set_matrix(x,y,color)
 end
