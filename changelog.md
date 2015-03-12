@@ -6,6 +6,14 @@ permalink: /changelog/
 
 Version names by Estonian Marathon Champions
 
+## 0.60 Meelis Veilberg
+
+* pagination of instruments should be configurable in the ui `enhancement`
+* Clean up some functions to the renoise object `tech-enhancement`
+* Edit Pattern Matrix `enhancement`
+* Improve pattern editor view `enhancement`
+* record button `enhancement`
+* Launchpad 1 does not react instantly `bug`
 
 ## 0.50 Kalev Urbanik
 
