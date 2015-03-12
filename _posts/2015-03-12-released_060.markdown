@@ -1,0 +1,27 @@
+---
+layout: post
+title:  "Release 0.60"
+date:   2015-03-12 21:31:00
+categories: update ableton-live
+author: "Palo van Dalo"
+abstract: "Released new version 0.60 of Stepp0r (yey) with pattern matrix view!"
+---
+
+I am really proud on this one. The new Pattern Matrix view will help you to arrange your patterns
+like (or for) the plugins 'Live Dive', 'Grid Pie' or 'Cells'.
+
+Documentation will be updated soon.
+
+You can download the Plugin [here]( {{site.baseurl }}/downloads/Stepp0r-0.60.xrnx ),
+[here](http://www.renoise.com/tools/stepp0r) or use the
+[Renoise-Update-Checker](http://www.renoise.com/tools/update-checker).
+
+## 0.60 Meelis Veilberg
+
+* pagination of instruments should be configurable in the ui `enhancement`
+* Clean up some functions to the renoise object `tech-enhancement`
+* Edit Pattern Matrix `enhancement`
+* Improve pattern editor view `enhancement`
+* record button `enhancement`
+* Launchpad 1 does not react instantly `bug`
+
