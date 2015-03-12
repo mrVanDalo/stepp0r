@@ -25,6 +25,7 @@ require 'Module/Editor/Editor'
 require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
 require 'Module/Keyboard/Keyboard'
+require 'Module/RecordButton/RecordButton'
 
 require 'Module/PatternMix/PatternMix'
 require 'Module/PatternMatrix/PatternMatrix'
@@ -61,6 +62,7 @@ function LaunchpadSetup:__init()
     self.adjuster            = nil
     self.effect              = nil
     self.key                 = nil
+    self.record_button       = nil
     self.bank                = nil
     self.chooser             = nil
     self.paginator           = nil
@@ -204,6 +206,9 @@ function LaunchpadSetup:wire()
     self.key:wire_osc_client(self.osc_client)
     self.key:register_set_note(self.editor.callback_set_note)
     --
+    self.record_button = RecordButton()
+    self.record_button:wire_launchpad(self.pad)
+    --
     self.bank = Bank()
     self.bank:wire_launchpad(self.pad)
     self.bank:register_bank_update(self.adjuster.bank_update_handler)
@@ -221,6 +226,7 @@ function LaunchpadSetup:wire()
     -- is the mode that toggels the Editor and Keyboard Kombo with the Adjuster and Bank Kombo
     self.stepper_mode = Mode()
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.key)
+    self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.record_button)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.editor)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.bank)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.adjuster)
