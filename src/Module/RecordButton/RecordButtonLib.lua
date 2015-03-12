@@ -8,7 +8,7 @@ end
 
 
 function RecordButton:_toggle_record()
-    if Renoise.transport.is_recording() then
+    if Renoise.transport:is_recording() then
         self:__stop_recording()
     else
         self:__start_recording()
@@ -16,7 +16,7 @@ function RecordButton:_toggle_record()
 end
 
 function RecordButton:_toggle_play()
-    if Renoise.transport.is_playing() then
+    if Renoise.transport:is_playing() then
         self:__stop_playing()
     else
         self:__start_playing()
