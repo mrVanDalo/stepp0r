@@ -109,3 +109,27 @@ Here you can insert and select your patterns, according to the mode you've selec
 
 Don't do anything right now.
 
+
+## Pattern Matrix Mode
+
+<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-PatternMatrix.svg" alt="Launchpad Pattern Matrix Parts" />
+
+This mode is for arranging patterns. 
+It is influenced by [Ableton Live](https://www.ableton.com/),
+[Live Dive](http://www.renoise.com/tools/live-dive) and the 
+[Grid Pie](http://www.renoise.com/tools/grid-pie) plugin, but optimized for producing. 
+To use this mode you have to set the **Pattern Mix** parameter to 2 or 1. 
+
+### Copy, Delete
+
+You have a copy and a delete button.
+Holding the button will change the color of the scene buttons. 
+
+Holding the copy button will copy the actual played pattern to the new selected one.
+The delete button will delete the new selected pattern.
+
+The Scene buttons will also take the copy and delete buttons into account.
+
+## Scene buttons
+
+The scene buttons will select the complete row.
