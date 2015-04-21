@@ -18,9 +18,7 @@ which already exists.
 
 ## Pattern Edit mode
 
-### Parts
-
-Here are the parts of the Stepp0r.
+The first mode you see, to *edit* the **Pattern** selected in **Renoise**.
 
 <img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-PatternEditorMode.svg" alt="Launchpad Parts" />
 
@@ -51,7 +49,6 @@ On the right you can toggle between **choose** and **mute**.
 
 ### Pattern Edit Area
 
-The core view of **Stepp0r**. 
 When you hit play and you select the actual pattern in the **Pattern Matrix**, you will see a green light running 
 from left to right, which represents the current play position.
 
@@ -86,11 +83,9 @@ very obvious.
 
 ## Adjustment Mode (aka Copy Paste mode)
 
+This mode lets you copy paste sections of you Pattern. 
 
 <img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-AdjustMode.svg" alt="Launchpad Adjust Mode Parts" />
-
-
-This mode lets you copy paste sections of you Pattern. 
 
 ### Bank
 
@@ -104,21 +99,20 @@ The pattern you copy can be used across all other instruments.
 
 Here you can insert and select your patterns, according to the mode you've selected.
 
-
 ### Effects
 
 Don't do anything right now.
 
-
 ## Pattern Matrix Mode
-
-<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-PatternMatrix.svg" alt="Launchpad Pattern Matrix Parts" />
 
 This mode is for arranging patterns. 
 It is influenced by [Ableton Live](https://www.ableton.com/),
 [Live Dive](http://www.renoise.com/tools/live-dive) and the 
 [Grid Pie](http://www.renoise.com/tools/grid-pie) plugin, but optimized for producing. 
 To use this mode you have to set the **Pattern Mix** parameter to 2 or 1. 
+
+<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-PatternMatrix.svg" alt="Launchpad Pattern Matrix Parts" />
+
 
 ### Copy, Delete
 

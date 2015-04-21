@@ -4,13 +4,16 @@ Stepp0r is a Step-Sequencer for [Renoise](http://www.renoise.com/)
 on the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad)
 written by Ingolf Wagner (aka [Palo van Dalo](https://soundcloud.com/palo-van-dalo)).
 Right now, it's working fine as a _"forget the computer"_ type control.
-You can punch in your sequences, or you can use the keyboard to record your melodies
-using the osc server of [Renoise](http://www.renoise.com/).
+
+You can 
+* punch in your sequences, 
+* arange patterns on the pattern matrix
+* you can use the keyboard to record your melodies using the osc server inside of [Renoise](http://www.renoise.com/).
 
 <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='http://www.youtube.com/embed/eiH6HfF6MQ8' frameborder='0' allowfullscreen></iframe></div>
 
 ## You want to start using it? 
-* Buy a launchpad (at ebay for example).
+* Buy a launchpad (at [ebay](http://www.ebay.com/sch/Musical-Instruments-Gear-/619/i.html?_nkw=novation+launchpad&rt=nc&LH_Auction=1) for example).
 * [Download]({{ site.baseurl }}/downloads/{{ site.actual_version }}) the plugin.
 * [Install the plugin](http://www.renoise.com/tools) in renoise.
 * Have a look at the  [Documentation]({{ site.baseurl }}/documentation/).
