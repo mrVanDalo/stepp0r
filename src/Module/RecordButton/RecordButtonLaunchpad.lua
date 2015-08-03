@@ -9,6 +9,7 @@ end
 function RecordButton:__activate_launchpad()
     self.pad:register_side_listener(self.__button_listener)
     self:_refresh_buttons()
+    -- is triggerd when the play status changes
     add_notifier(renoise.song().transport.playing_observable, self.__play_observer)
 end
 function RecordButton:__deactivate_launchpad()
