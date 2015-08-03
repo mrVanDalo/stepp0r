@@ -13,9 +13,9 @@ end
 
 -- function :callback_set_instrument() return function(instrument_idx, track_idx, column_idx) end end
 function IT_Selection:__update_set_instrument_listeners()
-    print("instrument_idx", self.instrument_idx)
-    print("track_idx", self.track_idx)
-    print("column_idx", self.column_idx)
+--    print("instrument_idx", self.instrument_idx)
+--    print("track_idx", self.track_idx)
+--    print("column_idx", self.column_idx)
     for _, callback in ipairs(self.callback_select_instrument) do
         callback(self.instrument_idx, self.track_idx, self.column_idx)
     end

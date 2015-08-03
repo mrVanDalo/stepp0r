@@ -2,14 +2,6 @@
 ---
 ---                                                 [ Logging Layer ]
 
-function log(key, value)
-    if value then
---        print(key .. " : " .. value)
-    else
---        print(key .. " : nil")
-    end
-end
-
 function add_notifier(observable, handler)
     if observable:has_notifier(handler) then
 --        print ("allready registered handler")

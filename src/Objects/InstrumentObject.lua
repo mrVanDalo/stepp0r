@@ -28,7 +28,7 @@ function InstrumentObject:exist(instrument)
         return false
     end
     local name = self:name_for(instrument)
-    print("name : ", name)
+--    print("name : ", name)
     if name then
         return true
     else

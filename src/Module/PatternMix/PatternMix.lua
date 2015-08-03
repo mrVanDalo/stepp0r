@@ -75,21 +75,21 @@ function PatternMix:__set_mix_patterns()
     if tupel then
         self.pattern_mix_1              = tupel[2]
         self.pattern_mix_1_sequence_idx = tupel[1]
-        print("found mix_1 sequence : ", self.pattern_mix_1_sequence_idx)
+--        print("found mix_1 sequence : ", self.pattern_mix_1_sequence_idx)
     else
         self.pattern_mix_1              = nil
         self.pattern_mix_1_sequence_idx = nil
-        print("could not find mix_1 sequence")
+--        print("could not find mix_1 sequence")
     end
     local tupel_2 = self:__find_mix_pattern(PatternMixData.row.mix_2)
     if tupel_2 then
         self.pattern_mix_2              = tupel_2[2]
         self.pattern_mix_2_sequence_idx = tupel_2[1]
-        print("found mix_2 sequence : ", self.pattern_mix_2_sequence_idx)
+--        print("found mix_2 sequence : ", self.pattern_mix_2_sequence_idx)
     else
         self.pattern_mix_2              = nil
         self.pattern_mix_2_sequence_idx = nil
-        print("could not find mix_2 sequence")
+--        print("could not find mix_2 sequence")
     end
 end
 
@@ -122,11 +122,11 @@ end
 function PatternMix:__remove_mix_patterns()
     self:__set_mix_patterns()
     if self.pattern_mix_2_sequence_idx then
-        print("remove mix 2 ", self.pattern_mix_2_sequence_idx)
+--        print("remove mix 2 ", self.pattern_mix_2_sequence_idx)
         renoise.song().sequencer:delete_sequence_at(self.pattern_mix_2_sequence_idx)
     end
     if self.pattern_mix_1_sequence_idx then
-        print("remove mix 1 ", self.pattern_mix_1_sequence_idx)
+--        print("remove mix 1 ", self.pattern_mix_1_sequence_idx)
         renoise.song().sequencer:delete_sequence_at(self.pattern_mix_1_sequence_idx)
     end
     renoise.song().sequencer:set_sequence_is_start_of_section(1,false)
@@ -135,9 +135,9 @@ end
 
 function PatternMix:__set_active_and_next_patterns()
     self.active_mix_pattern = self:_active_mix_pattern()
-    print("found active_mix_pattern at : ", self.active_mix_pattern.name)
+--    print("found active_mix_pattern at : ", self.active_mix_pattern.name)
     self.next_mix_pattern   = self:_next_mix_pattern()
-    print("found next_mix_pattern at : ", self.next_mix_pattern.name)
+--    print("found next_mix_pattern at : ", self.next_mix_pattern.name)
 end
 
 -- @returns the mix pattern which should be used to alias the next pattern in.
