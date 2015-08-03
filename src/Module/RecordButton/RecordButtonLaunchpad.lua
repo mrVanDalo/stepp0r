@@ -31,8 +31,7 @@ function RecordButton:__create_record_button_listener()
         if msg.x == self.__record_side_idx then
             self:_toggle_record()
             self:_refresh_buttons()
-        end
-        if msg.x == self.__play_side_idx then
+        elseif msg.x == self.__play_side_idx then
             self:_toggle_play()
             self:_refresh_buttons()
         end
