@@ -56,4 +56,5 @@ end
 
 function RecordButton:__clear_button()
     self.pad:set_side(self.__record_side_idx, Color.off)
+    self.pad:set_side(self.__play_side_idx, Color.off)
 end
