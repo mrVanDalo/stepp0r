@@ -1,6 +1,5 @@
 
 
-
 --- should take care of tracks, groups and instruments
 class 'TrackObject'
 
@@ -22,7 +21,6 @@ end
 
 --- sequence of all tracks
 -- excluding send tracks and groups
--- todo : rename this to a better understandable function name
 function TrackObject:sequencer_track_sequence()
     local sequence_idx = 1
     local track_idx    = 1
@@ -36,7 +34,6 @@ function TrackObject:sequencer_track_sequence()
     end
     return sequence
 end
---- have to remove the group tracks manually
 function TrackObject:sequencer_track_count()
     local sequence_idx = 1
     local track_idx    = 1
@@ -49,7 +46,7 @@ function TrackObject:sequencer_track_count()
     return sequence_idx - 1
 end
 
-function TrackObject:rename_track_index(index, name)
+function TrackObject:rename_index(index, name)
     local track = renoise.song().tracks[index]
     if track then
         track.name = name
