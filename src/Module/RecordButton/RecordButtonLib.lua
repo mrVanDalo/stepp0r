@@ -26,19 +26,19 @@ end
 
 function RecordButton:__start_playing()
     renoise.song().transport.playing = true
+    renoise.song().transport.follow_player = true
 end
 
 function RecordButton:__stop_playing()
+    renoise.song().transport.follow_player = false
     renoise.song().transport.playing = false
 end
 
 function RecordButton:__start_recording()
-    renoise.song().transport.follow_player = true
     renoise.song().transport.edit_mode = true
     renoise.app().window.active_middle_frame = renoise.ApplicationWindow.MIDDLE_FRAME_PATTERN_EDITOR
 end
 
 function RecordButton:__stop_recording()
-    renoise.song().transport.follow_player = false
     renoise.song().transport.edit_mode = false
 end
