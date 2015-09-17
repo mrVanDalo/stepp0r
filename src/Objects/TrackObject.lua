@@ -47,15 +47,15 @@ function TrackObject:sequencer_track_sequence()
     return sequence
 end
 
--- A mapping from sequencer_track_index -> (all_track_index, group_idx)
-function TrackObject:sequencer_track_sequence_grouped()
+-- A mapping from sequencer_track_index -> group_idx
+function TrackObject:sequencer_track_group()
     local sequence_idx = 1
     local track_idx    = 1
     local group_idx    = 1
     local sequence = {}
     for _, track in pairs( renoise.song().tracks ) do
         if track.type == renoise.Track.TRACK_TYPE_SEQUENCER then
-            sequence[sequence_idx] = {track_idx, group_idx}
+            sequence[sequence_idx] = group_idx
             sequence_idx = sequence_idx + 1
         elseif track.type == renoise.Track.TRACK_TYPE_GROUP then
             group_idx = group_idx + 1
@@ -67,12 +67,12 @@ end
 
 -- the all_track_idx for a sequence idx
 function TrackObject:track_idx_for_sequence_idx(sequence_idx)
-    return self:sequence_track_sequence_grouped()[sequence_idx][1]
+    return self:sequencer_track_sequence()[sequence_idx]
 end
 
 -- the group number a sequence track belongs to (group number starts at 1)
 function TrackObject:group_idx_for_sequence_idx(sequence_idx)
-    return self:sequence_track_sequence_grouped()[sequence_idx][2]
+    return self:sequencer_track_group()[sequence_idx]
 end
 
 
