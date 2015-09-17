@@ -71,7 +71,9 @@ end
 
 -- @return track_idx for given x (on matrix)
 function PatternMatrix:_get_track_idx(x)
-    return self.__track_offset + x
+    local position = self.__track_offset + x
+    local tracks_without_group = Renoise.track:sequencer_track_sequence()
+    return tracks_without_group[position]
 end
 
 function PatternMatrix:__inc_pattern()

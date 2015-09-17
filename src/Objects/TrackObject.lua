@@ -22,6 +22,7 @@ end
 
 --- sequence of all tracks
 -- excluding send tracks and groups
+-- todo : rename this to a better understandable function name
 function TrackObject:sequencer_track_sequence()
     local sequence_idx = 1
     local track_idx    = 1
