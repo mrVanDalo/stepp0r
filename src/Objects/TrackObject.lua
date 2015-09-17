@@ -52,13 +52,21 @@ function TrackObject:sequencer_track_group()
     local sequence_idx = 1
     local track_idx    = 1
     local group_idx    = 1
+    local group_name   = ""
     local sequence = {}
     for _, track in pairs( renoise.song().tracks ) do
         if track.type == renoise.Track.TRACK_TYPE_SEQUENCER then
+            if track.group_parent and group_name ~= track.group_parent.name then
+                -- group name changed
+                group_idx = group_idx + 1
+                group_name = track.group_parent.name
+            elseif (not track.group_parent) and group_name ~= "" then
+                -- no parent and group name is still set
+                group_idx = group_idx + 1
+                group_name = ""
+            end
             sequence[sequence_idx] = group_idx
             sequence_idx = sequence_idx + 1
-        elseif track.type == renoise.Track.TRACK_TYPE_GROUP then
-            group_idx = group_idx + 1
         end
         track_idx = track_idx + 1
     end
