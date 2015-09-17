@@ -5,6 +5,16 @@ class 'TrackObject'
 
 function TrackObject:__init() end
 
+
+
+
+--- ============================================================
+--  Sequencer Tracks :
+--
+--  Tracks excluding Groups and Send Tracks
+--  Them should accourd to an instrument
+
+-- creates a sequencer track if the track index does not exist
 function TrackObject:ensure_sequencer_track_idx_exist(track_idx)
     local nr_of_tracks    = self:sequencer_track_count()
     local how_many_to_add = track_idx -  nr_of_tracks
@@ -19,8 +29,7 @@ function TrackObject:ensure_sequencer_track_idx_exist(track_idx)
     end
 end
 
---- sequence of all tracks
--- excluding send tracks and groups
+-- A mapping from sequencer_track_index all_track_index
 function TrackObject:sequencer_track_sequence()
     local sequence_idx = 1
     local track_idx    = 1
@@ -34,6 +43,8 @@ function TrackObject:sequencer_track_sequence()
     end
     return sequence
 end
+
+-- total number of sequencer tracks
 function TrackObject:sequencer_track_count()
     local sequence_idx = 1
     local track_idx    = 1
@@ -46,6 +57,15 @@ function TrackObject:sequencer_track_count()
     return sequence_idx - 1
 end
 
+
+
+--- ============================================================
+--  All Tracks:
+--
+-- Functions to manipulate all tracks
+--
+
+-- rename a track
 function TrackObject:rename_index(index, name)
     local track = renoise.song().tracks[index]
     if track then
