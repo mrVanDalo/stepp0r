@@ -86,6 +86,7 @@ function Chooser:__create_instruments_row_notifier()
 end
 
 function Chooser:_update_instrument_row()
+    -- todo : use group colors here
     self:__clear_instrument_row()
     for nr, instrument in ipairs(renoise.song().instruments) do
         local scaled_index = nr - self.inst_offset
