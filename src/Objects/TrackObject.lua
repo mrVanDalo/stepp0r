@@ -8,6 +8,9 @@ function TrackObject:__init() end
 
 
 
+
+
+
 --- ============================================================
 --  Sequencer Tracks :
 --
@@ -29,7 +32,7 @@ function TrackObject:ensure_sequencer_track_idx_exist(track_idx)
     end
 end
 
--- A mapping from sequencer_track_index all_track_index
+-- A mapping from sequencer_track_index to all_track_index
 function TrackObject:sequencer_track_sequence()
     local sequence_idx = 1
     local track_idx    = 1
@@ -44,6 +47,35 @@ function TrackObject:sequencer_track_sequence()
     return sequence
 end
 
+-- A mapping from sequencer_track_index -> (all_track_index, group_idx)
+function TrackObject:sequencer_track_sequence_grouped()
+    local sequence_idx = 1
+    local track_idx    = 1
+    local group_idx    = 1
+    local sequence = {}
+    for _, track in pairs( renoise.song().tracks ) do
+        if track.type == renoise.Track.TRACK_TYPE_SEQUENCER then
+            sequence[sequence_idx] = {track_idx, group_idx}
+            sequence_idx = sequence_idx + 1
+        elseif track.type == renoise.Track.TRACK_TYPE_GROUP then
+            group_idx = group_idx + 1
+        end
+        track_idx = track_idx + 1
+    end
+    return sequence
+end
+
+-- the all_track_idx for a sequence idx
+function TrackObject:track_idx_for_sequence_idx(sequence_idx)
+    return self:sequence_track_sequence_grouped()[sequence_idx][1]
+end
+
+-- the group number a sequence track belongs to (group number starts at 1)
+function TrackObject:group_idx_for_sequence_idx(sequence_idx)
+    return self:sequence_track_sequence_grouped()[sequence_idx][2]
+end
+
+
 -- total number of sequencer tracks
 function TrackObject:sequencer_track_count()
     local sequence_idx = 1
@@ -56,6 +88,11 @@ function TrackObject:sequencer_track_count()
     end
     return sequence_idx - 1
 end
+
+
+
+
+
 
 
 
