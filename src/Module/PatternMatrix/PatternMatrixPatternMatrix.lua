@@ -18,7 +18,7 @@ end
 
 function PatternMatrix:_update_matrix()
     for x = 1, 8 do
-        self:__update_matrix_column(self:_get_track_idx(x), x)
+        self:__update_matrix_column(x)
     end
 end
 
@@ -55,7 +55,9 @@ function PatternMatrix:__get_sequence_interval_visible()
     return store
 end
 
-function PatternMatrix:__update_matrix_column(track_idx,x)
+-- update matrix column (x is the x of the launchpad)
+function PatternMatrix:__update_matrix_column(x)
+    local track_idx = self:_get_track_idx(x)
     for matrix_y, sequencer_idx in pairs(self:__get_sequence_interval_visible()) do
         local pattern_idx = renoise.song().sequencer.pattern_sequence[sequencer_idx]
         if pattern_idx then

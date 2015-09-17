@@ -93,12 +93,18 @@ function PatternMatrix:_render_matrix()
             if p then
                 local state       = p[PatternMatrixData.matrix.access.state]
                 local pattern_idx = p[PatternMatrixData.matrix.access.pattern_idx]
+                -- todo make this more elegant
+                local color       = self.color
+                local group       = self:_get_group_idx(x) % 2
+                if group == 0 then
+                    color = self.color_even
+                end
                 if active_pattern_idx == pattern_idx then
-                    self.pad:set_matrix(x,y, self.color[PatternMatrixData.matrix.state.set    + state + track_activation])
+                    self.pad:set_matrix(x,y, color[PatternMatrixData.matrix.state.set    + state + track_activation])
                 elseif next_pattern_idx == pattern_idx then
-                    self.pad:set_matrix(x,y, self.color[PatternMatrixData.matrix.state.next   + state + track_activation])
+                    self.pad:set_matrix(x,y, color[PatternMatrixData.matrix.state.next   + state + track_activation])
                 else
-                    self.pad:set_matrix(x,y, self.color[PatternMatrixData.matrix.state.no_mix + state + track_activation])
+                    self.pad:set_matrix(x,y, color[PatternMatrixData.matrix.state.no_mix + state + track_activation])
                 end
             end
         end
