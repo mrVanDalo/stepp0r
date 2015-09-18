@@ -40,7 +40,6 @@ function PatternMix:_activate()
     self:__ensure_mix_patterns_exist()
     self:__set_mix_patterns()
     self:__set_active_and_next_patterns()
-    self:__init_active_pattern(self.number_of_mix_patterns + 1)
     add_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
     self:_update_callbacks()
 end
@@ -188,15 +187,6 @@ function PatternMix:__find_mix_pattern(key)
     return nil
 end
 
-function PatternMix:__init_active_pattern(sequence_idx)
-    local pattern_idx = renoise.song().sequencer:pattern(sequence_idx)
---    print("sequence_idx ", sequence_idx)
---    print("pattern_idx ", pattern_idx)
-    for _,track_idx in pairs(Renoise.track:list_idx()) do
-        self:_set_mix_to_pattern(track_idx, pattern_idx)
-    end
-end
-
 function PatternMix:__adjuster_next_pattern()
     for _,track_idx in pairs(Renoise.track:list_idx()) do
         local pattern_idx = self:_get_pattern_alias_idx(self.active_mix_pattern, track_idx)
@@ -211,8 +201,12 @@ function PatternMix:_set_mix_to_pattern(track_idx, pattern_idx)
     -- get track
     local track = mix_pattern.tracks[track_idx]
     if not track then return end
-    --
-    if pattern_idx ~= -1 then
+    -- set alias
+    if pattern_idx == -1 then
+        -- use default pattern
+        local default_idx = renoise.song().sequencer:pattern(self.number_of_mix_patterns + 1)
+        track.alias_pattern_index = default_idx
+    else
         track.alias_pattern_index = pattern_idx
     end
 end
