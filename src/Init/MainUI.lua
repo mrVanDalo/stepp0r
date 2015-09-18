@@ -210,9 +210,9 @@ end
 function MainUI:create_pattern_matrix_row()
     self.pattern_matrix_switch = self.vb:switch{
         visible = true,
-        items   = {"disable", "one", "two"},
+        items   = {"disable", "instantly", "delayed"},
         width   = self.input_size,
-        tooltip = "to enable pattern matrix controll",
+        tooltip = "how to mix patterns together",
         value   = 3
     }
     self.pattern_matrix_row = self.vb:row{

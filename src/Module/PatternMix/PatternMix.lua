@@ -40,6 +40,7 @@ function PatternMix:_activate()
     self:__ensure_mix_patterns_exist()
     self:__set_mix_patterns()
     self:__set_active_and_next_patterns()
+    -- fixme : this will not trigger when there is only one pattern mix sequence
     add_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
     self:_update_callbacks()
 end
@@ -136,9 +137,9 @@ end
 
 function PatternMix:__set_active_and_next_patterns()
     self.active_mix_pattern = self:_active_mix_pattern()
---    print("found active_mix_pattern at : ", self.active_mix_pattern.name)
+    print("found active_mix_pattern at : ", self.active_mix_pattern.name)
     self.next_mix_pattern   = self:_next_mix_pattern()
---    print("found next_mix_pattern at : ", self.next_mix_pattern.name)
+    print("found next_mix_pattern at : ", self.next_mix_pattern.name)
 end
 
 -- @returns the mix pattern which should be used to alias the next pattern in.
@@ -188,6 +189,7 @@ function PatternMix:__find_mix_pattern(key)
 end
 
 function PatternMix:__adjuster_next_pattern()
+    print("adjust next pattern")
     for _,track_idx in pairs(Renoise.track:list_idx()) do
         local pattern_idx = self:_get_pattern_alias_idx(self.active_mix_pattern, track_idx)
         self:_set_mix_to_pattern(track_idx, pattern_idx)
