@@ -33,6 +33,7 @@ function PatternMix:__init()
     self.pattern_list_title         = "Patterns"
     --
     self:__create_selected_pattern_idx_listener()
+    self:__create_callback_set_instrument()
 end
 
 function PatternMix:_activate()
@@ -63,9 +64,8 @@ function PatternMix:__create_selected_pattern_idx_listener()
 end
 
 
-
 function PatternMix:_get_pattern_alias_idx(pattern, track_idx)
-    if pattern and pattern.tracks[track_idx] and pattern.tracks[track_idx].is_alias then
+    if pattern and track_idx and pattern.tracks[track_idx] and pattern.tracks[track_idx].is_alias then
         return pattern.tracks[track_idx].alias_pattern_index
     else
         return -1
@@ -188,27 +188,17 @@ function PatternMix:__find_mix_pattern(key)
     return nil
 end
 
-function PatternMix:__all_tracks()
-    local result = {}
-    -- todo : move to Renoise.track
-    for track_idx = 1, table.getn(renoise.song().tracks) do
-        result[track_idx] = track_idx
---        print("track_idx ", track_idx)
-    end
-    return result
-end
-
 function PatternMix:__init_active_pattern(sequence_idx)
     local pattern_idx = renoise.song().sequencer:pattern(sequence_idx)
 --    print("sequence_idx ", sequence_idx)
 --    print("pattern_idx ", pattern_idx)
-    for _,track_idx in pairs(self:__all_tracks()) do
+    for _,track_idx in pairs(Renoise.track:list_idx()) do
         self:_set_mix_to_pattern(track_idx, pattern_idx)
     end
 end
 
 function PatternMix:__adjuster_next_pattern()
-    for _,track_idx in pairs(self:__all_tracks()) do
+    for _,track_idx in pairs(Renoise.track:list_idx()) do
         local pattern_idx = self:_get_pattern_alias_idx(self.active_mix_pattern, track_idx)
         self:_set_mix_to_pattern(track_idx, pattern_idx)
     end
@@ -250,9 +240,14 @@ end
 
 function PatternMix:__create_callback_set_instrument()
     self.callback_set_instrument =  function (instrument_idx, track_idx, column_idx)
-        -- todo :
-        -- get next and current pattern
-        -- if there are non set,
-        -- set it to the first one, like when starting the whole programm
+        -- make sure there is always a pattern set for an instrument
+        if self.active_mix_pattern and track_idx then
+            local alias = self:_get_pattern_alias_idx( self.active_mix_pattern, track_idx )
+            if alias == -1 then
+                local pattern_idx = renoise.song().sequencer:pattern(self.number_of_mix_patterns + 1)
+                self:_set_mix_to_pattern(track_idx, pattern_idx)
+            end
+        end
     end
 end
+

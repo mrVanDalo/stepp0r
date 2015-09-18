@@ -24,6 +24,15 @@ function TrackObject:rename_index(index, name)
     end
 end
 
+--- list of track indezies
+function TrackObject:list_idx()
+    local result = {}
+    for track_idx = 1, table.getn(renoise.song().tracks) do
+        result[track_idx] = track_idx
+    end
+    return result
+end
+
 
 function TrackObject:select_idx(track_idx)
     renoise.song().selected_track_index = track_idx
