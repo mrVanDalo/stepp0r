@@ -44,6 +44,17 @@ function SequenceTrackObject:track_idx(sequence_idx)
     return self:map_track_idx()[sequence_idx]
 end
 
+--- return sequencer track of given instrument
+function SequenceTrackObject:track(sequence_idx)
+    local track_idx = self:track_idx(sequence_idx)
+    if track_idx then
+        return renoise.song().tracks[track_idx]
+    else
+        return nil
+    end
+end
+
+
 -- total number of sequencer tracks
 function SequenceTrackObject:count()
     local sequence_idx = 1

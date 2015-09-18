@@ -23,12 +23,11 @@ end
 
 --- return sequencer track of given instrument
 function IT_Selection:track_for_instrument(instrument_number)
-    local track_idx = self:track_index_for_instrument(instrument_number)
-    return renoise.song().tracks[track_idx]
+    Renoise.sequence_track:ensure_exist(instrument_number)
+    return Renoise.sequence_track:track(instrument_number)
 end
 
 --- return sequencer track number of given instrument
--- todo : rename to sequence_track
 function IT_Selection:track_index_for_instrument(instrument_number)
     Renoise.sequence_track:ensure_exist(instrument_number)
     return Renoise.sequence_track:track_idx(instrument_number)
