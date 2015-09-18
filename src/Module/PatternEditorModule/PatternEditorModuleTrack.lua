@@ -8,7 +8,7 @@ function PatternEditorModule:__init_track()
 end
 
 function PatternEditorModule:__create_callback_set_instrument()
-    self.callback_set_instrument =  function (instrument_idx, track_idx, column_idx)
+    self.callback_set_instrument = function (instrument_idx, track_idx, column_idx)
         self.track_idx        = track_idx
         self.track_column_idx = column_idx
         self.instrument_idx   = instrument_idx

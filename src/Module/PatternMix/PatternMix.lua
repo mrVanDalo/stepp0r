@@ -4,6 +4,8 @@
 ---
 ---
 --- keeps track on the mix patterns (and updates the other one)
+--- Mix patterns are the (one or two or zero patterns on top of the pattern list) which are used to mix
+--- stuff together
 
 class "PatternMix" (Module)
 
@@ -188,6 +190,7 @@ end
 
 function PatternMix:__all_tracks()
     local result = {}
+    -- todo : move to Renoise.track
     for track_idx = 1, table.getn(renoise.song().tracks) do
         result[track_idx] = track_idx
 --        print("track_idx ", track_idx)
@@ -242,5 +245,14 @@ function PatternMix:_update_callbacks()
     }
     for _, callback in ipairs(self.__update_callbacks) do
         callback(update)
+    end
+end
+
+function PatternMix:__create_callback_set_instrument()
+    self.callback_set_instrument =  function (instrument_idx, track_idx, column_idx)
+        -- todo :
+        -- get next and current pattern
+        -- if there are non set,
+        -- set it to the first one, like when starting the whole programm
     end
 end

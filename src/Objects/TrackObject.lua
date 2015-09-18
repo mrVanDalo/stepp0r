@@ -23,3 +23,8 @@ function TrackObject:rename_index(index, name)
         track.name = name
     end
 end
+
+
+function TrackObject:select_idx(track_idx)
+    renoise.song().selected_track_index = track_idx
+end

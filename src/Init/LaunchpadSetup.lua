@@ -271,6 +271,7 @@ function LaunchpadSetup:wire()
     self.it_selection:register_select_instrument(self.effect.callback_set_instrument)
     self.it_selection:register_select_instrument(self.chooser.callback_set_instrument)
     self.it_selection:register_select_instrument(self.pattern_matrix.callback_set_instrument)
+    self.it_selection:register_select_instrument(self.pattern_mix.callback_set_instrument)
     --
     self.it_selection:register_select_pattern(self.editor.callback_set_pattern)
     self.it_selection:register_select_pattern(self.adjuster.callback_set_pattern)
