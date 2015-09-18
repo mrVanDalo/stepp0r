@@ -1,4 +1,5 @@
 
+require 'Objects/Renoise'
 require 'Data/Color'
 require 'Data/NewColor'
 require 'Data/Note'
@@ -32,7 +33,6 @@ require 'Module/PatternMatrix/PatternMatrix'
 
 require 'Module/ColorModule'
 
-require 'Objects/Renoise'
 
 --- ======================================================================================================
 ---

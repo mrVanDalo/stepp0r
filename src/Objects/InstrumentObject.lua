@@ -47,4 +47,8 @@ function InstrumentObject:list()
     return renoise.song().instruments
 end
 
+function InstrumentObject:select_idx(instrument_idx)
+    renoise.song().selected_instrument_index = instrument_idx
+end
+
 

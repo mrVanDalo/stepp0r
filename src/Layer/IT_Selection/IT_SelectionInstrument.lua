@@ -38,7 +38,7 @@ function IT_Selection:_update_instrument_index(instrument_idx)
     if (instrument_idx)  then
         self.instrument_idx = instrument_idx
         if (self.follow_track_instrument) then
-            renoise.song().selected_instrument_index = self.instrument_idx
+            Renoise.instrument:select_idx(instrument_idx)
         end
     end
 end
