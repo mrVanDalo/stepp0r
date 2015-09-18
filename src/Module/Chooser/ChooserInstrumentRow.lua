@@ -102,8 +102,15 @@ function Chooser:_update_instrument_row()
             if nr == self.instrument_idx then
                 active_state = ChooserData.color.active
             end
+            -- group
+            local group_state = ChooserData.color.group_a
+            local track_idx = self.it_selection:track_index_for_instrument(nr)
+            local group_idx = Renoise.track:group_type_2(track_idx)
+            if group_idx == 0 then
+                group_state = ChooserData.color.group_b
+            end
             -- draw
-            self.pad:set_matrix(scaled_index, self.row, self.color.instrument[ mute_state + active_state ] )
+            self.pad:set_matrix(scaled_index, self.row, self.color.instrument[ mute_state + active_state + group_state ] )
         end
     end
 end

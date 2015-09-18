@@ -20,6 +20,8 @@ ChooserData =  {
         inactive = 10,
         mute     = 20,
         unmute   = 50,
+        group_a  = 0,
+        group_b  = 100,
     },
 }
 
@@ -63,13 +65,19 @@ function Chooser:create_color()
     local inactive = ChooserData.color.inactive
     local mute     = ChooserData.color.mute
     local unmute   = ChooserData.color.unmute
+    local group_a  = ChooserData.color.group_a
+    local group_b  = ChooserData.color.group_b
 
     self.color.instrument = {}
-    self.color.instrument[ mute   + active   ] = BlinkColor[3][0]
-    self.color.instrument[ mute   + inactive ] = NewColor[3][0]
-    self.color.instrument[ unmute + active   ] = BlinkColor[3][2]
-    self.color.instrument[ unmute + inactive ] = NewColor[3][2]
+    self.color.instrument[ mute   + active   + group_a ] = BlinkColor[3][0]
+    self.color.instrument[ mute   + inactive + group_a ] = NewColor[3][0]
+    self.color.instrument[ unmute + active   + group_a ] = BlinkColor[3][2]
+    self.color.instrument[ unmute + inactive + group_a ] = NewColor[3][2]
 
+    self.color.instrument[ mute   + active   + group_b ] = BlinkColor[3][0]
+    self.color.instrument[ mute   + inactive + group_b ] = NewColor[3][0]
+    self.color.instrument[ unmute + active   + group_b ] = BlinkColor[2][3]
+    self.color.instrument[ unmute + inactive + group_b ] = NewColor[2][3]
 end
 
 

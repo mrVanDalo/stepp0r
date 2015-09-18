@@ -56,34 +56,6 @@ function PatternMatrix:__create_color_map()
     local group_a  = PatternMatrixData.matrix.state.group_a
     local group_b  = PatternMatrixData.matrix.state.group_b
 
---    self.color[empty + set    + active   ] = BlinkColor[0][1]
---    self.color[empty + set    + inactive ] = NewColor[0][1]
---    self.color[empty + next   + active   ] = BlinkColor[1][1]
---    self.color[empty + next   + inactive ] = NewColor[1][1]
---    self.color[empty + no_mix + active   ] = NewColor[0][0]
---    self.color[empty + no_mix + inactive ] = NewColor[0][0]
---    self.color[full  + set    + active   ] = BlinkColor[3][0]
---    self.color[full  + set    + inactive ] = NewColor[3][0]
---    self.color[full  + next   + active   ] = BlinkColor[1][0]
---    self.color[full  + next   + inactive ] = NewColor[1][0]
---    self.color[full  + no_mix + active   ] = BlinkColor[3][2]
---    self.color[full  + no_mix + inactive ] = NewColor[3][2]
---
---    self.color_even = {}
---
---    self.color_even[empty + set    + active   ] = BlinkColor[0][1]
---    self.color_even[empty + set    + inactive ] = NewColor[0][1]
---    self.color_even[empty + next   + active   ] = BlinkColor[1][1]
---    self.color_even[empty + next   + inactive ] = NewColor[1][1]
---    self.color_even[empty + no_mix + active   ] = NewColor[0][0]
---    self.color_even[empty + no_mix + inactive ] = NewColor[0][0]
---    self.color_even[full  + set    + active   ] = BlinkColor[3][0]
---    self.color_even[full  + set    + inactive ] = NewColor[3][0]
---    self.color_even[full  + next   + active   ] = BlinkColor[1][0]
---    self.color_even[full  + next   + inactive ] = NewColor[1][0]
---    self.color_even[full  + no_mix + active   ] = BlinkColor[2][3]
---    self.color_even[full  + no_mix + inactive ] = NewColor[2][3]
-
     self.color[empty + set    + active   + group_a ] = BlinkColor[0][1]
     self.color[empty + set    + inactive + group_a ] = NewColor[0][1]
     self.color[empty + next   + active   + group_a ] = BlinkColor[1][1]

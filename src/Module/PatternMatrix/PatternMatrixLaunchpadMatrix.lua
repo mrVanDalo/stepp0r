@@ -89,7 +89,7 @@ function PatternMatrix:_render_matrix()
         local next_pattern_idx   = self:_get_pattern_alias_idx(self.next_mix_pattern,   x_track)
         --
         local group = PatternMatrixData.matrix.state.group_a
-        if self:_get_group_idx(x) % 2  == 0 then
+        if self:_get_group_idx(x) == 0 then
             group = PatternMatrixData.matrix.state.group_b
         end
         --
