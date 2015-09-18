@@ -6,7 +6,7 @@
 class "PatternMatrix" (Module)
 
 require 'Module/PatternMatrix/PatternMatrixLaunchpadMatrix'
-require 'Module/PatternMatrix/PatternMatrixPatterns'
+require 'Module/PatternMatrix/PatternMatrixPatternMix'
 require 'Module/PatternMatrix/PatternMatrixPatternMatrix'
 require 'Module/PatternMatrix/PatternMatrixPaginator'
 require 'Module/PatternMatrix/PatternMatrixModes'
@@ -94,7 +94,7 @@ function PatternMatrix:__init()
     }
     --
     self:__init_paginator()
-    self:__init_patterns()
+    self:__init_pattern_mix()
     self:__init_track()
     self:__init_pattern_matrix()
     self:__init_launchpad()
@@ -106,7 +106,7 @@ end
 
 function PatternMatrix:_activate()
     self:__activate_paginator()
-    self:__activate_patterns()
+    self:__activate_pattern_mix()
     self:__activate_track()
     self:__activate_pattern_matrix()
     self:__activate_launchpad()
@@ -117,7 +117,7 @@ end
 function PatternMatrix:_deactivate()
     self:__deactivate_launchpad()
     self:__deactivate_paginator()
-    self:__deactivate_patterns()
+    self:__deactivate_pattern_mix()
     self:__deactivate_track()
     self:__deactivate_pattern_matrix()
     self:__deactivate_modes()

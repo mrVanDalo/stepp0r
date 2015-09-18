@@ -1,4 +1,4 @@
-function PatternMatrix:__init_patterns()
+function PatternMatrix:__init_pattern_mix()
     self._sequence_idx_blacklist    = {}
     self.active_mix_pattern         = nil
     self.next_mix_pattern           = nil
@@ -6,10 +6,10 @@ function PatternMatrix:__init_patterns()
     self:__create_pattern_mix_update_callback()
 end
 
-function PatternMatrix:__activate_patterns()
+function PatternMatrix:__activate_pattern_mix()
 end
 
-function PatternMatrix:__deactivate_patterns()
+function PatternMatrix:__deactivate_pattern_mix()
 end
 
 function PatternMatrix:_get_pattern_alias_idx(pattern, track_idx)
