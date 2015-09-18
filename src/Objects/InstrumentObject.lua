@@ -43,3 +43,8 @@ function InstrumentObject:exist_index(instrument_idx)
     return self:exist(instrument)
 end
 
+
+
+function InstrumentObject:list()
+    return renoise.song().instruments
+end

@@ -30,7 +30,9 @@ PatternMatrixData = {
             next     = 20,
             no_mix   = 30,
             active   = 100,
-            inactive = 200
+            inactive = 200,
+            group_a  = 0,
+            group_b  = 300,
         },
     },
     mode = {
@@ -51,19 +53,47 @@ function PatternMatrix:__create_color_map()
     local no_mix   = PatternMatrixData.matrix.state.no_mix
     local active   = PatternMatrixData.matrix.state.active
     local inactive = PatternMatrixData.matrix.state.inactive
+    local group_a  = PatternMatrixData.matrix.state.group_a
+    local group_b  = PatternMatrixData.matrix.state.group_b
 
-    self.color[empty + set    + active   ] = Color.dim.green
-    self.color[empty + set    + inactive ] = Color.empty
-    self.color[empty + next   + active   ] = Color.dim.red
-    self.color[empty + next   + inactive ] = Color.empty
-    self.color[empty + no_mix + active   ] = Color.empty
-    self.color[empty + no_mix + inactive ] = Color.empty
-    self.color[full  + set    + active   ] = Color.flash.green
-    self.color[full  + set    + inactive ] = Color.green
-    self.color[full  + next   + active   ] = Color.flash.red
-    self.color[full  + next   + inactive ] = Color.red
-    self.color[full  + no_mix + active   ] = Color.yellow
-    self.color[full  + no_mix + inactive ] = Color.yellow
+    self.color[empty + set    + active   + group_a ] = BlinkColor[0][1]
+    self.color[empty + set    + inactive + group_a ] = NewColor[0][1]
+    self.color[empty + next   + active   + group_a ] = BlinkColor[1][1]
+    self.color[empty + next   + inactive + group_a ] = NewColor[1][1]
+    self.color[empty + no_mix + active   + group_a ] = NewColor[0][0]
+    self.color[empty + no_mix + inactive + group_a ] = NewColor[0][0]
+    self.color[full  + set    + active   + group_a ] = BlinkColor[3][0]
+    self.color[full  + set    + inactive + group_a ] = NewColor[3][0]
+    self.color[full  + next   + active   + group_a ] = BlinkColor[1][0]
+    self.color[full  + next   + inactive + group_a ] = NewColor[1][0]
+    self.color[full  + no_mix + active   + group_a ] = BlinkColor[3][2]
+    self.color[full  + no_mix + inactive + group_a ] = NewColor[3][2]
+    self.color[empty + set    + active   + group_b ] = BlinkColor[0][1]
+    self.color[empty + set    + inactive + group_b ] = NewColor[0][1]
+    self.color[empty + next   + active   + group_b ] = BlinkColor[1][1]
+    self.color[empty + next   + inactive + group_b ] = NewColor[1][1]
+    self.color[empty + no_mix + active   + group_b ] = NewColor[0][0]
+    self.color[empty + no_mix + inactive + group_b ] = NewColor[0][0]
+    self.color[full  + set    + active   + group_b ] = BlinkColor[3][0]
+    self.color[full  + set    + inactive + group_b ] = NewColor[3][0]
+    self.color[full  + next   + active   + group_b ] = BlinkColor[1][0]
+    self.color[full  + next   + inactive + group_b ] = NewColor[1][0]
+    self.color[full  + no_mix + active   + group_b ] = BlinkColor[2][3]
+    self.color[full  + no_mix + inactive + group_b ] = NewColor[2][3]
+
+
+--    self.color[empty + set    + active   ] = Color.dim.green
+--    self.color[empty + set    + inactive ] = Color.empty
+--    self.color[empty + next   + active   ] = Color.dim.red
+--    self.color[empty + next   + inactive ] = Color.empty
+--    self.color[empty + no_mix + active   ] = Color.empty
+--    self.color[empty + no_mix + inactive ] = Color.empty
+--    self.color[full  + set    + active   ] = Color.flash.green
+--    self.color[full  + set    + inactive ] = Color.green
+--    self.color[full  + next   + active   ] = Color.flash.red
+--    self.color[full  + next   + inactive ] = Color.red
+--    self.color[full  + no_mix + active   ] = Color.yellow
+--    self.color[full  + no_mix + inactive ] = Color.yellow
 
 end
 function PatternMatrix:__init()

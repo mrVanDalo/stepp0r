@@ -28,6 +28,7 @@ function IT_Selection:track_for_instrument(instrument_number)
 end
 
 --- return sequencer track number of given instrument
+-- todo : rename to sequence_track
 function IT_Selection:track_index_for_instrument(instrument_number)
     Renoise.track:ensure_sequencer_track_idx_exist(instrument_number)
     return Renoise.track:sequencer_track_sequence()[instrument_number]
@@ -52,7 +53,7 @@ function IT_Selection:select_instrument(instrument_idx)
     self.track_idx          = self:track_index_for_instrument(self.instrument_idx)
     self.column_idx         = 1
     self:select_track_index(self.track_idx)
-    Renoise.track:rename_track_index(self.track_idx, name)
+    Renoise.track:rename_index(self.track_idx, name)
     -- trigger callbacks
     self:__update_set_instrument_listeners()
 end
