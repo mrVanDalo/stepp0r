@@ -31,7 +31,7 @@ end
 -- todo : rename to sequence_track
 function IT_Selection:track_index_for_instrument(instrument_number)
     Renoise.sequence_track:ensure_exist(instrument_number)
-    return Renoise.sequence_track:map_track()[instrument_number]
+    return Renoise.sequence_track:track_idx(instrument_number)
 end
 
 

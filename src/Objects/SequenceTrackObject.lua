@@ -27,7 +27,7 @@ function SequenceTrackObject:ensure_exist(track_idx)
 end
 
 -- A mapping from sequencer_track_index to all_track_index
-function SequenceTrackObject:map_track()
+function SequenceTrackObject:map_track_idx()
     local sequence_idx = 1
     local track_idx    = 1
     local sequence = {}
@@ -39,6 +39,9 @@ function SequenceTrackObject:map_track()
         track_idx = track_idx + 1
     end
     return sequence
+end
+function SequenceTrackObject:track_idx(sequence_idx)
+    return self:map_track_idx()[sequence_idx]
 end
 
 -- total number of sequencer tracks
