@@ -9,8 +9,11 @@ function TrackObject:__init() end
 
 
 
-
-
+--- return insturument index coresponding to the `track_index`
+-- returns nil for not found
+function TrackObject:instrument_idx(track_idx)
+    return table.find(Renoise.sequence_track:map_track_idx(), track_idx)
+end
 
 
 --- rename a track
