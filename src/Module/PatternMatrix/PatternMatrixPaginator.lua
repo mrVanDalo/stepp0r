@@ -78,7 +78,7 @@ function PatternMatrix:_get_track_idx(x)
 end
 function PatternMatrix:_get_group_idx(x)
     local position = self.__track_offset + x
-    return Renoise.track:group_type_2(position)
+    return Renoise.sequence_track:group_type_2(position)
 end
 
 function PatternMatrix:__inc_pattern()

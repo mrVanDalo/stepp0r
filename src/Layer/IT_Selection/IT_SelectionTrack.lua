@@ -55,8 +55,9 @@ end
 
 --- return insturument index coresponding to the `track_index`
 -- returns nil for not found
+-- todo : move this to Renoise.instrument
 function IT_Selection:__instrument_index_for_track(track_index)
-    return table.find(Renoise.track:sequencer_track_sequence(), track_index)
+    return table.find(Renoise.sequence_track:map_track(), track_index)
 end
 
 

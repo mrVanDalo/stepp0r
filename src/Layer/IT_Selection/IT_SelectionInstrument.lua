@@ -30,8 +30,8 @@ end
 --- return sequencer track number of given instrument
 -- todo : rename to sequence_track
 function IT_Selection:track_index_for_instrument(instrument_number)
-    Renoise.track:ensure_sequencer_track_idx_exist(instrument_number)
-    return Renoise.track:sequencer_track_sequence()[instrument_number]
+    Renoise.sequence_track:ensure_exist(instrument_number)
+    return Renoise.sequence_track:map_track()[instrument_number]
 end
 
 
