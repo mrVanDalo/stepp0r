@@ -104,8 +104,7 @@ function Chooser:_update_instrument_row()
             end
             -- group
             local group_state = ChooserData.color.group_a
-            local track_idx = self.it_selection:track_index_for_instrument(nr)
-            local group_idx = Renoise.track:group_type_2(track_idx)
+            local group_idx = Renoise.track:group_type_2(nr)
             if group_idx == 0 then
                 group_state = ChooserData.color.group_b
             end

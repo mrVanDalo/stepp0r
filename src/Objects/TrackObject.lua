@@ -83,6 +83,9 @@ function TrackObject:group_idx_for_sequence_idx(sequence_idx)
     return self:sequencer_track_group()[sequence_idx]
 end
 
+--- returns a group class (0 or 1) (no nil will be returned)
+---
+--- the index must be the sequence_track index (not the track index)
 function TrackObject:group_type_2(sequence_idx)
     local group_idx = self:sequencer_track_group()[sequence_idx]
     if group_idx then
