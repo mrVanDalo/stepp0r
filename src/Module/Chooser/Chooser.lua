@@ -2,7 +2,8 @@
 ---
 ---                                                   Chooser Moudle
 ---
---- To choose instruments, tracks and track rows.
+--- To choose instruments/tracks and track rows.
+-- todo : rename it to something more obvious
 
 ChooserData =  {
     access = {
@@ -14,7 +15,11 @@ ChooserData =  {
         mute   = {2, Color.red},
     },
     color = {
-        clear = Color.off,
+        clear = Color.off, -- todo deprecated ?
+        active   = 0,
+        inactive = 10,
+        mute     = 20,
+        unmute   = 50,
     },
 }
 
@@ -36,33 +41,37 @@ require "Module/Chooser/ChooserInstrumentRow"
 
 function Chooser:__init()
     Module:__init(self)
-
-    self.color = {
-        instrument = {
-            active   = BlinkColor[3][2],
-            passive  = NewColor[3][2],
-        },
-        mute = {
-            active  = Color.flash.red,
-            passive = Color.red,
-        },
-        page = {
-            active   = Color.green,
-            inactive = Color.dim.green,
-        },
-        -- deprecated?
-        column = {
-            active    = Color.yellow,
-            inactive  = Color.dim.green,
-            invisible = Color.off,
-        },
-    }
+    self:create_color()
 
     self:__init_instrument_row()
     self:__init_pagination()
     self:__init_mode()
     self:__init_note_column()
 end
+
+function Chooser:create_color()
+
+    self.color = {
+        column = {
+            active    = NewColor[3][3],
+            inactive  = NewColor[1][2],
+            invisible = NewColor[0][0],
+        },
+    }
+
+    local active   = ChooserData.color.active
+    local inactive = ChooserData.color.inactive
+    local mute     = ChooserData.color.mute
+    local unmute   = ChooserData.color.unmute
+
+    self.color.instrument = {}
+    self.color.instrument[ mute   + active   ] = BlinkColor[3][0]
+    self.color.instrument[ mute   + inactive ] = NewColor[3][0]
+    self.color.instrument[ unmute + active   ] = BlinkColor[3][2]
+    self.color.instrument[ unmute + inactive ] = NewColor[3][2]
+
+end
+
 
 function Chooser:_activate()
     self:__activate_pagination()
