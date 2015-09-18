@@ -11,9 +11,6 @@ end
 function PatternMix:__deactivate_current_and_next()
 end
 
-
-
-
 function PatternMix:__adjuster_next_pattern()
     print("adjust next pattern")
     for _,track_idx in pairs(Renoise.track:list_idx()) do
@@ -66,7 +63,7 @@ function PatternMix:_next_mix_pattern()
         return self.pattern_mix_2
     end
 end
-
+-- @returns the mix pattern which is played right now
 function PatternMix:_current_mix_pattern()
     if (self.pattern_mix_1 and self.pattern_mix_2) then
         if renoise.song().selected_pattern == self.pattern_mix_2 then

@@ -64,6 +64,7 @@ end
 function PatternMix:__create_callback_set_instrument()
     self.callback_set_instrument =  function (instrument_idx, track_idx, column_idx)
         -- make sure there is always a pattern set for an instrument
+        -- todo : is this necessary ?
         if self.current_mix_pattern and track_idx then
             local alias = Renoise.pattern_matrix:alias_idx( self.current_mix_pattern, track_idx )
             if alias == -1 then
