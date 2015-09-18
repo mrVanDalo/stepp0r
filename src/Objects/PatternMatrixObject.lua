@@ -14,3 +14,12 @@ function PatternMatrixObject:create_patterns_up_to_sequence_index(index)
         renoise.song().sequencer:insert_new_pattern_at(number_of_sequences + counter)
     end
 end
+
+
+function PatternMatrixObject:alias_idx(pattern, track_idx)
+    if pattern and track_idx and pattern.tracks[track_idx] and pattern.tracks[track_idx].is_alias then
+        return pattern.tracks[track_idx].alias_pattern_index
+    else
+        return -1
+    end
+end

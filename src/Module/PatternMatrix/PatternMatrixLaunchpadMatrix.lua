@@ -47,7 +47,7 @@ end
 function PatternMatrix:__copy_pattern(x,y)
     local track_idx   = self:_get_track_idx(x)
     local pattern_idx = self:_get_pattern_idx(y)
-    local alias_idx   = self:_get_pattern_alias_idx(self.active_mix_pattern, track_idx)
+    local alias_idx   = Renoise.pattern_matrix:alias_idx(self.active_mix_pattern, track_idx)
     if alias_idx ~= -1 then
         local source_pattern_track = renoise.song().patterns[alias_idx].tracks[track_idx]
         renoise.song().patterns[pattern_idx].tracks[track_idx]:copy_from(source_pattern_track)
@@ -58,7 +58,7 @@ end
 function PatternMatrix:__set_mix_to_next_pattern(x,y)
     local track_idx   = self:_get_track_idx(x)
     local pattern_idx = self:_get_pattern_idx(y)
-    local alias_idx   = self:_get_pattern_alias_idx(self.next_mix_pattern,track_idx)
+    local alias_idx   = Renoise.pattern_matrix:alias_idx(self.next_mix_pattern,track_idx)
 --    print("track_idx ", track_idx, " pattern_idx ", pattern_idx, " alias_idx ", alias_idx)
     if alias_idx ~= -1 and pattern_idx == alias_idx then
         -- use it_selection
@@ -86,8 +86,8 @@ function PatternMatrix:_render_matrix()
             track_activation = PatternMatrixData.matrix.state.active
         end
         --
-        local active_pattern_idx = self:_get_pattern_alias_idx(self.active_mix_pattern, x_track)
-        local next_pattern_idx   = self:_get_pattern_alias_idx(self.next_mix_pattern,   x_track)
+        local active_pattern_idx = Renoise.pattern_matrix:alias_idx(self.active_mix_pattern, x_track)
+        local next_pattern_idx   = Renoise.pattern_matrix:alias_idx(self.next_mix_pattern,   x_track)
         --
         local group = PatternMatrixData.matrix.state.group_a
         if self:_get_group_idx(x) == 0 then

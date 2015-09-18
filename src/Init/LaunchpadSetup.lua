@@ -180,6 +180,7 @@ function LaunchpadSetup:wire()
     self.playback_position_observer = PlaybackPositionObserver()
     self.osc_client = OscClient()
     self.it_selection = IT_Selection()
+    self.pattern_mix = PatternMix()
     --- Modules are the things you can see on the launchpad
     -- or route informations between modules
     -- or toggle modules on and off
@@ -237,6 +238,7 @@ function LaunchpadSetup:wire()
     --
     self.pattern_matrix = PatternMatrix()
     self.pattern_matrix:wire_launchpad(self.pad)
+    self.pattern_matrix:wire_pattern_mix(self.pattern_mix)
     --- ------------------------------------
     --- Pattern Mode
     --
@@ -255,9 +257,6 @@ function LaunchpadSetup:wire()
     self.pattern_mode_module = PatternMode()
     self.pattern_mode_module:wire_launchpad(self.pad)
     self.pattern_mode_module:register_mode_update_callback(self.pattern_mode.mode_update_callback)
-    --
-    self.pattern_mix = PatternMix()
-    self.pattern_mix:register_update_callback(self.pattern_matrix.pattern_mix_update_callback)
     --
     self.track_paginator = TrackPaginator()
     self.track_paginator:wire_launchpad(self.pad)
@@ -279,6 +278,8 @@ function LaunchpadSetup:wire()
     --
     self.it_selection:register_idle(self.editor.idle_callback)
     self.it_selection:register_idle(self.adjuster.idle_callback)
+    --
+    self.pattern_mix:register_update_callback(self.pattern_matrix.pattern_mix_update_callback)
 
 end
 

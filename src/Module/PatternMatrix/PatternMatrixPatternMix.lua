@@ -12,25 +12,12 @@ end
 function PatternMatrix:__deactivate_pattern_mix()
 end
 
-function PatternMatrix:_get_pattern_alias_idx(pattern, track_idx)
-    if pattern and pattern.tracks[track_idx] and pattern.tracks[track_idx].is_alias then
-        return pattern.tracks[track_idx].alias_pattern_index
-    else
-        return -1
-    end
+function PatternMatrix:wire_pattern_mix(pattern_mix)
+    self.pattern_mix = pattern_mix
 end
 
 function PatternMatrix:_set_mix_to_pattern(track_idx, pattern_idx)
-    -- get pattern
-    local mix_pattern = self.next_mix_pattern
-    if not mix_pattern then return end
-    -- get track
-    local track = mix_pattern.tracks[track_idx]
-    if not track then return end
-    --
-    if pattern_idx ~= -1 then
-        track.alias_pattern_index = pattern_idx
-    end
+    self.pattern_mix:set_next(track_idx, pattern_idx)
 end
 
 function PatternMatrix:__create_pattern_mix_update_callback()
