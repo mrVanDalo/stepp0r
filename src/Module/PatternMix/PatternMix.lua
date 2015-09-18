@@ -10,6 +10,7 @@
 class "PatternMix" (Module)
 
 require 'Module/PatternMix/PatternMixCurrentAndNext'
+require 'Module/PatternMix/PatternMixArea'
 
 PatternMixData = {
     row = {
@@ -21,6 +22,7 @@ PatternMixData = {
 function PatternMix:__init()
 
     self:__init_current_and_next()
+    self:__init_area()
     --
     self.__update_callbacks         = {}
     --
@@ -32,8 +34,7 @@ function PatternMix:__init()
 end
 
 function PatternMix:_activate()
-    self:__ensure_mix_patterns_exist()
-
+    self:__activate_area()
     self:__activate_current_and_next()
 
     -- fixme : this will not trigger when there is only one pattern mix sequence
@@ -43,7 +44,7 @@ end
 
 function PatternMix:_deactivate()
     self:__deactivate_current_and_next()
-    self:__remove_mix_patterns()
+    self:__deactivate_area()
     remove_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
 end
 
@@ -70,46 +71,6 @@ function PatternMix:_get_pattern_alias_idx(pattern, track_idx)
 end
 
 
--- todo : make this more readable
-function PatternMix:__ensure_mix_patterns_exist()
-    self:__remove_mix_patterns()
-    if self.number_of_mix_patterns == 2 then
-        renoise.song().sequencer:insert_new_pattern_at(1)
-        local idx_2 = renoise.song().sequencer:pattern(1)
-        renoise.song().patterns[idx_2].name =  PatternMixData.row.mix_2
-        renoise.song().sequencer:insert_new_pattern_at(1)
-        local idx_1 = renoise.song().sequencer:pattern(1)
-        renoise.song().patterns[idx_1].name =  PatternMixData.row.mix_1
-        renoise.song().transport.loop_sequence_range = {1,2}
-        renoise.song().sequencer:set_sequence_section_name(3, self.pattern_list_title)
-        renoise.song().sequencer:set_sequence_is_start_of_section(3,true)
-        renoise.song().transport.follow_player = true
-    elseif self.number_of_mix_patterns == 1 then
-        renoise.song().sequencer:insert_new_pattern_at(1)
-        local idx_1 = renoise.song().sequencer:pattern(1)
-        renoise.song().patterns[idx_1].name =  PatternMixData.row.mix_1
-        renoise.song().transport.loop_sequence_range = {1,1}
-        renoise.song().sequencer:set_sequence_section_name(2, self.pattern_list_title)
-        renoise.song().sequencer:set_sequence_is_start_of_section(2,true)
-        renoise.song().transport.follow_player = true
-    end
-    renoise.song().sequencer:set_sequence_section_name(1, self.mix_pattern_title)
-    renoise.song().sequencer:set_sequence_is_start_of_section(1,true)
-    renoise.song().selected_sequence_index = 1
-end
-function PatternMix:__remove_mix_patterns()
-    self:_set_mix_patterns()
-    if self.pattern_mix_2_sequence_idx then
---        print("remove mix 2 ", self.pattern_mix_2_sequence_idx)
-        renoise.song().sequencer:delete_sequence_at(self.pattern_mix_2_sequence_idx)
-    end
-    if self.pattern_mix_1_sequence_idx then
---        print("remove mix 1 ", self.pattern_mix_1_sequence_idx)
-        renoise.song().sequencer:delete_sequence_at(self.pattern_mix_1_sequence_idx)
-    end
-    renoise.song().sequencer:set_sequence_is_start_of_section(1,false)
-    renoise.song().transport.loop_sequence_range = {0,0}
-end
 
 
 
