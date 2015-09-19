@@ -41,6 +41,8 @@ function PatternMix:set_next_delayed(track_idx, pattern_idx)
     self:foo(self.next_mix_pattern, track_idx, pattern_idx)
 end
 
+-- todo rename me
+-- fixme : crashes sometimes, because want to create an alias to itself
 function PatternMix:foo(area_pattern, track_idx, pattern_idx)
     -- check pattern
     if not area_pattern then return end

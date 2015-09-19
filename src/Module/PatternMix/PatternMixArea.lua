@@ -19,6 +19,7 @@ function PatternMix:__init_area()
         },
     }
 
+    -- todo remove this, this is deprecated
     self.number_of_mix_patterns     = 2 -- value should be 1 or 2
     self.mode                       = PatternMixData.mode.delayed
     --
