@@ -28,7 +28,7 @@ function PatternMix:__init_area()
 end
 function PatternMix:__activate_area()
     self:__ensure_area_exist()
-    self:__set_area()
+    self:__update_area()
 end
 function PatternMix:__deactivate_area()
     self:__remove_area()
@@ -44,41 +44,25 @@ function PatternMix:set_number_of_mix_patterns(number)
 end
 
 
-function PatternMix:__set_area()
-    local tupel = self:__find_mix_pattern(PatternMixData.row.mix_1)
-    if tupel then
-        self.area.first = {
-            pattern = tupel[2],
-            idx     = tupel[1]
-        }
-    else
-        self.area.first = {
-            pattern = nil,
-            idx     = nil,
-        }
-    end
-    local tupel_2 = self:__find_mix_pattern(PatternMixData.row.mix_2)
-    if tupel_2 then
-        self.area.second = {
-            pattern = tupel_2[2],
-            idx     = tupel_2[1]
-        }
-    else
-        self.area.second = {
-            pattern = nil,
-            idx     = nil,
-        }
-    end
-end
-function PatternMix:__find_mix_pattern(key)
-    for sequence_idx,pattern_idx in pairs(renoise.song().sequencer.pattern_sequence) do
-        local pattern = renoise.song().patterns[pattern_idx]
-        if pattern.name == key then
-            -- todo : use the first and second object format here
-            return {sequence_idx, pattern}
+function PatternMix:__update_area()
+    local find_mix_pattern = function (key)
+        for sequence_idx,pattern_idx in pairs(renoise.song().sequencer.pattern_sequence) do
+            local pattern = renoise.song().patterns[pattern_idx]
+            if pattern.name == key then
+                return {
+                    idx     = sequence_idx,
+                    pattern = pattern
+                }
+            end
         end
+        return {
+            idx     = nil,
+            pattern = nil,
+        }
     end
-    return nil
+
+    self.area.first  = find_mix_pattern(PatternMixData.row.mix_1)
+    self.area.second = find_mix_pattern(PatternMixData.row.mix_2)
 end
 
 function PatternMix:__ensure_area_exist()
@@ -99,7 +83,7 @@ function PatternMix:__ensure_area_exist()
 end
 
 function PatternMix:__remove_area()
-    self:__set_area()
+    self:__update_area()
     if self.area.second.idx then
         renoise.song().sequencer:delete_sequence_at(self.area.second.idx)
     end

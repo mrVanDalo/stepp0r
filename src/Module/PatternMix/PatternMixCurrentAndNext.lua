@@ -31,19 +31,18 @@ end
 
 function PatternMix:set_next_instantly(track_idx, pattern_idx)
     print("PatternMix:set_next_instantly")
-    self:foo(self.current_mix_pattern, track_idx, pattern_idx)
-    self:foo(self.next_mix_pattern, track_idx, pattern_idx)
+    self:__set_area_pattern(self.current_mix_pattern, track_idx, pattern_idx)
+    self:__set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
 end
 
 --- set next pattern to show up
 function PatternMix:set_next_delayed(track_idx, pattern_idx)
     print("PatternMix:set_next_delayed")
-    self:foo(self.next_mix_pattern, track_idx, pattern_idx)
+    self:__set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
 end
 
--- todo rename me
 -- fixme : crashes sometimes, because want to create an alias to itself
-function PatternMix:foo(area_pattern, track_idx, pattern_idx)
+function PatternMix:__set_area_pattern(area_pattern, track_idx, pattern_idx)
     -- check pattern
     if not area_pattern then return end
     -- get track
