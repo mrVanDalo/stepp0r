@@ -21,40 +21,29 @@ end
 
 --- set next pattern to show up
 function PatternMix:set_next(track_idx, pattern_idx)
+    -- fixme : crashes sometimes, because want to create an alias to itself
+    local set_area_pattern = function (area_pattern, track_idx, pattern_idx)
+        -- check pattern
+        if not area_pattern then return end
+        -- get track
+        local track = area_pattern.tracks[track_idx]
+        if not track then return end
+        -- set alias
+        if pattern_idx == -1 then
+            -- use default pattern
+            local default_idx = renoise.song().sequencer:pattern(3)
+            track.alias_pattern_index = default_idx
+        else
+            track.alias_pattern_index = pattern_idx
+        end
+    end
+
     print("PatternMix:set_next (mode : "  .. self.mode .. ")")
     if self.mode == PatternMixData.mode.delayed then
-        self:set_next_delayed(track_idx, pattern_idx)
+        set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
     elseif self.mode == PatternMixData.mode.instantly then
-        self:set_next_instantly(track_idx, pattern_idx)
-    end
-end
-
-function PatternMix:set_next_instantly(track_idx, pattern_idx)
-    print("PatternMix:set_next_instantly")
-    self:__set_area_pattern(self.current_mix_pattern, track_idx, pattern_idx)
-    self:__set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
-end
-
---- set next pattern to show up
-function PatternMix:set_next_delayed(track_idx, pattern_idx)
-    print("PatternMix:set_next_delayed")
-    self:__set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
-end
-
--- fixme : crashes sometimes, because want to create an alias to itself
-function PatternMix:__set_area_pattern(area_pattern, track_idx, pattern_idx)
-    -- check pattern
-    if not area_pattern then return end
-    -- get track
-    local track = area_pattern.tracks[track_idx]
-    if not track then return end
-    -- set alias
-    if pattern_idx == -1 then
-        -- use default pattern
-        local default_idx = renoise.song().sequencer:pattern(3)
-        track.alias_pattern_index = default_idx
-    else
-        track.alias_pattern_index = pattern_idx
+        set_area_pattern(self.current_mix_pattern, track_idx, pattern_idx)
+        set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
     end
 end
 
