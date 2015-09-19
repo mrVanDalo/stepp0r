@@ -11,7 +11,7 @@ end
 function PatternMix:__deactivate_current_and_next()
 end
 
-function PatternMix:__adjuster_next_pattern()
+function PatternMix:_adjuster_next_pattern()
     print("adjust next pattern")
     for _,track_idx in pairs(Renoise.track:list_idx()) do
         local pattern_idx = Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx)
@@ -22,8 +22,7 @@ end
 --- set next pattern to show up
 function PatternMix:set_next(track_idx, pattern_idx)
     -- fixme : crashes sometimes, because want to create an alias to itself
-    -- todo don't give it track_idx and pattern_idx
-    local set_area_pattern = function (area_pattern, track_idx, pattern_idx)
+    local set_area_pattern = function (area_pattern)
         -- check pattern
         if not area_pattern then return end
         -- get track
@@ -40,12 +39,12 @@ function PatternMix:set_next(track_idx, pattern_idx)
     end
 
     print("PatternMix:set_next (mode : "  .. self.mode .. ")")
-    if self.mode == PatternMixData.mode.delayed then
-        set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
-    elseif self.mode == PatternMixData.mode.instantly then
+    if self.mode == PatternMixData.mode.instantly then
         set_area_pattern(self.current_mix_pattern, track_idx, pattern_idx)
-        set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
+    elseif self.mode == PatternMixData.mode.delayed and Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx) == -1 then
+        set_area_pattern(self.current_mix_pattern, track_idx, -1)
     end
+    set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
 end
 
 
