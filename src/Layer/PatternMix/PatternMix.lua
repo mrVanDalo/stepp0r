@@ -7,12 +7,11 @@
 --- Mix patterns are the (one or two or zero patterns on top of the pattern list) which are used to mix
 --- stuff together
 --
--- todo : this is a Layer like IT_Selection
 
-class "PatternMix" (Module)
+class "PatternMix"
 
-require 'Module/PatternMix/PatternMixCurrentAndNext'
-require 'Module/PatternMix/PatternMixArea'
+require 'Layer/PatternMix/PatternMixCurrentAndNext'
+require 'Layer/PatternMix/PatternMixArea'
 
 PatternMixData = {
     row = {
@@ -36,16 +35,14 @@ function PatternMix:__init()
     self:__create_callback_set_instrument()
 end
 
-function PatternMix:_activate()
+function PatternMix:connect()
     self:__activate_area()
     self:__activate_current_and_next()
-
-    -- fixme : this will not trigger when there is only one pattern mix sequence
     add_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
     self:_update_callbacks()
 end
 
-function PatternMix:_deactivate()
+function PatternMix:disconnect()
     self:__deactivate_current_and_next()
     self:__deactivate_area()
     remove_notifier(renoise.song().selected_pattern_index_observable, self.__selected_pattern_idx_listener)
