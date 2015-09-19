@@ -32,7 +32,7 @@ require "Module/Chooser/ChooserNoteColumn"
 require "Module/Chooser/ChooserPagination"
 require "Module/Chooser/ChooserMode"
 require "Module/Chooser/ChooserInstrumentRow"
-require "Module/Chooser/ChooserPatternMixUpdate"
+require "Module/Chooser/ChooserIdle"
 
 
 
@@ -50,7 +50,7 @@ function Chooser:__init()
     self:__init_pagination()
     self:__init_mode()
     self:__init_note_column()
-    self:__init_pattern_mix_update()
+    self:__init_idle()
 end
 
 function Chooser:create_color()
@@ -89,7 +89,7 @@ function Chooser:_activate()
     self:__activate_mode()
     self:__activate_note_column()
     self:__activate_instrument_row()
-    self:__activate_pattern_mix_update()
+    self:__activate_idle()
 end
 
 function Chooser:_deactivate()
@@ -97,7 +97,7 @@ function Chooser:_deactivate()
     self:__deactivate_mode()
     self:__deactivate_note_column()
     self:__deactivate_instrument_row()
-    self:__deactivate_pattern_mix_update()
+    self:__deactivate_idle()
 end
 
 function Chooser:wire_launchpad(pad)

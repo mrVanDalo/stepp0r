@@ -278,9 +278,9 @@ function LaunchpadSetup:wire()
     --
     self.it_selection:register_idle(self.editor.idle_callback)
     self.it_selection:register_idle(self.adjuster.idle_callback)
+    self.it_selection:register_idle(self.chooser.idle_callback)
     --
     self.pattern_mix:register_update_callback(self.pattern_matrix.pattern_mix_update_callback)
-    self.pattern_mix:register_update_callback(self.chooser.pattern_mix_update_callback)
 
 end
 
