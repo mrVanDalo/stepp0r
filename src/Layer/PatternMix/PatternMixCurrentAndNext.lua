@@ -22,14 +22,14 @@ end
 --- set next pattern to show up
 function PatternMix:set_next(track_idx, pattern_idx)
     -- fixme : crashes sometimes, because want to create an alias to itself
-    local set_area_pattern = function (area_pattern)
+    local set_area_pattern = function (area_pattern, track_idx, pattern_idx)
         -- check pattern
         if not area_pattern then return end
         -- get track
         local track = area_pattern.tracks[track_idx]
         if not track then return end
         -- set alias
-        if pattern_idx == -1 then
+        if not pattern_idx then
             -- use default pattern
             local default_idx = renoise.song().sequencer:pattern(3)
             track.alias_pattern_index = default_idx
@@ -41,8 +41,8 @@ function PatternMix:set_next(track_idx, pattern_idx)
     print("PatternMix:set_next (mode : "  .. self.mode .. ")")
     if self.mode == PatternMixData.mode.instantly then
         set_area_pattern(self.current_mix_pattern, track_idx, pattern_idx)
-    elseif self.mode == PatternMixData.mode.delayed and Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx) == -1 then
-        set_area_pattern(self.current_mix_pattern, track_idx, -1)
+    elseif self.mode == PatternMixData.mode.delayed and Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx) then
+        set_area_pattern(self.current_mix_pattern, track_idx, nil)
     end
     set_area_pattern(self.next_mix_pattern, track_idx, pattern_idx)
 end
