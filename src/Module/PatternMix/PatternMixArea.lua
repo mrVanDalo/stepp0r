@@ -19,13 +19,8 @@ function PatternMix:__init_area()
         },
     }
 
-    -- todo : rename mix_area_1 mix_area_2
-    self.pattern_mix_1              = nil
-    self.pattern_mix_1_sequence_idx = nil
-    self.pattern_mix_2              = nil
-    self.pattern_mix_2_sequence_idx = nil
-    --
     self.number_of_mix_patterns     = 2 -- value should be 1 or 2
+    self.mode                       = PatternMixData.mode.delayed
     --
     self.mix_pattern_title          = "Stepp0r Mix"
     self.pattern_list_title         = "Patterns"
@@ -40,6 +35,11 @@ end
 
 function PatternMix:set_number_of_mix_patterns(number)
     self.number_of_mix_patterns = number
+    if number == 2 then
+        self.mode = PatternMixData.mode.delayed
+    else
+        self.mode = PatternMixData.mode.instantly
+    end
 end
 
 

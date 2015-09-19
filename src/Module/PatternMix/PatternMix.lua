@@ -19,6 +19,11 @@ PatternMixData = {
         mix_1 = "__stepp0r_mix_1",
         mix_2 = "__stepp0r_mix_2"
     },
+    mode = {
+        delayed   = 2,
+        instantly = 1,
+    },
+
 }
 
 function PatternMix:__init()
