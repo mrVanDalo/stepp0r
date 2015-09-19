@@ -37,11 +37,17 @@ function PatternMix:set_next(track_idx, pattern_idx)
         end
     end
 
-    print("PatternMix:set_next (mode : "  .. self.mode .. ")")
+    local current_alias = Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx)
+    local next_alias = Renoise.pattern_matrix:alias_idx(self.next_mixt_pattern, track_idx)
+
     if self.mode == PatternMixData.mode.instantly then
         set_area_pattern(self.current_mix_pattern, pattern_idx)
-    elseif self.mode == PatternMixData.mode.delayed and Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx) then
-        set_area_pattern(self.current_mix_pattern, nil)
+    elseif self.mode == PatternMixData.mode.delayed and not current_alias then
+        if next_alias then
+            set_area_pattern(self.current_mix_pattern, next_alias)
+        else
+            set_area_pattern(self.current_mix_pattern, nil)
+        end
     end
     set_area_pattern(self.next_mix_pattern, pattern_idx)
 end
