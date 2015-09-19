@@ -22,6 +22,7 @@ end
 --- set next pattern to show up
 function PatternMix:set_next(track_idx, pattern_idx)
     -- fixme : crashes sometimes, because want to create an alias to itself
+    -- todo don't give it track_idx and pattern_idx
     local set_area_pattern = function (area_pattern, track_idx, pattern_idx)
         -- check pattern
         if not area_pattern then return end

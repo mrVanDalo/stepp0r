@@ -73,7 +73,7 @@ function PatternMix:__create_callback_set_instrument()
         if self.current_mix_pattern and track_idx then
             local alias = Renoise.pattern_matrix:alias_idx( self.current_mix_pattern, track_idx )
             if alias == -1 then
-                local pattern_idx = renoise.song().sequencer:pattern(self.number_of_mix_patterns + 1)
+                local pattern_idx = renoise.song().sequencer:pattern(3)
                 self:set_next(track_idx, pattern_idx)
             end
         end

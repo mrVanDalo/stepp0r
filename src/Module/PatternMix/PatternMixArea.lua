@@ -19,8 +19,6 @@ function PatternMix:__init_area()
         },
     }
 
-    -- todo remove this, this is deprecated
-    self.number_of_mix_patterns     = 2 -- value should be 1 or 2
     self.mode                       = PatternMixData.mode.delayed
     --
     self.mix_pattern_title          = "Stepp0r Mix"
@@ -34,12 +32,13 @@ function PatternMix:__deactivate_area()
     self:__remove_area()
 end
 
-function PatternMix:set_number_of_mix_patterns(number)
-    self.number_of_mix_patterns = number
-    if number == 2 then
+function PatternMix:set_mode(mode)
+    if mode == 2 then
         self.mode = PatternMixData.mode.delayed
-    else
+    elseif mode == 1 then
         self.mode = PatternMixData.mode.instantly
+    else
+        self.mode = nil
     end
 end
 

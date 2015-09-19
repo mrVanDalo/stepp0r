@@ -213,7 +213,7 @@ function MainUI:create_pattern_matrix_row()
         items   = {"disable", "instantly", "delayed"},
         width   = self.input_size,
         tooltip = "how to mix patterns together",
-        value   = 3
+        value   = 3, -- will result in PatternMix.mode
     }
     self.pattern_matrix_row = self.vb:row{
         spacing = 3,
@@ -435,7 +435,7 @@ function MainUI:run_properties()
         follow_mute = self.follow_mute_checkbox.value,
         follow_track_instrument        = self.follow_track_instrument_checkbox.value,
         only_current_playback_position = self.current_playback_position_checkbox.value,
-        pattern_matrix = self.pattern_matrix_switch.value - 1,
+        pattern_mix_mode = self.pattern_matrix_switch.value - 1,
         pagination_factor = page_factor,
     }
 end

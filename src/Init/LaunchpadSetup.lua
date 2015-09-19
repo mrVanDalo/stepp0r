@@ -134,12 +134,12 @@ function LaunchpadSetup:connect_it_selection()
     self.it_selection:connect()
 end
 
-function LaunchpadSetup:set_pattern_matrix_number(number)
-    if number == 0 then
-        self.pattern_mix:set_number_of_mix_patterns(number)
+function LaunchpadSetup:set_pattern_mix_mode(mode)
+    if mode == 0 then
+        self.pattern_mix:set_mode(mode)
         self.use_pattern_matrix = false
     else
-        self.pattern_mix:set_number_of_mix_patterns(number)
+        self.pattern_mix:set_mode(mode)
         self.use_pattern_matrix = true
     end
 end
