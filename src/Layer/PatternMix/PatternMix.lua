@@ -65,10 +65,10 @@ end
 
 function PatternMix:__create_callback_set_instrument()
     self.callback_set_instrument =  function (instrument_idx, track_idx, column_idx)
-        -- make sure there is always a pattern set for an instrument
-        -- fixme : this creates a bug : selecting a new pattern and than switching to
-        --         edit mode and pessing an instrument will remove the selection just made in delayed mode
-        self:_adjuster_next_pattern()
+        -- if the current mix pattern is empty fill it with the default value
+        if not Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx) then
+            self:_adjuster_next_pattern()
+        end
     end
 end
 
