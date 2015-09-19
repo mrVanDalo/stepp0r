@@ -1,6 +1,6 @@
 
 function PatternMix:__init_current_and_next()
-    self.current_mix_pattern         = nil   -- rename me to current_mix_pattern
+    self.current_mix_pattern        = nil
     self.next_mix_pattern           = nil
 end
 
@@ -48,36 +48,36 @@ end
 
 -- @returns the mix pattern which should be used to alias the next pattern in.
 function PatternMix:_next_mix_pattern()
-    if (self.pattern_mix_1 and self.pattern_mix_2) then
-        if self.current_mix_pattern == self.pattern_mix_2 then
-            return self.pattern_mix_1
+    if (self.area.first.pattern and self.area.second.pattern) then
+        if self.current_mix_pattern == self.area.second.pattern then
+            return self.area.first.pattern
         else
-            return self.pattern_mix_2
+            return self.area.second.pattern
         end
     end
     -- there is only one pattern mix available
-    if self.pattern_mix_1 then
-        return self.pattern_mix_1
+    if self.area.first.pattern then
+        return self.area.first.pattern
     end
-    if self.pattern_mix_2 then
-        return self.pattern_mix_2
+    if self.area.second.pattern then
+        return self.area.second.pattern
     end
 end
 -- @returns the mix pattern which is played right now
 function PatternMix:_current_mix_pattern()
-    if (self.pattern_mix_1 and self.pattern_mix_2) then
-        if renoise.song().selected_pattern == self.pattern_mix_2 then
-            return self.pattern_mix_2
+    if (self.area.first.pattern and self.area.second.pattern) then
+        if renoise.song().selected_pattern == self.area.second.pattern then
+            return self.area.second.pattern
         else
-            return self.pattern_mix_1
+            return self.area.first.pattern
         end
     end
     -- there is only one pattern mix available
-    if self.pattern_mix_1 then
-        return self.pattern_mix_1
+    if self.area.first.pattern then
+        return self.area.first.pattern
     end
-    if self.pattern_mix_2 then
-        return self.pattern_mix_2
+    if self.area.second.pattern then
+        return self.area.second.pattern
     end
     return nil
 end

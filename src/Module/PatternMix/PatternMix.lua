@@ -22,8 +22,8 @@ PatternMixData = {
 }
 
 function PatternMix:__init()
-    self:__init_current_and_next()
     self:__init_area()
+    self:__init_current_and_next()
     --
     self.__update_callbacks         = {}
     --
@@ -82,11 +82,11 @@ function PatternMix:register_update_callback(callback)
 end
 function PatternMix:_update_callbacks()
     local sequence_idx_blacklist = {}
-    if self.pattern_mix_1_sequence_idx then
-        table.insert(sequence_idx_blacklist, self.pattern_mix_1_sequence_idx)
+    if self.area.first.idx then
+        table.insert(sequence_idx_blacklist, self.area.first.idx)
     end
-    if self.pattern_mix_2_sequence_idx then
-        table.insert(sequence_idx_blacklist, self.pattern_mix_2_sequence_idx)
+    if self.area.second.idx then
+        table.insert(sequence_idx_blacklist, self.area.second.idx)
     end
     local update = {
         current                = self.current_mix_pattern,
