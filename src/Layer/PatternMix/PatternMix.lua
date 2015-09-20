@@ -67,6 +67,10 @@ end
 function PatternMix:__create_callback_set_instrument()
     self.callback_set_instrument =  function (instrument_idx, track_idx, column_idx)
         -- if the current mix pattern is empty fill it with the default value
+        -- todo : don't do this here, what you wan't is to set a default pattern when
+        --        there is non set. Don't use adjust_next_pattern for that.
+        --        write a function only for that purpose and wire it to the
+        --        it_selection.idle hook
         if not Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx) then
             self:_adjuster_next_pattern()
         end
