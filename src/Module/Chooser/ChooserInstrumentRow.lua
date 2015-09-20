@@ -87,13 +87,15 @@ end
 
 function Chooser:_update_instrument_row()
     self:__clear_instrument_row()
+    self.it_selection:sync_track_with_instrument()
     for nr, instrument in ipairs(Renoise.instrument:list()) do
         local scaled_index = nr - self.inst_offset
         if scaled_index > 8 then break end
         if Renoise.instrument:exist(instrument) and scaled_index > 0 then
             -- mute state
             local mute_state = ChooserData.color.unmute
-            local track = self.it_selection:track_for_instrument(nr)
+--            local track = self.it_selection:track_for_instrument(nr)
+            local track = Renoise.sequence_track:track(nr)
             if track and (track.mute_state == TrackData.mute.off or track.mute_state == TrackData.mute.muted)  then
                 mute_state = ChooserData.color.mute
             end
@@ -104,7 +106,7 @@ function Chooser:_update_instrument_row()
             end
             -- group
             local group_state = ChooserData.color.group_a
-            local group_idx = Renoise.track:group_type_2(nr)
+            local group_idx = Renoise.sequence_track:group_type_2(nr)
             if group_idx == 0 then
                 group_state = ChooserData.color.group_b
             end
@@ -121,8 +123,9 @@ function Chooser:__clear_instrument_row()
 end
 
 function Chooser:__mute_track(x)
+    self.it_selection:sync_track_with_instrument()
     local active = self.inst_offset + x
-    local track = self.it_selection:track_for_instrument(active)
+    local track = Renoise.sequence_track:track(active)
     if track then
         if track.mute_state == TrackData.mute.active then
             track:mute()

@@ -9,8 +9,10 @@ end
 ---
 ---                                                 [ lib ]
 
+-- todo : make this faster
 function IT_Selection:ensure_column_idx_exists()
-    local track = self:track_for_instrument(self.instrument_idx)
+    self:sync_track_with_instrument()
+    local track = Renoise.sequence_track:track(self.instrument_idx)
     if track.visible_note_columns < self.column_idx then
         track.visible_note_columns = self.column_idx
     end

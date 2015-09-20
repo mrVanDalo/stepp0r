@@ -47,18 +47,11 @@ end
 function IT_Selection:__update_track_index(track_index)
     self.track_idx       = track_index
     self.column_idx      = 1
-    self:_update_instrument_index(self:__instrument_index_for_track(self.track_idx))
+    self:_update_instrument_index(Renoise.track:instrument_idx(self.track_idx))
     -- trigger callbacks
     self:_update_alias_listener(self.track_idx, self.pattern_idx)
     self:__update_set_instrument_listeners()
 end
-
---- return insturument index coresponding to the `track_index`
--- returns nil for not found
-function IT_Selection:__instrument_index_for_track(track_index)
-    return table.find(Renoise.track:sequencer_track_sequence(), track_index)
-end
-
 
 
 function IT_Selection:select_track_index(index)

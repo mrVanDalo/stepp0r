@@ -60,7 +60,7 @@ function PatternMatrix:__set_row_to_next_pattern(x)
     self:_ensure_sequence_idx_exist(sequence_idx)
     local pattern_idx  = renoise.song().sequencer.pattern_sequence[sequence_idx]
     for _,track_idx in pairs(self:__all_tracks()) do
-        self:_set_mix_to_pattern(track_idx, pattern_idx)
+        self:_set_next(track_idx, pattern_idx)
     end
     self:_refresh_matrix()
 end
@@ -69,11 +69,11 @@ function PatternMatrix:__copy_pattern_row(x)
     self:_ensure_sequence_idx_exist(sequence_idx)
     local pattern_idx  = renoise.song().sequencer.pattern_sequence[sequence_idx]
     for _,track_idx in pairs(self:__all_tracks()) do
-        local alias_idx   = self:_get_pattern_alias_idx(self.active_mix_pattern, track_idx)
-        if alias_idx ~= -1 then
+        local alias_idx = Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx)
+        if alias_idx then
             local source_pattern_track = renoise.song().patterns[alias_idx].tracks[track_idx]
             renoise.song().patterns[pattern_idx].tracks[track_idx]:copy_from(source_pattern_track)
-            self:_set_mix_to_pattern(track_idx, pattern_idx)
+            self:_set_next(track_idx, pattern_idx)
         end
     end
     self:_refresh_matrix()

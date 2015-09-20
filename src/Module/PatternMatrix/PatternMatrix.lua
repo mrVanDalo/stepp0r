@@ -6,11 +6,11 @@
 class "PatternMatrix" (Module)
 
 require 'Module/PatternMatrix/PatternMatrixLaunchpadMatrix'
-require 'Module/PatternMatrix/PatternMatrixPatterns'
+require 'Module/PatternMatrix/PatternMatrixPatternMix'
 require 'Module/PatternMatrix/PatternMatrixPatternMatrix'
 require 'Module/PatternMatrix/PatternMatrixPaginator'
 require 'Module/PatternMatrix/PatternMatrixModes'
-require 'Module/PatternMatrix/PatternMatrixTrack'
+require 'Module/PatternMatrix/PatternMatrixIT_Selection'
 require 'Module/PatternMatrix/PatternMatrixSideRow'
 
 PatternMatrixData = {
@@ -81,21 +81,8 @@ function PatternMatrix:__create_color_map()
     self.color[full  + no_mix + active   + group_b ] = BlinkColor[2][3]
     self.color[full  + no_mix + inactive + group_b ] = NewColor[2][3]
 
-
---    self.color[empty + set    + active   ] = Color.dim.green
---    self.color[empty + set    + inactive ] = Color.empty
---    self.color[empty + next   + active   ] = Color.dim.red
---    self.color[empty + next   + inactive ] = Color.empty
---    self.color[empty + no_mix + active   ] = Color.empty
---    self.color[empty + no_mix + inactive ] = Color.empty
---    self.color[full  + set    + active   ] = Color.flash.green
---    self.color[full  + set    + inactive ] = Color.green
---    self.color[full  + next   + active   ] = Color.flash.red
---    self.color[full  + next   + inactive ] = Color.red
---    self.color[full  + no_mix + active   ] = Color.yellow
---    self.color[full  + no_mix + inactive ] = Color.yellow
-
 end
+
 function PatternMatrix:__init()
     Module:__init(self)
     --
@@ -107,8 +94,8 @@ function PatternMatrix:__init()
     }
     --
     self:__init_paginator()
-    self:__init_patterns()
-    self:__init_track()
+    self:__init_pattern_mix()
+    self:__init_it_selection()
     self:__init_pattern_matrix()
     self:__init_launchpad()
     self:__init_modes()
@@ -119,8 +106,8 @@ end
 
 function PatternMatrix:_activate()
     self:__activate_paginator()
-    self:__activate_patterns()
-    self:__activate_track()
+    self:__activate_pattern_mix()
+    self:__activate_it_selection()
     self:__activate_pattern_matrix()
     self:__activate_launchpad()
     self:__activate_modes()
@@ -130,8 +117,8 @@ end
 function PatternMatrix:_deactivate()
     self:__deactivate_launchpad()
     self:__deactivate_paginator()
-    self:__deactivate_patterns()
-    self:__deactivate_track()
+    self:__deactivate_pattern_mix()
+    self:__deactivate_it_selection()
     self:__deactivate_pattern_matrix()
     self:__deactivate_modes()
     self:__deactivate_side_row()

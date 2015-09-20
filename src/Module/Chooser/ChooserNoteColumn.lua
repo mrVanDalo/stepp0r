@@ -43,8 +43,9 @@ function Chooser:__create_column_update_listener()
 end
 
 function Chooser:_update_column_knobs()
-    -- todo us the constant here ?
-    local track = self.it_selection:track_for_instrument(self.instrument_idx)
+    -- todo : make this more efficiant
+    self.it_selection:sync_track_with_instrument()
+    local track = Renoise.sequence_track:track(self.instrument_idx)
     local visible = track.visible_note_columns + self.column_idx_start
     for i = self.column_idx_start, self.column_idx_stop do
         local color = self.color.column.invisible

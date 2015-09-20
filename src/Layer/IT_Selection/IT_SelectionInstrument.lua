@@ -2,6 +2,8 @@
 function IT_Selection:_init_instrument()
     self.instrument_idx = 1
     self.callback_select_instrument = {}
+    self.instrument_fingerprint = ""
+    self.track_fingerprint = ""
 end
 
 --- register callback
@@ -21,36 +23,44 @@ function IT_Selection:__update_set_instrument_listeners()
     end
 end
 
---- return sequencer track of given instrument
-function IT_Selection:track_for_instrument(instrument_number)
-    local track_idx = self:track_index_for_instrument(instrument_number)
-    return renoise.song().tracks[track_idx]
-end
+--- syncs tracks with instruments (only add tracks)
+-- @returns true if there was a change else false
+function IT_Selection:sync_track_with_instrument()
+    -- todo : don't call this function => create a callback hook for that
+    --        so other modules can update them self.
+    local instrument_fingerprint = Renoise.instrument:fingerprint()
+    local track_fingerprint = Renoise.sequence_track:fingerprint()
 
---- return sequencer track number of given instrument
--- todo : rename to sequence_track
-function IT_Selection:track_index_for_instrument(instrument_number)
-    Renoise.track:ensure_sequencer_track_idx_exist(instrument_number)
-    return Renoise.track:sequencer_track_sequence()[instrument_number]
-end
+    if  instrument_fingerprint == self.instrument_fingerprint and
+            track_fingerprint == self.track_fingerprint
+    then
+        return  false
+    end
+    self.instrument_fingerprint = instrument_fingerprint
+    self.track_fingerprint = track_fingerprint
 
+    Renoise.sequence_track:ensure_exist(Renoise.instrument:last_idx())
+    return true
+end
 
 function IT_Selection:_update_instrument_index(instrument_idx)
     if (instrument_idx)  then
         self.instrument_idx = instrument_idx
         if (self.follow_track_instrument) then
-            renoise.song().selected_instrument_index = self.instrument_idx
+            Renoise.instrument:select_idx(instrument_idx)
         end
     end
 end
+
 
 --- updated the selected instrument
 -- don't call this on the selected_track_notifier
 function IT_Selection:select_instrument(instrument_idx)
     local  name = Renoise.instrument:name_for_index(instrument_idx)
     if not name then return end
+    self:sync_track_with_instrument()
     self:_update_instrument_index(instrument_idx)
-    self.track_idx          = self:track_index_for_instrument(self.instrument_idx)
+    self.track_idx          = Renoise.sequence_track:track_idx(self.instrument_idx)
     self.column_idx         = 1
     self:select_track_index(self.track_idx)
     Renoise.track:rename_index(self.track_idx, name)

@@ -65,7 +65,7 @@ function create_main_UI()
             launchpad_setup:unset_follow_mute()
         end
 
-        launchpad_setup:set_pattern_matrix_number(options.pattern_matrix)
+        launchpad_setup:set_pattern_mix_mode(options.pattern_mix_mode)
         launchpad_setup:set_pagination_factor(options.pagination_factor)
         launchpad_setup:set_only_current_playback_position(options.only_current_playback_position)
         if options.follow_track_instrument then
