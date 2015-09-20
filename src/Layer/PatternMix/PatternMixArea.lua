@@ -73,8 +73,8 @@ function PatternMix:__ensure_area_exist()
     local idx_1 = renoise.song().sequencer:pattern(1)
     renoise.song().patterns[idx_1].name =  PatternMixData.row.mix_1
     renoise.song().transport.loop_sequence_range = {1,2}
-    renoise.song().sequencer:set_sequence_section_name(3, self.pattern_list_title)
-    renoise.song().sequencer:set_sequence_is_start_of_section(3,true)
+    renoise.song().sequencer:set_sequence_section_name(PatternMixData.first_sequence_idx, self.pattern_list_title)
+    renoise.song().sequencer:set_sequence_is_start_of_section(PatternMixData.first_sequence_idx,true)
     renoise.song().transport.follow_player = true
     renoise.song().sequencer:set_sequence_section_name(1, self.mix_pattern_title)
     renoise.song().sequencer:set_sequence_is_start_of_section(1,true)

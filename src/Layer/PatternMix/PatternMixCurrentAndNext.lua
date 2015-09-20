@@ -30,7 +30,7 @@ function PatternMix:set_next(track_idx, pattern_idx)
         -- set alias
         if not pattern_idx then
             -- use default pattern
-            local default_idx = renoise.song().sequencer:pattern(3) -- todo : no magic numbers
+            local default_idx = renoise.song().sequencer:pattern(PatternMixData.first_sequence_idx)
             track.alias_pattern_index = default_idx
         else
             track.alias_pattern_index = pattern_idx

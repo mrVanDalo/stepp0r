@@ -22,6 +22,7 @@ PatternMixData = {
         delayed   = 2,
         instantly = 1,
     },
+    first_sequence_idx = 3, -- the first sequence after the mix area
 
 }
 
