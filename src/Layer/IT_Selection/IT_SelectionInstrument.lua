@@ -22,12 +22,17 @@ function IT_Selection:__update_set_instrument_listeners()
     end
 end
 
+--- syncs tracks with instruments (only add tracks)
+-- @returns true if there was a change else false
 function IT_Selection:sync_track_with_instrument()
+    -- todo : don't call this function => create a callback hook for that
+    --        so other modules can update them self.
     local fingerprint = Renoise.instrument:fingerprint()
-    if fingerprint == self.instrument_fingerprint then return end
+    if fingerprint == self.instrument_fingerprint then return false end
     self.instrument_fingerprint = fingerprint
 
     Renoise.sequence_track:ensure_exist(Renoise.instrument:last_idx())
+    return true
 end
 
 function IT_Selection:_update_instrument_index(instrument_idx)

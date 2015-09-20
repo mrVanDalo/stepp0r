@@ -10,7 +10,7 @@ require 'Module/PatternMatrix/PatternMatrixPatternMix'
 require 'Module/PatternMatrix/PatternMatrixPatternMatrix'
 require 'Module/PatternMatrix/PatternMatrixPaginator'
 require 'Module/PatternMatrix/PatternMatrixModes'
-require 'Module/PatternMatrix/PatternMatrixTrack'
+require 'Module/PatternMatrix/PatternMatrixIT_Selection'
 require 'Module/PatternMatrix/PatternMatrixSideRow'
 
 PatternMatrixData = {
@@ -95,7 +95,7 @@ function PatternMatrix:__init()
     --
     self:__init_paginator()
     self:__init_pattern_mix()
-    self:__init_track()
+    self:__init_it_selection()
     self:__init_pattern_matrix()
     self:__init_launchpad()
     self:__init_modes()
@@ -107,7 +107,7 @@ end
 function PatternMatrix:_activate()
     self:__activate_paginator()
     self:__activate_pattern_mix()
-    self:__activate_track()
+    self:__activate_it_selection()
     self:__activate_pattern_matrix()
     self:__activate_launchpad()
     self:__activate_modes()
@@ -118,7 +118,7 @@ function PatternMatrix:_deactivate()
     self:__deactivate_launchpad()
     self:__deactivate_paginator()
     self:__deactivate_pattern_mix()
-    self:__deactivate_track()
+    self:__deactivate_it_selection()
     self:__deactivate_pattern_matrix()
     self:__deactivate_modes()
     self:__deactivate_side_row()

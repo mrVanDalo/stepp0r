@@ -226,6 +226,7 @@ function LaunchpadSetup:wire()
     self.pattern_matrix = PatternMatrix()
     self.pattern_matrix:wire_launchpad(self.pad)
     self.pattern_matrix:wire_pattern_mix(self.pattern_mix)
+    self.pattern_matrix:wire_it_selection(self.it_selection)
     --
     self.track_paginator = TrackPaginator()
     self.track_paginator:wire_launchpad(self.pad)
@@ -278,7 +279,8 @@ function LaunchpadSetup:wire()
     --
     self.it_selection:register_idle(self.editor.idle_callback)
     self.it_selection:register_idle(self.adjuster.idle_callback)
-    self.it_selection:register_idle(self.chooser.idle_callback)
+    self.it_selection:register_idle(self.chooser.idle_callback) -- sync track with instrument is done here
+    self.it_selection:register_idle(self.pattern_matrix.idle_callback) -- sync track with instrument is done here
     --
     self.pattern_mix:register_update_callback(self.pattern_matrix.pattern_mix_update_callback)
 
