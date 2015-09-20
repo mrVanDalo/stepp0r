@@ -12,7 +12,7 @@ function PatternMix:__deactivate_current_and_next()
 end
 
 function PatternMix:_adjuster_next_pattern()
-    print("adjust next pattern")
+--    print("adjust next pattern")
     for _,track_idx in pairs(Renoise.track:list_idx()) do
         local pattern_idx = Renoise.pattern_matrix:alias_idx(self.current_mix_pattern, track_idx)
         self:set_next(track_idx, pattern_idx)
@@ -56,9 +56,9 @@ end
 
 function PatternMix:_update_current_and_next()
     self.current_mix_pattern = self:_current_mix_pattern()
-    print("found current_mix_pattern at : ", self.current_mix_pattern.name)
+--    print("found current_mix_pattern at : ", self.current_mix_pattern.name)
     self.next_mix_pattern   = self:_next_mix_pattern()
-    print("found next_mix_pattern at : ", self.next_mix_pattern.name)
+--    print("found next_mix_pattern at : ", self.next_mix_pattern.name)
 end
 
 -- @returns the mix pattern which should be used to alias the next pattern in.

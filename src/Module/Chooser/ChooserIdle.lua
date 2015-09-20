@@ -15,7 +15,7 @@ function Chooser:__create_idle_callback()
         local fingerprint = Renoise.instrument:fingerprint()
         if self.instrument_fingerprint == fingerprint then return end
         self.instrument_fingerprint = fingerprint
-        print("instruments changed")
+--        print("instruments changed")
         self:_update_instrument_row()
     end
 end
