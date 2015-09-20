@@ -57,8 +57,9 @@ function InstrumentObject:last_idx()
     return result
 end
 
--- a fingerprint to check if something changed
+--- a fingerprint to check if something changed
 function InstrumentObject:fingerprint()
+    -- todo : this must be very fast because it's called a lot of times
     local map = function (instrument)
         if self:exist(instrument) then
             return "1"

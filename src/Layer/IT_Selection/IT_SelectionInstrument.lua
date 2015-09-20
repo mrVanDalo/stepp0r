@@ -3,6 +3,7 @@ function IT_Selection:_init_instrument()
     self.instrument_idx = 1
     self.callback_select_instrument = {}
     self.instrument_fingerprint = ""
+    self.track_fingerprint = ""
 end
 
 --- register callback
@@ -27,9 +28,16 @@ end
 function IT_Selection:sync_track_with_instrument()
     -- todo : don't call this function => create a callback hook for that
     --        so other modules can update them self.
-    local fingerprint = Renoise.instrument:fingerprint()
-    if fingerprint == self.instrument_fingerprint then return false end
-    self.instrument_fingerprint = fingerprint
+    local instrument_fingerprint = Renoise.instrument:fingerprint()
+    local track_fingerprint = Renoise.sequence_track:fingerprint()
+
+    if  instrument_fingerprint == self.instrument_fingerprint and
+            track_fingerprint == self.track_fingerprint
+    then
+        return  false
+    end
+    self.instrument_fingerprint = instrument_fingerprint
+    self.track_fingerprint = track_fingerprint
 
     Renoise.sequence_track:ensure_exist(Renoise.instrument:last_idx())
     return true

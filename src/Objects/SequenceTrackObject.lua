@@ -69,6 +69,19 @@ function SequenceTrackObject:count()
 end
 
 
+--- a fingerprint to check if something changed
+function SequenceTrackObject:fingerprint()
+    local result = ""
+
+    local track_indecies = self:map_track_idx()
+    local group_indecies = self:map_group_idx()
+
+    for nr,track_idx in ipairs( track_indecies ) do
+        result = result .. track_idx .. group_indecies[nr]
+    end
+    return result
+end
+
 
 
 
