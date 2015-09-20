@@ -2,6 +2,7 @@
 function IT_Selection:_init_instrument()
     self.instrument_idx = 1
     self.callback_select_instrument = {}
+    self.instrument_fingerprint = ""
 end
 
 --- register callback
@@ -21,18 +22,13 @@ function IT_Selection:__update_set_instrument_listeners()
     end
 end
 
---- return sequencer track of given instrument
-function IT_Selection:track_for_instrument(instrument_number)
-    Renoise.sequence_track:ensure_exist(instrument_number)
-    return Renoise.sequence_track:track(instrument_number)
-end
+function IT_Selection:sync_track_with_instrument()
+    local fingerprint = Renoise.instrument:fingerprint()
+    if fingerprint == self.instrument_fingerprint then return end
+    self.instrument_fingerprint = fingerprint
 
---- return sequencer track number of given instrument
-function IT_Selection:track_index_for_instrument(instrument_number)
-    Renoise.sequence_track:ensure_exist(instrument_number)
-    return Renoise.sequence_track:track_idx(instrument_number)
+    Renoise.sequence_track:ensure_exist(Renoise.instrument:last_idx())
 end
-
 
 function IT_Selection:_update_instrument_index(instrument_idx)
     if (instrument_idx)  then
@@ -43,13 +39,15 @@ function IT_Selection:_update_instrument_index(instrument_idx)
     end
 end
 
+
 --- updated the selected instrument
 -- don't call this on the selected_track_notifier
 function IT_Selection:select_instrument(instrument_idx)
     local  name = Renoise.instrument:name_for_index(instrument_idx)
     if not name then return end
+    self:sync_track_with_instrument()
     self:_update_instrument_index(instrument_idx)
-    self.track_idx          = self:track_index_for_instrument(self.instrument_idx)
+    self.track_idx          = Renoise.sequence_track:track_idx(self.instrument_idx)
     self.column_idx         = 1
     self:select_track_index(self.track_idx)
     Renoise.track:rename_index(self.track_idx, name)
