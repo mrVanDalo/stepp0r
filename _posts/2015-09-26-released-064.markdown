@@ -9,6 +9,8 @@ abstract: "Wrapped up the fixes I made for this event."
 
 [Renoise Workshop Berlin](https://www.facebook.com/events/1655779038001256/)
 
+The main focus was on bug-fixes and adding colors for grouping.
+
 Here is the Changelog
 
 * Selecting a track where there is no instrument yet for, it results in an `exception` `bug`
