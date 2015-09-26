@@ -6,6 +6,20 @@ permalink: /changelog/
 
 Version names by Estonian Marathon Champions
 
+
+## 0.64 Renoise Workshop (Berlin) release
+
+* Selecting a track where there is no instrument yet for, it results in an `exception` `bug`
+* Groups mess up the instrument row and pattern matrix sync `bug`
+* Instrument Row is not updated quick enough `enhancement`
+* remove print-lines `bug`
+* fix play and record button `bug`
+* Pattern Matrix and track groups `enhancement`
+* Pattern mix add Instrument in later stage bug `enhancement` `tech-enhancement`
+* dodgy usb cable generates lockup `bug`
+* Some kind of Pattern Matrix control `enhancement`
+
+
 ## 0.60 Meelis Veilberg
 
 * pagination of instruments should be configurable in the ui `enhancement`
