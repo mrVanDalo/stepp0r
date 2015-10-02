@@ -10,7 +10,7 @@ You can
 * arange patterns on the pattern matrix
 * you can use the keyboard to record your melodies using the osc server inside of [Renoise](http://www.renoise.com/).
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='http://www.youtube.com/embed/eiH6HfF6MQ8' frameborder='0' allowfullscreen></iframe></div>
+<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='https://www.youtube.com/embed/gmR9wrsgWDQ' frameborder='0' allowfullscreen></iframe></div>
 
 ## You want to start using it? 
 * Buy a launchpad (at [ebay](http://www.ebay.com/sch/Musical-Instruments-Gear-/619/i.html?_nkw=novation+launchpad&rt=nc&LH_Auction=1) for example).
