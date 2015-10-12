@@ -30,7 +30,7 @@
 }
 
 .custom-toggle .bar {
-    background-color: #777;
+    background-color: black;
     display: block;
     width: 20px;
     height: 2px;
@@ -74,6 +74,7 @@
     }
 }
 
-.menu-link {
-    color: green;
+
+.menu-item > .menu-link {
+    color: black;
 }
