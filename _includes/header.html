@@ -12,51 +12,50 @@
     <div class="pure-u-1 pure-u-md-2-3">
         <div class="pure-menu pure-menu-horizontal custom-can-transform">
             <ul class="pure-menu-list">
-                <li class="pure-menu-item"><a class="pure-menu-link" href="{{ site.baseurl }}/documentation/">Documentation</a></li>
-                <li class="pure-menu-item"><a class="pure-menu-link" href="{{ site.baseurl }}/videos/">Videos</a></li>
-                <li class="pure-menu-item"><a class="pure-menu-link" href="{{ site.baseurl }}/changelog/"> Changelog </a></li>
-                <li class="pure-menu-item"><a class="pure-menu-link" href="{{ site.baseurl }}/downloads/"> Downloads </a></li>
-                <li class="pure-menu-item"><a class="pure-menu-link" href="{{ site.baseurl }}/about/"> About </a></li>
+                <li class="pure-menu-item"><a class="menu-link pure-menu-link" href="{{ site.baseurl }}/documentation/">Documentation</a></li>
+                <li class="pure-menu-item"><a class="menu-link pure-menu-link" href="{{ site.baseurl }}/videos/">Videos</a></li>
+                <li class="pure-menu-item"><a class="menu-link pure-menu-link" href="{{ site.baseurl }}/changelog/"> Changelog </a></li>
+                <li class="pure-menu-item"><a class="menu-link pure-menu-link" href="{{ site.baseurl }}/downloads/"> Downloads </a></li>
+                <li class="pure-menu-item"><a class="menu-link pure-menu-link" href="{{ site.baseurl }}/about/"> About </a></li>
             </ul>
         </div>
     </div>
 </div>
-
 <script>
 (function (window, document) {
     var menu = document.getElementById('menu'),
-        WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
+    WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
 
     function toggleHorizontal() {
-            [].forEach.call(
-                            document.getElementById('menu').querySelectorAll('.custom-can-transform'),
-                                    function(el){
-                                                    el.classList.toggle('pure-menu-horizontal');
-                                                            }
-                                                                );
+        [].forEach.call(
+                document.getElementById('menu').querySelectorAll('.custom-can-transform'),
+                function(el){
+                    el.classList.toggle('pure-menu-horizontal');
+                }
+                );
     };
 
     function toggleMenu() {
-            // set timeout so that the panel has a chance to roll up
-            // before the menu switches states
-            if (menu.classList.contains('open')) {
-                        setTimeout(toggleHorizontal, 500);
-                            }
-                else {
-                            toggleHorizontal();
-                                }
-                    menu.classList.toggle('open');
-                        document.getElementById('toggle').classList.toggle('x');
+        // set timeout so that the panel has a chance to roll up
+        // before the menu switches states
+        if (menu.classList.contains('open')) {
+            setTimeout(toggleHorizontal, 500);
+        }
+        else {
+            toggleHorizontal();
+        }
+        menu.classList.toggle('open');
+        document.getElementById('toggle').classList.toggle('x');
     };
 
     function closeMenu() {
-            if (menu.classList.contains('open')) {
-                        toggleMenu();
-                            }
+        if (menu.classList.contains('open')) {
+            toggleMenu();
+        }
     }
 
     document.getElementById('toggle').addEventListener('click', function (e) {
-            toggleMenu();
+        toggleMenu();
     });
 
     window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);

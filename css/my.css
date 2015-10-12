@@ -1,6 +1,6 @@
 
 .custom-wrapper {
-    background-color: #ffd390;
+    background-color: #0093b5;
     margin-bottom: 1em;
     -webkit-font-smoothing: antialiased;
     height: 2.1em;
@@ -66,13 +66,14 @@
 }
 
 @media (max-width: 47.999em) {
-
     .custom-menu-3 {
         text-align: left;
     }
-
     .custom-toggle {
         display: block;
     }
+}
 
+.menu-link {
+    color: green;
 }
