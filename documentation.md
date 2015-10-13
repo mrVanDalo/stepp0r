@@ -20,7 +20,8 @@ which already exists.
 
 The first mode you see, to *edit* the **Pattern** selected in **Renoise**.
 
-<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-PatternEditorMode.svg" alt="Launchpad Parts" />
+<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-PatternEditorMode.svg" alt="Launchpad Parts" />
+
 
 
 ### Keyboard

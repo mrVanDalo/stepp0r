@@ -3,7 +3,7 @@
     background-color: #333333;
     margin-bottom: 1em;
     -webkit-font-smoothing: antialiased;
-    height: 3.0em;
+    height: 2.5em;
     overflow: hidden;
     -webkit-transition: height 0.5s;
     -moz-transition: height 0.5s;
@@ -31,7 +31,7 @@
 }
 
 .custom-toggle .bar {
-    background-color: black;
+    background-color: white;
     display: block;
     width: 20px;
     height: 2px;
@@ -75,11 +75,13 @@
     }
 }
 
+
+
+
 body {
     background-color: #dbdbd5;
+    font-family: 'Segoe UI',Helvetica,Arial,Verdana,sans-serif;
 }
-
-
 
 .menu-item > .menu-link {
     color: white;
@@ -87,12 +89,9 @@ body {
 
 .pure-g > div {
     box-sizing: border-box;
-    padding:5px;
+    padding:1px;
 }
 
-.pure-g > div > .pure-button{
-    //width:100%;
-}
 
 .logo {
     position: relative;
@@ -100,17 +99,41 @@ body {
 }
 
 .logo-buttons {
-    position: absolute;
-    width: 100%;
-    bottom:0;
-    left:0;
+    position: relative;
 }
+
+@media screen and (min-width: 35.5em) {
+    .logo-buttons {
+        position: absolute;
+        width: 100%;
+        bottom:0;
+        left:0;
+    }
+}
+
 
 .logo-button {
     background: #FFD700;
+    width:100%;
+    border: 1px solid #A55030;
 }
 
 .content {
-    width: 675px;
+    max-width: 675px;
     margin: auto;
+}
+
+.news-items {
+    list-style: none;
+    padding: 0px;
+}
+
+.news-item {
+    border-left: 5px solid #A55030;
+    margin: 4px 0px 4px 0px;
+    padding: 2px 5px 2px 5px;
+}
+
+.news-item > p {
+    padding: 0px 5px 0px 5px;
 }
