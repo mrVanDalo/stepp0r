@@ -86,6 +86,10 @@ body {
 .menu-item > .menu-link {
     color: white;
 }
+.menu-link:hover {
+    color: #A55030;
+    background: none;
+}
 
 .pure-g > div {
     box-sizing: border-box;
