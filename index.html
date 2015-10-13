@@ -1,68 +1,24 @@
 ---
 layout: default
 ---
-<div class="row">
-    <header>
-        <img src="{{ site.baseurl }}/assets/Stepp0r.svg" alt="Stepp0r" class="img-responsive center-block"/>
-    </header>
+<div class="content">
+    {% capture landing %}{% include landing_article.md %}{% endcapture %}
+    {{ landing | markdownify }}
 </div>
-<div class="row">
-    <div class="col-md-offset-1 col-md-1 hidden-xs hidden-sm">
-        <script id='fbupg0w'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=mrVanDalo&url=http%3A%2F%2Fmrvandalo.github.io%2Fsteppor%2F';f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbupg0w');</script>
-    </div>
-    <div class="col-md-8">
-        {% capture landing %}{% include landing_article.md %}{% endcapture %}
-        {{ landing | markdownify }}
-    </div>
-</div>
-<div class="row top-buffer">
-    <div class="col-md-4 col-md-offset-2 col-sm-6">
-        <div class="panel panel-default">
-            <a class="btn btn-block" href="{{ site.baseurl }}/downloads/{{ site.actual_version }}">
-                <div class="media panel-body">
-                    <div class="pull-left">
-                        <img class="img-responsive img-circle" src="{{ site.baseurl }}/assets/Download.svg" alt="Download" />
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Download</h4>
-                        The actual version.
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-6">
-        <div class="panel panel-default">
-            <a class="btn btn-block" href="https://github.com/mrVanDalo/stepp0r">
-                <div class="media panel-body">
-                    <div class="pull-left">
-                        <img class="img-responsive img-circle" src="{{ site.baseurl }}/assets/github-64px.png" alt="github" />
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Github</h4>
-                        Contribute Bug Enhancements
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-8 col-lg-offset-2">
-        <h2>News</h2>
-        <ul class="list-unstyled">
-            {% for post in site.posts %}
-            <li class="top-buffer">
-                <h4>
-                    <a class="" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }} </a>
-                    <small>{{ post.date | date: "%b %-d, %Y" }}</small>
-                </h4>
-                <p>
-                    {{ post.abstract }}
-                </p>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
+<div class="content">
+    <h2>News</h2>
+    <ul class="list-unstyled">
+        {% for post in site.posts %}
+        <li class="top-buffer">
+            <h4>
+                <a class="" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }} </a>
+                <small>{{ post.date | date: "%b %-d, %Y" }}</small>
+            </h4>
+            <p>
+            {{ post.abstract }}
+            </p>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 

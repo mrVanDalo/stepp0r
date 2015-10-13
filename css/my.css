@@ -78,3 +78,28 @@
 .menu-item > .menu-link {
     color: black;
 }
+
+.pure-g > div {
+    box-sizing: border-box;
+    padding:5px;
+}
+
+.pure-g > div > .pure-button{
+    #width:100%;
+}
+
+.logo{
+    position: relative;
+}
+
+.logo-buttons {
+    position: absolute;
+    width: 100%;
+    bottom:0;
+    left:0;
+}
+
+.content {
+    width: 675px;
+    margin: auto;
+}
