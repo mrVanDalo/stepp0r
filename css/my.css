@@ -1,14 +1,15 @@
 
 .custom-wrapper {
-    background-color: #0093b5;
+    background-color: #333333;
     margin-bottom: 1em;
     -webkit-font-smoothing: antialiased;
-    height: 2.1em;
+    height: 3.0em;
     overflow: hidden;
     -webkit-transition: height 0.5s;
     -moz-transition: height 0.5s;
     -ms-transition: height 0.5s;
     transition: height 0.5s;
+    border-bottom: 5px solid #A55030;
 }
 
 .custom-wrapper.open {
@@ -74,9 +75,14 @@
     }
 }
 
+body {
+    background-color: #dbdbd5;
+}
+
+
 
 .menu-item > .menu-link {
-    color: black;
+    color: white;
 }
 
 .pure-g > div {
@@ -88,8 +94,9 @@
     #width:100%;
 }
 
-.logo{
+.logo {
     position: relative;
+    background-color: #dbdbd5;
 }
 
 .logo-buttons {
@@ -97,6 +104,10 @@
     width: 100%;
     bottom:0;
     left:0;
+}
+
+.logo-button {
+    background: #FFD700;
 }
 
 .content {
