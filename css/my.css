@@ -1,7 +1,6 @@
 
 .custom-wrapper {
     background-color: #333333;
-    margin-bottom: 1em;
     -webkit-font-smoothing: antialiased;
     height: 2.5em;
     overflow: hidden;
@@ -99,7 +98,6 @@ body {
 
 .logo {
     position: relative;
-    background-color: #dbdbd5;
 }
 
 .logo-buttons {
@@ -109,12 +107,25 @@ body {
 @media screen and (min-width: 35.5em) {
     .logo-buttons {
         position: absolute;
-        width: 100%;
+        //min-width:35.5em;
+        //max-width: 675px;
+        width:100%;
         bottom:0;
         left:0;
     }
 }
 
+.logo-label {
+    position: absolute;
+    width: 100%;
+    top:0;
+    left:0;
+}
+
+.logo-background {
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .logo-button {
     background: #FFD700;
