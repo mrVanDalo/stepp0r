@@ -87,7 +87,19 @@ h1, h2, h3, h4, h5, h6, a, a.pure-button {
     font-family: 'Exo', sans-serif;
 }
 
+/* unvisited link */
+/* visited link */
+a:link, a:visited {
+    color: #A55030;
+    text-decoration: none;
+}
 
+/* mouse over link */
+/* selected link */
+a:hover, a:active {
+    color: black;
+    text-decoration: none;
+}
 
 .pure-g > div {
     box-sizing: border-box;
@@ -122,8 +134,9 @@ h1, h2, h3, h4, h5, h6, a, a.pure-button {
     margin:auto;
 }
 
-.logo-button {
+a.logo-button {
     background: #FFD700;
+    color: black;
     width:100%;
     border: 1px solid #A55030;
 }
