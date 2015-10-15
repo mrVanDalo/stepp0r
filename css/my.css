@@ -130,7 +130,7 @@ a:hover, a:active {
 }
 
 .logo-buttons > div {
-    max-width: 675px;
+    max-width: 40em;
     margin:auto;
 }
 
@@ -165,7 +165,8 @@ a.logo-button {
 /* content */
 
 .content {
-    max-width: 675px;
+    max-width: 40em;
+    padding: 0 .5em 0 .5em;
     margin: auto;
 }
 
