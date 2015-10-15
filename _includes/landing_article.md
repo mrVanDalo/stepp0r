@@ -3,7 +3,8 @@ on the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad
 written by Ingolf Wagner (aka [Palo van Dalo](https://soundcloud.com/palo-van-dalo)).
 Right now, it's working fine as a _"forget the computer"_ type control.
 
-You can 
+You can
+
 * punch in your sequences, 
 * arange patterns on the pattern matrix
 * you can use the keyboard to record your melodies using the osc server inside of [Renoise](http://www.renoise.com/).

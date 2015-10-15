@@ -82,6 +82,13 @@ body {
     font-family: 'Segoe UI',Helvetica,Arial,Verdana,sans-serif;
 }
 
+.pure-g > div {
+    box-sizing: border-box;
+    padding:1px;
+}
+
+/* menu */
+
 .menu-item > .menu-link {
     color: white;
 }
@@ -90,41 +97,22 @@ body {
     background: none;
 }
 
-.pure-g > div {
-    box-sizing: border-box;
-    padding:1px;
-}
-
+/* logo */
 
 .logo {
     position: relative;
 }
 
+/* logo buttons */
+
 .logo-buttons {
+    display:none;
     position: relative;
 }
 
-@media screen and (min-width: 35.5em) {
-    .logo-buttons {
-        position: absolute;
-        //min-width:35.5em;
-        //max-width: 675px;
-        width:100%;
-        bottom:0;
-        left:0;
-    }
-}
-
-.logo-label {
-    position: absolute;
-    width: 100%;
-    top:0;
-    left:0;
-}
-
-.logo-background {
-    margin-left: auto;
-    margin-right: auto;
+.logo-buttons > div {
+    max-width: 675px;
+    margin:auto;
 }
 
 .logo-button {
@@ -133,10 +121,35 @@ body {
     border: 1px solid #A55030;
 }
 
+/* logo label */
+
+.logo-label {
+    position: absolute;
+    width: 100%;
+    top:1em;
+    left:0;
+}
+
+.logo-label > div {
+    max-width: 800px;
+    margin:auto;
+}
+
+/* logo background */
+
+.logo-background {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* content */
+
 .content {
     max-width: 675px;
     margin: auto;
 }
+
+/* new items */
 
 .news-items {
     list-style: none;
@@ -146,9 +159,47 @@ body {
 .news-item {
     border-left: 5px solid #A55030;
     margin: 4px 0px 4px 0px;
-    padding: 2px 5px 2px 5px;
+    padding: 0.8em 1em 0.8em 1em;
+    background: #c9c9bb;
 }
 
 .news-item > p {
     padding: 0px 5px 0px 5px;
 }
+
+/* sm */
+@media screen and (min-width: 35.5em) {
+    .logo-label{
+        top:0;
+    }
+    .logo-buttons {
+        position: absolute;
+        display: block;
+        width:100%;
+        bottom:0;
+        left:0;
+    }
+    .logo-button {
+        padding: 0.8em 0 0.8em 0;
+        font-size: 125%;
+    }
+}
+/* md */
+@media screen and (min-width: 48em){
+    .logo-label{
+        top:.8em;
+    }
+}
+/* lg */
+@media screen and (min-width: 64em){
+    .logo-label{
+        top:2.4em;
+    }
+}
+/* xl */
+@media screen and (min-width: 80em){
+    .logo-label{
+        top:5em;
+    }
+}
+
