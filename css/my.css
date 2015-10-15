@@ -80,7 +80,7 @@
 body {
     background-color: #dbdbd5;
     font-family: 'Open Sans', sans-serif;
-    font-size:125%;
+    font-size:110%;
 }
 
 h1, h2, h3, h4, h5, h6, a, a.pure-button {
@@ -171,6 +171,13 @@ a.logo-button {
     margin: auto;
 }
 
+blockquote {
+    border-left: 5px solid #A55030;
+    padding: .2em .2em .4em 1em;
+    margin: .2 1em .2 1em;
+    background: #c9c9bb;
+}
+
 /* new items */
 
 .news-items {
@@ -187,6 +194,10 @@ a.logo-button {
 
 .news-item > p {
     padding: 0px 5px 0px 5px;
+}
+
+.news-item-date {
+    text-align: right;
 }
 
 /* sm */
