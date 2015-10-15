@@ -110,6 +110,7 @@ a:hover, a:active {
 
 .menu-item > .menu-link {
     color: white;
+    padding: .5em .5em .5em .5em;
 }
 .menu-link:hover {
     color: #A55030;
@@ -193,34 +194,33 @@ a.logo-button {
     .logo-label{
         top:0;
     }
-    .logo-buttons {
-        position: absolute;
-        display: block;
-        width:100%;
-        bottom:0;
-        left:0;
-    }
-    .logo-button {
-        padding: 0.5em 0 0.5em 0;
-        font-size: 125%;
-    }
 }
 /* md */
 @media screen and (min-width: 48em){
     .logo-label{
-        top:.8em;
+        top:0;
+    }
+    .logo-buttons {
+        position: absolute;
+        display: block;
+        width:100%;
+        bottom:.4em;
+        left:0;
     }
 }
 /* lg */
 @media screen and (min-width: 64em){
     .logo-label{
-        top:2.4em;
+        top:.8em;
+    }
+    .logo-buttons {
+        bottom:1.4em;
     }
 }
 /* xl */
 @media screen and (min-width: 80em){
     .logo-label{
-        top:5em;
+        top:2em;
     }
 }
 
