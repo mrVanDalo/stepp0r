@@ -86,7 +86,7 @@ very obvious.
 
 This mode lets you copy paste sections of you Pattern. 
 
-<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-AdjustMode.svg" alt="Launchpad Adjust Mode Parts" />
+<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-AdjustMode.svg" alt="Launchpad Adjust Mode Parts" />
 
 ### Bank
 
@@ -112,7 +112,7 @@ It is influenced by [Ableton Live](https://www.ableton.com/),
 [Grid Pie](http://www.renoise.com/tools/grid-pie) plugin, but optimized for producing. 
 To use this mode you have to set the **Pattern Mix** parameter to 2 or 1. 
 
-<img class="img-responsive center-block" src="{{ site.baseurl }}/assets/Launchpad-PatternMatrix.svg" alt="Launchpad Pattern Matrix Parts" />
+<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-PatternMatrix.svg" alt="Launchpad Pattern Matrix Parts" />
 
 
 ### Copy, Delete
