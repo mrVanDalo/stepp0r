@@ -79,8 +79,15 @@
 
 body {
     background-color: #dbdbd5;
-    font-family: 'Segoe UI',Helvetica,Arial,Verdana,sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-size:125%;
 }
+
+h1, h2, h3, h4, h5, h6, a, a.pure-button {
+    font-family: 'Exo', sans-serif;
+}
+
+
 
 .pure-g > div {
     box-sizing: border-box;
