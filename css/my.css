@@ -142,6 +142,7 @@ li:before {
 
 /* menu */
 
+
 .menu-item:before {
     content:none;
 }
@@ -257,6 +258,11 @@ blockquote {
 @media screen and (min-width: 35.5em) {
     .logo-label{
         top:0;
+    }
+    .menu-group{
+        max-width: 40em;
+        padding: 0 .5em 0 .5em;
+        margin: auto;
     }
 }
 /* md */
