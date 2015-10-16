@@ -174,8 +174,8 @@ a.logo-button {
 blockquote {
     border-left: 5px solid #A55030;
     padding: .2em .2em .4em 1em;
-    margin: .2 1em .2 1em;
     background: #c9c9bb;
+    margin: .2em 0 .2em 0;
 }
 
 .footer {
@@ -223,6 +223,9 @@ blockquote {
         width:100%;
         bottom:.4em;
         left:0;
+    }
+    blockquote {
+        margin: .2em 1.4em .2em 1.4em;
     }
 }
 /* lg */
