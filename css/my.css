@@ -184,6 +184,17 @@ blockquote {
     background-color: #333333;
 }
 
+ul {
+    list-style: none;
+}
+
+li:before {
+    content: ">> ";
+    color: #A55030;
+    font-weight: bold;
+    margin-left: -1.45em;
+}
+
 /* new items */
 
 .news-items {
