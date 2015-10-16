@@ -15,7 +15,7 @@ You can
 * Buy a launchpad (at [ebay](http://www.ebay.com/sch/Musical-Instruments-Gear-/619/i.html?_nkw=novation+launchpad&rt=nc&LH_Auction=1) for example).
 * [Download]({{ site.baseurl }}/downloads/{{ site.actual_version }}) the plugin.
 * [Install the plugin](http://www.renoise.com/tools) in renoise.
-* Have a look at the  [Documentation]({{ site.baseurl }}/documentation/).
+* Have a look at the  [Documentation]({{ site.baseurl }}/documentation/) or at the [Video Tutorials]({{ site.baseurl }}/videos/).
 
 If you find bugs please report them
 [here](https://github.com/mrVanDalo/stepp0r/issues) 
