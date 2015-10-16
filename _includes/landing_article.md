@@ -3,6 +3,7 @@ on the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad
 written by Ingolf Wagner (aka [Palo van Dalo](https://soundcloud.com/palo-van-dalo)).
 Right now, it's working fine as a _"forget the computer"_ type control.
 
+
 You can
 
 * punch in your sequences, 

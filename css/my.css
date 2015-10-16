@@ -119,6 +119,28 @@ li:before {
     margin-left: -1.45em;
 }
 
+/* foo */
+
+.foo {
+    max-width: 40em;
+    padding: 0 .5em 0 .5em;
+    margin: auto;
+}
+
+.foo-img {
+    display: none;
+}
+
+.foo-toc {
+    display: none;
+}
+
+.foo-header {
+    
+}
+
+
+
 /* menu */
 
 .menu-item:before {
@@ -261,6 +283,29 @@ blockquote {
     }
     .logo-buttons {
         bottom:1.4em;
+    }
+    .foo {
+        margin: 2em 0 0 0;
+        max-width: 100%;
+        padding: 0;
+    }
+    .foo-img {
+        display: block;
+        margin: 1em 0 0 0;
+        padding: 0 0 0 4em;
+    }
+    .foo-img > img {
+        float: right;
+    }
+    .foo-img-alt {
+        display: none;
+    }
+    .foo-header {
+        padding: 0 4em 0 0;
+    }
+    .foo-toc {
+        margin: 3em 0 0 2em;
+        display: block;
     }
 }
 /* xl */

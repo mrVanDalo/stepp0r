@@ -1,8 +1,10 @@
 ---
-layout: page
+layout: page_raw
 title: Documentation
 permalink: /documentation/
 ---
+
+<div class="content" markdown='1'>
 
 ## Introduction
 
@@ -15,14 +17,39 @@ which already exists.
 > There is only one restriction : 
 > InstrumentX will always be on TrackX
 
+</div>
+
+
+<div class="foo pure-g">
+<div class="pure-u-1 pure-u-lg-1-2"><div class="foo-img"> 
+<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-PatternEditorMode.svg" alt="Launchpad Parts" /> 
+</div> </div>
+
+<div class="pure-u-1 pure-u-lg-1-2">
+<div class="foo-header" markdown='1'>
 
 ## Pattern Edit mode
 
 The first mode you see, to *edit* the **Pattern** selected in **Renoise**.
 
-<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-PatternEditorMode.svg" alt="Launchpad Parts" />
+<div class="foo-toc" markdown='1'>
+* [Keyboard](#keyboard)
+* [Instruments / Tracks](#instruments--tracks)
+* [Pattern Area](#pattern-edit-area)
+* [Effects](#pattern-effects)
+    * [Delay](#delay)
+    * [Volume](#volume)
+    * [Panning](#panning)
+</div>
+
+</div>
+
+</div>
+<img class="foo-img-alt pure-img" src="{{ site.baseurl }}/assets/Launchpad-PatternEditorMode.svg" alt="Launchpad Parts" /> 
+</div>
 
 
+<div class="content" markdown='1'>
 
 ### Keyboard
 
@@ -59,7 +86,7 @@ Pressing keys will place or remove a note (using the **Keyboard** and **Effects*
 
 You can choose use up to 4 different **Note Columns** per track.
 
-### Effects 
+### Pattern Effects 
 
 To change the **Delay/Volume/Panning**.
 You can toggle through the different Effect on the right side.
@@ -82,11 +109,39 @@ very obvious.
 
 
 
+
+</div>
+
+
+<div class="foo pure-g">
+<div class="pure-u-1 pure-u-lg-1-2"><div class="foo-img"> 
+<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-AdjustMode.svg" alt="Launchpad Adjust Mode Parts" />
+</div> </div>
+
+<div class="pure-u-1 pure-u-lg-1-2">
+<div class="foo-header" markdown='1'>
+
 ## Adjustment Mode (aka Copy Paste mode)
 
 This mode lets you copy paste sections of you Pattern. 
 
-<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-AdjustMode.svg" alt="Launchpad Adjust Mode Parts" />
+<div class="foo-toc" markdown='1'>
+* [Bank](#bank)
+* [Adjuster Mode Area](#adjuster-mode-area)
+* [Adjuster Effects](#adjuster-effects)
+</div>
+
+</div>
+
+</div>
+<img class="foo-img-alt pure-img" src="{{ site.baseurl }}/assets/Launchpad-AdjustMode.svg" alt="Launchpad Adjust Mode Parts" />
+</div>
+
+<div class="content" markdown='1'>
+
+
+
+
 
 ### Bank
 
@@ -100,9 +155,23 @@ The pattern you copy can be used across all other instruments.
 
 Here you can insert and select your patterns, according to the mode you've selected.
 
-### Effects
+### Adjuster Effects
 
 Don't do anything right now.
+
+
+
+
+</div>
+
+
+<div class="foo pure-g">
+<div class="pure-u-1 pure-u-lg-1-2"><div class="foo-img"> 
+<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-PatternMatrix.svg" alt="Launchpad Pattern Matrix Parts" />
+</div> </div>
+
+<div class="pure-u-1 pure-u-lg-1-2">
+<div class="foo-header" markdown='1'>
 
 ## Pattern Matrix Mode
 
@@ -112,10 +181,26 @@ It is influenced by [Ableton Live](https://www.ableton.com/),
 [Grid Pie](http://www.renoise.com/tools/grid-pie) plugin, but optimized for producing. 
 To use this mode you have to set the **Pattern Mix** parameter to 2 or 1. 
 
-<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-PatternMatrix.svg" alt="Launchpad Pattern Matrix Parts" />
+<div class="foo-toc" markdown='1'>
+* [Copy and Delete](#copy-and-delete)
+* [Scene buttons](#scene-buttons)
+</div>
+
+</div>
+
+</div>
+<img class="foo-img-alt pure-img" src="{{ site.baseurl }}/assets/Launchpad-PatternMatrix.svg" alt="Launchpad Pattern Matrix Parts" />
+</div>
+
+<div class="content" markdown='1'>
 
 
-### Copy, Delete
+
+
+
+
+
+### Copy and Delete
 
 You have a copy and a delete button.
 Holding the button will change the color of the scene buttons. 
@@ -125,6 +210,8 @@ The delete button will delete the new selected pattern.
 
 The Scene buttons will also take the copy and delete buttons into account.
 
-## Scene buttons
+### Scene buttons
 
 The scene buttons will select the complete row.
+
+</div>
