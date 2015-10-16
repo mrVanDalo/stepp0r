@@ -218,6 +218,12 @@ blockquote {
     background: #c9c9bb;
 }
 
+.news-item:before {
+    content:none;
+}
+
+
+
 .news-item > p {
     padding: 0px 5px 0px 5px;
 }
