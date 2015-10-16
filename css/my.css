@@ -106,7 +106,24 @@ a:hover, a:active {
     padding:1px;
 }
 
+ul {
+    list-style: none;
+    font-weight: bold;
+    margin-left: 0;
+}
+
+li:before {
+    content: ">> ";
+    color: #A55030;
+    font-weight: bold;
+    margin-left: -1.45em;
+}
+
 /* menu */
+
+.menu-item:before {
+    content:none;
+}
 
 .menu-item > .menu-link {
     color: white;
@@ -116,6 +133,9 @@ a:hover, a:active {
     color: #A55030;
     background: none;
 }
+
+
+
 
 /* logo */
 
@@ -182,17 +202,6 @@ blockquote {
     margin: 2em 0 0 0;
     min-height: 5em;
     background-color: #333333;
-}
-
-ul {
-    list-style: none;
-}
-
-li:before {
-    content: ">> ";
-    color: #A55030;
-    font-weight: bold;
-    margin-left: -1.45em;
 }
 
 /* new items */
