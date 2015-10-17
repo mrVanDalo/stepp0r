@@ -189,7 +189,7 @@ a.logo-button {
 .logo-label {
     position: absolute;
     width: 100%;
-    top:1em;
+    top:0;
     left:0;
 }
 
@@ -257,7 +257,7 @@ blockquote {
 /* sm */
 @media screen and (min-width: 35.5em) {
     .logo-label{
-        top:0;
+        top:.2em;
     }
     .menu-group{
         max-width: 40em;
