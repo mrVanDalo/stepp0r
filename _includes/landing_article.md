@@ -1,6 +1,6 @@
 Stepp0r is a Step-Sequencer for [Renoise](http://www.renoise.com/)
 on the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad)
-written by Ingolf Wagner (aka [Palo van Dalo](https://soundcloud.com/palo-van-dalo)).
+written by Ingolf Wagner (aka [Palo van Dalo](http://palovandalo.com)).
 
 You can
 
