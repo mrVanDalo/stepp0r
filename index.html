@@ -6,7 +6,15 @@ layout: default
     {{ landing | markdownify }}
 </div>
 <div class="content">
-    <h2>News</h2>
+    <h2>
+        <a class="" href="https://twitter.com/search?q=%23stepp0r"> 
+            <i class="fa fa-twitter fa-lg"></i> 
+        </a>
+        <a class="" href="{{ site.baseurl }}/feed.xml"> 
+            <i class="fa fa-rss fa-lg"></i> 
+        </a>
+        News
+    </h2>
     <ul class="news-items">
         {% for post in site.posts %}
         <li class="news-item">

@@ -4,9 +4,9 @@ title: About
 permalink: /about/
 ---
 
-## Author
+## Contributer
 
-Ingolf Wagner (aka [Palo van Dalo](https://soundcloud.com/palo-van-dalo))
+Ingolf Wagner (aka [Palo van Dalo](http://palovandalo.com))
 [@Twitter](https://twitter.com/mr_van_dalo).
 
 
@@ -17,3 +17,4 @@ This product (the Renoise-Plugin Stepp0r) is Licensed under the [GPLv3](http://w
 ## Images
 
 The Stepp0r logos (on this page and in the program ) copyrights belong to [stylefusion.de](http://www.stylefusion.de/)
+
