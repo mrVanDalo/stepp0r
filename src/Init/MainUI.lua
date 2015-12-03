@@ -85,14 +85,15 @@ function MainUI:create_device_row()
         visible = true,
         bitmap  = "reload.bmp",
         width   = self.button_size,
-        tooltip = "reload device list",
+        tooltip = "Reload device list",
         notifier = function ()
             self:device_row_update_device_list()
         end,
     }
     self.device_row_popup = self.vb:popup {
         width = self.input_size,
-        tooltip = "Choose a Device to operate on"
+        tooltip = "Choose the device you want to use. \
+(only launchpad devices show up here)",
     }
     self.device_row = self.vb:row{
         spacing = 3,
@@ -143,6 +144,8 @@ function MainUI:create_rotation_row()
     self.rotation_switch = self.vb:switch {
         items = { "left", "right" },
         width = self.input_size,
+        tooltip = "Rotate the layout. \
+(usefull when you have your pad in a case or you don't have enough space for the usb-cabel)",
     }
     self.rotation_switch.value = 2
     self.rotation_row = self.vb:row{
@@ -177,14 +180,14 @@ function MainUI:create_pagination_factor_row()
         visible = true,
         items   = {"1", "2", "4"},
         width   = self.input_size,
-        tooltip = "to enable pattern matrix controll",
+        tooltip = "Size of a step when pressing pagination buttons",
         value   = 3
     }
     self.pagination_factor_row = self.vb:row{
         spacing = 3,
         self.vb:text{
             text = "",
-            width = self.button_size
+            width = self.button_size,
         },
         self.vb:text{
             text = "Paging",
@@ -212,7 +215,10 @@ function MainUI:create_pattern_matrix_row()
         visible = true,
         items   = {"disable", "instantly", "delayed"},
         width   = self.input_size,
-        tooltip = "how to mix patterns together",
+        tooltip = "Response on Pattern arrangement. \
+* none : will disable the Pattern Mix functionality, \
+* instantly : will change the pattern instantly you press the button \
+* delayed : will sync the patterns you choose. (good for performing)",
         value   = 3, -- will result in PatternMix.mode
     }
     self.pattern_matrix_row = self.vb:row{
@@ -249,13 +255,13 @@ function MainUI:create_follow_track_instrument_row()
         visible = true,
         value   = true,
         width   = self.button_size,
-        tooltip = "change instrument according to active track"
+        tooltip = "Change instrument focus when changing focus of a track."
     }
     self.follow_track_instrument_row = self.vb:row{
         spacing = 3,
         self.follow_track_instrument_checkbox,
         self.vb:text{
-            text = "Follow Track Instrument",
+            text = "Follow Track",
             width = self.text_size,
         },
     }
@@ -279,7 +285,7 @@ function MainUI:create_follow_mute_row()
         visible = true,
         value   = false,
         width   = self.button_size,
-        tooltip = "focus the track when muting it using Stepp0r"
+        tooltip = "Focus the track when muting it using Stepp0r"
     }
     self.follow_mute_row = self.vb:row{
         spacing = 3,
@@ -310,7 +316,7 @@ function MainUI:create_current_playback_position_row()
         visible = true,
         value   = false,
         width   = self.button_size,
-        tooltip = "show playback position only for selected pattern"
+        tooltip = "Don't show the Playposition on the Launchpad if you are focusing a pattern which is not played right now."
     }
     self.current_playback_position_row = self.vb:row{
         spacing = 3,
@@ -340,18 +346,17 @@ function MainUI:create_osc_row()
         visible = true,
         value   = true,
         width   = self.button_size,
-        tooltip = "send notes to local osc server (UDP)"
+        tooltip = "Use the (internal renoise) OSC server (UDP) to play notes with the keyboard."
     }
     self.osc_row_text = self.vb:text {
         text = 'none',
         width = self.input_size,
-        tooltip = "port of the local osc server (UDP)",
         visible = false,
     }
     self.osc_row_textfield = self.vb:textfield {
         text = self.default_osc_port,
         width = self.input_size,
-        tooltip = "port of the local osc server (UDP)"
+        tooltip = "Port of the osc server (UDP)",
     }
     self.osc_row = self.vb:row{
         spacing = 3,
