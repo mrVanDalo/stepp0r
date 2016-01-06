@@ -5,6 +5,7 @@ function InstrumentObject:__init() end
 
 function InstrumentObject:name_for(instrument)
     if not instrument      then return nil end
+    if type(instrument) ~= "Instrument" then return nil end
     if not instrument.name then return nil end
     if instrument.name ~= "" then
         return instrument.name
@@ -28,7 +29,6 @@ function InstrumentObject:exist(instrument)
         return false
     end
     local name = self:name_for(instrument)
---    print("name : ", name)
     if name then
         return true
     else
