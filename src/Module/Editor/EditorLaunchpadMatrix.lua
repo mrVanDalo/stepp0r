@@ -69,6 +69,6 @@ end
 function Editor:__render_matrix_position(x,y)
     local active_value   =  self:__render_position_value(self.__pattern_matrix, x, y)
     local inactive_value =  self:__render_position_value(self.__pattern_matrix_inactive, x, y)
-    local color = self.color[ EditorData.color_map.active_column * active_value + EditorData.color_map.inactive_column * inactive_value ]
+    local color = self.color.map[ EditorData.color_map.active_column * active_value + EditorData.color_map.inactive_column * inactive_value ]
     self.pad:set_matrix(x,y,color)
 end

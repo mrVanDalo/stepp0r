@@ -254,7 +254,7 @@ function LaunchpadSetup:wire()
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.chooser)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.effect)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.paginator)
-    self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.pattern_matrix)
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.pattern_matrix) -- pattern_matrix module a a bit to thin
     -- Color
 --    self.color = ColorModule()
 --    self.color:wire_launchpad(self.pad)
