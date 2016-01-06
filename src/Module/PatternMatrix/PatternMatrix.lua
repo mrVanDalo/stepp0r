@@ -86,6 +86,7 @@ end
 function PatternMatrix:__init()
     Module:__init(self)
     --
+    -- todo : split this in another module
     self:__create_color_map()
     self.mode_color = {
         clear = Color.red,
