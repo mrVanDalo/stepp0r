@@ -42,15 +42,7 @@ function Editor:__init()
     --
     self.playback_key = 'editor'
     --
-    self.color       = {
-        stepper = Color.green,
-        note = {
-            off   = Color.red,
-            on    = Color.yellow,
-            empty = Color.off,
-        },
-        map = self:__get_color_map(),
-    }
+    self.color       = self:__get_color_map()
     -- init submodules
     self:__init_launchpad_matrix()
     self:__init_playback_position()
