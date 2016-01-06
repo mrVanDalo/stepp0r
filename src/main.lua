@@ -1,6 +1,6 @@
 require 'Init/LaunchpadSetup'
-require 'Init/MainUI'
-require 'Init/AboutUI'
+require 'UI/MainUI'
+require 'UI/AboutUI'
 
 
 -- Reload the script whenever this file is saved.
