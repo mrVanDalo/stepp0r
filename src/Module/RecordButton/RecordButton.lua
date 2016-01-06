@@ -8,7 +8,6 @@ class "RecordButton" (Module)
 
 
 require 'Module/RecordButton/RecordButtonLaunchpad'
-require 'Module/RecordButton/RecordButtonLib'
 
 function RecordButton:__init()
     Module:__init(self)
@@ -20,17 +19,14 @@ function RecordButton:__init()
     }
     --
     self:__init_launchpad()
-    self:__init_lib()
 end
 
 
 function RecordButton:_activate()
     self:__activate_launchpad()
-    self:__activate_lib()
 end
 
 function RecordButton:_deactivate()
-    self:__deactivate_lib()
     self:__deactivate_launchpad()
 end
 

@@ -39,10 +39,10 @@ function RecordButton:__create_record_button_listener()
         if self.is_not_active then return end
         if msg.vel ~= Velocity.release then return end
         if msg.x == self.__record_side_idx then
-            self:_toggle_record()
+            Renoise.transport:toggle_recording()
             self:_refresh_buttons()
         elseif msg.x == self.__play_side_idx then
-            self:_toggle_play()
+            Renoise.transport:toggle_playing()
             self:_refresh_buttons()
         end
     end
