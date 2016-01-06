@@ -63,7 +63,7 @@ function IT_Selection:select_instrument(instrument_idx)
     self.track_idx          = Renoise.sequence_track:track_idx(self.instrument_idx)
     self.column_idx         = 1
     self:select_track_index(self.track_idx)
-    Renoise.track:rename_index(self.track_idx, name)
+    Renoise.track:rename_index(self.track_idx, ("%02X %s"):format(instrument_idx - 1, name))
     -- trigger callbacks
     self:__update_set_instrument_listeners()
 end
