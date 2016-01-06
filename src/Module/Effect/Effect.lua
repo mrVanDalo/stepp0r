@@ -16,10 +16,11 @@ require "Module/Effect/EffectMode"
 
 EffectData = {
     mode = {
-        DELAY  = {1, Color.yellow},
-        PAN    = {2, Color.green },
-        VOLUME = {3, Color.orange},
+        DELAY  = {3, NewColor[0][3] },
+        PAN    = {2, NewColor[3][3] },
+        VOLUME = {1, NewColor[3][0] },
     },
+    color = NewColor[0][3],
     access = {
         color = 2,
     }
