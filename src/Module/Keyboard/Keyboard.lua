@@ -58,17 +58,6 @@ function Keyboard:__init()
         clear       = NewColor[0][0],
     }
 
---    self.color = {
---        note = {
---            on      = Color.green ,
---            active  = Color.flash.orange,
---            off     = Color.red,
---        },
---        octave      = Color.yellow,
---        manover     = Color.orange,
---        clear       = Color.off,
---    }
-
     self.note       = Note.note.c
 
     self:__init_keyboard_trigger()
