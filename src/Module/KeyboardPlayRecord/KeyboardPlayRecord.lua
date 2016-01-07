@@ -4,12 +4,11 @@
 ---
 --- To record keyboard stuff
 
-class "RecordButton" (Module)
+class "KeyboardPlayRecord" (Module)
 
+require 'Module/KeyboardPlayRecord/KeyboardPlayRecordLaunchpad'
 
-require 'Module/RecordButton/RecordButtonLaunchpad'
-
-function RecordButton:__init()
+function KeyboardPlayRecord:__init()
     Module:__init(self)
     self.color = {
         recording     = BlinkColor[3][0],
@@ -22,16 +21,16 @@ function RecordButton:__init()
 end
 
 
-function RecordButton:_activate()
+function KeyboardPlayRecord:_activate()
     self:__activate_launchpad()
 end
 
-function RecordButton:_deactivate()
+function KeyboardPlayRecord:_deactivate()
     self:__deactivate_launchpad()
 end
 
 
-function RecordButton:wire_launchpad(pad)
+function KeyboardPlayRecord:wire_launchpad(pad)
     self.pad = pad
 end
 
