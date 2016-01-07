@@ -67,3 +67,60 @@ Modules have them too, and the convention is `<ModuleName>Data`.
 It holds the Constant values for the module or this artifact (`Color` or `Note` for example).
 Its a dictionary (table).
 For more complex objects it has a access key (containing the indices to access parts of the complex object)
+
+### Observables
+
+It would be best to use the native `Observables` but they are strictly bound to a type.
+In a lot of cases we want to publish changes of whole objects, like in the Pagination module.
+So we stick to the manual callback process. Here is a brief description on how this is to implement.
+
+#### Example Callback setup
+
+You have two objects `LayerObject` and `ModuleObject`. 
+The `LayerObject` holds variables which should trigger update routines in the `ModuleObject` if changing.
+
+Create the callback hook.
+
+```
+  function LayerObject:__init( )
+    ...
+    self.update_callbacks = {}
+  end
+
+  function LayerObject:register_update_callback( callback )
+    table.insert( self.update_callbacks, callback )
+  end
+```
+
+and the update function
+
+```
+  function LayerObject:update_callbacks( )
+    local myUpdate = {
+      foo = self.value_1,
+      bar = self.value_2,
+    }
+    for _, callback in ipairs(self.update_callbacks) do
+        callback(myUpdate)
+    end
+  end
+```
+
+After that you can hook in the `LayerObject`
+
+```
+  function ModuleObject:hook( layerObject )
+    local callback = function ( update )
+      print( update.foo )
+      print( update.bar )
+    end
+    layerObject:register_update_callback( callback )
+  end
+```
+
+#### Pros and Cons
+
+It is a lot of work you have to do to set something up like this.
+But you can pass around object, which is in most cases more readable.
+It might be possible that you dont need that at all, and you are fine with just the
+`Observables` given for primitive data types.
