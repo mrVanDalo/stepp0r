@@ -58,7 +58,7 @@ function Adjuster:__init()
     self.mode        = BankData.mode.copy
     --
     self.color = {
-        stepper = Color.green,
+        stepper = NewColor[0][3],
         map = self:__get_color_map(),
         selected = {
             off   = BlinkColor[0][3],
