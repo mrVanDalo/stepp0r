@@ -12,7 +12,7 @@ ChooserData =  {
     },
     mode = {
         choose = {1, NewColor[3][2]},
-        mute   = {2, Color.red},
+        mute   = {2, NewColor[3][0]},
     },
     color = {
         clear = Color.off, -- todo deprecated ?
