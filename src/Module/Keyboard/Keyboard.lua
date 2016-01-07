@@ -49,14 +49,25 @@ function Keyboard:__init()
     -- default
     self.color = {
         note = {
-            on      = Color.green ,
-            active  = Color.flash.orange,
-            off     = Color.red,
+            on      = NewColor[3][3],
+            active  = BlinkColor[0][3],
+            off     = NewColor[3][0],
         },
-        octave      = Color.yellow,
-        manover     = Color.orange,
-        clear       = Color.off,
+        octave      = NewColor[3][1],
+        manover     = NewColor[3][1],
+        clear       = NewColor[0][0],
     }
+
+--    self.color = {
+--        note = {
+--            on      = Color.green ,
+--            active  = Color.flash.orange,
+--            off     = Color.red,
+--        },
+--        octave      = Color.yellow,
+--        manover     = Color.orange,
+--        clear       = Color.off,
+--    }
 
     self.note       = Note.note.c
 
