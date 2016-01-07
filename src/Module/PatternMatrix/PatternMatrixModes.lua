@@ -3,8 +3,8 @@
 function PatternMatrix:__init_modes()
     self.mode = PatternMatrixData.mode.mix
 --    self.mode_knob_idx = 7
-    self.copy_mode_knob_idx = 6
-    self.clear_mode_knob_idx = 7
+    self.copy_mode_knob_idx = 5
+    self.clear_mode_knob_idx = 6
     self:__create_mode_knobs_listener()
 end
 function PatternMatrix:__activate_modes()

@@ -58,25 +58,12 @@ function Adjuster:__init()
     self.mode        = BankData.mode.copy
     --
     self.color = {
-        stepper = Color.green,
-        page = {
-            active   = Color.yellow,
-            inactive = Color.off,
-        },
-        zoom = {
-            active   = Color.yellow,
-            inactive = Color.off,
-        },
+        stepper = NewColor[0][3],
         map = self:__get_color_map(),
-        note = {
-            off   = Color.red,
-            on    = Color.yellow,
-            empty = Color.off,
-            selected = {
-                off   = Color.flash.green,
-                on    = Color.flash.green,
-                empty = Color.flash.green,
-            }
+        selected = {
+            off   = BlinkColor[0][3],
+            on    = BlinkColor[0][3],
+            empty = BlinkColor[0][3],
         },
     }
     --

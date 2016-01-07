@@ -24,12 +24,12 @@ function Bank:__init()
     self.color = {
         toggle = {
             selected = {
-                copy =  Color.flash.green,
-                paste = Color.flash.red,
+                copy =  BlinkColor[0][3],
+                paste = BlinkColor[3][0],
             },
-            unselected = Color.orange,
+            unselected = NewColor[3][2],
         },
-        clear = Color.red,
+        clear = NewColor[3][0],
     }
 
     self.banks    = {}

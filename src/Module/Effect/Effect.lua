@@ -36,7 +36,7 @@ function Effect:__init()
     self.row           = 5
 
     self.color = {
-        on  = Color.orange,
+        on  = NewColor[3][2],
         off = Color.off,
     }
 

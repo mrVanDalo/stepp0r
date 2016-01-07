@@ -89,9 +89,9 @@ function PatternMatrix:__init()
     -- todo : split this in another module
     self:__create_color_map()
     self.mode_color = {
-        clear = Color.red,
-        copy  = Color.orange,
-        mix   = Color.green,
+        clear = NewColor[3][0],
+        copy  = NewColor[3][2],
+        mix   = NewColor[0][3],
     }
     --
     self:__init_paginator()
