@@ -60,12 +60,10 @@ function Adjuster:__init()
     self.color = {
         stepper = Color.green,
         map = self:__get_color_map(),
-        note = {
-            selected = {
-                off   = BlinkColor[0][3],
-                on    = BlinkColor[0][3],
-                empty = BlinkColor[0][3],
-            }
+        selected = {
+            off   = BlinkColor[0][3],
+            on    = BlinkColor[0][3],
+            empty = BlinkColor[0][3],
         },
     }
     --

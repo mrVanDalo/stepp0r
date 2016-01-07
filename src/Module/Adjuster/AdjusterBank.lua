@@ -129,11 +129,11 @@ function Adjuster:_update_bank_matrix()
         local bank_entry = self.bank.bank[line]
         if not bank_entry then
         elseif bank_entry[AdjusterData.bank.pitch] == Note.empty then
-            color = self.color.note.selected.empty
+            color = self.color.selected.empty
         elseif bank_entry[AdjusterData.bank.pitch] == Note.note.off then
-            color = self.color.note.selected.off
+            color = self.color.selected.off
         else
-            color = self.color.note.selected.on
+            color = self.color.selected.on
         end
         local xy = self:line_to_point(line)
         if xy then
@@ -150,11 +150,11 @@ function Adjuster:_update_bank_matrix_position(x,y)
     local bank_entry = self.bank.bank[line]
     if not bank_entry then
     elseif bank_entry[AdjusterData.bank.pitch] == Note.empty then
-        color = self.color.note.selected.empty
+        color = self.color.selected.empty
     elseif bank_entry[AdjusterData.bank.pitch] == Note.note.off then
-        color = self.color.note.selected.off
+        color = self.color.selected.off
     else
-        color = self.color.note.selected.on
+        color = self.color.selected.on
     end
     self.bank_matrix[x][y] = color
 end
