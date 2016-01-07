@@ -2,40 +2,34 @@
 ---
 ---                                                   Chooser Moudle
 ---
---- To record keyboard stuff
+--- To record stuff in the PatternMatrixView
 
-class "RecordButton" (Module)
+class "PatternMatrixPlayRecord" (Module)
 
+require 'Module/PatternMatrixPlayRecord/PatternMatrixPlayRecordLaunchpad'
 
-require 'Module/RecordButton/RecordButtonLaunchpad'
-require 'Module/RecordButton/RecordButtonLib'
-
-function RecordButton:__init()
+function PatternMatrixPlayRecord:__init()
     Module:__init(self)
     self.color = {
         recording     = BlinkColor[3][0],
-        not_recording = NewColor[3][0],
         playing       = BlinkColor[0][3],
         not_playing   = NewColor[0][3],
     }
     --
     self:__init_launchpad()
-    self:__init_lib()
 end
 
 
-function RecordButton:_activate()
+function PatternMatrixPlayRecord:_activate()
     self:__activate_launchpad()
-    self:__activate_lib()
 end
 
-function RecordButton:_deactivate()
-    self:__deactivate_lib()
+function PatternMatrixPlayRecord:_deactivate()
     self:__deactivate_launchpad()
 end
 
 
-function RecordButton:wire_launchpad(pad)
+function PatternMatrixPlayRecord:wire_launchpad(pad)
     self.pad = pad
 end
 

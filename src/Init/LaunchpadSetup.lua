@@ -27,9 +27,10 @@ require 'Module/Editor/Editor'
 require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
 require 'Module/Keyboard/Keyboard'
-require 'Module/RecordButton/RecordButton'
+require 'Module/KeyboardPlayRecord/KeyboardPlayRecord'
 
 require 'Module/PatternMatrix/PatternMatrix'
+require 'Module/PatternMatrixPlayRecord/PatternMatrixPlayRecord'
 
 require 'Module/ColorModule'
 
@@ -63,12 +64,13 @@ function LaunchpadSetup:__init()
     self.adjuster            = nil
     self.effect              = nil
     self.key                 = nil
-    self.record_button       = nil
+    self.keybaord_play_record = nil
     self.bank                = nil
     self.chooser             = nil
     self.paginator           = nil
     self.track_paginator     = nil
     self.pattern_matrix      = nil
+    self.pattern_matrix_play_record      = nil
     -- modes
     self.stepper_mode_module = nil
     self.stepper_mode        = nil
@@ -207,8 +209,8 @@ function LaunchpadSetup:wire()
     self.key:wire_osc_client(self.osc_client)
     self.key:register_set_note(self.editor.callback_set_note)
     --
-    self.record_button = RecordButton()
-    self.record_button:wire_launchpad(self.pad)
+    self.keybaord_play_record = KeyboardPlayRecord()
+    self.keybaord_play_record:wire_launchpad(self.pad)
     --
     self.bank = Bank()
     self.bank:wire_launchpad(self.pad)
@@ -228,6 +230,9 @@ function LaunchpadSetup:wire()
     self.pattern_matrix:wire_pattern_mix(self.pattern_mix)
     self.pattern_matrix:wire_it_selection(self.it_selection)
     --
+    self.pattern_matrix_play_record = PatternMatrixPlayRecord()
+    self.pattern_matrix_play_record:wire_launchpad(self.pad)
+    --
     self.track_paginator = TrackPaginator()
     self.track_paginator:wire_launchpad(self.pad)
     self.track_paginator:register_update_callback(self.chooser.track_paginator_update_callback)
@@ -237,7 +242,6 @@ function LaunchpadSetup:wire()
     -- is the mode that toggels the Editor and Keyboard Kombo with the Adjuster and Bank Kombo
     self.stepper_mode = Mode()
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.key)
-    self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.record_button)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.edit, self.editor)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.bank)
     self.stepper_mode:add_module_to_mode(StepperModeData.mode.copy_paste, self.adjuster)
@@ -251,10 +255,12 @@ function LaunchpadSetup:wire()
     self.pattern_mode = Mode()
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.stepper_mode)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.stepper_mode_module)
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.keybaord_play_record)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.chooser)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.effect)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.paginator)
-    self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.pattern_matrix)
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.pattern_matrix) -- pattern_matrix module a a bit to thin
+    self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.pattern_matrix_play_record)
     -- Color
 --    self.color = ColorModule()
 --    self.color:wire_launchpad(self.pad)
