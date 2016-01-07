@@ -59,14 +59,14 @@ function Adjuster:__init()
     --
     self.color = {
         stepper = Color.green,
-        page = {
-            active   = Color.yellow,
-            inactive = Color.off,
-        },
-        zoom = {
-            active   = Color.yellow,
-            inactive = Color.off,
-        },
+--        page = {
+--            active   = Color.yellow,
+--            inactive = Color.off,
+--        },
+--        zoom = {
+--            active   = Color.yellow,
+--            inactive = Color.off,
+--        },
         map = self:__get_color_map(),
         note = {
             off   = Color.red,

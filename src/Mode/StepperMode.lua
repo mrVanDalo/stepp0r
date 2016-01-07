@@ -20,7 +20,7 @@ function StepperMode:__init()
         mode = {},
         off = Color.off
     }
-    self.knob_idx = 5
+    self.knob_idx = 7
     self.color.mode[StepperModeData.mode.copy_paste] = NewColor[3][0]
     self.color.mode[StepperModeData.mode.edit]       = NewColor[3][3]
 

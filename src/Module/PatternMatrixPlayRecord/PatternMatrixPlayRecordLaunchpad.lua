@@ -1,7 +1,7 @@
 
 
 function PatternMatrixPlayRecord:__init_launchpad()
-    self.__top_idx = 5
+    self.__top_idx = 7
     self:__create_record_button_listener()
     self:__create_play_observer()
     self:__create_record_observer()

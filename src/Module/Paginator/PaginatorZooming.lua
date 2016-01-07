@@ -10,8 +10,8 @@
 
 function Paginator:__init_zoom()
     self.zoom         = 1 -- influences grid size
-    self.zoom_out_idx = 7
-    self.zoom_in_idx  = 6
+    self.zoom_out_idx = 6
+    self.zoom_in_idx  = 5
     self:__create_zoom_listener()
 end
 function Paginator:__activate_zoom()
