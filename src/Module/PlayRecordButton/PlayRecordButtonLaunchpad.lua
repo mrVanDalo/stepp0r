@@ -47,7 +47,6 @@ function PlayRecordButton:__create_button_listener()
     end
 end
 function PlayRecordButton:start_waiting_to_stop()
-    -- todo: start the waiting interval
     self.__has_stopped = false
     self.__waiting = true
     self.__waiting_counter = 0

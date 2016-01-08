@@ -13,7 +13,7 @@ function PlayRecordButton:__init()
     self.color = {
         recording     = BlinkColor[3][0],
         playing       = BlinkColor[0][3],
-        not_playing   = NewColor[0][3],
+        not_playing   = NewColor[0][0],
     }
     --
     self:__init_launchpad()

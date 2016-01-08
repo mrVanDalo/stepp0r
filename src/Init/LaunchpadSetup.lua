@@ -27,10 +27,8 @@ require 'Module/Editor/Editor'
 require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
 require 'Module/Keyboard/Keyboard'
-require 'Module/KeyboardPlayRecord/KeyboardPlayRecord'
 
 require 'Module/PatternMatrix/PatternMatrix'
---require 'Module/PatternMatrixPlayRecord/PatternMatrixPlayRecord'
 require 'Module/PlayRecordButton/PlayRecordButton'
 
 require 'Module/ColorModule'
@@ -65,7 +63,6 @@ function LaunchpadSetup:__init()
     self.adjuster            = nil
     self.effect              = nil
     self.key                 = nil
-    self.keybaord_play_record = nil
     self.bank                = nil
     self.chooser             = nil
     self.paginator           = nil
@@ -212,9 +209,6 @@ function LaunchpadSetup:wire()
     self.key:wire_osc_client(self.osc_client)
     self.key:register_set_note(self.editor.callback_set_note)
     --
-    self.keybaord_play_record = KeyboardPlayRecord()
-    self.keybaord_play_record:wire_launchpad(self.pad)
-    --
     self.bank = Bank()
     self.bank:wire_launchpad(self.pad)
     self.bank:register_bank_update(self.adjuster.bank_update_handler)
@@ -258,12 +252,10 @@ function LaunchpadSetup:wire()
     self.pattern_mode = Mode()
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.stepper_mode)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.stepper_mode_module)
-    --self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.keybaord_play_record)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.chooser)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.effect)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.paginator)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.pattern_matrix) -- pattern_matrix module a a bit to thin
-    --self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.play_record_button)
     -- Color
 --    self.color = ColorModule()
 --    self.color:wire_launchpad(self.pad)
