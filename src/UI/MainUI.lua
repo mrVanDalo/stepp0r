@@ -23,6 +23,7 @@ end
 function MainUI:create_ui()
     self:create_logo()
     self:create_device_row()
+    self:create_device_info_row()
     self:create_osc_row()
     self:create_rotation_row()
     self:create_follow_mute_row()
@@ -51,6 +52,7 @@ function MainUI:create_container()
             spacing = 4,
             margin = 4,
             self.device_row,
+            self.device_info_row,
             self.osc_row,
             self.rotation_row,
             self.pattern_matrix_row,
@@ -106,6 +108,7 @@ function MainUI:create_device_row()
     }
 end
 
+
 function MainUI:disable_device_row()
     self.device_row_button.active = false
     self.device_row_popup.active = false
@@ -116,6 +119,7 @@ function MainUI:enable_device_row()
     self.device_row_popup.active = true
     self:device_row_update_device_list()
 end
+
 
 
 function MainUI:register_device_update_callback(callback)
@@ -133,6 +137,30 @@ function MainUI:selected_device()
     return list_of_lauchpad_devices[self.device_row_popup.value]
 end
 
+function MainUI:create_device_info_row()
+    self.device_info_row = self.vb:row{
+        spacing = 3,
+        self.vb:text{
+            text = "",
+            width = self.button_size,
+        },
+        self.vb:text{
+            text = "asdflkjdsalf jldsafj laksdjf laskjdf lkasjdf \
+            asdfasdfsadfsafd\
+            adsfasfdasdfdsafasfsadfasdfasdfkj ljas fdlj",
+            width = self.text_size + self.input_size,
+        },
+    }
+    self.device_info_row.visible = false
+end
+
+function MainUI:disable_device_row()
+    self.device_info_row.visible = false
+end
+
+function MainUI:enable_device_row()
+    self.device_info_row.visible = true
+end
 
 
 
@@ -402,7 +430,10 @@ function MainUI:create_start_stop_button()
         notifier = function ()
             if self.is_running then
                 self:stop()
-            elseif self:selected_device() ~= "None" then
+            elseif self:selected_device() == "None" then
+                self:enable_device_row()
+            else
+                self:disable_device_row()
                 self:run()
             end
         end
