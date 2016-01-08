@@ -281,9 +281,11 @@ function LaunchpadSetup:wire()
     -- multiple times of play_record_button because it is time intesive
     self.it_selection:register_idle(self.play_record_button.idle_callback) -- for long press to stop playing
     self.it_selection:register_idle(self.editor.idle_callback)
+    self.it_selection:register_idle(self.play_record_button.idle_callback) -- for long press to stop playing
     self.it_selection:register_idle(self.adjuster.idle_callback)
     self.it_selection:register_idle(self.play_record_button.idle_callback) -- for long press to stop playing
     self.it_selection:register_idle(self.chooser.idle_callback) -- sync track with instrument is done here
+    self.it_selection:register_idle(self.play_record_button.idle_callback) -- for long press to stop playing
     self.it_selection:register_idle(self.pattern_matrix.idle_callback) -- sync track with instrument is done here
     --
     self.pattern_mix:register_update_callback(self.pattern_matrix.pattern_mix_update_callback)
