@@ -9,7 +9,7 @@ function PlayRecordButton:__init_launchpad()
     self.__waiting_counter_max = 1
 end
 function PlayRecordButton:__activate_launchpad()
-    print("activate play record button")
+    --print("activate play record button")
     self.pad:register_top_listener(self.__button_listener)
     self:_refresh_buttons()
     -- is triggerd when the play status changes
