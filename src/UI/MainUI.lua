@@ -137,6 +137,7 @@ function MainUI:selected_device()
     return list_of_lauchpad_devices[self.device_row_popup.value]
 end
 
+
 function MainUI:create_device_info_row()
     self.device_info_row = self.vb:row{
         spacing = 3,
@@ -145,20 +146,22 @@ function MainUI:create_device_info_row()
             width = self.button_size,
         },
         self.vb:text{
-            text = "asdflkjdsalf jldsafj laksdjf laskjdf lkasjdf \
-            asdfasdfsadfsafd\
-            adsfasfdasdfdsafasfsadfasdfasdfkj ljas fdlj",
+            text =
+"You need a Launchpad to start this plugin.\
+Plug in a launchpad press the reload button and\
+press the start button.\
+",
             width = self.text_size + self.input_size,
         },
     }
     self.device_info_row.visible = false
 end
 
-function MainUI:disable_device_row()
+function MainUI:disable_device_info_row()
     self.device_info_row.visible = false
 end
 
-function MainUI:enable_device_row()
+function MainUI:enable_device_info_row()
     self.device_info_row.visible = true
 end
 
@@ -431,9 +434,9 @@ function MainUI:create_start_stop_button()
             if self.is_running then
                 self:stop()
             elseif self:selected_device() == "None" then
-                self:enable_device_row()
+                self:enable_device_info_row()
             else
-                self:disable_device_row()
+                self:disable_device_info_row()
                 self:run()
             end
         end
