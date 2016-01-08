@@ -56,7 +56,7 @@ end
 function PlayRecordButton:__create_idle_callback()
     self.idle_callback = function()
         if self.__waiting then
-            print("incriment counter " .. self.__waiting_counter)
+            --print("incriment counter " .. self.__waiting_counter)
             if self.__waiting_counter < self.__waiting_counter_max then
                 self.__waiting_counter = self.__waiting_counter + 1
             else
