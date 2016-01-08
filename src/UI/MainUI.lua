@@ -50,8 +50,8 @@ function MainUI:create_container()
         self.vb:column {
             spacing = 4,
             margin = 4,
-            self.osc_row,
             self.device_row,
+            self.osc_row,
             self.rotation_row,
             self.pattern_matrix_row,
             self.pagination_factor_row,
@@ -402,7 +402,7 @@ function MainUI:create_start_stop_button()
         notifier = function ()
             if self.is_running then
                 self:stop()
-            else
+            elseif self:selected_device() ~= "None" then
                 self:run()
             end
         end
