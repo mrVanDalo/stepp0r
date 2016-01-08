@@ -20,13 +20,13 @@ function StepperMode:__init()
         mode = {},
         off = Color.off
     }
-    self.knob_idx = 7
+    self.knob_idx = 8
     self.color.mode[StepperModeData.mode.copy_paste] = NewColor[3][0]
     self.color.mode[StepperModeData.mode.edit]       = NewColor[3][3]
 
     self.mode = StepperModeData.mode.edit
     self.callbacks = {}
-    self:__create_top_listener()
+    self:__create_side_listener()
 end
 
 function StepperMode:wire_launchpad(pad)
@@ -37,8 +37,8 @@ function StepperMode:register_mode_update_callback(callback)
     table.insert(self.callbacks, callback)
 end
 
-function StepperMode:__create_top_listener()
-    self.top_listener = function (_,msg)
+function StepperMode:__create_side_listener()
+    self.side_listener = function (_,msg)
         if (msg.vel == Velocity.press) then return end
         if (msg.x ~= self.knob_idx) then return end
         self:__toggle_mode()
@@ -48,11 +48,11 @@ function StepperMode:__create_top_listener()
 end
 
 function StepperMode:__render_knob()
-    self.pad:set_top(self.knob_idx, self.color.mode[self.mode])
+    self.pad:set_side(self.knob_idx, self.color.mode[self.mode])
 end
 
 function StepperMode:__clear_knob()
-    self.pad:set_top(self.knob_idx, self.color.off)
+    self.pad:set_side(self.knob_idx, self.color.off)
 end
 
 function StepperMode:__toggle_mode()
@@ -70,12 +70,12 @@ function StepperMode:__update_mode()
 end
 
 function StepperMode:_activate()
-    self.pad:register_top_listener(self.top_listener)
+    self.pad:register_side_listener(self.side_listener)
     self:__update_mode()
     self:__render_knob()
 end
 
 function StepperMode:_deactivate()
-    self.pad:unregister_top_listener(self.top_listener)
+    self.pad:unregister_side_listener(self.side_listener)
     self:__clear_knob()
 end

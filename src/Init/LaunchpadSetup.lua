@@ -27,10 +27,9 @@ require 'Module/Editor/Editor'
 require 'Module/Chooser/Chooser'
 require 'Module/Effect/Effect'
 require 'Module/Keyboard/Keyboard'
-require 'Module/KeyboardPlayRecord/KeyboardPlayRecord'
 
 require 'Module/PatternMatrix/PatternMatrix'
-require 'Module/PatternMatrixPlayRecord/PatternMatrixPlayRecord'
+require 'Module/PlayRecordButton/PlayRecordButton'
 
 require 'Module/ColorModule'
 
@@ -64,13 +63,12 @@ function LaunchpadSetup:__init()
     self.adjuster            = nil
     self.effect              = nil
     self.key                 = nil
-    self.keybaord_play_record = nil
     self.bank                = nil
     self.chooser             = nil
     self.paginator           = nil
     self.track_paginator     = nil
     self.pattern_matrix      = nil
-    self.pattern_matrix_play_record      = nil
+    self.play_record_button      = nil
     -- modes
     self.stepper_mode_module = nil
     self.stepper_mode        = nil
@@ -83,6 +81,7 @@ function LaunchpadSetup:deactivate()
     -- modules
     self.pattern_mode_module:deactivate()
     self.pattern_mode:deactivate()
+    self.play_record_button:deactivate()
     self.stepper_mode:deactivate()
     self.stepper_mode_module:deactivate()
     self.effect:deactivate()
@@ -114,6 +113,7 @@ function LaunchpadSetup:activate()
         self.paginator:activate()
     end
     self.track_paginator:activate()
+    self.play_record_button:activate()
 end
 
 function LaunchpadSetup:connect_launchpad(pad_name,rotation)
@@ -209,9 +209,6 @@ function LaunchpadSetup:wire()
     self.key:wire_osc_client(self.osc_client)
     self.key:register_set_note(self.editor.callback_set_note)
     --
-    self.keybaord_play_record = KeyboardPlayRecord()
-    self.keybaord_play_record:wire_launchpad(self.pad)
-    --
     self.bank = Bank()
     self.bank:wire_launchpad(self.pad)
     self.bank:register_bank_update(self.adjuster.bank_update_handler)
@@ -230,8 +227,8 @@ function LaunchpadSetup:wire()
     self.pattern_matrix:wire_pattern_mix(self.pattern_mix)
     self.pattern_matrix:wire_it_selection(self.it_selection)
     --
-    self.pattern_matrix_play_record = PatternMatrixPlayRecord()
-    self.pattern_matrix_play_record:wire_launchpad(self.pad)
+    self.play_record_button = PlayRecordButton()
+    self.play_record_button:wire_launchpad(self.pad)
     --
     self.track_paginator = TrackPaginator()
     self.track_paginator:wire_launchpad(self.pad)
@@ -255,12 +252,10 @@ function LaunchpadSetup:wire()
     self.pattern_mode = Mode()
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.stepper_mode)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.stepper_mode_module)
-    self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.keybaord_play_record)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.chooser)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.effect)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.edit_mode, self.paginator)
     self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.pattern_matrix) -- pattern_matrix module a a bit to thin
-    self.pattern_mode:add_module_to_mode(PatternModeData.mode.matrix_mode, self.pattern_matrix_play_record)
     -- Color
 --    self.color = ColorModule()
 --    self.color:wire_launchpad(self.pad)
@@ -283,9 +278,14 @@ function LaunchpadSetup:wire()
     self.it_selection:register_select_pattern(self.adjuster.callback_set_pattern)
     self.it_selection:register_select_pattern(self.paginator.callback_set_pattern)
     --
+    -- multiple times of play_record_button because it is time intesive
+    self.it_selection:register_idle(self.play_record_button.idle_callback) -- for long press to stop playing
     self.it_selection:register_idle(self.editor.idle_callback)
+    self.it_selection:register_idle(self.play_record_button.idle_callback) -- for long press to stop playing
     self.it_selection:register_idle(self.adjuster.idle_callback)
+    self.it_selection:register_idle(self.play_record_button.idle_callback) -- for long press to stop playing
     self.it_selection:register_idle(self.chooser.idle_callback) -- sync track with instrument is done here
+    self.it_selection:register_idle(self.play_record_button.idle_callback) -- for long press to stop playing
     self.it_selection:register_idle(self.pattern_matrix.idle_callback) -- sync track with instrument is done here
     --
     self.pattern_mix:register_update_callback(self.pattern_matrix.pattern_mix_update_callback)
