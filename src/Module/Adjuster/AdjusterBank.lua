@@ -10,6 +10,18 @@
 --- amorise while pasting. (multiple times stepping an array to optimze maybe one or two steps through the array
 --- is not efficient.
 
+--- bank[pos] = { pos, pitch, vel, pan, delay, column} -- single line mode
+--- bank[pos] = {{ pos, pitch, vel, pan, delay, column}, { pos, pitch, ... } , { ... } } -- multiple line mode
+
+--bank = {
+--    line   = 1,
+--    pitch  = 2,
+--    vel    = 3,
+--    pan    = 4,
+--    delay  = 5,
+--    column = 6,
+--},
+
 function Adjuster:__init_bank()
     self.bank_matrix = {}
     self:_clear_bank()
@@ -64,7 +76,7 @@ function Adjuster:__insert_bank_line_at_line(target_line, bank_entry)
     local position = self:_get_line(target_line)
     if not position then return end
     -- update position
-    local note_value = bank_entry[AdjusterData.bank.pitch]
+    local note_value = bank_entry.pitch
     if note_value == Note.empty[Note.access.pitch] then
         position.note_value       = note_value
         position.instrument_value = Note.instrument.empty
@@ -74,9 +86,9 @@ function Adjuster:__insert_bank_line_at_line(target_line, bank_entry)
     else
         position.note_value       = note_value
         position.instrument_value = (self.instrument_idx - 1)
-        position.delay_value      = bank_entry[AdjusterData.bank.delay]
-        position.panning_value    = bank_entry[AdjusterData.bank.pan]
-        position.volume_value     = bank_entry[AdjusterData.bank.vel]
+        position.delay_value      = bank_entry.delay
+        position.panning_value    = bank_entry.pan
+        position.volume_value     = bank_entry.vel
     end
 end
 
@@ -93,13 +105,16 @@ end
 function Adjuster:__update_bank_position(pos, line)
     if table.is_empty(line.note_columns) then return end
     local note_column = line:note_column(self.track_column_idx)
-    local pitch       = note_column.note_value
-    local vel         = note_column.volume_value
-    local pan         = note_column.panning_value
-    local delay       = note_column.delay_value
-    local column      = self.track_column_idx
+    self.bank.bank[pos] = {
+        pos         = pos,
+        note_column = note_column,
+        pitch       = note_column.note_value,
+        vel         = note_column.volume_value,
+        pan         = note_column.panning_value,
+        delay       = note_column.delay_value,
+        column      = self.track_column_idx,
+    }
     -- save bank bank_information
-    self.bank.bank[pos] = { pos, pitch, vel, pan, delay, column}
     if pos > self.bank.max then self.bank.max = pos end
     if pos < self.bank.min then self.bank.min = pos end
 end
@@ -128,9 +143,9 @@ function Adjuster:_update_bank_matrix()
         local color
         local bank_entry = self.bank.bank[line]
         if not bank_entry then
-        elseif bank_entry[AdjusterData.bank.pitch] == Note.empty then
+        elseif bank_entry.pitch == Note.empty then
             color = self.color.selected.empty
-        elseif bank_entry[AdjusterData.bank.pitch] == Note.note.off then
+        elseif bank_entry.pitch == Note.note.off then
             color = self.color.selected.off
         else
             color = self.color.selected.on
@@ -149,9 +164,9 @@ function Adjuster:_update_bank_matrix_position(x,y)
     local color
     local bank_entry = self.bank.bank[line]
     if not bank_entry then
-    elseif bank_entry[AdjusterData.bank.pitch] == Note.empty then
+    elseif bank_entry.pitch == Note.empty then
         color = self.color.selected.empty
-    elseif bank_entry[AdjusterData.bank.pitch] == Note.note.off then
+    elseif bank_entry.pitch == Note.note.off then
         color = self.color.selected.off
     else
         color = self.color.selected.on
