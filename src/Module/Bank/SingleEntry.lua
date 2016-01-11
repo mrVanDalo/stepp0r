@@ -38,7 +38,7 @@ function SingleEntry:paste_entry(line, instrument_idx, active_pattern, note_colu
         local column = position.note_columns[note_column_idx]
         if not column then return end
         --
-        local entry = bank_entry[note_column_idx]
+        local entry = bank_entry
         if not entry then return end
         --
         write(column, entry)
@@ -67,9 +67,8 @@ end
 function SingleEntry:copy(pattern_idx, track_idx, line_start, line_stop, note_column_idx)
 
     local update_bank = function (line_number, line)
-        local bank_entry = {}
         local note_column = line.note_columns[note_column_idx]
-        bank_entry[note_column_idx] = {
+        local bank_entry = {
             pos         = line_number,
             note_column = note_column,
             pitch       = note_column.note_value,
@@ -84,10 +83,10 @@ function SingleEntry:copy(pattern_idx, track_idx, line_start, line_stop, note_co
         if line_number < self.min then self.min = line_number end
     end
 
-    print("--- [ copy:")
-    print("pattern " .. pattern_idx)
-    print("track   " .. track_idx)
-    print("[" .. line_start .. " , " .. line_stop .. "]")
+--    print("--- [ copy:")
+--    print("pattern " .. pattern_idx)
+--    print("track   " .. track_idx)
+--    print("[" .. line_start .. " , " .. line_stop .. "]")
     -- todo: why iterative over everything?
     local pattern_iter  = renoise.song().pattern_iterator
     for pos,line in pattern_iter:lines_in_pattern_track(pattern_idx, track_idx) do
@@ -109,10 +108,11 @@ function SingleEntry:reset()
     self.max  = 1
 end
 
-function SingleEntry:selection(position)
+function SingleEntry:selection( position, note_column_idx )
     if self.bank[position] then
-        return Entry.SELECTED
-    else
-        return Entry.UNSELECTED
+        if self.bank[position].column == note_column_idx  then
+            return Entry.SELECTED
+        end
     end
+    return Entry.UNSELECTED
 end

@@ -108,7 +108,7 @@ function MultipleEntry:reset()
     self.max  = 1
 end
 
-function MultipleEntry:selection(position)
+function MultipleEntry:selection( position, note_column_idx )
     if self.bank[position] then
         return Entry.SELECTED
     else

@@ -60,7 +60,7 @@ end
 
 function Adjuster:__copy_selection(x,y)
     local line = self:point_to_line(x,y)
-    if self.current_store:selection(line) == Entry.SELECTED then
+    if self.current_store:selection(line, self.track_column_idx) == Entry.SELECTED then
         self:_clear(line, (line + self.zoom - 1))
     else
         self:_copy(line, (line + self.zoom - 1))
@@ -109,7 +109,7 @@ end
 function Adjuster:_update_bank_matrix()
 
     local color = function(line)
-        local bank_entry = self.current_store:selection(line)
+        local bank_entry = self.current_store:selection(line, self.track_column_idx)
         if bank_entry == Entry.SELECTED then
             return self.color.selected.on
         else
@@ -129,7 +129,7 @@ end
 function Adjuster:_update_bank_matrix_position(x,y)
 
     local color = function(line)
-        local bank_entry = self.current_store:selection(line)
+        local bank_entry = self.current_store:selection(line, self.track_column_idx)
         if bank_entry == Entry.SELECTED then
             return self.color.selected.on
         else
