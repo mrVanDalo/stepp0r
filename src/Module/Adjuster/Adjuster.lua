@@ -6,41 +6,11 @@
 
 class "Adjuster" (PatternEditorModule)
 
-require 'Module/Adjuster/AdjusterBank'
-require 'Module/Adjuster/AdjusterEffects'
-require 'Module/Adjuster/AdjusterLibrary'
-require 'Module/Adjuster/AdjusterLaunchpadMatrix'
-require 'Module/Adjuster/AdjusterIdle'
-
--- AdjusterData = {
---     note = {
---         off   = 120,
---         empty = 121,
---     },
---     instrument = { empty = 255 },
---     delay      = { empty = 0 },
---     volume     = { empty = 255 },
---     panning    = { empty = 255 },
---     color = {
---         clear = Color.off
---     },
---     color_map = {
---         active_column   = 1,
---         inactive_column = 10,
---         on    = 1,
---         off   = 2,
---         empty = 0,
---         steppor = 100,
---     },
---     bank = {
---         line   = 1,
---         pitch  = 2,
---         vel    = 3,
---         pan    = 4,
---         delay  = 5,
---         column = 6,
---     },
--- }
+require 'Module/Adjuster/Bank'
+require 'Module/Adjuster/Effects'
+require 'Module/Adjuster/Library'
+require 'Module/Adjuster/LaunchpadUI'
+require 'Module/Adjuster/IdleHooks'
 
 Adjuster.color = {
     column = {
@@ -66,7 +36,7 @@ function Adjuster:__init()
     self.volume      = Note.instrument.empty
     self.pan         = Note.instrument.empty
     --
-    self.mode        = BankData.mode.copy
+    self.mode        = CopyPasteStore.COPY_MODE
     --
     self.color = {
         stepper = NewColor[0][3],
@@ -106,7 +76,6 @@ function Adjuster:_deactivate()
     -- must be last
     self:__deactivate_launchpad_matrix()
 end
-
 
 function Adjuster:wire_launchpad(pad)
     self.pad = pad
