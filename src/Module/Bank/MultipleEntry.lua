@@ -30,10 +30,10 @@ MultipleEntry.note = {
     }
 }
 
+class "Entry"
+
 Entry.SELECTED   = 1
 Entry.UNSELECTED = 2
-Entry.COPY_MODE  = 1
-Entry.PASTE_MODE = 2
 
 
 
@@ -43,7 +43,6 @@ function MultipleEntry:__init(position)
     self.bank     = {}
     self.min      = 1
     self.max      = 1
-    self.mode     = Entry.COPY_MODE
 end
 
 --- returns the current line
@@ -64,13 +63,13 @@ function MultipleEntry:paste_entry(line, instrument_idx, active_pattern)
         column.note_value       = entry.pitch
         column.delay_value      = entry.delay
         column.panning_value    = entry.pan
-        column.volume_value     = entry.vel
+        column.volume_value     = entry.vol
     end
 
     local update_line = function (target_line, bank_entry)
         if not bank_entry then return end
         -- check for position
-        local position = self:get_line(target_line, active_pattern)
+        local position = self:get_line(target_line, active_pattern, Renoise.sequence_track:track_idx(instrument_idx))
         if not position then return end
         for index,column in ipairs(position.note_columns) do
             -- entry
@@ -103,12 +102,12 @@ function MultipleEntry:copy(pattern_idx, track_idx, line_start, line_stop)
 
     local update_bank = function (line_number, line)
         local bank_entry = {}
-        for index,note_column  in ipair(line.note_columns) do
+        for index,note_column  in ipairs(line.note_columns) do
             bank_entry[index] = {
                 pos         = line_number,
                 note_column = note_column,
                 pitch       = note_column.note_value,
-                vel         = note_column.volume_value,
+                vol         = note_column.volume_value,
                 pan         = note_column.panning_value,
                 delay       = note_column.delay_value,
                 column      = index,
@@ -121,6 +120,10 @@ function MultipleEntry:copy(pattern_idx, track_idx, line_start, line_stop)
     end
 
     -- todo: why iterative over everything?
+    print("--- [ copy:")
+    print("pattern " .. pattern_idx)
+    print("track   " .. track_idx)
+    print("[" .. line_start .. " , " .. line_stop .. "]")
     local pattern_iter  = renoise.song().pattern_iterator
     for pos,line in pattern_iter:lines_in_pattern_track(pattern_idx, track_idx) do
         if pos.line >= line_start and pos.line <= line_stop then

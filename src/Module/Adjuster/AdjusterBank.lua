@@ -16,19 +16,22 @@
 
 function Adjuster:__init_bank()
     self.bank_matrix = {}
-    self:_clear_bank()
     self:__create_current_observer()
 end
 
 function Adjuster:__activate_bank()
+    self.current = self.store.current
+    self.mode    = self.store.mode
     self:_clear_bank_matrix()
     self:_update_bank_matrix()
     add_notifier(self.store.current_observable, self.current_observer)
+    add_notifier(self.store.mode_observable, self.mode_observer)
 end
 
 
 function Adjuster:__deactivate_bank()
-    -- remove_notifier(self.store.current_observable, self.current_observer)
+    remove_notifier(self.store.mode_observable, self.mode_observer)
+    remove_notifier(self.store.current_observable, self.current_observer)
     self:_clear_bank_matrix()
 end
 
@@ -44,10 +47,12 @@ end
 function Adjuster:__create_current_observer()
     self.current_observer = function()
         self.current = self.store.current
-        self.mode     = self.current.mode
         if self.is_active then
             self:_refresh_matrix()
         end
+    end
+    self.mode_observer = function()
+        self.mode = self.store.mode
     end
 --    self.bank_update_handler = function (bank, mode)
 --        self.bank     = bank

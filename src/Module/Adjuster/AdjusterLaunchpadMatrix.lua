@@ -38,7 +38,7 @@ function Adjuster:__create_matrix_listener()
         if msg.y > 4                   then return end
         local column = self:calculate_track_position(msg.x,msg.y)
         if not column then return end
-        if (self.mode == BankData.mode.copy) then
+        if (self.mode == CopyPasteStore.COPY_MODE) then
             self:__copy_selection(msg.x,msg.y)
             self:_update_bank_matrix_position(msg.x,msg.y)
             self:__render_matrix_position(msg.x, msg.y)
@@ -56,7 +56,7 @@ end
 
 function Adjuster:__copy_selection(x,y)
     local line = self:point_to_line(x,y)
-    if self.bank.bank[line] then
+    if self.current:selection(line) == Entry.SELECTED then
         self:_clear_bank_interval(line, (line + self.zoom - 1))
     else
         self:_update_bank_interval(line, (line + self.zoom - 1))

@@ -7,6 +7,9 @@ class "Bank" (Module)
 
 require 'Module/Bank/BankListeners'
 require 'Module/Bank/BankLaunchpadMatrix'
+require 'Module/Bank/Store'
+require 'Module/Bank/MultipleEntry'
+require 'Module/Bank/SingleEntry'
 
 BankData = {
     mode = {
