@@ -11,14 +11,6 @@ require 'Module/Bank/Entry'
 require 'Module/Bank/MultipleEntry'
 require 'Module/Bank/SingleEntry'
 
-BankData = {
-    mode = {
-        copy  = 1,
-        paste = 2,
-    },
-}
-
-
 function Bank:__init()
     Module:__init(self)
 
@@ -37,10 +29,9 @@ function Bank:__init()
 
     self.banks    = {}
     self.bank_idx = 1 -- active bank right now
-    self.mode     = BankData.mode.copy
+    self.mode     = CopyPasteStore.COPY_MODE
 
     self.pad = nil
-
 
     self:__init_matrix()
 
