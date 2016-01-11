@@ -7,9 +7,9 @@ class "Bank" (Module)
 
 require 'Module/Bank/LaunchpadUI'
 require 'Module/Bank/Store'
-require 'Module/Bank/Entry'
-require 'Module/Bank/MultipleEntry'
-require 'Module/Bank/SingleEntry'
+require 'Module/Bank/Entry/Entry'
+require 'Module/Bank/Entry/MultipleEntry'
+require 'Module/Bank/Entry/SingleEntry'
 
 function Bank:__init()
     Module:__init(self)
