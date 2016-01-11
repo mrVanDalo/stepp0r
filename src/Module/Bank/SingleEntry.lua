@@ -2,9 +2,10 @@
 
 --- to save one column
 
-class "SingleEntry"
+class "SingleEntry" (Entry)
 
 function SingleEntry:__init(position)
+    Entry:__init(self)
     self.position = position
     self.bank     = {}
     self.min      = 1
@@ -12,12 +13,6 @@ function SingleEntry:__init(position)
 end
 
 
--- todo move to Entry
---- returns the current line
---> [renoise.PatternLine object]
-function SingleEntry:get_line(line, active_pattern, track_idx)
-    return active_pattern.tracks[track_idx].lines[line]
-end
 
 function SingleEntry:paste_entry(line, instrument_idx, active_pattern, note_column_idx)
 
