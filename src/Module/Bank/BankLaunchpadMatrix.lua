@@ -37,6 +37,7 @@ function Bank:pressed_select(bank_idx)
         self.bank_idx = bank_idx
         self.store:select(self.bank_idx)
     end
+    self.mode = self.store.mode
     self:_render_matrix()
 end
 
