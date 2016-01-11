@@ -51,14 +51,10 @@ end
 function Adjuster:_paste(line)
     self.current_store:paste_entry(line, self.instrument_idx, self:active_pattern())
 end
-
-
 function Adjuster:_copy(line_start, line_stop)
     self.current_store:copy(self.pattern_idx, self.track_idx, line_start, line_stop)
 end
-
-function Adjuster:_clear_bank_interval(line_start, line_stop)
-    -- inline?
+function Adjuster:_clear(line_start, line_stop)
     self.current_store:clear(line_start, line_stop)
 end
 
@@ -70,33 +66,39 @@ end
 
 --- updates the matrix (which will be rendered afterwards)
 function Adjuster:_update_bank_matrix()
-    for line = self.page_start, (self.page_end - 1) do
-        local color
+
+    local color = function(line)
         local bank_entry = self.current_store:selection(line)
         if bank_entry == Entry.SELECTED then
-            color = self.color.selected.on
+            return self.color.selected.on
         else
-            color = nil
+            return nil
         end
+    end
+
+    for line = self.page_start, (self.page_end - 1) do
         local xy = self:line_to_point(line)
         if xy then
             local x = xy[1]
             local y = xy[2]
-            self.bank_matrix[x][y] = color
+            self.bank_matrix[x][y] = color(line)
         end
     end
 end
 function Adjuster:_update_bank_matrix_position(x,y)
+
+    local color = function(line)
+        local bank_entry = self.current_store:selection(line)
+        if bank_entry == Entry.SELECTED then
+            return self.color.selected.on
+        else
+            return nil
+        end
+    end
+
     local line = self:point_to_line(x,y)
     if not line then return end
-    local color
-    local bank_entry = self.current_store:selection(line)
-    if bank_entry == Entry.SELECTED then
-        color = self.color.selected.on
-    else
-        color = nil
-    end
-    self.bank_matrix[x][y] = color
+    self.bank_matrix[x][y] = color(line)
 end
 
 function Adjuster:_clear_bank_matrix()

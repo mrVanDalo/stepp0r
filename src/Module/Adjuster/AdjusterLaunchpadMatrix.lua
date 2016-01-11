@@ -57,7 +57,7 @@ end
 function Adjuster:__copy_selection(x,y)
     local line = self:point_to_line(x,y)
     if self.current_store:selection(line) == Entry.SELECTED then
-        self:_clear_bank_interval(line, (line + self.zoom - 1))
+        self:_clear(line, (line + self.zoom - 1))
     else
         self:_copy(line, (line + self.zoom - 1))
     end
