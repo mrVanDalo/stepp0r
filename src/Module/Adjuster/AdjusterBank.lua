@@ -54,13 +54,6 @@ function Adjuster:__create_current_observer()
     self.mode_observer = function()
         self.mode = self.store.mode
     end
---    self.bank_update_handler = function (bank, mode)
---        self.bank     = bank
---        self.mode     = mode
---        if self.is_active then
---            self:_refresh_matrix()
---        end
---    end
 end
 
 
@@ -98,7 +91,7 @@ end
 function Adjuster:_update_bank_matrix()
     for line = self.page_start, (self.page_end - 1) do
         local color
-        local bank_entry = self.current:selection()
+        local bank_entry = self.current:selection(line)
         if bank_entry == Entry.SELECTED then
             color = self.color.selected.on
         else
@@ -116,7 +109,7 @@ function Adjuster:_update_bank_matrix_position(x,y)
     local line = self:point_to_line(x,y)
     if not line then return end
     local color
-    local bank_entry = self.current:selection()
+    local bank_entry = self.current:selection(line)
     if bank_entry == Entry.SELECTED then
         color = self.color.selected.on
     else
