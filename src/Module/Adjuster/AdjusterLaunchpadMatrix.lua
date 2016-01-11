@@ -51,15 +51,15 @@ end
 
 function Adjuster:__paste_selection(x,y)
     local line = self:point_to_line(x,y)
-    self:_insert_bank_at_line(line)
+    self:_paste(line)
 end
 
 function Adjuster:__copy_selection(x,y)
     local line = self:point_to_line(x,y)
-    if self.current:selection(line) == Entry.SELECTED then
+    if self.current_store:selection(line) == Entry.SELECTED then
         self:_clear_bank_interval(line, (line + self.zoom - 1))
     else
-        self:_update_bank_interval(line, (line + self.zoom - 1))
+        self:_copy(line, (line + self.zoom - 1))
     end
     -- print("updated min ", self.bank.min, ", max ", self.bank.max )
 end
