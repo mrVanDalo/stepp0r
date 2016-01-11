@@ -61,6 +61,7 @@ function Adjuster:__init()
         stepper = NewColor[0][3],
         map = self:__get_color_map(),
         selected = {
+            -- only on is needed
             off   = BlinkColor[0][3],
             on    = BlinkColor[0][3],
             empty = BlinkColor[0][3],
