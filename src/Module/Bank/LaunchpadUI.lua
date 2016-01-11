@@ -51,19 +51,30 @@ end
 
 
 function Bank:_render_matrix()
+
     local y1 = 1 + self.offset
     local y2 = 2 + self.offset
-    for x = 1, 8 do
+
+    local render_part = function(x, copy_color, paste_color, clear_color, unselected_color)
         if x == self.bank_idx then
             if self.mode == CopyPasteStore.COPY_MODE then
-                self.pad:set_matrix(x, y1, self.color.toggle.selected.copy)
+                self.pad:set_matrix(x, y1, copy_color)
             else
-                self.pad:set_matrix(x, y1, self.color.toggle.selected.paste)
+                self.pad:set_matrix(x, y1, paste_color)
             end
         else
-            self.pad:set_matrix(x, y1, self.color.toggle.unselected)
+            self.pad:set_matrix(x, y1, unselected_color)
         end
-        self.pad:set_matrix(x, y2, self.color.clear)
+        self.pad:set_matrix(x, y2, clear_color)
+    end
+
+    for x = 1, 8 do
+        render_part(x,
+            Bank.color.multi.copy,
+            Bank.color.multi.paste,
+            Bank.color.multi.clear,
+            Bank.color.multi.unselected
+        )
     end
 end
 

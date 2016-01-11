@@ -11,21 +11,25 @@ require 'Module/Bank/Entry/Entry'
 require 'Module/Bank/Entry/MultipleEntry'
 require 'Module/Bank/Entry/SingleEntry'
 
+Bank.color = {
+    single = {
+        clear      = NewColor[0][3],
+        copy       = BlinkColor[0][3],
+        paste      = BlinkColor[3][0],
+        unselected = NewColor[3][2],
+    },
+    multi = {
+        clear      = NewColor[3][0],
+        copy       = BlinkColor[0][3],
+        paste      = BlinkColor[3][0],
+        unselected = NewColor[3][2],
+    },
+}
+
 function Bank:__init()
     Module:__init(self)
 
     self.offset = 6
-
-    self.color = {
-        toggle = {
-            selected = {
-                copy =  BlinkColor[0][3],
-                paste = BlinkColor[3][0],
-            },
-            unselected = NewColor[3][2],
-        },
-        clear = NewColor[3][0],
-    }
 
     self.banks    = {}
     self.bank_idx = 1 -- active bank right now
