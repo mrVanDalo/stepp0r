@@ -2,39 +2,39 @@
 
 --- to save multiple columns
 
-class "MultipleEntry"
 
+class "Entry"
 -- fixme : remove this?
-MultipleEntry.instrument = {
+Entry.instrument = {
     empty = 255
 }
 -- fixme: remove this?
-MultipleEntry.delay = {
+Entry.delay = {
     empty = 0
 }
 -- fixme : remove this?
-MultipleEntry.volumen= {
+Entry.volumen= {
     empty = 255
 }
 -- fixme : remove this?
-MultipleEntry.panning = {
+Entry.panning = {
     empty = 255
 }
 
-MultipleEntry.note = {
+Entry.note = {
     empty = {
         pitch = NewNote.empty.pitch,
-        delay = MultipleEntry.delay.empty,
-        pan   = MultipleEntry.panning.empty,
-        vol   = MultipleEntry.volumen.empty,
+        delay = Entry.delay.empty,
+        pan   = Entry.panning.empty,
+        vol   = Entry.volumen.empty,
     }
 }
 
-class "Entry"
 Entry.SELECTED   = 1
 Entry.UNSELECTED = 2
 
 
+class "MultipleEntry"
 
 
 function MultipleEntry:__init(position)
@@ -50,12 +50,12 @@ function MultipleEntry:get_line(line, active_pattern, track_idx)
     return active_pattern.tracks[track_idx].lines[line]
 end
 
-function MultipleEntry:paste_entry(line, instrument_idx, active_pattern)
+function MultipleEntry:paste_entry(line, instrument_idx, active_pattern, note_column_idx)
 
     local write = function(column, entry)
         if entry.pitch == NewNote.empty.pitch then
-            entry = MultipleEntry.note.empty
-            column.instrument_value = MultipleEntry.instrument.empty
+            entry = Entry.note.empty
+            column.instrument_value = Entry.instrument.empty
         else
             column.instrument_value = (instrument_idx - 1)
         end
@@ -97,7 +97,7 @@ function MultipleEntry:paste_entry(line, instrument_idx, active_pattern)
     end
 end
 
-function MultipleEntry:copy(pattern_idx, track_idx, line_start, line_stop)
+function MultipleEntry:copy(pattern_idx, track_idx, line_start, line_stop, note_column_idx)
 
     local update_bank = function (line_number, line)
         local bank_entry = {}

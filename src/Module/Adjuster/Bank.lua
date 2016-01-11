@@ -45,10 +45,10 @@ end
 
 
 function Adjuster:_paste(line)
-    self.current_store:paste_entry(line, self.instrument_idx, self:active_pattern())
+    self.current_store:paste_entry(line, self.instrument_idx, self:active_pattern(), self.track_column_idx)
 end
 function Adjuster:_copy(line_start, line_stop)
-    self.current_store:copy(self.pattern_idx, self.track_idx, line_start, line_stop)
+    self.current_store:copy(self.pattern_idx, self.track_idx, line_start, line_stop, self.track_column_idx)
 end
 function Adjuster:_clear(line_start, line_stop)
     self.current_store:clear(line_start, line_stop)
