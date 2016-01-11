@@ -23,23 +23,31 @@ function Bank:__create_matrix_listener()
         if Velocity.press == msg.vel then return end
         local y = msg.y - self.offset
         if y == 1 then
-            self.bank_idx = msg.x
-            self.store:toggle_mode()
-            self:_render_matrix()
+            self:pressed_select(msg.x)
         elseif y == 2 then
-            self:_clear_bank(msg.x)
+            self:pressed_clear(msg.x)
         end
     end
 end
 
-function Bank:_clear_bank(bank_idx)
-    self.bank_idx = bank_idx
-    self.mode = CopyPasteStore.COPY_MODE
-    self.store:select(bank_idx)
-    self.store.current:reset()
-    -- self:_update_bank_listeners()
+function Bank:pressed_select(bank_idx)
+    if self.bank_idx == bank_idx then
+        self.store:toggle_mode()
+    else
+        self.bank_idx = bank_idx
+        self.store:select(self.bank_idx)
+    end
     self:_render_matrix()
 end
+
+function Bank:pressed_clear(bank_idx)
+    self.mode = CopyPasteStore.COPY_MODE
+    self.bank_idx = bank_idx
+    self.store:select(bank_idx)
+    self.store:reset()
+    self:_render_matrix()
+end
+
 
 function Bank:_render_matrix()
     local y1 = 1 + self.offset

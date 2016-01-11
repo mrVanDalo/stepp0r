@@ -31,7 +31,6 @@ MultipleEntry.note = {
 }
 
 class "Entry"
-
 Entry.SELECTED   = 1
 Entry.UNSELECTED = 2
 

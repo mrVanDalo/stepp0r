@@ -5,7 +5,6 @@
 
 class "Bank" (Module)
 
-require 'Module/Bank/BankListeners'
 require 'Module/Bank/BankLaunchpadMatrix'
 require 'Module/Bank/Store'
 require 'Module/Bank/MultipleEntry'
@@ -43,22 +42,23 @@ function Bank:__init()
 
 
     self:__init_matrix()
-    self:__init_listeners()
 
 end
 
+
 function Bank:_activate()
     self:__activate_matrix()
-    self:__activate_listeners()
     self:_render_matrix()
 end
 
 function Bank:_deactivate()
     self:__deactivate_matrix()
-    self:__deactivate_listeners()
     self:_clear_matrix()
 end
 
 function Bank:wire_launchpad(pad)
     self.pad = pad
+end
+function Bank:wire_store(store)
+    self.store = store
 end

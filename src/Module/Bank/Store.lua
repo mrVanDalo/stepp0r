@@ -34,6 +34,12 @@ function CopyPasteStore:select(position)
     self.current_observable:bang()
 end
 
+function CopyPasteStore:reset()
+    self.current:reset()
+    self.mode = CopyPasteStore.COPY_MODE
+    self.mode_observable:bang()
+end
+
 function CopyPasteStore:toggle_mode()
    if self.mode == CopyPasteStore.COPY_MODE then
        print("switched mode to paste mode")
