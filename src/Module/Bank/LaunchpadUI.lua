@@ -68,7 +68,15 @@ function Bank:_render_matrix()
         self.pad:set_matrix(x, y2, clear_color)
     end
 
-    for x = 1, 8 do
+    for x = 1, 4 do
+        render_part(x,
+            Bank.color.single.copy,
+            Bank.color.single.paste,
+            Bank.color.single.clear,
+            Bank.color.single.unselected
+        )
+    end
+    for x = 5, 8 do
         render_part(x,
             Bank.color.multi.copy,
             Bank.color.multi.paste,
