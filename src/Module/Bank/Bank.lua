@@ -5,7 +5,7 @@
 
 class "Bank" (Module)
 
-require 'Module/Bank/BankLaunchpadMatrix'
+require 'Module/Bank/LaunchpadUI'
 require 'Module/Bank/Store'
 require 'Module/Bank/MultipleEntry'
 require 'Module/Bank/SingleEntry'
