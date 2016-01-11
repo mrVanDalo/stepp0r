@@ -6,40 +6,21 @@
 
 class "Adjuster" (PatternEditorModule)
 
-require 'Module/Adjuster/AdjusterBank'
-require 'Module/Adjuster/AdjusterEffects'
-require 'Module/Adjuster/AdjusterLibrary'
-require 'Module/Adjuster/AdjusterLaunchpadMatrix'
-require 'Module/Adjuster/AdjusterIdle'
+require 'Module/Adjuster/Bank'
+require 'Module/Adjuster/Effects'
+require 'Module/Adjuster/Library'
+require 'Module/Adjuster/LaunchpadUI'
+require 'Module/Adjuster/IdleHooks'
 
-AdjusterData = {
-    note = {
-        off   = 120,
-        empty = 121,
+Adjuster.color = {
+    column = {
+        active   = 1,
+        inactive = 10,
     },
-    instrument = { empty = 255 },
-    delay      = { empty = 0 },
-    volume     = { empty = 255 },
-    panning    = { empty = 255 },
-    color = {
-        clear = Color.off
-    },
-    color_map = {
-        active_column   = 1,
-        inactive_column = 10,
-        on    = 1,
-        off   = 2,
-        empty = 0,
-        steppor = 100,
-    },
-    bank = {
-        line   = 1,
-        pitch  = 2,
-        vel    = 3,
-        pan    = 4,
-        delay  = 5,
-        column = 6,
-    },
+    on    = 1,
+    off   = 2,
+    empty = 0,
+    steppor = 100,
 }
 
 --- ======================================================================================================
@@ -52,15 +33,16 @@ function Adjuster:__init()
     self.playback_key = 'adjuster'
     --
     self.delay       = 0
-    self.volume      = AdjusterData.instrument.empty
-    self.pan         = AdjusterData.instrument.empty
+    self.volume      = Note.instrument.empty
+    self.pan         = Note.instrument.empty
     --
-    self.mode        = BankData.mode.copy
+    self.mode        = CopyPasteStore.COPY_MODE
     --
     self.color = {
         stepper = NewColor[0][3],
         map = self:__get_color_map(),
         selected = {
+            -- only on is needed
             off   = BlinkColor[0][3],
             on    = BlinkColor[0][3],
             empty = BlinkColor[0][3],
@@ -95,18 +77,17 @@ function Adjuster:_deactivate()
     self:__deactivate_launchpad_matrix()
 end
 
-
 function Adjuster:wire_launchpad(pad)
     self.pad = pad
 end
 
 function Adjuster:__get_color_map()
-    local active_column   = AdjusterData.color_map.active_column
-    local inactive_column = AdjusterData.color_map.inactive_column
-    local on    = AdjusterData.color_map.on
-    local off   = AdjusterData.color_map.off
-    local empty = AdjusterData.color_map.empty
-    local steppor = AdjusterData.color_map.steppor
+    local active_column   = Adjuster.color.column.active
+    local inactive_column = Adjuster.color.column.inactive
+    local on              = Adjuster.color.on
+    local off             = Adjuster.color.off
+    local empty           = Adjuster.color.empty
+    local steppor         = Adjuster.color.steppor
     --
     local active_column_and_on      = NewColor[3][3]
     local active_column_and_off     = NewColor[3][0]

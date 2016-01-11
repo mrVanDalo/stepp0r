@@ -68,7 +68,8 @@ function LaunchpadSetup:__init()
     self.paginator           = nil
     self.track_paginator     = nil
     self.pattern_matrix      = nil
-    self.play_record_button      = nil
+    self.play_record_button  = nil
+    self.copy_paste_store    = nil
     -- modes
     self.stepper_mode_module = nil
     self.stepper_mode        = nil
@@ -191,9 +192,12 @@ function LaunchpadSetup:wire()
     self.editor:wire_launchpad(self.pad)
     self.editor:wire_playback_position_observer(self.playback_position_observer)
     --
+    self.copy_paste_store = CopyPasteStore()
+    --
     self.adjuster = Adjuster()
     self.adjuster:wire_launchpad(self.pad)
     self.adjuster:wire_playback_position_observer(self.playback_position_observer)
+    self.adjuster:wire_store(self.copy_paste_store)
     --
     self.effect = Effect()
     self.effect:wire_launchpad(self.pad)
@@ -211,7 +215,7 @@ function LaunchpadSetup:wire()
     --
     self.bank = Bank()
     self.bank:wire_launchpad(self.pad)
-    self.bank:register_bank_update(self.adjuster.bank_update_handler)
+    self.bank:wire_store(self.copy_paste_store)
     --
     self.chooser = Chooser()
     self.chooser:wire_launchpad(self.pad)

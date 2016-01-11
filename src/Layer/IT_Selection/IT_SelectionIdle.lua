@@ -6,6 +6,7 @@
 --- to let apps refresh them self. In a proper way, so you can handle a bit heavier calculations in the idle time.
 
 
+-- todo this should be it's own layer
 function IT_Selection:_init_idle()
     self.callback_idle = {}
     self.callback_idle_idx = 1  -- the next callback that will be called
