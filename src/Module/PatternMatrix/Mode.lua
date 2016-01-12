@@ -38,8 +38,11 @@ function PatternMatrixMode:is_meta()
    return false
 end
 
+--- todo : maybe there is a better name
 function PatternMatrixMode:is_normal()
-    return not self:is_meta()
+    if self.current == PatternMatrixMode.mode.COPY_PATTERN then return true end
+    if self.current == PatternMatrixMode.mode.CLEAR_PATTERN then return true end
+    return false
 end
 
 function PatternMatrixMode:is_copy()

@@ -20,20 +20,41 @@ end
 function PatternMatrix:__create_mode_knobs_listener()
     self.__mode_knobs_listener = function (_, msg)
         if self.is_not_active          then return end
-        -- copy
-        if msg.x == self.copy_mode_knob_idx and msg.vel ~= Velocity.release then
-            self.mode:set_copy()
+        if self.mode:is_select() then
+            -- copy
+            if msg.x == self.copy_mode_knob_idx and msg.vel ~= Velocity.release then
+                self.mode:set_copy()
+            end
+            -- clear
+            if msg.x == self.clear_mode_knob_idx and msg.vel ~= Velocity.release then
+                self.mode:set_clear()
+            end
+        elseif self.mode:is_normal() then
+            -- copy
+            if msg.x == self.copy_mode_knob_idx and msg.vel ~= Velocity.release then
+                self.mode:meta()
+            end
+            if msg.x == self.copy_mode_knob_idx and msg.vel == Velocity.release then
+                self.mode:reset()
+            end
+            -- clear
+            if msg.x == self.clear_mode_knob_idx and msg.vel ~= Velocity.release then
+                self.mode:meta()
+            end
+            if msg.x == self.clear_mode_knob_idx and msg.vel == Velocity.release then
+                self.mode:reset()
+            end
+        elseif self.mode:is_meta() then
+            -- copy
+            if msg.x == self.copy_mode_knob_idx and msg.vel == Velocity.release then
+                self.mode:normal()
+            end
+            -- clear
+            if msg.x == self.clear_mode_knob_idx and msg.vel == Velocity.release then
+                self.mode:normal()
+            end
         end
-        if msg.x == self.copy_mode_knob_idx and msg.vel == Velocity.release then
-            self.mode:reset()
-        end
-        -- clear
-        if msg.x == self.clear_mode_knob_idx and msg.vel ~= Velocity.release then
-            self.mode:set_clear()
-        end
-        if msg.x == self.clear_mode_knob_idx and msg.vel == Velocity.release then
-            self.mode:reset()
-        end
+
         self:_render_row()
     end
 end

@@ -88,6 +88,8 @@ PatternMatrix.color = {
     CLEAR  = NewColor[3][0],
     COPY   = NewColor[3][2],
     SELECT = NewColor[0][3],
+    INSERT = BlinkColor[3][0],
+    REMOVE = BlinkColor[3][2],
 }
 
 function PatternMatrix:__init()
