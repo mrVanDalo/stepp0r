@@ -48,10 +48,16 @@ function IT_Selection:_update_alias_listener(new_track_idx, new_pattern_idx)
 end
 
 function IT_Selection:__remove_alias_listener()
-    remove_notifier(
-        renoise.song().patterns[self.last_alias_pattern_idx].tracks[self.last_alias_track_idx].alias_pattern_index_observable,
-        self.__alias_pattern_listener
-    )
+    local pattern = renoise.song().patterns[self.last_alias_pattern_idx]
+    if pattern then
+        local track = pattern.tracks[self.last_alias_track_idx]
+        if track then
+            remove_notifier(
+                track.alias_pattern_index_observable,
+                self.__alias_pattern_listener
+            )
+        end
+    end
 --    print("remove alias observer on pattern[", self.last_alias_pattern_idx,"].track[", self.last_alias_track_idx,"]")
 end
 

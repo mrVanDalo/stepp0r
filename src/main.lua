@@ -135,7 +135,14 @@ local function show_main_dialog()
 
 end
 
-
+renoise.tool().app_new_document_observable:add_notifier(function()
+    if launchpad_setup then
+        launchpad_setup:deactivate()
+        launchpad_setup = LaunchpadSetup()
+        launchpad_setup:wire()
+    end
+    print("new renoise track")
+end)
 
 
 --- ======================================================================================================
