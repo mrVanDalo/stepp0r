@@ -84,10 +84,10 @@ function MultipleEntry:copy(pattern_idx, track_idx, line_start, line_stop, note_
     end
 
     -- todo: why iterative over everything?
-    print("--- [ copy:")
-    print("pattern " .. pattern_idx)
-    print("track   " .. track_idx)
-    print("[" .. line_start .. " , " .. line_stop .. "]")
+--    print("--- [ copy:")
+--    print("pattern " .. pattern_idx)
+--    print("track   " .. track_idx)
+--    print("[" .. line_start .. " , " .. line_stop .. "]")
     local pattern_iter  = renoise.song().pattern_iterator
     for pos,line in pattern_iter:lines_in_pattern_track(pattern_idx, track_idx) do
         if pos.line >= line_start and pos.line <= line_stop then

@@ -38,10 +38,10 @@ end
 
 function CopyPasteStore:toggle_mode()
    if self.mode == CopyPasteStore.COPY_MODE then
-       print("switched mode to paste mode")
+--       print("switched mode to paste mode")
        self.mode = CopyPasteStore.PASTE_MODE
    else
-       print("switched mode to copy mode")
+--       print("switched mode to copy mode")
        self.mode = CopyPasteStore.COPY_MODE
    end
    self.mode_observable:bang()
