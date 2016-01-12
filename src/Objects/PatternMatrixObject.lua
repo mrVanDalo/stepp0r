@@ -29,8 +29,6 @@ function PatternMatrixObject:remove_sequence_index(index)
     renoise.song().sequencer:delete_sequence_at(index)
 end
 
-
-
 -- todo : return nil should make it more readable
 function PatternMatrixObject:alias_idx(pattern, track_idx)
     if pattern and track_idx and pattern.tracks[track_idx] and pattern.tracks[track_idx].is_alias then

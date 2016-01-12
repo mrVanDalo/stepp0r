@@ -48,10 +48,9 @@ function PatternMatrix:__create_side_listener()
         elseif self.mode:is_clear() then self:__clear_pattern_row(msg.x)
         elseif self.mode:is_insert_scene() then self:__insert_row(msg.x)
         elseif self.mode:is_remove_scene() then
-            -- todo we should check if the pattern
-            --      exists somewhere else in the track,
-            --      than we should not clear the pattern
-            self:__clear_pattern_row(msg.x)
+            if self:__can_sequence_be_cleared(msg.x) then
+                self:__clear_pattern_row(msg.x)
+            end
             self:__remove_row(msg.x)
         end
     end
@@ -76,6 +75,7 @@ function PatternMatrix:__select_pattern_row(x)
     self:_refresh_matrix()
 end
 function PatternMatrix:__copy_pattern_row(x)
+    print("pattern matrix : copy pattern row")
     local sequence_idx = self:_get_sequence_for(x)
     self:_ensure_sequence_idx_exist(sequence_idx)
     local pattern_idx  = renoise.song().sequencer.pattern_sequence[sequence_idx]
@@ -90,6 +90,7 @@ function PatternMatrix:__copy_pattern_row(x)
     self:_refresh_matrix()
 end
 function PatternMatrix:__clear_pattern_row(x)
+    print("pattern matrix : clear pattern row")
     local sequence_idx = self:_get_sequence_for(x)
     self:_ensure_sequence_idx_exist(sequence_idx)
     local pattern_idx  = renoise.song().sequencer.pattern_sequence[sequence_idx]
@@ -99,12 +100,23 @@ function PatternMatrix:__clear_pattern_row(x)
     self:_refresh_matrix()
 end
 function PatternMatrix:__remove_row(x)
+    print("pattern matrix : remove row")
     local sequence_idx = self:_get_sequence_for(x)
     Renoise.pattern_matrix:remove_sequence_index(sequence_idx)
     self:_refresh_matrix()
 end
 function PatternMatrix:__insert_row(x)
+    print("pattern matrix : insert row")
     local sequence_idx = self:_get_sequence_for(x)
     Renoise.pattern_matrix:insert_sequence_at_index(sequence_idx)
     self:_refresh_matrix()
+end
+function PatternMatrix:__can_sequence_be_cleared(x)
+    local sequence_idx = self:_get_sequence_for(x)
+    local pattern_idx  = renoise.song().sequencer.pattern_sequence[sequence_idx]
+    if pattern_idx == nil then return false end
+    for index,visible_pattern_idx  in ipairs(renoise.song().sequencer.pattern_sequence) do
+        if pattern_idx == visible_pattern_idx and index ~= sequence_idx then return false end
+    end
+    return true
 end
