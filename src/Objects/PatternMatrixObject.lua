@@ -8,6 +8,7 @@ end
 
 function PatternMatrixObject:create_patterns_up_to_sequence_index(index)
     if index < 1 then return end
+    renoise.song().sequencer:sort()
     local number_of_sequences = self:number_of_sequences()
     local to_create = index - number_of_sequences
     for counter = 1, to_create do
@@ -19,6 +20,7 @@ function PatternMatrixObject:insert_sequence_at_index(index)
     if index < 1 then return end
     local number_of_sequences = self:number_of_sequences()
     if index > number_of_sequences then return end
+    renoise.song().sequencer:sort()
     renoise.song().sequencer:insert_new_pattern_at(index)
 end
 
@@ -26,6 +28,8 @@ function PatternMatrixObject:remove_sequence_index(index)
     if index < 1 then return end
     local number_of_sequences = self:number_of_sequences()
     if index > number_of_sequences then return end
+    renoise.song().sequencer:sort()
+    -- todo : clear pattern first
     renoise.song().sequencer:delete_sequence_at(index)
 end
 
