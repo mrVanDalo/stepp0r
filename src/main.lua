@@ -138,10 +138,11 @@ end
 renoise.tool().app_new_document_observable:add_notifier(function()
     if launchpad_setup then
         launchpad_setup:deactivate()
-        launchpad_setup = LaunchpadSetup()
-        launchpad_setup:wire()
+        launchpad_setup = nil
     end
-    print("new renoise track")
+    if main_ui then
+        main_ui = nil
+    end
 end)
 
 
