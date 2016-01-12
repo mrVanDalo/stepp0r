@@ -22,8 +22,10 @@ function PatternMatrix:_render_row()
         color = PatternMatrix.color.COPY
     elseif self.mode:is_insert_scene() then
         color = PatternMatrix.color.INSERT
+        self:__clear_row()
     elseif self.mode:is_remove_scene() then
         color = PatternMatrix.color.REMOVE
+        self:__clear_row()
     end
     for x = 1,8 do
         self.pad:set_side(x, color)
