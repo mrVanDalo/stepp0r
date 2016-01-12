@@ -23,7 +23,6 @@ PatternMixData = {
         instantly = 1,
     },
     first_sequence_idx = 3, -- the first sequence after the mix area
-
 }
 
 function PatternMix:__init()
@@ -58,8 +57,6 @@ function PatternMix:__create_selected_pattern_idx_listener()
         self:_update_callbacks()
     end
 end
-
-
 
 
 

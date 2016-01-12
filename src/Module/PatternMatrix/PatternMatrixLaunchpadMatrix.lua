@@ -10,6 +10,7 @@ function PatternMatrix:__activate_launchpad()
 end
 
 function PatternMatrix:__deactivate_launchpad()
+--    print("deactivate pattern matrixi (launchpad)")
     self:_clear_launchpad()
     self.pad:unregister_matrix_listener(self.__matrix_listener)
 end
@@ -56,6 +57,7 @@ function PatternMatrix:__copy_pattern(x,y)
     end
 end
 function PatternMatrix:__set_mix_to_next_pattern(x,y)
+--    print("pattern matrix : set mix to next pattern")
     local track_idx   = self:_get_track_idx(x)
     local pattern_idx = self:_get_pattern_idx(y)
     local alias_idx   = Renoise.pattern_matrix:alias_idx(self.next_mix_pattern,track_idx)
@@ -71,12 +73,14 @@ function PatternMatrix:__set_mix_to_next_pattern(x,y)
 end
 
 function PatternMatrix:_refresh_matrix()
+--    print("pattern matrix : refresh matrix")
     self:_clear_matrix()
     self:_update_matrix()
     self:_render_matrix()
 end
 
 function PatternMatrix:_render_matrix()
+--    print("pattern matrix : render matrix")
     self:_clear_launchpad()
     for x = 1, 8 do
         --
@@ -112,6 +116,7 @@ function PatternMatrix:_render_matrix()
 end
 
 function PatternMatrix:_clear_launchpad()
+--    print("pattern matrix : clear launchpad")
     for x = 1, 8 do
         for y = 1, 8 do
             self.pad:set_matrix(x,y,Color.off)

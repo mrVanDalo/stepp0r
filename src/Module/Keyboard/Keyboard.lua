@@ -94,6 +94,7 @@ function Keyboard:matrix_refresh()
 end
 
 function Keyboard:matrix_clear()
+--    print("clear keyboard matrix")
     local y0 = self.offset + 1
     local y1 = self.offset + 2
     for x=1,8 do
