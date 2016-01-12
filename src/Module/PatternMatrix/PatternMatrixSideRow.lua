@@ -44,6 +44,8 @@ function PatternMatrix:__create_side_listener()
         if self.mode:is_select()    then self:__select_pattern_row(msg.x)
         elseif self.mode:is_copy()  then self:__copy_pattern_row(msg.x)
         elseif self.mode:is_clear() then self:__clear_pattern_row(msg.x)
+        elseif self.mode:is_remove_scene() then self:__remove_row(msg.x)
+        elseif self.mode:is_insert_scene() then self:__insert_row(msg.x)
         end
     end
 end
