@@ -1,7 +1,7 @@
 
 
 function IT_Selection:_init_column()
-    self.column_idx     = 1
+    self.column_idx            = 1
 end
 
 

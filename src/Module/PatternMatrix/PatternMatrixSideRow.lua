@@ -15,11 +15,17 @@ function PatternMatrix:__deactivate_side_row()
 end
 
 function PatternMatrix:_render_row()
-    local color = self.mode_color.mix
-    if self.mode == PatternMatrixData.mode.clear then
-        color = self.mode_color.clear
-    elseif self.mode == PatternMatrixData.mode.copy then
-        color = self.mode_color.copy
+    local color = PatternMatrix.color.SELECT
+    if self.mode:is_clear() then
+        color = PatternMatrix.color.CLEAR
+    elseif self.mode:is_copy() then
+        color = PatternMatrix.color.COPY
+    elseif self.mode:is_insert_scene() then
+        color = PatternMatrix.color.INSERT
+        self:__clear_row()
+    elseif self.mode:is_remove_scene() then
+        color = PatternMatrix.color.REMOVE
+        self:__clear_row()
     end
     for x = 1,8 do
         self.pad:set_side(x, color)
@@ -36,12 +42,17 @@ function PatternMatrix:__create_side_listener()
     self.__side_listener = function (_, msg)
         if self.is_not_active then return end
         if msg.vel ~= Velocity.release then return end
-        if self.mode == PatternMatrixData.mode.mix then
-            self:__set_row_to_next_pattern(msg.x)
-        elseif self.mode == PatternMatrixData.mode.copy then
-            self:__copy_pattern_row(msg.x)
-        else
+        --
+        if self.mode:is_select()    then self:__select_pattern_row(msg.x)
+        elseif self.mode:is_copy()  then self:__copy_pattern_row(msg.x)
+        elseif self.mode:is_clear() then self:__clear_pattern_row(msg.x)
+        elseif self.mode:is_insert_scene() then self:__insert_row(msg.x)
+        elseif self.mode:is_remove_scene() then
+            -- todo we should check if the pattern
+            --      exists somewhere else in the track,
+            --      than we should not clear the pattern
             self:__clear_pattern_row(msg.x)
+            self:__remove_row(msg.x)
         end
     end
 end
@@ -55,7 +66,7 @@ function PatternMatrix:__all_tracks()
     return result
 end
 
-function PatternMatrix:__set_row_to_next_pattern(x)
+function PatternMatrix:__select_pattern_row(x)
     local sequence_idx = self:_get_sequence_for(x)
     self:_ensure_sequence_idx_exist(sequence_idx)
     local pattern_idx  = renoise.song().sequencer.pattern_sequence[sequence_idx]
@@ -85,5 +96,15 @@ function PatternMatrix:__clear_pattern_row(x)
     for _,track_idx in pairs(self:__all_tracks()) do
         renoise.song().patterns[pattern_idx].tracks[track_idx]:clear()
     end
+    self:_refresh_matrix()
+end
+function PatternMatrix:__remove_row(x)
+    local sequence_idx = self:_get_sequence_for(x)
+    Renoise.pattern_matrix:remove_sequence_index(sequence_idx)
+    self:_refresh_matrix()
+end
+function PatternMatrix:__insert_row(x)
+    local sequence_idx = self:_get_sequence_for(x)
+    Renoise.pattern_matrix:insert_sequence_at_index(sequence_idx)
     self:_refresh_matrix()
 end

@@ -68,6 +68,7 @@ function LaunchpadSetup:__init()
     self.paginator           = nil
     self.track_paginator     = nil
     self.pattern_matrix      = nil
+    self.pattern_matrix_select_mode = nil
     self.play_record_button  = nil
     self.copy_paste_store    = nil
     -- modes
@@ -226,10 +227,13 @@ function LaunchpadSetup:wire()
     self.paginator:register_update_callback(self.adjuster.pageinator_update_callback)
     self.paginator:register_update_callback(self.editor.pageinator_update_callback)
     --
+    self.pattern_matrix_select_mode = PatternMatrixMode()
+    --
     self.pattern_matrix = PatternMatrix()
     self.pattern_matrix:wire_launchpad(self.pad)
     self.pattern_matrix:wire_pattern_mix(self.pattern_mix)
     self.pattern_matrix:wire_it_selection(self.it_selection)
+    self.pattern_matrix:wire_mode(self.pattern_matrix_select_mode)
     --
     self.play_record_button = PlayRecordButton()
     self.play_record_button:wire_launchpad(self.pad)
