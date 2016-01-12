@@ -136,6 +136,19 @@ local function show_main_dialog()
 end
 
 
+--- this observable makes sure, that a new renoise project
+---     will not mess around with the stepp0r configuration.
+---     It might be changed and more advanced, if the
+---     configuration is saved using a renoise.Document
+renoise.tool().app_new_document_observable:add_notifier(function()
+    if launchpad_setup then
+        launchpad_setup:deactivate()
+        launchpad_setup = nil
+    end
+    if main_ui then
+        main_ui = nil
+    end
+end)
 
 
 --- ======================================================================================================
