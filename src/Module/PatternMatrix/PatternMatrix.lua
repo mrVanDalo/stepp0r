@@ -5,6 +5,7 @@
 
 class "PatternMatrix" (Module)
 
+require 'Module/PatternMatrix/Mode'
 require 'Module/PatternMatrix/PatternMatrixLaunchpadMatrix'
 require 'Module/PatternMatrix/PatternMatrixPatternMix'
 require 'Module/PatternMatrix/PatternMatrixPatternMatrix'
@@ -80,19 +81,20 @@ function PatternMatrix:__create_color_map()
     self.color[full  + next   + inactive + group_b ] = BlinkColor[3][0]
     self.color[full  + no_mix + active   + group_b ] = BlinkColor[2][3]
     self.color[full  + no_mix + inactive + group_b ] = NewColor[2][3]
-
 end
+
+
+PatternMatrix.color = {
+    CLEAR  = NewColor[3][0],
+    COPY   = NewColor[3][2],
+    SELECT = NewColor[0][3],
+}
 
 function PatternMatrix:__init()
     Module:__init(self)
     --
     -- todo : split this in another module
     self:__create_color_map()
-    self.mode_color = {
-        clear = NewColor[3][0],
-        copy  = NewColor[3][2],
-        mix   = NewColor[0][3],
-    }
     --
     self:__init_paginator()
     self:__init_pattern_mix()

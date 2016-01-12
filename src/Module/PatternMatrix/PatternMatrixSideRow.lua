@@ -15,11 +15,11 @@ function PatternMatrix:__deactivate_side_row()
 end
 
 function PatternMatrix:_render_row()
-    local color = self.mode_color.mix
-    if self.mode == PatternMatrixData.mode.clear then
-        color = self.mode_color.clear
-    elseif self.mode == PatternMatrixData.mode.copy then
-        color = self.mode_color.copy
+    local color = PatternMatrix.color.SELECT
+    if self.mode:is_clear() then
+        color = PatternMatrix.color.CLEAR
+    elseif self.mode:is_copy() then
+        color = PatternMatrix.color.COPY
     end
     for x = 1,8 do
         self.pad:set_side(x, color)
@@ -36,9 +36,10 @@ function PatternMatrix:__create_side_listener()
     self.__side_listener = function (_, msg)
         if self.is_not_active then return end
         if msg.vel ~= Velocity.release then return end
-        if self.mode == PatternMatrixData.mode.mix then
+        --
+        if self.mode:is_select()  then
             self:__set_row_to_next_pattern(msg.x)
-        elseif self.mode == PatternMatrixData.mode.copy then
+        elseif self.mode:is_copy()  then
             self:__copy_pattern_row(msg.x)
         else
             self:__clear_pattern_row(msg.x)

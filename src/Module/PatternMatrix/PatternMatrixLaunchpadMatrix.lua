@@ -24,9 +24,10 @@ function PatternMatrix:__create_matrix_listener()
 --        print("press ", msg.x, ", ", msg.y)
         if self.is_not_active then return end
         if msg.vel ~= Velocity.release then return end
-        if self.mode == PatternMatrixData.mode.mix then
+        --
+        if self.mode:is_select() then
             self:__set_mix_to_next_pattern(msg.x,msg.y)
-        elseif self.mode == PatternMatrixData.mode.copy then
+        elseif self.mode:is_copy() then
             self:__copy_pattern(msg.x,msg.y)
         else
             self:__clear_pattern(msg.x, msg.y)
