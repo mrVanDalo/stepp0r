@@ -46,6 +46,9 @@ function PatternMatrix:__create_side_listener()
         elseif self.mode:is_clear() then self:__clear_pattern_row(msg.x)
         elseif self.mode:is_insert_scene() then self:__insert_row(msg.x)
         elseif self.mode:is_remove_scene() then
+            -- todo we should check if the pattern
+            --      exists somewhere else in the track,
+            --      than we should not clear the pattern
             self:__clear_pattern_row(msg.x)
             self:__remove_row(msg.x)
         end
