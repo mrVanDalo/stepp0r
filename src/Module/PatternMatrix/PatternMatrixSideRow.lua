@@ -75,7 +75,7 @@ function PatternMatrix:__select_pattern_row(x)
     self:_refresh_matrix()
 end
 function PatternMatrix:__copy_pattern_row(x)
-    print("pattern matrix : copy pattern row")
+--    print("pattern matrix : copy pattern row")
     local sequence_idx = self:_get_sequence_for(x)
     self:_ensure_sequence_idx_exist(sequence_idx)
     local pattern_idx  = renoise.song().sequencer.pattern_sequence[sequence_idx]
@@ -90,7 +90,7 @@ function PatternMatrix:__copy_pattern_row(x)
     self:_refresh_matrix()
 end
 function PatternMatrix:__clear_pattern_row(x)
-    print("pattern matrix : clear pattern row")
+--    print("pattern matrix : clear pattern row")
     local sequence_idx = self:_get_sequence_for(x)
     self:_ensure_sequence_idx_exist(sequence_idx)
     local pattern_idx  = renoise.song().sequencer.pattern_sequence[sequence_idx]
@@ -100,13 +100,13 @@ function PatternMatrix:__clear_pattern_row(x)
     self:_refresh_matrix()
 end
 function PatternMatrix:__remove_row(x)
-    print("pattern matrix : remove row")
+--    print("pattern matrix : remove row")
     local sequence_idx = self:_get_sequence_for(x)
     Renoise.pattern_matrix:remove_sequence_index(sequence_idx)
     self:_refresh_matrix()
 end
 function PatternMatrix:__insert_row(x)
-    print("pattern matrix : insert row")
+--    print("pattern matrix : insert row")
     local sequence_idx = self:_get_sequence_for(x)
     Renoise.pattern_matrix:insert_sequence_at_index(sequence_idx)
     self:_refresh_matrix()

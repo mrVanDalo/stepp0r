@@ -74,7 +74,7 @@ It would be best to use the native `Observables` but they are strictly bound to 
 In a lot of cases we want to publish changes of whole objects, like in the Pagination module.
 So we stick to the manual callback process. Here is a brief description on how this is to implement.
 
-#### Example Callback setup
+#### Example Callback setup (Manuel)
 
 You have two objects `LayerObject` and `ModuleObject`. 
 The `LayerObject` holds variables which should trigger update routines in the `ModuleObject` if changing.
@@ -124,3 +124,42 @@ It is a lot of work you have to do to set something up like this.
 But you can pass around object, which is in most cases more readable.
 It might be possible that you dont need that at all, and you are fine with just the
 `Observables` given for primitive data types.
+
+
+#### Example Callback setup (ObservableBang)
+
+(much more readable)
+```
+function LayerObject:__init()
+    self.value = {
+        foo = "foo",
+        bar = "baz"
+    }
+    self.value_observable = renoise.Document.ObservableBang
+end
+
+function LayerObject:change()
+    self.value = {
+        foo = "bar",
+        bar = "baz"
+    }
+    self.value_observable:bang()
+end
+```
+
+Hook to it
+
+```
+function ModuleObject:wire_layer(layer)
+    self.layer = layer
+    add_notifier( self.layer.value_observable, function() 
+        print(self.layer.value.foo)
+        print(self.layer.value.bar)
+    end)
+end
+```
+
+
+    
+
+

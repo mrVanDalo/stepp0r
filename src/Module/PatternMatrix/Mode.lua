@@ -17,17 +17,17 @@ function PatternMatrixMode:__init()
 end
 
 function PatternMatrixMode:set_copy()
-    print("pattern matrix set : copy")
+--    print("pattern matrix set : copy")
     self.current = PatternMatrixMode.mode.COPY_PATTERN
     self.current_observable:bang()
 end
 function PatternMatrixMode:set_clear()
-    print("pattern matrix set : clear")
+--    print("pattern matrix set : clear")
     self.current = PatternMatrixMode.mode.CLEAR_PATTERN
     self.current_observable:bang()
 end
 function PatternMatrixMode:reset()
-    print("pattern matrix set : select")
+--    print("pattern matrix set : select")
     self.current = PatternMatrixMode.mode.SELECT
     self.current_observable:bang()
 end
@@ -66,10 +66,10 @@ end
 
 function PatternMatrixMode:meta()
     if self.current == PatternMatrixMode.mode.COPY_PATTERN then
-        print("pattern matrix set : insert scene")
+--        print("pattern matrix set : insert scene")
         self.current = PatternMatrixMode.mode.INSERT_SCENE
     elseif self.current == PatternMatrixMode.mode.CLEAR_PATTERN then
-        print("pattern matrix set : remove scene")
+--        print("pattern matrix set : remove scene")
         self.current = PatternMatrixMode.mode.REMOVE_SCENE
     else
         self.current = PatternMatrixMode.mode.SELECT
