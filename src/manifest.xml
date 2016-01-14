@@ -2,8 +2,8 @@
 <RenoiseScriptingTool>
   <Name>Stepp0r</Name>
   <Id>com.mrVanDalo.Stepp0r</Id>
-  <Version>0.60</Version>
-  <ApiVersion>4</ApiVersion>
+  <Version>0.70</Version>
+  <ApiVersion>5</ApiVersion>
   <Author>Ingolf Wagner (palipalo9@googlemail.com)</Author>
   <AutoUpgraded>false</AutoUpgraded>
   <Category>In Progress</Category>

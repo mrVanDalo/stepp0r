@@ -43,12 +43,7 @@ function Editor:__init()
     self.playback_key = 'editor'
     --
     self.color       = {
-        stepper = Color.green,
-        note = {
-            off   = Color.red,
-            on    = Color.yellow,
-            empty = Color.off,
-        },
+        stepper = NewColor[0][3],
         map = self:__get_color_map(),
     }
     -- init submodules

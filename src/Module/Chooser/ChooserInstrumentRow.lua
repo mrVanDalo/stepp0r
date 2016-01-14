@@ -87,25 +87,31 @@ end
 
 function Chooser:_update_instrument_row()
     self:__clear_instrument_row()
-    for nr, instrument in ipairs(renoise.song().instruments) do
+    self.it_selection:sync_track_with_instrument()
+    for nr, instrument in ipairs(Renoise.instrument:list()) do
         local scaled_index = nr - self.inst_offset
         if scaled_index > 8 then break end
         if Renoise.instrument:exist(instrument) and scaled_index > 0 then
-            local active_color  = self.color.instrument.active
-            local passive_color = self.color.instrument.passive
-            local track = self.it_selection:track_for_instrument(nr)
-            if track then
-                if track.mute_state == TrackData.mute.off or track.mute_state == TrackData.mute.muted
-                then
-                    active_color  = self.color.mute.active
-                    passive_color = self.color.mute.passive
-                end
+            -- mute state
+            local mute_state = ChooserData.color.unmute
+--            local track = self.it_selection:track_for_instrument(nr)
+            local track = Renoise.sequence_track:track(nr)
+            if track and (track.mute_state == TrackData.mute.off or track.mute_state == TrackData.mute.muted)  then
+                mute_state = ChooserData.color.mute
             end
+            -- active state
+            local active_state = ChooserData.color.inactive
             if nr == self.instrument_idx then
-                self.pad:set_matrix(scaled_index, self.row, active_color)
-            else
-                self.pad:set_matrix(scaled_index, self.row, passive_color)
+                active_state = ChooserData.color.active
             end
+            -- group
+            local group_state = ChooserData.color.group_a
+            local group_idx = Renoise.sequence_track:group_type_2(nr)
+            if group_idx == 0 then
+                group_state = ChooserData.color.group_b
+            end
+            -- draw
+            self.pad:set_matrix(scaled_index, self.row, self.color.instrument[ mute_state + active_state + group_state ] )
         end
     end
 end
@@ -117,8 +123,9 @@ function Chooser:__clear_instrument_row()
 end
 
 function Chooser:__mute_track(x)
+    self.it_selection:sync_track_with_instrument()
     local active = self.inst_offset + x
-    local track = self.it_selection:track_for_instrument(active)
+    local track = Renoise.sequence_track:track(active)
     if track then
         if track.mute_state == TrackData.mute.active then
             track:mute()

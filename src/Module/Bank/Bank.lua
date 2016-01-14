@@ -5,57 +5,56 @@
 
 class "Bank" (Module)
 
-require 'Module/Bank/BankListeners'
-require 'Module/Bank/BankLaunchpadMatrix'
+require 'Module/Bank/LaunchpadUI'
+require 'Module/Bank/Store'
+require 'Module/Bank/Entry/Entry'
+require 'Module/Bank/Entry/MultipleEntry'
+require 'Module/Bank/Entry/SingleEntry'
 
-BankData = {
-    mode = {
-        copy  = 1,
-        paste = 2,
+Bank.color = {
+    single = {
+        clear      = NewColor[3][0],
+        copy       = BlinkColor[0][3],
+        paste      = BlinkColor[3][0],
+        unselected = NewColor[3][2],
+    },
+    multi = {
+        clear      = NewColor[0][3],
+        copy       = BlinkColor[0][3],
+        paste      = BlinkColor[3][0],
+        unselected = NewColor[3][2],
     },
 }
-
 
 function Bank:__init()
     Module:__init(self)
 
     self.offset = 6
 
-    self.color = {
-        toggle = {
-            selected = {
-                copy =  Color.flash.green,
-                paste = Color.flash.red,
-            },
-            unselected = Color.orange,
-        },
-        clear = Color.red,
-    }
-
     self.banks    = {}
     self.bank_idx = 1 -- active bank right now
-    self.mode     = BankData.mode.copy
+    self.mode     = CopyPasteStore.COPY_MODE
 
     self.pad = nil
 
-
     self:__init_matrix()
-    self:__init_listeners()
 
 end
 
+
 function Bank:_activate()
     self:__activate_matrix()
-    self:__activate_listeners()
     self:_render_matrix()
 end
 
 function Bank:_deactivate()
     self:__deactivate_matrix()
-    self:__deactivate_listeners()
     self:_clear_matrix()
 end
 
 function Bank:wire_launchpad(pad)
     self.pad = pad
+end
+function Bank:wire_store(store)
+    self.store = store
 end

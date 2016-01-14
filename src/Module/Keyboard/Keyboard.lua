@@ -49,13 +49,13 @@ function Keyboard:__init()
     -- default
     self.color = {
         note = {
-            on      = Color.green ,
-            active  = Color.flash.orange,
-            off     = Color.red,
+            on      = NewColor[3][3],
+            active  = BlinkColor[0][3],
+            off     = NewColor[3][0],
         },
-        octave      = Color.yellow,
-        manover     = Color.orange,
-        clear       = Color.off,
+        octave      = NewColor[3][1],
+        manover     = NewColor[3][1],
+        clear       = NewColor[0][0],
     }
 
     self.note       = Note.note.c
@@ -94,6 +94,7 @@ function Keyboard:matrix_refresh()
 end
 
 function Keyboard:matrix_clear()
+--    print("clear keyboard matrix")
     local y0 = self.offset + 1
     local y1 = self.offset + 2
     for x=1,8 do

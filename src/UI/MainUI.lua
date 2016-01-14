@@ -23,6 +23,7 @@ end
 function MainUI:create_ui()
     self:create_logo()
     self:create_device_row()
+    self:create_device_info_row()
     self:create_osc_row()
     self:create_rotation_row()
     self:create_follow_mute_row()
@@ -50,8 +51,9 @@ function MainUI:create_container()
         self.vb:column {
             spacing = 4,
             margin = 4,
-            self.osc_row,
             self.device_row,
+            self.device_info_row,
+            self.osc_row,
             self.rotation_row,
             self.pattern_matrix_row,
             self.pagination_factor_row,
@@ -85,14 +87,15 @@ function MainUI:create_device_row()
         visible = true,
         bitmap  = "reload.bmp",
         width   = self.button_size,
-        tooltip = "reload device list",
+        tooltip = "Reload device list",
         notifier = function ()
             self:device_row_update_device_list()
         end,
     }
     self.device_row_popup = self.vb:popup {
         width = self.input_size,
-        tooltip = "Choose a Device to operate on"
+        tooltip = "Choose the device you want to use. \
+(only launchpad devices show up here)",
     }
     self.device_row = self.vb:row{
         spacing = 3,
@@ -105,6 +108,7 @@ function MainUI:create_device_row()
     }
 end
 
+
 function MainUI:disable_device_row()
     self.device_row_button.active = false
     self.device_row_popup.active = false
@@ -115,6 +119,7 @@ function MainUI:enable_device_row()
     self.device_row_popup.active = true
     self:device_row_update_device_list()
 end
+
 
 
 function MainUI:register_device_update_callback(callback)
@@ -133,6 +138,33 @@ function MainUI:selected_device()
 end
 
 
+function MainUI:create_device_info_row()
+    self.device_info_row = self.vb:row{
+        spacing = 3,
+        self.vb:text{
+            text = "",
+            width = self.button_size,
+        },
+        self.vb:text{
+            text =
+"You need a Launchpad to start this plugin.\
+Plug in a launchpad press the reload button and\
+press the start button.\
+",
+            width = self.text_size + self.input_size,
+        },
+    }
+    self.device_info_row.visible = false
+end
+
+function MainUI:disable_device_info_row()
+    self.device_info_row.visible = false
+end
+
+function MainUI:enable_device_info_row()
+    self.device_info_row.visible = true
+end
+
 
 
 --- ======================================================================================================
@@ -143,6 +175,8 @@ function MainUI:create_rotation_row()
     self.rotation_switch = self.vb:switch {
         items = { "left", "right" },
         width = self.input_size,
+        tooltip = "Rotate the layout. \
+(usefull when you have your pad in a case or you don't have enough space for the usb-cabel)",
     }
     self.rotation_switch.value = 2
     self.rotation_row = self.vb:row{
@@ -177,14 +211,14 @@ function MainUI:create_pagination_factor_row()
         visible = true,
         items   = {"1", "2", "4"},
         width   = self.input_size,
-        tooltip = "to enable pattern matrix controll",
+        tooltip = "Size of a step when pressing pagination buttons",
         value   = 3
     }
     self.pagination_factor_row = self.vb:row{
         spacing = 3,
         self.vb:text{
             text = "",
-            width = self.button_size
+            width = self.button_size,
         },
         self.vb:text{
             text = "Paging",
@@ -210,10 +244,13 @@ end
 function MainUI:create_pattern_matrix_row()
     self.pattern_matrix_switch = self.vb:switch{
         visible = true,
-        items   = {"disable", "one", "two"},
+        items   = {"disable", "instantly", "delayed"},
         width   = self.input_size,
-        tooltip = "to enable pattern matrix controll",
-        value   = 3
+        tooltip = "Response on Pattern arrangement. \
+* none : will disable the Pattern Mix functionality, \
+* instantly : will change the pattern instantly you press the button \
+* delayed : will sync the patterns you choose. (good for performing)",
+        value   = 3, -- will result in PatternMix.mode
     }
     self.pattern_matrix_row = self.vb:row{
         spacing = 3,
@@ -249,13 +286,13 @@ function MainUI:create_follow_track_instrument_row()
         visible = true,
         value   = true,
         width   = self.button_size,
-        tooltip = "change instrument according to active track"
+        tooltip = "Change instrument focus when changing focus of a track."
     }
     self.follow_track_instrument_row = self.vb:row{
         spacing = 3,
         self.follow_track_instrument_checkbox,
         self.vb:text{
-            text = "Follow Track Instrument",
+            text = "Follow Track",
             width = self.text_size,
         },
     }
@@ -279,7 +316,7 @@ function MainUI:create_follow_mute_row()
         visible = true,
         value   = false,
         width   = self.button_size,
-        tooltip = "focus the track when muting it using Stepp0r"
+        tooltip = "Focus the track when muting it using Stepp0r"
     }
     self.follow_mute_row = self.vb:row{
         spacing = 3,
@@ -310,7 +347,7 @@ function MainUI:create_current_playback_position_row()
         visible = true,
         value   = false,
         width   = self.button_size,
-        tooltip = "show playback position only for selected pattern"
+        tooltip = "Don't show the Playposition on the Launchpad if you are focusing a pattern which is not played right now."
     }
     self.current_playback_position_row = self.vb:row{
         spacing = 3,
@@ -340,18 +377,17 @@ function MainUI:create_osc_row()
         visible = true,
         value   = true,
         width   = self.button_size,
-        tooltip = "send notes to local osc server (UDP)"
+        tooltip = "Use the (internal renoise) OSC server (UDP) to play notes with the keyboard."
     }
     self.osc_row_text = self.vb:text {
         text = 'none',
         width = self.input_size,
-        tooltip = "port of the local osc server (UDP)",
         visible = false,
     }
     self.osc_row_textfield = self.vb:textfield {
         text = self.default_osc_port,
         width = self.input_size,
-        tooltip = "port of the local osc server (UDP)"
+        tooltip = "Port of the osc server (UDP)",
     }
     self.osc_row = self.vb:row{
         spacing = 3,
@@ -397,7 +433,10 @@ function MainUI:create_start_stop_button()
         notifier = function ()
             if self.is_running then
                 self:stop()
+            elseif self:selected_device() == "None" then
+                self:enable_device_info_row()
             else
+                self:disable_device_info_row()
                 self:run()
             end
         end
@@ -435,7 +474,7 @@ function MainUI:run_properties()
         follow_mute = self.follow_mute_checkbox.value,
         follow_track_instrument        = self.follow_track_instrument_checkbox.value,
         only_current_playback_position = self.current_playback_position_checkbox.value,
-        pattern_matrix = self.pattern_matrix_switch.value - 1,
+        pattern_mix_mode = self.pattern_matrix_switch.value - 1,
         pagination_factor = page_factor,
     }
 end

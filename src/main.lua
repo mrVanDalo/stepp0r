@@ -1,6 +1,6 @@
 require 'Init/LaunchpadSetup'
-require 'Init/MainUI'
-require 'Init/AboutUI'
+require 'UI/MainUI'
+require 'UI/AboutUI'
 
 
 -- Reload the script whenever this file is saved.
@@ -65,7 +65,7 @@ function create_main_UI()
             launchpad_setup:unset_follow_mute()
         end
 
-        launchpad_setup:set_pattern_matrix_number(options.pattern_matrix)
+        launchpad_setup:set_pattern_mix_mode(options.pattern_mix_mode)
         launchpad_setup:set_pagination_factor(options.pagination_factor)
         launchpad_setup:set_only_current_playback_position(options.only_current_playback_position)
         if options.follow_track_instrument then
@@ -136,6 +136,19 @@ local function show_main_dialog()
 end
 
 
+--- this observable makes sure, that a new renoise project
+---     will not mess around with the stepp0r configuration.
+---     It might be changed and more advanced, if the
+---     configuration is saved using a renoise.Document
+renoise.tool().app_new_document_observable:add_notifier(function()
+    if launchpad_setup then
+        launchpad_setup:deactivate()
+        launchpad_setup = nil
+    end
+    if main_ui then
+        main_ui = nil
+    end
+end)
 
 
 --- ======================================================================================================
