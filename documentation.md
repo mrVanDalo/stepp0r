@@ -115,26 +115,27 @@ very obvious.
 
 <div class="foo pure-g">
 <div class="pure-u-1 pure-u-lg-1-2"><div class="foo-img"> 
-<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-AdjustMode.svg" alt="Launchpad Adjust Mode Parts" />
+<img class="pure-img" src="{{ site.baseurl }}/assets/Launchpad-CopyPasteMode.svg" alt="Launchpad Copy/Paste Mode Parts" />
 </div> </div>
 
 <div class="pure-u-1 pure-u-lg-1-2">
 <div class="foo-header" markdown='1'>
 
-## Adjustment Mode (aka Copy Paste mode)
+## Copy/Paste Mode 
 
 This mode lets you copy paste sections of you Pattern. 
 
 <div class="foo-toc" markdown='1'>
 * [Bank](#bank)
-* [Adjuster Mode Area](#adjuster-mode-area)
-* [Adjuster Effects](#adjuster-effects)
+    * [Copy Paste Types](#copy-paste-types)
+* [Copy Selection Area](#copy-selection-area)
+* [Copy/Paste Effects](#copypaste-effects)
 </div>
 
 </div>
 
 </div>
-<img class="foo-img-alt pure-img" src="{{ site.baseurl }}/assets/Launchpad-AdjustMode.svg" alt="Launchpad Adjust Mode Parts" />
+<img class="foo-img-alt pure-img" src="{{ site.baseurl }}/assets/Launchpad-CopyPasteMode.svg" alt="Launchpad Copy/Paste Mode Parts" />
 </div>
 
 <div class="content" markdown='1'>
@@ -146,16 +147,24 @@ This mode lets you copy paste sections of you Pattern.
 ### Bank
 
 You have 8 Banks, where you can store selections.
-You can clear every Bank by using the red button below the selected bank.
-By pressing the flashing button in the bank (your selected bank) you can switch between copy and paste mode.
+You can clear every Bank by using the first 4 red button and following 4 green buttons, 
+below the selected bank.
+By pressing the flashing button in the bank (your selected bank) 
+you can switch between copy and paste mode.
 The pattern you copy can be used across all other instruments.
 
+#### Copy Paste Types
 
-### Adjust Mode Area
+You have 4 types of copy paste selection to copy all notes in a line 
+(the ones with the green clear buttons)
+and 4 types to copy only one note per line 
+(the ones with the red clear buttons).
+
+### Copy Selection Area
 
 Here you can insert and select your patterns, according to the mode you've selected.
 
-### Adjuster Effects
+### Copy/Paste Effects
 
 Don't do anything right now.
 
