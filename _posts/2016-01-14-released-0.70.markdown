@@ -9,14 +9,18 @@ abstract: "Finally the new renoise version is out there, and the new Stepp0r ver
 
 On this version fixed some bugs, and 
 
-* changed the way the play/record/stop button works
+* changed the way the play/record/stop button works 
+([documentation here]({{ site.baseurl }}/documentation/#playrecordstop))
 * add a new type of copy paste way
+([documentation here]({{ site.baseurl }}/documentation/#copy-paste-types))
 * changed a bit on the color scheme
-* add some new commands to the pattern matrix mode
+* add some meta commands (insert and remove row) to the pattern matrix mode
+([documentation here]({{ site.baseurl }}/documentation/#scene-meta-commands))
 
 For more detail see the 
 [github tickets](https://github.com/mrVanDalo/stepp0r/issues?q=milestone%3A%220.7+Rein+Valdmaa%22)  or the 
 [Changelog]( {{site.baseurl }}/changelog/) 
 
+There will be a video about the changes soon.
 
 

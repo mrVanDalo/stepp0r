@@ -40,6 +40,7 @@ The first mode you see, to *edit* the **Pattern** selected in **Renoise**.
     * [Delay](#delay)
     * [Volume](#volume)
     * [Panning](#panning)
+* [Play/Recored/Stop](#playrecordstop)
 </div>
 
 </div>
@@ -108,6 +109,15 @@ If you want to center the panning again, just press the panning again.
 very obvious.
 
 
+### Play/Record/Stop
+
+There is one button for all three commands.
+Press the button once starts playing.
+Pressing the button again and again will toggle between play and record.
+If you want to stop to play, you have to hold the button for a while.
+
+
+
 
 
 </div>
@@ -130,6 +140,7 @@ This mode lets you copy paste sections of you Pattern.
     * [Copy Paste Types](#copy-paste-types)
 * [Copy Selection Area](#copy-selection-area)
 * [Copy/Paste Effects](#copypaste-effects)
+* [Play/Recored/Stop](#playrecordstop)
 </div>
 
 </div>
@@ -191,8 +202,10 @@ It is influenced by [Ableton Live](https://www.ableton.com/),
 To use this mode you have to set the **Pattern Mix** parameter to 2 or 1. 
 
 <div class="foo-toc" markdown='1'>
+* [Play/Recored/Stop](#playrecordstop)
 * [Copy and Delete](#copy-and-delete)
 * [Scene buttons](#scene-buttons)
+    * [Scene Meta commands](#scene-meta-commands)
 </div>
 
 </div>
@@ -202,12 +215,6 @@ To use this mode you have to set the **Pattern Mix** parameter to 2 or 1.
 </div>
 
 <div class="content" markdown='1'>
-
-
-
-
-
-
 
 ### Copy and Delete
 
@@ -222,5 +229,21 @@ The Scene buttons will also take the copy and delete buttons into account.
 ### Scene buttons
 
 The scene buttons will select the complete row.
+
+#### Scene Meta commands
+
+Meta commands only work in combination with the scene buttons.
+
+##### Insert new row
+
+* press the Copy Button
+* press the Delete Button
+* press the scene Button where you want to enter the row
+
+##### remove new row
+
+* press the Delete Button
+* press the Copy Button
+* press the scene Button you want to be removed
 
 </div>
