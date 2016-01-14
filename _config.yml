@@ -4,9 +4,9 @@ email: palipalo9@googlemail.com
 description: "A Launchpad Step-Sequencer for Renoise"
 keywords: "Renoise, Launchpad, Steppor, Step-Sequencer"
 baseurl: "/stepp0r"
-url: "http://mrvandalo.github.io"
+url: "http://palovandalo.com"
 
-actual_version: "Stepp0r-0.64.xrnx"
+actual_version: "Stepp0r-0.70.xrnx"
 
 # Build settings
 markdown: kramdown

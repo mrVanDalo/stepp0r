@@ -6,6 +6,23 @@ permalink: /changelog/
 
 Version names by Estonian Marathon Champions
 
+## 0.70 Rein Valdmaa
+
+* Reorganize the Buttons on the Top `enhancement`
+* Deleting a Track will clear the launchpad view. `BUG`
+* mixxx section will be add, as new pattern `BUG`, `wontfix`
+* Make the effect row green `enhancement`
+* improve plugin ui `enhancement`
+* Change color of the off now (red is to hard!) `enhancement`
+* play button on the pattern mix view `enhancement`
+* HotFix for the automation following problem `BUG`
+* Copy paste mode to copy multiple or single track colums `enhancement`
+* insert and delete pattern row `enhancement`
+* remove old color codes and stuff from adjuster and editor module `tech-enhancement`
+* Creating a Track, and starting a new track (Stepp0r still on) will crash `BUG`
+* hide start button in UI if there is no launchpad available. `enhancement`
+* put instrument number in front of track name `enhancement`
+
 
 ## 0.64 Renoise Workshop (Berlin) release
 

@@ -1,0 +1,22 @@
+---
+layout: post
+title:  "Version 0.70 released"
+date:   2016-01-14 14:31:00
+categories: release
+author: "Palo van Dalo"
+abstract: "Finally the new renoise version is out there, and the new Stepp0r version is too!"
+---
+
+On this version fixed some bugs, and 
+
+* changed the way the play/record/stop button works
+* add a new type of copy paste way
+* changed a bit on the color scheme
+* add some new commands to the pattern matrix mode
+
+For more detail see the 
+[github tickets](https://github.com/mrVanDalo/stepp0r/issues?q=milestone%3A%220.7+Rein+Valdmaa%22)  or the 
+[Changelog]( {{site.baseurl }}/changelog/) 
+
+
+
