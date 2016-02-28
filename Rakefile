@@ -2,9 +2,10 @@
 
 require 'fileutils'
 
+
 BUILD_DIR='./build'
 version='0.70'
-project_title='Stepp0r'
+project_title='Steppr0'
 export_folder="#{project_title}-#{version}"
 test_folder="test-#{version}"
 
@@ -33,13 +34,14 @@ desc 'package project to zip file'
 task :package => :build do
     export="#{BUILD_DIR}/#{export_folder}"
     FileUtils.mkdir_p("pkg", :verbose => false)
-    sh "cd #{export}; zip -r ../../pkg/#{export_folder}.xrnx *"
+	Dir.chdir "#{export}"
+	system  "../../zip -vr ../../pkg/#{export_folder}.xrnx *"
 end
 
 desc 'clean up project'
 task :clean do
-    sh 'rm -rf build'
-    sh 'rm -rf pkg'
+    system 'rmdir /s /q build'
+    system 'rmdir /s /q pkg'
 end
 
 

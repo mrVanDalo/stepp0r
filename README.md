@@ -1,10 +1,9 @@
 # Launchpad Step Sequencer
 
 This will be a step sequencer for [Renoise](http://www.renoise.com/) 
-using the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad).
+using the [Launchpad PRO](http://global.novationmusic.com/launch/launchpad-pro).
 
-* [Download newest version](http://mrvandalo.github.io/stepp0r/)
-* [Download at renoise.com](http://www.renoise.com/tools/stepp0r)
+* [Download newest version](http://github.com/The-XOR/steppr0)
 
 ## How to release new version
 
