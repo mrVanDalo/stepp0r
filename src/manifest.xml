@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RenoiseScriptingTool>
-  <Name>Stepp0r</Name>
-  <Id>com.mrVanDalo.Stepp0r</Id>
+<RenoiseScriptingTool doc_version="0">
+  <Name>Steppr0</Name>
+  <Id>com.thexor.Steppr0</Id>
   <Version>0.70</Version>
   <ApiVersion>5</ApiVersion>
-  <Author>Ingolf Wagner (palipalo9@googlemail.com)</Author>
-  <AutoUpgraded>false</AutoUpgraded>
+  <Author>Ingolf Wagner (TheXOR fork)</Author>
   <Category>In Progress</Category>
-  <Description>The awesome Launchpad Step-Sequencer.</Description>
-  <Homepage>http://mrvandalo.github.io/stepp0r/</Homepage>
-  <Platform/>
+  <Description>The awesome Launchpad (Pro) Step-Sequencer.</Description>
+  <Homepage>http://github.com/The-XOR/steppr0</Homepage>
   <Icon>icon.png</Icon>
 </RenoiseScriptingTool>

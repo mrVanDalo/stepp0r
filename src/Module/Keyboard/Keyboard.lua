@@ -88,7 +88,6 @@ end
 
 function Keyboard:matrix_refresh()
     self:matrix_clear()
-    self.pad:set_flash()
     self:_update_matrix_keys()
     self:_update_manover_keys()
 end

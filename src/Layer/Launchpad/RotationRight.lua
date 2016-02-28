@@ -30,34 +30,36 @@ end
 
 function _is_top_right(msg)
     if msg[1] == 0xB0 then
-        local x = msg[2] - 0x68
+        local x = msg[2] - 91
+		local v = Launchpad:getvel(msg[3])
         if (x > -1 and x < 8) then
-            return { flag = true,  x = (x + 1), vel = msg[3] }
+            return { flag = true,  x = (x + 1), vel = v }
         end
     end
     return LaunchpadData.no
 end
+
 function _is_side_right(msg)
-    if msg[1] == 0x90 then
-        local note = msg[2]
-        if (bit.band(0x08,note) == 0x08) then
-            local x = bit.rshift(note,4)
-            if (x > -1 and x < 8) then
-                return { flag = true,  x = (x + 1), vel = msg[3] }
-            end
+    if msg[1] == 0xb0 then
+        local x = 8 - math.floor(msg[2] / 10) 
+		local v = Launchpad:getvel(msg[3])
+        if (x > -1 and x < 8) then
+            return { flag = true,  x = (x + 1), vel = v }
         end
     end
     return LaunchpadData.no
 end
+
 function _is_matrix_right(msg)
     if msg[1] == 0x90 then
         local note = msg[2]
-        if (bit.band(0x08,note) == 0) then
-            local y = bit.rshift(note,4)
-            local x = bit.band(0x07,note)
-            if ( x > -1 and x < 8 and y > -1  and y < 8 ) then
-                return { flag = true , x = (x + 1) , y = (y + 1), vel = msg[3] }
-            end
+        local y = math.floor(note / 10) -1
+        local x = note - 10 * (1+y) - 1;      
+		local v = Launchpad:getvel(msg[3])
+		y = 7 - y
+
+        if ( x > -1 and x < 8 and y > -1  and y < 8 ) then
+            return { flag = true , x = (x + 1) , y = (y + 1), vel = v }
         end
     end
     return LaunchpadData.no
@@ -72,20 +74,20 @@ function Launchpad:_set_matrix_right( a, b , color )
     local x = a - 1
     local y = b - 1
     if ( x < 8 and x > -1 and y < 8 and y > -1) then
-        self:send(0x90 , y * 16 + x , color)
+        self:send(0x90 , 81 + x - 10 *y , color)
     end
 end
 
 function Launchpad:_set_top_right(a,color)
     local x = a - 1
     if ( x > -1 and x < 8 ) then
-        self:send( 0xB0, x + 0x68, color)
+        self:send( 0xB0, x + 91, color)
     end
 end
 
 function Launchpad:_set_side_right(a,color)
     local x = a - 1
     if ( x > -1 and x < 8 ) then
-        self:send( 0x90, 0x10 * x + 0x08, color)
+        self:send( 0xb0, 89 - 10 * x, color)
     end
 end

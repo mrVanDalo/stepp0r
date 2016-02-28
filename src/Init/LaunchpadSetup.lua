@@ -118,14 +118,14 @@ function LaunchpadSetup:activate()
     self.play_record_button:activate()
 end
 
-function LaunchpadSetup:connect_launchpad(pad_name,rotation)
+function LaunchpadSetup:connect_launchpad(pad_in_name,pad_out_name,rotation)
     self.pad:disconnect()
     if (rotation == LaunchpadSetupData.rotation.right) then
         self.pad:rotate_right()
     else
         self.pad:rotate_left()
     end
-    self.pad:connect(pad_name)
+    self.pad:connect(pad_in_name,pad_out_name)
 end
 
 function LaunchpadSetup:connect_osc_client(host, port)

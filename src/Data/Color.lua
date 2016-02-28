@@ -5,6 +5,6 @@
 --- Launchpad Color codes
 
 Color = {
-    off = 12
+    off = 0
 }
 
