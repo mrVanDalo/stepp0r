@@ -39,9 +39,9 @@ end
 
 --- connect launchpad to a midi device
 --
-function Launchpad:connect(midi_device_name)
-    self.midi_out    = renoise.Midi.create_output_device(midi_device_name)
-    self.midi_input  = renoise.Midi.create_input_device(midi_device_name, self.__midi_input_callback)
+function Launchpad:connect(midi_in_device_name, midi_out_device_name)
+    self.midi_out    = renoise.Midi.create_output_device(midi_out_device_name)
+    self.midi_input  = renoise.Midi.create_input_device(midi_in_device_name, self.__midi_input_callback)
 end
 
 function Launchpad:disconnect()
@@ -118,9 +118,30 @@ function Launchpad:send(channel, number, value)
     if (not self.midi_out or not self.midi_out.is_open) then
         return
     end
-    local message = {channel, number, value}
-    -- print(("Launchpad : send MIDI %X %X %X"):format(message[1], message[2], message[3]))
-    self.midi_out:send(message)
+	if (channel == 0x90 and value > 127) then
+		self:sendFlash(number, value)
+	else
+		local message = {channel, number, value}
+		-- print(("Launchpad : send MIDI %X %X %X"):format(message[1], message[2], message[3]))
+		self.midi_out:send(message)
+	end
+end
+
+function Launchpad:sendFlash(number, value)
+  local message = table.create()
+ 
+  message:insert(0xF0)
+  message:insert(0x00)
+  message:insert(0x20)
+  message:insert(0x29)
+  message:insert(0x02)
+  message:insert(0x10)
+  message:insert(0x23)
+  message:insert(number)
+  message:insert(value - 128)  
+  message:insert(0xF7)
+
+  self.midi_out:send(message)
 end
 
 function Launchpad:set_matrix( a, b , color )
@@ -170,15 +191,10 @@ function Launchpad:clear_top()
         self:set_top(x,Color.off)
     end 
 end
-
-function Launchpad:set_flash()
-    self:send(0xB0,0x00,0x28)
+function Launchpad:getvel(v)
+	if v > 0 then
+		v = 127
+	end
+	return v
 end
-function Launchpad:unset_flash()
-    self:send(0xB0,0x00,0x32)
-end
-
-
-
-
-
+	

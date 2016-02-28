@@ -22,7 +22,8 @@ end
 
 function MainUI:create_ui()
     self:create_logo()
-    self:create_device_row()
+    self:create_in_device_row()
+    self:create_out_device_row()
     self:create_device_info_row()
     self:create_osc_row()
     self:create_rotation_row()
@@ -37,7 +38,8 @@ function MainUI:create_ui()
 end
 
 function MainUI:boot()
-    self:device_row_update_device_list()
+    self:device_row_update_in_device_list()
+    self:device_row_update_out_device_list()
 end
 
 function MainUI:create_container()
@@ -51,7 +53,8 @@ function MainUI:create_container()
         self.vb:column {
             spacing = 4,
             margin = 4,
-            self.device_row,
+            self.in_device_row,
+            self.out_device_row,
             self.device_info_row,
             self.osc_row,
             self.rotation_row,
@@ -82,42 +85,72 @@ end
 ---
 ---                                                 [ Device Row ]
 
-function MainUI:create_device_row()
-    self.device_row_button = self.vb:button{
+function MainUI:create_in_device_row()
+    self.in_device_row_button = self.vb:button{
         visible = true,
         bitmap  = "reload.bmp",
         width   = self.button_size,
         tooltip = "Reload device list",
         notifier = function ()
-            self:device_row_update_device_list()
+            self:device_row_update_in_device_list()
         end,
     }
-    self.device_row_popup = self.vb:popup {
+    self.in_device_row_popup = self.vb:popup {
         width = self.input_size,
         tooltip = "Choose the device you want to use. \
 (only launchpad devices show up here)",
     }
-    self.device_row = self.vb:row{
+    self.in_device_row = self.vb:row{
         spacing = 3,
-        self.device_row_button,
+        self.in_device_row_button,
         self.vb:text{
-            text = "Device",
+            text = "Input port",
             width = self.text_size,
         },
-        self.device_row_popup,
+        self.in_device_row_popup,
     }
 end
 
+function MainUI:create_out_device_row()
+    self.out_device_row_button = self.vb:button{
+        visible = true,
+        bitmap  = "reload.bmp",
+        width   = self.button_size,
+        tooltip = "Reload device list",
+        notifier = function ()
+            self:device_row_update_out_device_list()
+        end,
+    }
+    self.out_device_row_popup = self.vb:popup {
+        width = self.input_size,
+        tooltip = "Choose the device you want to use. \
+(only launchpad devices show up here)",
+    }
+    self.out_device_row = self.vb:row{
+        spacing = 3,
+        self.out_device_row_button,
+        self.vb:text{
+            text = "Output port",
+            width = self.text_size,
+        },
+        self.out_device_row_popup,
+    }
+end
 
 function MainUI:disable_device_row()
-    self.device_row_button.active = false
-    self.device_row_popup.active = false
+    self.in_device_row_button.active = false
+    self.out_device_row_button.active = false
+    self.in_device_row_popup.active = false
+    self.out_device_row_popup.active = false
 end
 
 function MainUI:enable_device_row()
-    self.device_row_button.active = true
-    self.device_row_popup.active = true
-    self:device_row_update_device_list()
+    self.in_device_row_button.active = true
+    self.in_device_row_popup.active = true
+    self.out_device_row_button.active = true
+    self.out_device_row_popup.active = true
+    self:device_row_update_in_device_list()
+    self:device_row_update_out_device_list()
 end
 
 
@@ -126,17 +159,27 @@ function MainUI:register_device_update_callback(callback)
     self.device_update_callback = callback
 end
 
-function MainUI:device_row_update_device_list()
+function MainUI:device_row_update_in_device_list()
     if (self.device_update_callback) then
-        self.device_row_popup.items = self.device_update_callback()
+        self.in_device_row_popup.items = self.device_update_callback(false)
     end
 end
 
-function MainUI:selected_device()
-    local list_of_lauchpad_devices = self.device_row_popup.items
-    return list_of_lauchpad_devices[self.device_row_popup.value]
+function MainUI:device_row_update_out_device_list()
+    if (self.device_update_callback) then
+        self.out_device_row_popup.items = self.device_update_callback(true)
+    end
 end
 
+function MainUI:selected_in_device()
+    local list_of_lauchpad_devices = self.in_device_row_popup.items
+    return list_of_lauchpad_devices[self.in_device_row_popup.value]
+end
+
+function MainUI:selected_out_device()
+    local list_of_lauchpad_devices = self.out_device_row_popup.items
+    return list_of_lauchpad_devices[self.out_device_row_popup.value]
+end
 
 function MainUI:create_device_info_row()
     self.device_info_row = self.vb:row{
@@ -433,7 +476,7 @@ function MainUI:create_start_stop_button()
         notifier = function ()
             if self.is_running then
                 self:stop()
-            elseif self:selected_device() == "None" then
+            elseif self:selected_in_device() == "None" or self:selected_out_device() == "None" then
                 self:enable_device_info_row()
             else
                 self:disable_device_info_row()
@@ -468,7 +511,8 @@ function MainUI:run_properties()
             active = self.osc_row_checkbox.value
         },
         launchpad = {
-            name = self:selected_device(),
+            in_name = self:selected_in_device(),
+            out_name = self:selected_out_device(),
         },
         rotation = self.rotation_switch.value,
         follow_mute = self.follow_mute_checkbox.value,
