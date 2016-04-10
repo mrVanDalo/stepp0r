@@ -47,11 +47,11 @@ function create_main_UI()
     main_ui = MainUI()
     main_ui:register_run_callback(function (options)
 
-        if not options.launchpad.name then
+        if not options.launchpad.in_name or not options.launchpad.out_name then
             return
         end
 
-        if options.launchpad.name == "None" then
+        if options.launchpad.in_name == "None" or options.launchpad.out_name == "None" then
             return
         end
 
@@ -74,7 +74,7 @@ function create_main_UI()
             launchpad_setup:unset_follow_track_instrument()
         end
 
-        launchpad_setup:connect_launchpad(options.launchpad.name, options.rotation)
+        launchpad_setup:connect_launchpad(options.launchpad.in_name, options.launchpad.out_name, options.rotation)
         launchpad_setup:connect_it_selection()
         launchpad_setup:activate()
     end)
@@ -82,11 +82,19 @@ function create_main_UI()
 --        print("stop")
         launchpad_setup:deactivate()
     end)
-    main_ui:register_device_update_callback(function ()
+    main_ui:register_device_update_callback(function (isoutput)
         local list = {}
-        for _,v in pairs(renoise.Midi.available_input_devices()) do
-            if string.find(v, "Launchpad") then
-                table.insert(list,v)
+        if isoutput then
+            for _,v in pairs(renoise.Midi.available_output_devices()) do
+                if string.find(v, "Launchpad") then
+                    table.insert(list,v)
+                end
+            end
+        else
+            for _,v in pairs(renoise.Midi.available_input_devices()) do
+                if string.find(v, "Launchpad") then
+                    table.insert(list,v)
+                end
             end
         end
         return list
@@ -157,10 +165,11 @@ end)
 
 
 renoise.tool():add_menu_entry {
-    name = "Main Menu:Tools:"..tool_name,
+    name = "Main Menu:Tools:"..tool_name.."...",
     invoke = show_main_dialog
 }
+
 renoise.tool():add_menu_entry {
-    name = "Main Menu:Help:".. "About "..tool_name,
+    name = "Main Menu:Help:About "..tool_name.."...",
     invoke = show_about
 }

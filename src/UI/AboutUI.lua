@@ -13,15 +13,16 @@ function AboutUI:__init()
     self.text_width = 450
     self.text_height = 250
     self.textarea_text = {
-        "Author",
+        "Authors",
+        "=======",
         "Ingolf Wagner Aka Palo Van Dalo","",
-        "Logos",
+        "XOR","",
+        "Logos","",
+        "=====",
         "© by stylefusion.de","",
         "Homepage",
+        "========",
         "http://mrvandalo.github.io/stepp0r/","",
-		"steppr0 fork, for launchpad pro",
-        "modified by The XOR",
-        "http://github.com/The-XOR/steppr0","",		
         "License",
         "=====",
         "GPLv3 http://www.gnu.org/copyleft/gpl.html",
