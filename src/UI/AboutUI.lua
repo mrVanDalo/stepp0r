@@ -10,17 +10,18 @@ class "AboutUI"
 function AboutUI:__init()
     self.vb = renoise.ViewBuilder()
     self.topic_size = 40
-    self.text_width = 350
+    self.text_width = 450
     self.text_height = 250
     self.textarea_text = {
-        "Author",
-        "====",
+        "Authors",
+        "=======",
         "Ingolf Wagner Aka Palo Van Dalo","",
-        "Logos",
-        "====",
+        "XOR","",
+        "Logos","",
+        "=====",
         "© by stylefusion.de","",
         "Homepage",
-        "=======",
+        "========",
         "http://mrvandalo.github.io/stepp0r/","",
         "License",
         "=====",
