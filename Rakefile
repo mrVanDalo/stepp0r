@@ -5,7 +5,7 @@ require 'fileutils'
 # configurable parameters
 #
 BUILD_DIRECTORY = 'build'
-VERSION = '0.70'
+VERSION = '0.71'
 PROJECT_TITLE = 'Stepp0r'
 FLAVORS_DIRECTORY = 'flavors'
 SRC_DIRECTORY = 'src'
