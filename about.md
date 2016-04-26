@@ -6,8 +6,8 @@ permalink: /about/
 
 ## Contributer
 
-Ingolf Wagner (aka [Palo van Dalo](http://palovandalo.com))
-[@Twitter](https://twitter.com/mr_van_dalo).
+* Ingolf Wagner (aka [Palo van Dalo](http://palovandalo.com)) [@Twitter](https://twitter.com/mr_van_dalo).
+* [XOR](http://forum.renoise.com/index.php/user/21831-the-xor) (LaunchpadPRO version)
 
 
 ## Software License
