@@ -6,6 +6,11 @@ permalink: /changelog/
 
 Version names by Estonian Marathon Champions
 
+## 0.71 Launchpad / Launchpad PRO
+
+* created Launchpad flavor
+* created Launchpad PRO flavor
+
 ## 0.70 Rein Valdmaa
 
 * Reorganize the Buttons on the Top `enhancement`

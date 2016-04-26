@@ -1,13 +1,16 @@
-Stepp0r is a Step-Sequencer for [Renoise](http://www.renoise.com/)
-on the [Launchpad](http://novationmusic.de/midi-controllers-digital-dj/launchpad)
-written by Ingolf Wagner (aka [Palo van Dalo](http://palovandalo.com)).
 
-You can
+Stepp0r is a step sequencer and pattern organizer for [Renoise](http://www.renoise.com/).
+Control your favorite DAW with you favorite hardware.
+Move away from the mouse and keyboard to catch the flow of your current mood,
+or pimp your renoise skills with an additional powerful interface.
 
-* punch in your sequences, 
-* use the keyboard to record your melodies.
-* copy and paste patterns.
-* arrange patterns on the pattern matrix
+Here are some Features
+
+* step sequencing
+* copy paste pattern and sequences
+* pattern arrangement
+* integrated keyboard
+
 
 <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='https://www.youtube.com/embed/gmR9wrsgWDQ' frameborder='0' allowfullscreen></iframe></div>
 
@@ -23,10 +26,10 @@ for example).
 
 | Type | Status |
 | ---: | ---|
-| Launchpad | working |
-| Launchpad S | working |
-| Launchpad mini | don't know, should be working |
-| Launchpad MK2 | don't know, might be working |
+| Launchpad      | working |
+| Launchpad S    | working |
+| Launchpad mini | working |
+| Launchpad PRO  | working (beta) |
 
 ## How to say thank you ? 
 
