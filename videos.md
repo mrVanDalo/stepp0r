@@ -4,7 +4,8 @@ title: Videos
 permalink: /videos/
 ---
 
-
+<iframe width="853" height="480" src="https://media.ccc.de/v/minilac16-stepp0rarenoise/oembed" frameborder="0" allowfullscreen></iframe>
+<br>
 <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='https://www.youtube.com/embed/gmR9wrsgWDQ' frameborder='0' allowfullscreen></iframe></div>
 <br>
 <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='https://www.youtube.com/embed/aTq-o-wO68M' frameborder='0' allowfullscreen></iframe></div>
